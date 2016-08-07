@@ -10,12 +10,12 @@
     <link rel="stylesheet" href="http://cache.amap.com/lbs/static/jquery.range.css" />
     <script src="http://cache.amap.com/lbs/static/jquery-1.9.1.js"></script>
     <script src="http://cache.amap.com/lbs/static/es5.min.js"></script>
-    <script src="http://webapi.amap.com/maps?v=1.3&key=22d3816e107f199992666d6412fa0691&plugin=AMap.ArrivalRange,AMap.Scale,AMap.Geocoder,AMap.Transfer,AMap.Autocomplete"></script>
+    <script src="http://webapi.amap.com/maps?v=1.3&key=8a971a2f88a0ec7458d43b8bc03b6462&plugin=AMap.ArrivalRange,AMap.Scale,AMap.Geocoder,AMap.Transfer,AMap.Autocomplete,AMap.CitySearch"></script>
     <script src="http://cache.amap.com/lbs/static/jquery.range.js"></script>
-
+    <script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
     <link rel="stylesheet" href="http://cdn.amazeui.org/amazeui/2.7.1/css/amazeui.min.css" />
-    <script src="   http://cdn.amazeui.org/amazeui/2.7.1/js/amazeui.min.js"></script>
-
+    <script src="http://cdn.amazeui.org/amazeui/2.7.1/js/amazeui.min.js"></script>
+ 
     <style>
         .control-panel {
             position: absolute;
@@ -45,66 +45,22 @@
     </style>
 
     <script>
-
         var getDataAction = '@Url.Action("Get58CityRoomData")';
-
-        $(function ()
-        {
-            $('#Get58Data').bind('click', function (e) {
-                e.preventDefault();
-
-                Get58DataClick();
-                e.stopPropagation();
-            });
-
-        })
-
-        function Get58DataClick()
-        {
-            $("#Get58Data").attr("disabled", true);
-            $.AMUI.progress.start();
-
-            var costFrom = $("#costFrom").val();
-            var costTo = $("#costTo").val();
-
-            if (isNaN(costFrom) || isNaN(costTo))
-            {
-                alert("请输入正确的整数。");
-                $("#Get58Data").attr("disabled", false);
-                $.AMUI.progress.done();
-                return;
-            }
-
-
-            $.ajax({
-                type: "post",
-                url: getDataAction,
-                data: { costFrom: costFrom,costTo :costTo },
-                success:
-                    function (result) {
-                        if (result.IsSuccess) {
-                            delRentLocation();
-                            var rent_locations = new Set();
-                            result.HouseInfos.forEach(function (item, index) {
-                                rent_locations.add(item);
-                            });
-                            rent_locations.forEach(function (element, index) {
-                                addMarkerByAddress(element.HouseLocation);
-                            });
-                            $("#Get58Data").attr("disable",false);
-
-                        } else {
-                            alert(result.Error);
-                        }
-                        $("#Get58Data").attr("disabled", false);
-                        $.AMUI.progress.done();
-                    }
-            });
-        }
-
-
-
+        var cityNameCNPY;
+ 
+        var map = [];
+        var rentMarkerArray = [];
+        var polygonArray = [];
+        var amapTransfer;
+        var infoWindow;
+        var scale;
+        var x, y, t, vehicle = "SUBWAY,BUS";
+        var workAddress, workMarker;
+        var arrivalRange;
     </script>
+    <script src="~/DomainJS/chinesetospell.js"></script>
+    <script src="~/DomainJS/home.js"></script>
+ 
 </head>
 
 
@@ -114,7 +70,21 @@
 <body>
     <div id="container"></div>
     <div class="control-panel" style="width:400px;">
+      
         <div class="control-entry">
+            <div>
+                <input type="radio" name="lacationType" value="1" checked="checked" onclick="LacationTypeChange()" />自动定位
+                <br />
+                <input type="radio" name="lacationType" value="0" onclick="LacationTypeChange()" />城市拼音首字母
+                <input type="text" id="cityLocation"/>
+            </div>
+        </div>
+
+        <div class="control-entry">
+        <div id="IPLocation"></div>
+        </div>
+        
+          <div class="control-entry">
             <label>价格区间：</label>
             <input id="costFrom" type="text" style="width:20%" /> 到
             <input id="costTo" type="text" style="width:20%" />
@@ -152,168 +122,5 @@
     <div id="transfer-panel"></div>
 
 </body>
-
-<script>
-    var map = new AMap.Map("container", {
-        resizeEnable: true,
-        zoomEnable: true,
-        center: [121.297428, 31.1345],
-        zoom: 11
-    });
-
-    var scale = new AMap.Scale();
-    map.addControl(scale);
-
-    var arrivalRange = new AMap.ArrivalRange();
-    var x, y, t, vehicle = "SUBWAY,BUS";
-    var workAddress, workMarker;
-    var rentMarkerArray = [];
-    var polygonArray = [];
-    var amapTransfer;
-
-    var infoWindow = new AMap.InfoWindow({
-        offset: new AMap.Pixel(0, -30)
-    });
-
-    var auto = new AMap.Autocomplete({
-        input: "work-location"
-    });
-
-    AMap.event.addListener(auto, "select", workLocationSelected);
-
-
-    function takeBus(radio) {
-        vehicle = radio.value;
-        loadWorkLocation()
-    }
-
-    function takeSubway(radio) {
-        vehicle = radio.value;
-        loadWorkLocation()
-    }
-
-    function importRentInfo(fileInfo) {
-        var file = fileInfo.files[0].name;
-        loadRentLocationByFile(file);
-    }
-
-    function workLocationSelected(e) {
-        workAddress = e.poi.name;
-        loadWorkLocation();
-    }
-
-    function loadWorkMarker(x, y, locationName) {
-        workMarker = new AMap.Marker({
-            map: map,
-            title: locationName,
-            icon: 'http://webapi.amap.com/theme/v1.3/markers/n/mark_r.png',
-            position: [x, y]
-
-        });
-    }
-
-
-    function loadWorkRange(x, y, t, color, v) {
-        arrivalRange.search([x, y], t, function (status, result) {
-            if (result.bounds) {
-                for (var i = 0; i < result.bounds.length; i++) {
-                    var polygon = new AMap.Polygon({
-                        map: map,
-                        fillColor: color,
-                        fillOpacity: "0.4",
-                        strokeColor: color,
-                        strokeOpacity: "0.8",
-                        strokeWeight: 1
-                    });
-                    polygon.setPath(result.bounds[i]);
-                    polygonArray.push(polygon);
-                }
-            }
-        }, {
-            policy: v
-        });
-    }
-
-    function addMarkerByAddress(address) {
-        var geocoder = new AMap.Geocoder({
-            city: "上海",
-            radius: 1000
-        });
-        geocoder.getLocation(address, function (status, result) {
-            if (status === "complete" && result.info === 'OK') {
-                var geocode = result.geocodes[0];
-                rentMarker = new AMap.Marker({
-                    map: map,
-                    title: address,
-                    icon: 'http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png',
-                    position: [geocode.location.getLng(), geocode.location.getLat()]
-                });
-                rentMarkerArray.push(rentMarker);
-
-                rentMarker.content = "<div>房源：<a target = '_blank' href='http://sh.58.com/pinpaigongyu/?key=" + address + "'>" + address + "</a><div>"
-                rentMarker.on('click', function (e) {
-                    infoWindow.setContent(e.target.content);
-                    infoWindow.open(map, e.target.getPosition());
-                    if (amapTransfer) amapTransfer.clear();
-                    amapTransfer = new AMap.Transfer({
-                        map: map,
-                        policy: AMap.TransferPolicy.LEAST_TIME,
-                        city: "上海市",
-                        panel: 'transfer-panel'
-                    });
-                    amapTransfer.search([{
-                        keyword: workAddress
-                    }, {
-                        keyword: address
-                    }], function (status, result) { })
-                });
-            }
-        })
-    }
-
-    function delWorkLocation() {
-        if (polygonArray) map.remove(polygonArray);
-        if (workMarker) map.remove(workMarker);
-        polygonArray = [];
-    }
-
-    function delRentLocation() {
-        if (rentMarkerArray) map.remove(rentMarkerArray);
-        rentMarkerArray = [];
-    }
-
-    function loadWorkLocation() {
-        delWorkLocation();
-        var geocoder = new AMap.Geocoder({
-            city: "上海",
-            radius: 1000
-        });
-
-        geocoder.getLocation(workAddress, function (status, result) {
-            if (status === "complete" && result.info === 'OK') {
-                var geocode = result.geocodes[0];
-                x = geocode.location.getLng();
-                y = geocode.location.getLat();
-                loadWorkMarker(x, y);
-                loadWorkRange(x, y, 60, "#3f67a5", vehicle);
-                map.setZoomAndCenter(12, [x, y]);
-            }
-        })
-    }
-
-    function loadRentLocationByFile(fileName) {
-        delRentLocation();
-        var rent_locations = new Set();
-        $.get(fileName, function (data) {
-            data = data.split("\n");
-            data.forEach(function (item, index) {
-                rent_locations.add(item.split(",")[1]);
-            });
-            rent_locations.forEach(function (element, index) {
-                addMarkerByAddress(element);
-            });
-        });
-    }
-</script>
 
 </html>

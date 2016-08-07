@@ -10,7 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/58HouseSearch.dll">
-      <publishTime>08/07/2016 12:38:34</publishTime>
+      <publishTime>08/07/2016 18:07:57</publishTime>
     </File>
     <File Include="bin/HtmlAgilityPack.dll">
       <publishTime>08/07/2016 12:36:04</publishTime>
@@ -60,6 +60,12 @@
     <File Include="bin/zh-Hans/System.Web.WebPages.resources.dll">
       <publishTime>08/07/2016 12:32:05</publishTime>
     </File>
+    <File Include="DomainJS/chinesetospell.js">
+      <publishTime>08/07/2016 17:35:03</publishTime>
+    </File>
+    <File Include="DomainJS/home.js">
+      <publishTime>08/07/2016 18:06:05</publishTime>
+    </File>
     <File Include="Global.asax">
       <publishTime>08/07/2016 12:32:02</publishTime>
     </File>
@@ -67,7 +73,7 @@
       <publishTime>08/07/2016 12:36:05</publishTime>
     </File>
     <File Include="Views/House/Index.cshtml">
-      <publishTime>08/07/2016 12:36:40</publishTime>
+      <publishTime>08/07/2016 18:02:26</publishTime>
     </File>
     <File Include="Views/Web.config">
       <publishTime>08/07/2016 12:32:02</publishTime>
