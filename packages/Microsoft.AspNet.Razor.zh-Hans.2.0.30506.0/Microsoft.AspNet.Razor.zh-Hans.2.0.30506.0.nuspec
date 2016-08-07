@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Microsoft.AspNet.Razor.zh-Hans</id>
+    <version>2.0.30506.0</version>
+    <title>Microsoft ASP.NET Razor 2 简体中文 资源</title>
+    <authors>Microsoft</authors>
+    <owners>Microsoft</owners>
+    <licenseUrl>http://www.microsoft.com/web/webpi/eula/WebPages_2_eula_CHS.htm</licenseUrl>
+    <projectUrl>http://www.asp.net/web-pages</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>此程序包包含 ASP.NET Razor 的 简体中文 附属程序集。</description>
+    <summary>Microsoft.AspNet.Razor 程序包的 简体中文 资源</summary>
+    <language>zh-Hans</language>
+    <tags>Microsoft AspNet WebPages AspNetWebPages Razor</tags>
+    <dependencies>
+      <dependency id="Microsoft.AspNet.Razor" version="[2.0.30506.0]" />
+    </dependencies>
+  </metadata>
+</package>

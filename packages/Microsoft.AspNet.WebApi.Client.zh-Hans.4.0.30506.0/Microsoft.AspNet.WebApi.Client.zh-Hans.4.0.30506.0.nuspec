@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Microsoft.AspNet.WebApi.Client.zh-Hans</id>
+    <version>4.0.30506.0</version>
+    <title>Microsoft ASP.NET Web API Client Libraries 简体中文 资源</title>
+    <authors>Microsoft</authors>
+    <owners>Microsoft</owners>
+    <licenseUrl>http://www.microsoft.com/web/webpi/eula/MVC_4_eula_CHS.htm</licenseUrl>
+    <projectUrl>http://www.asp.net/web-api</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>此程序包包含 ASP.NET Web API Client Libraries 的 简体中文 附属程序集。</description>
+    <summary>适用于 Microsoft.AspNet.WebApi.Client 程序包的 简体中文 资源</summary>
+    <language>zh-Hans</language>
+    <tags>Microsoft AspNet WebApi AspNetWebApi HttpClient</tags>
+    <dependencies>
+      <dependency id="Microsoft.AspNet.WebApi.Client" version="[4.0.30506.0]" />
+    </dependencies>
+  </metadata>
+</package>

@@ -19,20 +19,20 @@ namespace _58HouseSearch.Controllers
 
 
 
-        public ActionResult Get58CityRoomData(string dataURL)
+        public ActionResult Get58CityRoomData(int costFrom,int costTo)
         {
-            if (string.IsNullOrEmpty(dataURL))
+            if (costTo<=0 || costTo < costFrom)
             {
-                return Json(new { IsSuccess = false, Error = "URL不能为空。" });
+                return Json(new { IsSuccess = false, Error = "输入数据有误，请重新输入。" });
             }
 
             try
             {
                 var lstHouse = new List<HouseInfo>();
 
-                string tempURL = dataURL + "/pn/{0}/?minprice=2000_4000";
+                string tempURL = "http://sh.58.com/pinpaigongyu//pn/{0}/?minprice=" + costFrom + "_" + costTo;
 
-                Uri uri = new Uri(dataURL);
+                Uri uri = new Uri(tempURL);
 
                 var htmlResult = HTTPHelper.GetHTMLByURL(string.Format(tempURL, 1));
 
@@ -45,6 +45,12 @@ namespace _58HouseSearch.Controllers
                 if (countNodes != null && countNodes.HasChildNodes)
                 {
                     pageCount = Convert.ToInt32(countNodes.ChildNodes[0].InnerText) / 20;
+
+                    if(pageCount==0)
+                    {
+                        return Json(new { IsSuccess = false, Error =string.Format("没有找到价格区间为{0} - {1}的房子。",costFrom,costTo)});
+                    }
+                    
                 }
                 for (int pageIndex = 1; pageIndex <= pageCount; pageIndex++)
                 {
