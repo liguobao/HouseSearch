@@ -28,3 +28,4 @@ E:\giuhub\58HouseSearch\58HouseSearch\bin\zh-Hans\System.Web.WebPages.Deployment
 E:\giuhub\58HouseSearch\58HouseSearch\bin\zh-Hans\System.Web.WebPages.Razor.resources.dll
 E:\giuhub\58HouseSearch\58HouseSearch\obj\Release\58HouseSearch.dll
 E:\giuhub\58HouseSearch\58HouseSearch\obj\Release\58HouseSearch.pdb
+E:\giuhub\58HouseSearch\58HouseSearch\obj\Release\58HouseSearch.csprojResolveAssemblyReference.cache

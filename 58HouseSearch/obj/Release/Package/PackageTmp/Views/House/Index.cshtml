@@ -72,6 +72,15 @@
     <div class="control-panel" style="width:400px;">
       
         <div class="control-entry">
+            <div>
+                <input type="radio" name="lacationType" value="1" checked="checked" onclick="LacationTypeChange()" />自动定位
+                <br />
+                <input type="radio" name="lacationType" value="0" onclick="LacationTypeChange()" />城市拼音首字母
+                <input type="text" id="cityLocation"/>
+            </div>
+        </div>
+
+        <div class="control-entry">
         <div id="IPLocation"></div>
         </div>
         

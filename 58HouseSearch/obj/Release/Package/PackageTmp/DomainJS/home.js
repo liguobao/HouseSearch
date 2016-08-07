@@ -39,6 +39,21 @@ $(function () {
 })
 
 
+function LacationTypeChange()
+{
+    if ($("input[name='lacationType']:checked").val() == '1')
+    {
+        showCityInfo(map);
+      //  $("#cityLocation-location").attr("disabled", true);
+        $("#cityLocation-location").val("");
+    }else
+    {
+       // $("#cityLocation-location").attr("disabled", false);
+      
+    }
+}
+
+
 function Location()
 {
     var map, geolocation;
@@ -66,6 +81,12 @@ function Location()
 function Get58DataClick() {
     $("#Get58Data").attr("disabled", true);
     $.AMUI.progress.start();
+
+    if ($("input[name='lacationType']:checked").val() == '0')
+    {
+        cityNameCNPY = [];
+        cityNameCNPY.push($("#txtCityName").val());
+    }
 
     var costFrom = $("#costFrom").val();
     var costTo = $("#costTo").val();
