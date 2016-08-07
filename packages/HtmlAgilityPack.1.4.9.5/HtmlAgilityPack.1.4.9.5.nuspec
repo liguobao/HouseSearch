@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>HtmlAgilityPack</id>
+    <version>1.4.9.5</version>
+    <title>HtmlAgilityPack</title>
+    <authors>Simon Mourrier, Jeff Klawiter, Stephan Grell</authors>
+    <owners>Simon Mourrier, Jeff Klawiter, Stephan Grell</owners>
+    <licenseUrl>http://htmlagilitypack.codeplex.com/license</licenseUrl>
+    <projectUrl>http://htmlagilitypack.codeplex.com/</projectUrl>
+    <iconUrl>http://blog.j-maxx.net/HAPIcon.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This is an agile HTML parser that builds a read/write DOM and supports plain XPATH or XSLT (you actually don't HAVE to understand XPATH nor XSLT to use it, don't worry...). It is a .NET code library that allows you to parse "out of the web" HTML files. The parser is very tolerant with "real world" malformed HTML. The object model is very similar to what proposes System.Xml, but for HTML documents (or streams).</description>
+    <summary>This is an agile HTML parser that builds a read/write DOM and supports plain XPATH or XSLT (you actually don't HAVE to understand XPATH nor XSLT to use it, don't worry...). It is a .NET code library that allows you to parse "out of the web" HTML files. The parser is very tolerant with "real world" malformed HTML. The object model is very similar to what proposes System.Xml, but for HTML documents (or streams).</summary>
+    <releaseNotes>now all versions are build in release mode. The rebuild affects: Net45/* and NetCore45/*</releaseNotes>
+    <language>en-US</language>
+    <tags>HTML parse crawler spider linq</tags>
+  </metadata>
+</package>

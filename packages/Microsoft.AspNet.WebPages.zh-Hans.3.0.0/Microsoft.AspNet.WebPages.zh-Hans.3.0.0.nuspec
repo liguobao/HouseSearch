@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Microsoft.AspNet.WebPages.zh-Hans</id>
+    <version>3.0.0</version>
+    <title>Microsoft ASP.NET Web Pages 简体中文资源</title>
+    <authors>Microsoft</authors>
+    <owners>Microsoft</owners>
+    <licenseUrl>http://www.microsoft.com/web/webpi/eula/aspnetcomponent_rtw_CHS.htm</licenseUrl>
+    <projectUrl>http://www.asp.net/web-pages</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>此程序包包含 ASP.NET Web Pages 3 的简体中文附属程序集。</description>
+    <summary>Microsoft.AspNet.WebPages 程序包的简体中文资源</summary>
+    <copyright>© Microsoft Corporation。保留所有权利。</copyright>
+    <language>zh-Hans</language>
+    <tags>Microsoft AspNet WebPages AspNetWebPages</tags>
+    <dependencies>
+      <dependency id="Microsoft.AspNet.WebPages" version="[3.0.0]" />
+    </dependencies>
+  </metadata>
+</package>

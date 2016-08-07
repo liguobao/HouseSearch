@@ -1,0 +1,322 @@
+﻿<html>
+
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>58公寓高德搜房(上海版)</title>
+    <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css" />
+    <link rel="stylesheet" href="http://cache.amap.com/lbs/static/jquery.range.css" />
+    <script src="http://cache.amap.com/lbs/static/jquery-1.9.1.js"></script>
+    <script src="http://cache.amap.com/lbs/static/es5.min.js"></script>
+    <script src="http://webapi.amap.com/maps?v=1.3&key=22d3816e107f199992666d6412fa0691&plugin=AMap.ArrivalRange,AMap.Scale,AMap.Geocoder,AMap.Transfer,AMap.Autocomplete"></script>
+    <script src="http://cache.amap.com/lbs/static/jquery.range.js"></script>
+
+    <link rel="stylesheet" href="http://cdn.amazeui.org/amazeui/2.7.1/css/amazeui.min.css" />
+    <script src="   http://cdn.amazeui.org/amazeui/2.7.1/js/amazeui.min.js"></script>
+
+    <style>
+        .control-panel {
+            position: absolute;
+            top: 30px;
+            right: 20px;
+        }
+
+        .control-entry {
+            width: 400px;
+            background-color: rgba(119, 136, 153, 0.8);
+            font-family: fantasy, sans-serif;
+            text-align: left;
+            color: white;
+            overflow: auto;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .control-input {
+            margin-left: 120px;
+        }
+
+            .control-input input[type="text"] {
+                width: 160px;
+            }
+
+        .control-panel label {
+            float: left;
+            width: 120px;
+        }
+
+        #transfer-panel {
+            position: absolute;
+            background-color: white;
+            max-height: 80%;
+            overflow-y: auto;
+            top: 30px;
+            left: 20px;
+            width: 250px;
+        }
+
+        /* 半透明的遮罩层 */
+        #overlay {
+            background: #000;
+            filter: alpha(opacity=50); /* IE的透明度 */
+            opacity: 0.5; /* 透明度 */
+            display: none;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: 100; /* 此处的图层要大于页面 */
+            display: none;
+        }
+
+    </style>
+
+    <script>
+
+        var getDataAction = '@Url.Action("Get58CityRoomData")';
+
+        $(function ()
+        {
+            $('#Get58Data').bind('click', function (e) {
+                e.preventDefault();
+
+                Get58DataClick();
+                e.stopPropagation();
+            });
+
+        })
+
+        function Get58DataClick()
+        {
+            $("#Get58Data").attr("disabled", true);
+            var dataURL = $("#58HomeURL").val();
+            $.ajax({
+                type: "post",
+                url: getDataAction,
+                data: { dataURL: dataURL },
+                success:
+                    function (result) {
+                        if (result.IsSuccess) {
+                            delRentLocation();
+                            var rent_locations = new Set();
+                            result.HouseInfos.forEach(function (item, index) {
+                                rent_locations.add(item);
+                            });
+                            rent_locations.forEach(function (element, index) {
+                                addMarkerByAddress(element.HouseLocation);
+                            });
+                            $("#Get58Data").attr("disable",false);
+
+                        } else {
+                            alert(result.Error);
+                        }
+                        $("#Get58Data").attr("disabled", false);
+                    }
+            });
+        }
+
+
+
+    </script>
+</head>
+
+
+
+
+
+<body>
+    <div id="container"></div>
+    <div class="control-panel" style="width:400px;">
+        <div class="control-entry">
+            <label>58同城公寓地址</label>
+            <div class="control-input">
+                <input id="58HomeURL" type="text">
+                <input id="Get58Data" type="button" value="获取数据" />
+            </div>
+        </div>
+
+        <div class="control-entry">
+            <label>选择工作地点：</label>
+            <div class="control-input">
+                <input id="work-location" type="text">
+            </div>
+        </div>
+        <div class="control-entry">
+            <label>选择通勤方式：</label>
+            <div class="control-input">
+                <input type="radio" name="vehicle" value="SUBWAY,BUS" onclick="takeBus(this)" checked /> 公交+地铁
+                <input type="radio" name="vehicle" value="SUBWAY" onclick="takeSubway(this)" /> 地铁
+            </div>
+        </div>
+    </div>
+    <div id="transfer-panel"></div>
+
+</body>
+
+<script>
+    var map = new AMap.Map("container", {
+        resizeEnable: true,
+        zoomEnable: true,
+        center: [121.297428, 31.1345],
+        zoom: 11
+    });
+
+    var scale = new AMap.Scale();
+    map.addControl(scale);
+
+    var arrivalRange = new AMap.ArrivalRange();
+    var x, y, t, vehicle = "SUBWAY,BUS";
+    var workAddress, workMarker;
+    var rentMarkerArray = [];
+    var polygonArray = [];
+    var amapTransfer;
+
+    var infoWindow = new AMap.InfoWindow({
+        offset: new AMap.Pixel(0, -30)
+    });
+
+    var auto = new AMap.Autocomplete({
+        input: "work-location"
+    });
+
+    AMap.event.addListener(auto, "select", workLocationSelected);
+
+
+    function takeBus(radio) {
+        vehicle = radio.value;
+        loadWorkLocation()
+    }
+
+    function takeSubway(radio) {
+        vehicle = radio.value;
+        loadWorkLocation()
+    }
+
+    function importRentInfo(fileInfo) {
+        var file = fileInfo.files[0].name;
+        loadRentLocationByFile(file);
+    }
+
+    function workLocationSelected(e) {
+        workAddress = e.poi.name;
+        loadWorkLocation();
+    }
+
+    function loadWorkMarker(x, y, locationName) {
+        workMarker = new AMap.Marker({
+            map: map,
+            title: locationName,
+            icon: 'http://webapi.amap.com/theme/v1.3/markers/n/mark_r.png',
+            position: [x, y]
+
+        });
+    }
+
+
+    function loadWorkRange(x, y, t, color, v) {
+        arrivalRange.search([x, y], t, function (status, result) {
+            if (result.bounds) {
+                for (var i = 0; i < result.bounds.length; i++) {
+                    var polygon = new AMap.Polygon({
+                        map: map,
+                        fillColor: color,
+                        fillOpacity: "0.4",
+                        strokeColor: color,
+                        strokeOpacity: "0.8",
+                        strokeWeight: 1
+                    });
+                    polygon.setPath(result.bounds[i]);
+                    polygonArray.push(polygon);
+                }
+            }
+        }, {
+            policy: v
+        });
+    }
+
+    function addMarkerByAddress(address) {
+        var geocoder = new AMap.Geocoder({
+            city: "上海",
+            radius: 1000
+        });
+        geocoder.getLocation(address, function (status, result) {
+            if (status === "complete" && result.info === 'OK') {
+                var geocode = result.geocodes[0];
+                rentMarker = new AMap.Marker({
+                    map: map,
+                    title: address,
+                    icon: 'http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png',
+                    position: [geocode.location.getLng(), geocode.location.getLat()]
+                });
+                rentMarkerArray.push(rentMarker);
+
+                rentMarker.content = "<div>房源：<a target = '_blank' href='http://sh.58.com/pinpaigongyu/?key=" + address + "'>" + address + "</a><div>"
+                rentMarker.on('click', function (e) {
+                    infoWindow.setContent(e.target.content);
+                    infoWindow.open(map, e.target.getPosition());
+                    if (amapTransfer) amapTransfer.clear();
+                    amapTransfer = new AMap.Transfer({
+                        map: map,
+                        policy: AMap.TransferPolicy.LEAST_TIME,
+                        city: "上海市",
+                        panel: 'transfer-panel'
+                    });
+                    amapTransfer.search([{
+                        keyword: workAddress
+                    }, {
+                        keyword: address
+                    }], function (status, result) { })
+                });
+            }
+        })
+    }
+
+    function delWorkLocation() {
+        if (polygonArray) map.remove(polygonArray);
+        if (workMarker) map.remove(workMarker);
+        polygonArray = [];
+    }
+
+    function delRentLocation() {
+        if (rentMarkerArray) map.remove(rentMarkerArray);
+        rentMarkerArray = [];
+    }
+
+    function loadWorkLocation() {
+        delWorkLocation();
+        var geocoder = new AMap.Geocoder({
+            city: "上海",
+            radius: 1000
+        });
+
+        geocoder.getLocation(workAddress, function (status, result) {
+            if (status === "complete" && result.info === 'OK') {
+                var geocode = result.geocodes[0];
+                x = geocode.location.getLng();
+                y = geocode.location.getLat();
+                loadWorkMarker(x, y);
+                loadWorkRange(x, y, 60, "#3f67a5", vehicle);
+                map.setZoomAndCenter(12, [x, y]);
+            }
+        })
+    }
+
+    function loadRentLocationByFile(fileName) {
+        delRentLocation();
+        var rent_locations = new Set();
+        $.get(fileName, function (data) {
+            data = data.split("\n");
+            data.forEach(function (item, index) {
+                rent_locations.add(item.split(",")[1]);
+            });
+            rent_locations.forEach(function (element, index) {
+                addMarkerByAddress(element);
+            });
+        });
+    }
+</script>
+
+</html>
