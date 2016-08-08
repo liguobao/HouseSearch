@@ -7,7 +7,13 @@ $(function () {
         e.stopPropagation();
     });
 
-   
+    $('#txtCityNameCN').bind('blur', function (e) {
+        e.preventDefault();
+        cityName = $("#txtCityNameCN").val();
+        cityNameCNPY = makePy(cityName);
+        loadWorkLocation();
+        e.stopPropagation();
+    });
 
      map = new AMap.Map("container", {
         resizeEnable: true,
@@ -17,7 +23,7 @@ $(function () {
     });
 
      scale = new AMap.Scale();
-    map.addControl(scale);
+     map.addControl(scale);
 
      arrivalRange = new AMap.ArrivalRange();
  
@@ -44,14 +50,61 @@ function LacationTypeChange()
     if ($("input[name='lacationType']:checked").val() == '1')
     {
         showCityInfo(map);
-      //  $("#cityLocation-location").attr("disabled", true);
-        $("#cityLocation-location").val("");
+        $("#txtCityNameCN").attr("disabled", true);
+        $("#txtCityNameCN").val("");
     }else
     {
-       // $("#cityLocation-location").attr("disabled", false);
+        $("#txtCityNameCN").attr("disabled", false);
       
     }
 }
+
+
+function Get58DataClick() {
+    $("#Get58Data").attr("disabled", true);
+    $.AMUI.progress.start();
+
+    if ($("input[name='lacationType']:checked").val() == '0') {
+        cityNameCNPY = makePy($("#txtCityNameCN").val());
+    }
+
+    var costFrom = $("#costFrom").val();
+    var costTo = $("#costTo").val();
+
+    if (isNaN(costFrom) || isNaN(costTo)) {
+        alert("请输入正确的整数。");
+        $("#Get58Data").attr("disabled", false);
+        $.AMUI.progress.done();
+        return;
+    }
+
+
+    $.ajax({
+        type: "post",
+        url: getDataAction,
+        data: { costFrom: costFrom, costTo: costTo, cnName: cityNameCNPY[0] },
+        success:
+            function (result) {
+                if (result.IsSuccess) {
+                    delRentLocation();
+                    var rent_locations = new Set();
+                    result.HouseInfos.forEach(function (item, index) {
+                        rent_locations.add(item);
+                    });
+                    rent_locations.forEach(function (element, index) {
+                        addMarkerByAddress(element.HouseLocation);
+                    });
+                    $("#Get58Data").attr("disable", false);
+
+                } else {
+                    alert(result.Error);
+                }
+                $("#Get58Data").attr("disabled", false);
+                $.AMUI.progress.done();
+            }
+    });
+}
+
 
 
 function Location()
@@ -78,53 +131,6 @@ function Location()
 }
 
 
-function Get58DataClick() {
-    $("#Get58Data").attr("disabled", true);
-    $.AMUI.progress.start();
-
-    if ($("input[name='lacationType']:checked").val() == '0')
-    {
-        cityNameCNPY = [];
-        cityNameCNPY.push($("#txtCityName").val());
-    }
-
-    var costFrom = $("#costFrom").val();
-    var costTo = $("#costTo").val();
-
-    if (isNaN(costFrom) || isNaN(costTo)) {
-        alert("请输入正确的整数。");
-        $("#Get58Data").attr("disabled", false);
-        $.AMUI.progress.done();
-        return;
-    }
-
-
-    $.ajax({
-        type: "post",
-        url: getDataAction,
-        data: { costFrom: costFrom, costTo: costTo,cityNameCNPY:cityNameCNPY[0] },
-        success:
-            function (result) {
-                if (result.IsSuccess) {
-                    delRentLocation();
-                    var rent_locations = new Set();
-                    result.HouseInfos.forEach(function (item, index) {
-                        rent_locations.add(item);
-                    });
-                    rent_locations.forEach(function (element, index) {
-                        addMarkerByAddress(element.HouseLocation);
-                    });
-                    $("#Get58Data").attr("disable", false);
-
-                } else {
-                    alert(result.Error);
-                }
-                $("#Get58Data").attr("disabled", false);
-                $.AMUI.progress.done();
-            }
-    });
-}
-
 
 
 function onComplete(data) {
@@ -150,8 +156,8 @@ function showCityInfo(map) {
             if (result && result.city && result.bounds) {
                 var cityinfo = result.city;
                 var citybounds = result.bounds;
-                var cityName = cityinfo.substring(0, cityinfo.length - 1);
-               cityNameCNPY = makePy(cityName);
+                cityName = cityinfo.substring(0, cityinfo.length - 1);
+                cityNameCNPY = makePy(cityName);
 
                 document.getElementById('IPLocation').innerHTML = '您当前所在城市：' + cityinfo;
                 //地图显示当前城市
@@ -219,7 +225,7 @@ function loadWorkRange(x, y, t, color, v) {
 
 function addMarkerByAddress(address) {
     var geocoder = new AMap.Geocoder({
-        city: "上海",
+        city: cityName,
         radius: 1000
     });
     geocoder.getLocation(address, function (status, result) {
@@ -241,7 +247,7 @@ function addMarkerByAddress(address) {
                 amapTransfer = new AMap.Transfer({
                     map: map,
                     policy: AMap.TransferPolicy.LEAST_TIME,
-                    city: "上海市",
+                    city: cityName,
                     panel: 'transfer-panel'
                 });
                 amapTransfer.search([{
@@ -268,7 +274,7 @@ function delRentLocation() {
 function loadWorkLocation() {
     delWorkLocation();
     var geocoder = new AMap.Geocoder({
-        city: "上海",
+        city: cityName,
         radius: 1000
     });
 

@@ -19,14 +19,14 @@ namespace _58HouseSearch.Controllers
 
 
 
-        public ActionResult Get58CityRoomData(int costFrom, int costTo, string cityNameCNPY)
+        public ActionResult Get58CityRoomData(int costFrom, int costTo, string cnName)
         {
             if (costTo<=0 || costTo < costFrom)
             {
                 return Json(new { IsSuccess = false, Error = "输入数据有误，请重新输入。" });
             }
 
-            if (string.IsNullOrEmpty(cityNameCNPY))
+            if (string.IsNullOrEmpty(cnName))
             {
                 return Json(new { IsSuccess = false, Error = "城市定位失败，建议清除浏览器缓存后重新进入。" });
             }
@@ -35,7 +35,7 @@ namespace _58HouseSearch.Controllers
             {
                 var lstHouse = new List<HouseInfo>();
 
-                string tempURL = "http://" + cityNameCNPY + ".58.com/pinpaigongyu//pn/{0}/?minprice=" + costFrom + "_" + costTo;
+                string tempURL = "http://" + cnName + ".58.com/pinpaigongyu//pn/{0}/?minprice=" + costFrom + "_" + costTo;
 
                 Uri uri = new Uri(tempURL);
 
