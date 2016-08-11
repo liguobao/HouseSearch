@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 using System.Text.RegularExpressions;
-using System.Web;
+using System.Linq;
 
 namespace _58HouseSearch
 {
@@ -111,9 +108,9 @@ namespace _58HouseSearch
                 // 中文字符
                 if (regex.IsMatch(noWChar[j].ToString()))
                 {
-                    array = System.Text.Encoding.Default.GetBytes(noWChar[j].ToString());
-                    i1 = (short)(array[0]);
-                    i2 = (short)(array[1]);
+                    array = Encoding.Default.GetBytes(noWChar[j].ToString());
+                    i1 = array[0];
+                    i2 = array[1];
                     chrAsc = i1 * 256 + i2 - 65536;
                     if (chrAsc > 0 && chrAsc < 160)
                     {
@@ -175,8 +172,8 @@ namespace _58HouseSearch
             byte[] arrCN = Encoding.Default.GetBytes(cnChar);
             if (arrCN.Length > 1)
             {
-                int area = (short)arrCN[0];
-                int pos = (short)arrCN[1];
+                int area = arrCN[0];
+                int pos = arrCN[1];
                 int code = (area << 8) + pos;
                 int[] areacode = { 45217, 45253, 45761, 46318, 46826, 47010, 47297, 47614, 48119, 48119, 49062, 49324, 49896, 50371, 50614, 50622, 50906, 51387, 51446, 52218, 52698, 52698, 52698, 52980, 53689, 54481 };
                 for (int i = 0; i < 26; i++)
