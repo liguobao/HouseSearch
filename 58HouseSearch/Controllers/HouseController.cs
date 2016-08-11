@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using _58HouseSearch.Models;
-using HtmlAgilityPack;
+using AngleSharp.Parser.Html;
 
 namespace _58HouseSearch.Controllers
 {
@@ -16,8 +15,6 @@ namespace _58HouseSearch.Controllers
         {
             return View();
         }
-
-
 
         public ActionResult Get58CityRoomData(int costFrom, int costTo, string cnName)
         {
@@ -33,75 +30,47 @@ namespace _58HouseSearch.Controllers
 
             try
             {
-                var lstHouse = new List<HouseInfo>();
-
-                string tempURL = "http://" + cnName + ".58.com/pinpaigongyu//pn/{0}/?minprice=" + costFrom + "_" + costTo;
-
-                Uri uri = new Uri(tempURL);
-
-                var htmlResult = HTTPHelper.GetHTMLByURL(string.Format(tempURL, 1));
-
-                HtmlDocument htmlDoc = new HtmlDocument();
-                htmlDoc.LoadHtml(htmlResult);
-
-                var countNodes = htmlDoc.DocumentNode.SelectSingleNode(".//span[contains(@class,'list')]");
-                int pageCount = 10;
-
-                if (countNodes != null && countNodes.HasChildNodes)
+                var pageCount = GetListSum(costFrom, costTo, cnName);
+                if (pageCount == 0)
                 {
-                    pageCount = Convert.ToInt32(countNodes.ChildNodes[0].InnerText) / 20;
-
-                    if(pageCount==0)
-                    {
-                        return Json(new { IsSuccess = false, Error =string.Format("没有找到价格区间为{0} - {1}的房子。",costFrom,costTo)});
-                    }
-                    
+                    return Json(new { IsSuccess = false, Error = $"没有找到价格区间为{costFrom} - {costTo}的房子。" });
                 }
-                for (int pageIndex = 1; pageIndex <= pageCount; pageIndex++)
-                {
-                    htmlResult = HTTPHelper.GetHTMLByURL(string.Format(tempURL, pageIndex));
-                    htmlDoc.LoadHtml(htmlResult);
-                    var roomList = htmlDoc.DocumentNode.SelectNodes(".//a[contains(@tongji_label,'listclick')]");
-                    foreach (var room in roomList)
-                    {
-                        var houseTitle = room.SelectSingleNode(".//h2").InnerHtml;
-                        var houseURL = uri.Host + room.Attributes["href"].Value;
-                        var house_info_list = houseTitle.Split(' ');
-                        var house_location = string.Empty;
-                        if (house_info_list[1].Contains("公寓") || house_info_list[1].Contains("青年社区"))
-                        {
-                            house_location = house_info_list[0];
-                        }
-                        else
-                        {
-                            house_location = house_info_list[1];
-                        }
-                        var momey = room.SelectSingleNode(".//b").InnerHtml;
-
-                        lstHouse.Add(new HouseInfo()
-                        {
-                            HouseTitle = houseTitle,
-                            HouseLocation = house_location,
-                            HouseURL = houseURL,
-                            Money = momey,
-                        });
-                    }
-                }
-
-                return Json(new { IsSuccess = true, HouseInfos = lstHouse });
+                var roomList = Enumerable.Range(1, pageCount).Select(index => GetRoomList(costFrom, costTo, cnName, index)).Aggregate((a, b) => a.Concat(b));
+                return Json(new { IsSuccess = true, HouseInfos = roomList });
             }
             catch (Exception ex)
             {
                 return Json(new { IsSuccess = false, Error = "获取数据异常。" + ex.ToString() });
             }
-
-
-
-
-
         }
-       
 
-        
-	}
+        private IEnumerable<HouseInfo> GetRoomList(int costFrom, int costTo, string cnName,int index)
+        {
+            var url = $"http://{cnName}.58.com/pinpaigongyu/pn/{index}/?minprice={costFrom}_{costTo}";
+            var htmlResult = HTTPHelper.GetHTMLByURL(url);
+            var page = new HtmlParser().Parse(htmlResult);
+            return page.QuerySelectorAll("li").Where(element => element.HasAttribute("logr")).Select(element =>
+            {
+                var houseTitle = element.QuerySelector("h2").TextContent;
+                var houseInfoList = houseTitle.Split(' ');
+                return new HouseInfo
+                {
+                    HouseTitle = element.QuerySelector("h2").TextContent,
+                    HouseURL = $"http://{cnName}.58.com" + element.QuerySelector("a").GetAttribute("href"),
+                    Money = element.QuerySelector("b").TextContent,
+                    HouseLocation = new[] { "公寓", "青年社区" }.All(s => houseInfoList.Contains(s)) ? houseInfoList[0] : houseInfoList[1]
+                };
+            });
+        }
+
+        private int GetListSum(int costFrom, int costTo, string cnName)
+        {
+            var url = $"http://{cnName}.58.com/pinpaigongyu/pn/{1}/?minprice={costFrom}_{costTo}";
+            var htmlResult = HTTPHelper.GetHTMLByURL(url);
+            var dom = new HtmlParser().Parse(htmlResult);
+            var countNode = dom.GetElementsByClassName("listsum").FirstOrDefault()?.QuerySelector("em");
+            var listSum = Convert.ToInt32((countNode?.TextContent) ?? "0");
+            return listSum % 20 == 0 ? listSum / 20 : listSum / 20 + 1;
+        }
+    }
 }
