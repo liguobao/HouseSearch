@@ -10,7 +10,7 @@ $(function () {
     $('#txtCityNameCN').bind('blur', function (e) {
         e.preventDefault();
         cityName = $("#txtCityNameCN").val();
-        cityNameCNPY = makePy(cityName);
+        FillCityInfoByTxtCityNameCN();
         loadWorkLocation();
         e.stopPropagation();
     });
@@ -44,6 +44,13 @@ $(function () {
    
 })
 
+function FillCityInfoByTxtCityNameCN()
+{
+   
+    var result = makePy(cityName);
+    cityNameCNPY = result instanceof Array ? result[0] : result;
+}
+
 
 function LacationTypeChange()
 {
@@ -65,7 +72,8 @@ function Get58DataClick() {
     $.AMUI.progress.start();
 
     if ($("input[name='lacationType']:checked").val() == '0') {
-        cityNameCNPY = makePy($("#txtCityNameCN").val());
+        cityName = $("#txtCityNameCN").val();
+        FillCityInfoByTxtCityNameCN();
     }
 
     var costFrom = $("#costFrom").val();
@@ -82,7 +90,7 @@ function Get58DataClick() {
     $.ajax({
         type: "post",
         url: getDataAction,
-        data: { costFrom: costFrom, costTo: costTo, cnName: cityNameCNPY[0] },
+        data: { costFrom: costFrom, costTo: costTo, cnName: cityNameCNPY },
         success:
             function (result) {
                 if (result.IsSuccess) {
@@ -157,7 +165,7 @@ function showCityInfo(map) {
                 var cityinfo = result.city;
                 var citybounds = result.bounds;
                 cityName = cityinfo.substring(0, cityinfo.length - 1);
-                cityNameCNPY = makePy(cityName);
+                FillCityInfoByTxtCityNameCN();
 
                 document.getElementById('IPLocation').innerHTML = '您当前所在城市：' + cityinfo;
                 //地图显示当前城市
