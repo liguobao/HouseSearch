@@ -30,12 +30,13 @@ namespace _58HouseSearch.Controllers
 
             try
             {
-                var pageCount = GetListSum(costFrom, costTo, cnName);
+                var listSum = GetListSum(costFrom, costTo, cnName);
+                var pageCount = listSum % 20 == 0 ? listSum / 20 : listSum / 20 + 1;
                 if (pageCount == 0)
                 {
                     return Json(new { IsSuccess = false, Error = $"没有找到价格区间为{costFrom} - {costTo}的房子。" });
                 }
-                var roomList = Enumerable.Range(1, pageCount).Select(index => GetRoomList(costFrom, costTo, cnName, index)).Aggregate((a, b) => a.Concat(b));
+                var roomList = Enumerable.Range(1, pageCount).Select(index => GetRoomList(costFrom, costTo, cnName, index)).Aggregate((a, b) => a.Concat(b)).Take(listSum);
                 return Json(new { IsSuccess = true, HouseInfos = roomList });
             }
             catch (Exception ex)
@@ -55,7 +56,7 @@ namespace _58HouseSearch.Controllers
                 var houseInfoList = houseTitle.Split(' ');
                 return new HouseInfo
                 {
-                    HouseTitle = element.QuerySelector("h2").TextContent,
+                    HouseTitle = houseTitle,
                     HouseURL = $"http://{cnName}.58.com" + element.QuerySelector("a").GetAttribute("href"),
                     Money = element.QuerySelector("b").TextContent,
                     HouseLocation = new[] { "公寓", "青年社区" }.All(s => houseInfoList.Contains(s)) ? houseInfoList[0] : houseInfoList[1]
@@ -69,8 +70,7 @@ namespace _58HouseSearch.Controllers
             var htmlResult = HTTPHelper.GetHTMLByURL(url);
             var dom = new HtmlParser().Parse(htmlResult);
             var countNode = dom.GetElementsByClassName("listsum").FirstOrDefault()?.QuerySelector("em");
-            var listSum = Convert.ToInt32((countNode?.TextContent) ?? "0");
-            return listSum % 20 == 0 ? listSum / 20 : listSum / 20 + 1;
+            return Convert.ToInt32((countNode?.TextContent) ?? "0");
         }
     }
 }
