@@ -39,10 +39,28 @@ $(function () {
 
     AMap.event.addListener(auto, "select", workLocationSelected);
 
-
     showCityInfo(map);
    
 })
+
+
+function MapMoveToLocationCity()
+{
+    map.on('moveend', getCity);
+    function getCity() {
+        map.getCity(function (data) {
+            if (data['province'] && typeof data['province'] === 'string') {
+
+                var cityinfo = (data['city'] || data['province']);
+                cityName = cityinfo.substring(0, cityinfo.length - 1);
+                FillCityInfoByTxtCityNameCN();
+
+                document.getElementById('IPLocation').innerHTML = '地图中心所在城市：' + cityName;
+
+            }
+        });
+    }
+}
 
 function FillCityInfoByTxtCityNameCN()
 {
@@ -57,12 +75,10 @@ function LacationTypeChange()
     if ($("input[name='lacationType']:checked").val() == '1')
     {
         showCityInfo(map);
-        $("#txtCityNameCN").attr("disabled", true);
-        $("#txtCityNameCN").val("");
+     
     }else
     {
-        $("#txtCityNameCN").attr("disabled", false);
-      
+        MapMoveToLocationCity();
     }
 }
 
@@ -72,7 +88,6 @@ function Get58DataClick() {
     $.AMUI.progress.start();
 
     if ($("input[name='lacationType']:checked").val() == '0') {
-        cityName = $("#txtCityNameCN").val();
         FillCityInfoByTxtCityNameCN();
     }
 
@@ -189,10 +204,6 @@ function takeSubway(radio) {
     loadWorkLocation()
 }
 
-function importRentInfo(fileInfo) {
-    var file = fileInfo.files[0].name;
-    loadRentLocationByFile(file);
-}
 
 function workLocationSelected(e) {
     workAddress = e.poi.name;
@@ -296,18 +307,4 @@ function loadWorkLocation() {
             map.setZoomAndCenter(12, [x, y]);
         }
     })
-}
-
-function loadRentLocationByFile(fileName) {
-    delRentLocation();
-    var rent_locations = new Set();
-    $.get(fileName, function (data) {
-        data = data.split("\n");
-        data.forEach(function (item, index) {
-            rent_locations.add(item.split(",")[1]);
-        });
-        rent_locations.forEach(function (element, index) {
-            addMarkerByAddress(element);
-        });
-    });
 }

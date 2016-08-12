@@ -85,7 +85,7 @@
       <publishTime>08/07/2016 17:35:03</publishTime>
     </File>
     <File Include="DomainJS/home.js">
-      <publishTime>08/12/2016 22:32:43</publishTime>
+      <publishTime>08/13/2016 00:35:21</publishTime>
     </File>
     <File Include="Global.asax">
       <publishTime>08/07/2016 12:32:02</publishTime>
@@ -94,7 +94,7 @@
       <publishTime>08/12/2016 21:52:11</publishTime>
     </File>
     <File Include="Views/House/Index.cshtml">
-      <publishTime>08/08/2016 22:06:16</publishTime>
+      <publishTime>08/13/2016 00:17:42</publishTime>
     </File>
     <File Include="Views/Web.config">
       <publishTime>08/07/2016 12:32:02</publishTime>

@@ -57,6 +57,7 @@
         var x, y, t, vehicle = "SUBWAY,BUS";
         var workAddress, workMarker;
         var arrivalRange;
+      
     </script>
     <script src="~/DomainJS/chinesetospell.js"></script>
     <script src="~/DomainJS/home.js"></script>
@@ -73,12 +74,18 @@
       
         <div class="control-entry">
             <div>
-                <input type="radio" name="lacationType" value="1" checked="checked" onclick="LacationTypeChange()" />自动定位
+                <input type="radio" name="lacationType" value="1" checked="checked" onclick="LacationTypeChange()" />IP定位
                 <br />
-                <input type="radio" name="lacationType" value="0" onclick="LacationTypeChange()" />城市中文名
-                <input type="text" id="txtCityNameCN" disabled="disabled"/>
+                <input type="radio" name="lacationType" value="0" onclick="LacationTypeChange()" />移动地图自动定位
+                <br />
             </div>
         </div>
+
+
+      
+
+
+       
 
         <div class="control-entry">
         <div id="IPLocation"></div>
