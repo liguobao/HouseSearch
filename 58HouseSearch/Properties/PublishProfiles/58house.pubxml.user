@@ -10,7 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/58HouseSearch.dll">
-      <publishTime>08/12/2016 22:33:56</publishTime>
+      <publishTime>08/13/2016 11:13:27</publishTime>
     </File>
     <File Include="bin/AngleSharp.dll">
       <publishTime>08/12/2016 21:52:12</publishTime>
@@ -34,10 +34,13 @@
       <publishTime>08/07/2016 12:32:04</publishTime>
     </File>
     <File Include="bin/System.Web.Http.dll">
-      <publishTime>08/07/2016 12:32:05</publishTime>
+      <publishTime>05/07/2013 13:09:16</publishTime>
+    </File>
+    <File Include="bin/System.Web.Http.SelfHost.dll">
+      <publishTime>05/20/2013 08:04:52</publishTime>
     </File>
     <File Include="bin/System.Web.Http.WebHost.dll">
-      <publishTime>08/07/2016 12:32:05</publishTime>
+      <publishTime>05/07/2013 13:09:18</publishTime>
     </File>
     <File Include="bin/System.Web.Mvc.dll">
       <publishTime>08/07/2016 12:32:04</publishTime>
@@ -55,13 +58,16 @@
       <publishTime>08/07/2016 12:32:04</publishTime>
     </File>
     <File Include="bin/zh-Hans/System.Net.Http.Formatting.resources.dll">
-      <publishTime>08/07/2016 12:32:06</publishTime>
+      <publishTime>07/09/2013 11:33:54</publishTime>
     </File>
     <File Include="bin/zh-Hans/System.Web.Helpers.resources.dll">
       <publishTime>08/07/2016 12:32:05</publishTime>
     </File>
     <File Include="bin/zh-Hans/System.Web.Http.resources.dll">
       <publishTime>08/07/2016 12:32:06</publishTime>
+    </File>
+    <File Include="bin/zh-Hans/System.Web.Http.SelfHost.resources.dll">
+      <publishTime>07/09/2013 11:33:54</publishTime>
     </File>
     <File Include="bin/zh-Hans/System.Web.Http.WebHost.resources.dll">
       <publishTime>08/07/2016 12:32:06</publishTime>
@@ -84,8 +90,11 @@
     <File Include="DomainJS/chinesetospell.js">
       <publishTime>08/07/2016 17:35:03</publishTime>
     </File>
+    <File Include="DomainJS/city.json">
+      <publishTime>08/13/2016 10:27:49</publishTime>
+    </File>
     <File Include="DomainJS/home.js">
-      <publishTime>08/13/2016 00:35:21</publishTime>
+      <publishTime>08/13/2016 10:42:33</publishTime>
     </File>
     <File Include="Global.asax">
       <publishTime>08/07/2016 12:32:02</publishTime>
@@ -94,7 +103,7 @@
       <publishTime>08/12/2016 21:52:11</publishTime>
     </File>
     <File Include="Views/House/Index.cshtml">
-      <publishTime>08/13/2016 00:17:42</publishTime>
+      <publishTime>08/13/2016 10:40:48</publishTime>
     </File>
     <File Include="Views/Web.config">
       <publishTime>08/07/2016 12:32:02</publishTime>

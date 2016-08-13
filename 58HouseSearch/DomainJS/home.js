@@ -53,7 +53,7 @@ function MapMoveToLocationCity()
 
                 var cityinfo = (data['city'] || data['province']);
                 cityName = cityinfo.substring(0, cityinfo.length - 1);
-                FillCityInfoByTxtCityNameCN();
+                ConvertCityCNNameToShortCut();
 
                 document.getElementById('IPLocation').innerHTML = '地图中心所在城市：' + cityName;
 
@@ -62,11 +62,12 @@ function MapMoveToLocationCity()
     }
 }
 
-function FillCityInfoByTxtCityNameCN()
+function ConvertCityCNNameToShortCut()
 {
-   
-    var result = makePy(cityName);
-    cityNameCNPY = result instanceof Array ? result[0] : result;
+    var filterarray = $.grep(allCityInfo, function (obj) {
+        return obj.cityName == cityName;
+    });
+    cityNameCNPY = filterarray instanceof Array ? filterarray[0].shortCut : filterarray != null ? filterarray.shortCut : "";
 }
 
 
@@ -88,7 +89,7 @@ function Get58DataClick() {
     $.AMUI.progress.start();
 
     if ($("input[name='lacationType']:checked").val() == '0') {
-        FillCityInfoByTxtCityNameCN();
+        ConvertCityCNNameToShortCut();
     }
 
     var costFrom = $("#costFrom").val();
@@ -180,9 +181,9 @@ function showCityInfo(map) {
                 var cityinfo = result.city;
                 var citybounds = result.bounds;
                 cityName = cityinfo.substring(0, cityinfo.length - 1);
-                FillCityInfoByTxtCityNameCN();
+                ConvertCityCNNameToShortCut();
 
-                document.getElementById('IPLocation').innerHTML = '您当前所在城市：' + cityinfo;
+                document.getElementById('IPLocation').innerHTML = '您当前所在城市：' + cityName;
                 //地图显示当前城市
                 map.setBounds(citybounds);
             }
