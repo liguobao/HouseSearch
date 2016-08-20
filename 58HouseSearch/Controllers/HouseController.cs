@@ -28,11 +28,6 @@ namespace _58HouseSearch.Controllers
                 return Json(new { IsSuccess = false, Error = "城市定位失败，建议清除浏览器缓存后重新进入。" });
             }
 
-            if (string.IsNullOrEmpty(cnName))
-            {
-                return Json(new { IsSuccess = false, Error = "城市定位失败，建议清除浏览器缓存后重新进入。" });
-            }
-
             try
             {
                 var listSum = GetListSum(costFrom, costTo, cnName);
