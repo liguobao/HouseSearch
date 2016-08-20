@@ -19,19 +19,6 @@ namespace _58HouseSearch.Controllers
         public ActionResult Get58CityRoomData(int costFrom, int costTo, string cnName)
         {
             if (costTo<=0 || costTo < costFrom)
-<<<<<<< HEAD
-            {
-                return Json(new { IsSuccess = false, Error = "输入数据有误，请重新输入。" });
-            }
-
-            if (string.IsNullOrEmpty(cnName))
-            {
-                return Json(new { IsSuccess = false, Error = "城市定位失败，建议清除浏览器缓存后重新进入。" });
-            }
-
-            try
-=======
->>>>>>> 7c7f1800d0a76d15a7d5629b72e8d2fec6fbd383
             {
                 return Json(new { IsSuccess = false, Error = "输入数据有误，请重新输入。" });
             }
@@ -49,11 +36,8 @@ namespace _58HouseSearch.Controllers
                 {
                     return Json(new { IsSuccess = false, Error = $"没有找到价格区间为{costFrom} - {costTo}的房子。" });
                 }
-<<<<<<< HEAD
+
                 var roomList = Enumerable.Range(1, pageCount).Select(index => GetRoomList(costFrom, costTo, cnName, index)).Aggregate((a, b) => a.Concat(b));
-=======
-                var roomList = Enumerable.Range(1, pageCount).Select(index => GetRoomList(costFrom, costTo, cnName, index)).Aggregate((a, b) => a.Concat(b)).Take(listSum);
->>>>>>> 7c7f1800d0a76d15a7d5629b72e8d2fec6fbd383
                 return Json(new { IsSuccess = true, HouseInfos = roomList });
             }
             catch (Exception ex)
