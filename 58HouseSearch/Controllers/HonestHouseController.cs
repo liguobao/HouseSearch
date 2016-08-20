@@ -56,42 +56,27 @@ namespace _58HouseSearch.Controllers
             var url = $"http://{cnName}.58.com/zufang/pn{index}/?isreal=true&minprice={costFrom}_{costTo}";
             var htmlResult = HTTPHelper.GetHTMLByURL(url);
             var page = new HtmlParser().Parse(htmlResult);
-            List<HouseInfo> houseList = new List<HouseInfo>();
-            foreach (var element in page.QuerySelectorAll("p").Where(element => element.ClassName == "qj-renaddr"))
-            {
-                var houseHref = string.IsNullOrEmpty(element.Children[1].GetAttribute("href")) ? element.Children[1].GetAttribute("href") :
-                   element.Children[0].GetAttribute("href");
-                if (string.IsNullOrEmpty(houseHref))
-                    continue;
-
-                houseList.Add(new HouseInfo
-                {
-                    HouseTitle = element.Children[0].TextContent,
-                    HouseURL = houseHref + $"?isreal=true&minprice={costFrom}_{costTo}",
-                    Money = "0",
-                    HouseLocation = element.Children[1].TextContent.Replace("租房", "")
-                });
-
-            }
+            var houseList = page.QuerySelectorAll("tr[logr]").Select(room =>
+              new HouseInfo
+              {
+                   HouseLocation=room.QuerySelector("a.a_xq1").TextContent.Replace("租房",""),
+                   HouseTitle=room.QuerySelector("a.t").TextContent,
+                   Money=room.QuerySelector("b.pri").TextContent,
+                   HouseURL= $"http://{cnName}.58.com/zufang/{room.GetAttribute("logr").Split('_')[3]}x.shtml"
+              });
             return houseList;
-
         }
-
-
-
         public int GetPageNum(int costFrom, int costTo, string cnName)
         {
             var url = $"http://{cnName}.58.com/zufang/pn1/?isreal=true&minprice={costFrom}_{costTo}";
             var htmlResult = HTTPHelper.GetHTMLByURL(url);
             var dom = new HtmlParser().Parse(htmlResult);
-            var pagerList = dom.GetElementsByClassName("pager").FirstOrDefault()?.Children.Where(children => children.ClassName == null);
-            if (pagerList != null)
+            var pageNums = dom.QuerySelector(".pager")?.QuerySelectorAll("span")?.Select(page => 
             {
-                var pageNums = pagerList.Select(page => Convert.ToInt32(page?.QuerySelector("span").InnerHtml));
-
-                return pageNums != null ? pageNums.Max() : 0;
-            }
-            return 0;
+                int number = 0;
+                return int.TryParse(page.TextContent, out number) ? number : 0;
+            });
+            return pageNums?.Max() ?? 0;
         }
 
     }
