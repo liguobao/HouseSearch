@@ -10,7 +10,7 @@ $(function () {
     $('#txtCityNameCN').bind('blur', function (e) {
         e.preventDefault();
         cityName = $("#txtCityNameCN").val();
-        cityNameCNPY = makePy(cityName);
+        FillCityInfoByTxtCityNameCN();
         loadWorkLocation();
         e.stopPropagation();
     });
@@ -39,10 +39,36 @@ $(function () {
 
     AMap.event.addListener(auto, "select", workLocationSelected);
 
-
     showCityInfo(map);
    
 })
+
+
+function MapMoveToLocationCity()
+{
+    map.on('moveend', getCity);
+    function getCity() {
+        map.getCity(function (data) {
+            if (data['province'] && typeof data['province'] === 'string') {
+
+                var cityinfo = (data['city'] || data['province']);
+                cityName = cityinfo.substring(0, cityinfo.length - 1);
+                ConvertCityCNNameToShortCut();
+
+                document.getElementById('IPLocation').innerHTML = '地图中心所在城市：' + cityName;
+
+            }
+        });
+    }
+}
+
+function ConvertCityCNNameToShortCut()
+{
+    var filterarray = $.grep(allCityInfo, function (obj) {
+        return obj.cityName == cityName;
+    });
+    cityNameCNPY = filterarray instanceof Array ? filterarray[0].shortCut : filterarray != null ? filterarray.shortCut : "";
+}
 
 
 function LacationTypeChange()
@@ -50,12 +76,10 @@ function LacationTypeChange()
     if ($("input[name='lacationType']:checked").val() == '1')
     {
         showCityInfo(map);
-        $("#txtCityNameCN").attr("disabled", true);
-        $("#txtCityNameCN").val("");
+     
     }else
     {
-        $("#txtCityNameCN").attr("disabled", false);
-      
+        MapMoveToLocationCity();
     }
 }
 
@@ -65,7 +89,7 @@ function Get58DataClick() {
     $.AMUI.progress.start();
 
     if ($("input[name='lacationType']:checked").val() == '0') {
-        cityNameCNPY = makePy($("#txtCityNameCN").val());
+        ConvertCityCNNameToShortCut();
     }
 
     var costFrom = $("#costFrom").val();
@@ -82,7 +106,7 @@ function Get58DataClick() {
     $.ajax({
         type: "post",
         url: getDataAction,
-        data: { costFrom: costFrom, costTo: costTo, cnName: cityNameCNPY[0] },
+        data: { costFrom: costFrom, costTo: costTo, cnName: cityNameCNPY },
         success:
             function (result) {
                 if (result.IsSuccess) {
@@ -106,47 +130,6 @@ function Get58DataClick() {
 }
 
 
-
-function Location()
-{
-    var map, geolocation;
-    //加载地图，调用浏览器定位服务
-    map = new AMap.Map('container', {
-        resizeEnable: true
-    });
-    map.plugin('AMap.Geolocation', function () {
-        geolocation = new AMap.Geolocation({
-            enableHighAccuracy: true,//是否使用高精度定位，默认:true
-            timeout: 10000,          //超过10秒后停止定位，默认：无穷大
-            buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
-            zoomToAccuracy: true,      //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
-            buttonPosition: 'RB',
-        });
-        map.addControl(geolocation);
-        geolocation.getCurrentPosition();
-        AMap.event.addListener(geolocation, 'complete', onComplete);//返回定位信息
-        AMap.event.addListener(geolocation, 'error', onError);      //返回定位出错信息
-    });
-    //解析定位结果
-}
-
-
-
-
-function onComplete(data) {
-
-    var str = ['所在城市：'];
-    str.push('经度：' + data.position.getLng());
-    str.push('纬度：' + data.position.getLat());
-    document.getElementById('IPLocation').innerHTML = str.join('<br>');
-
-}
-//解析定位错误信息
-function onError(data) {
-    document.getElementById('IPLocation').innerHTML = '定位失败';
-}
-
-
 function showCityInfo(map) {
     //实例化城市查询类
     var citysearch = new AMap.CitySearch();
@@ -157,9 +140,9 @@ function showCityInfo(map) {
                 var cityinfo = result.city;
                 var citybounds = result.bounds;
                 cityName = cityinfo.substring(0, cityinfo.length - 1);
-                cityNameCNPY = makePy(cityName);
+                ConvertCityCNNameToShortCut();
 
-                document.getElementById('IPLocation').innerHTML = '您当前所在城市：' + cityinfo;
+                document.getElementById('IPLocation').innerHTML = '您当前所在城市：' + cityName;
                 //地图显示当前城市
                 map.setBounds(citybounds);
             }
@@ -181,10 +164,6 @@ function takeSubway(radio) {
     loadWorkLocation()
 }
 
-function importRentInfo(fileInfo) {
-    var file = fileInfo.files[0].name;
-    loadRentLocationByFile(file);
-}
 
 function workLocationSelected(e) {
     workAddress = e.poi.name;
@@ -288,18 +267,4 @@ function loadWorkLocation() {
             map.setZoomAndCenter(12, [x, y]);
         }
     })
-}
-
-function loadRentLocationByFile(fileName) {
-    delRentLocation();
-    var rent_locations = new Set();
-    $.get(fileName, function (data) {
-        data = data.split("\n");
-        data.forEach(function (item, index) {
-            rent_locations.add(item.split(",")[1]);
-        });
-        rent_locations.forEach(function (element, index) {
-            addMarkerByAddress(element);
-        });
-    });
 }

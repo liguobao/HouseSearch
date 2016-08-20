@@ -15,7 +15,7 @@
     <script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
     <link rel="stylesheet" href="http://cdn.amazeui.org/amazeui/2.7.1/css/amazeui.min.css" />
     <script src="http://cdn.amazeui.org/amazeui/2.7.1/js/amazeui.min.js"></script>
- 
+
     <style>
         .control-panel {
             position: absolute;
@@ -48,17 +48,17 @@
         var getDataAction = '@Url.Action("Get58CityRoomData")';
         var cityNameCNPY, cityName;
  
-        var map = [];
-        var rentMarkerArray = [];
-        var polygonArray = [];
-        var amapTransfer;
-        var infoWindow;
-        var scale;
-        var x, y, t, vehicle = "SUBWAY,BUS";
-        var workAddress, workMarker;
-        var arrivalRange;
+        var map = [],rentMarkerArray = [], polygonArray = [],amapTransfer;
+        var infoWindow, scale, x, y, t, vehicle = "SUBWAY,BUS";
+        var workAddress, workMarker, arrivalRange;
+        var allCityInfo = [];
+        $.getJSON("DomainJS/city.json", function (data)
+        {
+            allCityInfo = data;
+        });
+          
+      
     </script>
-    <script src="~/DomainJS/chinesetospell.js"></script>
     <script src="~/DomainJS/home.js"></script>
  
 </head>
@@ -73,12 +73,20 @@
       
         <div class="control-entry">
             <div>
-                <input type="radio" name="lacationType" value="1" checked="checked" onclick="LacationTypeChange()" />自动定位
-                <br />
-                <input type="radio" name="lacationType" value="0" onclick="LacationTypeChange()" />城市中文名
-                <input type="text" id="txtCityNameCN" disabled="disabled"/>
+               <a href="~/House">58同城品牌公寓</a>
+               <a href="~/HonestHouse" style="margin-left:20px;">58同城诚信房源</a>
             </div>
         </div>
+
+        <div class="control-entry">
+            <div>
+                <input type="radio" name="lacationType" value="1" checked="checked" onclick="LacationTypeChange()" />IP定位
+                <br />
+                <input type="radio" name="lacationType" value="0" onclick="LacationTypeChange()" />移动地图自动定位
+                <br />
+            </div>
+        </div>
+
 
         <div class="control-entry">
         <div id="IPLocation"></div>
