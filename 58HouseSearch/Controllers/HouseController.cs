@@ -23,11 +23,14 @@ namespace _58HouseSearch.Controllers
                 return Json(new { IsSuccess = false, Error = "输入数据有误，请重新输入。" });
             }
 
+<<<<<<< HEAD
             if (string.IsNullOrEmpty(cnName))
             {
                 return Json(new { IsSuccess = false, Error = "城市定位失败，建议清除浏览器缓存后重新进入。" });
             }
 
+=======
+>>>>>>> refs/remotes/liguobao/master
             if (string.IsNullOrEmpty(cnName))
             {
                 return Json(new { IsSuccess = false, Error = "城市定位失败，建议清除浏览器缓存后重新进入。" });
@@ -41,7 +44,12 @@ namespace _58HouseSearch.Controllers
                 {
                     return Json(new { IsSuccess = false, Error = $"没有找到价格区间为{costFrom} - {costTo}的房子。" });
                 }
+<<<<<<< HEAD
                 var roomList = Enumerable.Range(1, pageCount).Select(index => GetRoomList(costFrom, costTo, cnName, index)).Aggregate((a, b) => a.Concat(b)).Take(listSum);
+=======
+
+                var roomList = Enumerable.Range(1, pageCount).Select(index => GetRoomList(costFrom, costTo, cnName, index)).Aggregate((a, b) => a.Concat(b));
+>>>>>>> refs/remotes/liguobao/master
                 return Json(new { IsSuccess = true, HouseInfos = roomList });
             }
             catch (Exception ex)
