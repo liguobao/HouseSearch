@@ -19,6 +19,19 @@ namespace _58HouseSearch.Controllers
         public ActionResult Get58CityRoomData(int costFrom, int costTo, string cnName)
         {
             if (costTo<=0 || costTo < costFrom)
+<<<<<<< HEAD
+            {
+                return Json(new { IsSuccess = false, Error = "输入数据有误，请重新输入。" });
+            }
+
+            if (string.IsNullOrEmpty(cnName))
+            {
+                return Json(new { IsSuccess = false, Error = "城市定位失败，建议清除浏览器缓存后重新进入。" });
+            }
+
+            try
+=======
+>>>>>>> 7c7f1800d0a76d15a7d5629b72e8d2fec6fbd383
             {
                 return Json(new { IsSuccess = false, Error = "输入数据有误，请重新输入。" });
             }
@@ -30,12 +43,17 @@ namespace _58HouseSearch.Controllers
 
             try
             {
-                var pageCount = GetListSum(costFrom, costTo, cnName);
+                var listSum = GetListSum(costFrom, costTo, cnName);
+                var pageCount = listSum % 20 == 0 ? listSum / 20 : listSum / 20 + 1;
                 if (pageCount == 0)
                 {
                     return Json(new { IsSuccess = false, Error = $"没有找到价格区间为{costFrom} - {costTo}的房子。" });
                 }
+<<<<<<< HEAD
                 var roomList = Enumerable.Range(1, pageCount).Select(index => GetRoomList(costFrom, costTo, cnName, index)).Aggregate((a, b) => a.Concat(b));
+=======
+                var roomList = Enumerable.Range(1, pageCount).Select(index => GetRoomList(costFrom, costTo, cnName, index)).Aggregate((a, b) => a.Concat(b)).Take(listSum);
+>>>>>>> 7c7f1800d0a76d15a7d5629b72e8d2fec6fbd383
                 return Json(new { IsSuccess = true, HouseInfos = roomList });
             }
             catch (Exception ex)
@@ -55,7 +73,7 @@ namespace _58HouseSearch.Controllers
                 var houseInfoList = houseTitle.Split(' ');
                 return new HouseInfo
                 {
-                    HouseTitle = element.QuerySelector("h2").TextContent,
+                    HouseTitle = houseTitle,
                     HouseURL = $"http://{cnName}.58.com" + element.QuerySelector("a").GetAttribute("href"),
                     Money = element.QuerySelector("b").TextContent,
                     HouseLocation = new[] { "公寓", "青年社区" }.All(s => houseInfoList.Contains(s)) ? houseInfoList[0] : houseInfoList[1]
@@ -69,8 +87,7 @@ namespace _58HouseSearch.Controllers
             var htmlResult = HTTPHelper.GetHTMLByURL(url);
             var dom = new HtmlParser().Parse(htmlResult);
             var countNode = dom.GetElementsByClassName("listsum").FirstOrDefault()?.QuerySelector("em");
-            var listSum = Convert.ToInt32((countNode?.TextContent) ?? "0");
-            return listSum % 20 == 0 ? listSum / 20 : listSum / 20 + 1;
+            return Convert.ToInt32((countNode?.TextContent) ?? "0");
         }
     }
 }
