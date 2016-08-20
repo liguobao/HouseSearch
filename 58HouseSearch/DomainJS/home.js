@@ -116,7 +116,7 @@ function Get58DataClick() {
                         rent_locations.add(item);
                     });
                     rent_locations.forEach(function (element, index) {
-                        addMarkerByAddress(element.HouseLocation);
+                        addMarkerByAddress(element.HouseLocation, element.Money, element.HouseURL);
                     });
                     $("#Get58Data").attr("disable", false);
 
@@ -202,7 +202,7 @@ function loadWorkRange(x, y, t, color, v) {
     });
 }
 
-function addMarkerByAddress(address) {
+function addMarkerByAddress(address,memoy,href) {
     var geocoder = new AMap.Geocoder({
         city: cityName,
         radius: 1000
@@ -218,7 +218,7 @@ function addMarkerByAddress(address) {
             });
             rentMarkerArray.push(rentMarker);
 
-            rentMarker.content = "<div>房源：<a target = '_blank' href='http://" + cityNameCNPY + ".58.com/pinpaigongyu/?key=" + address + "'>" + address + "</a><div>"
+            rentMarker.content = "<div><a target = '_blank' href='"+ href + "'>房源：" + address + "  租金：" + memoy + "</a><div>"
             rentMarker.on('click', function (e) {
                 infoWindow.setContent(e.target.content);
                 infoWindow.open(map, e.target.getPosition());
