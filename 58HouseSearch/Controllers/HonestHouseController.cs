@@ -15,26 +15,6 @@ namespace _58HouseSearch.Controllers
 
         public ActionResult Index()
         {
-
-            var url = $"http://sh.58.com/zufang/pn1/?isreal=true&minprice=1000_2000";
-            var htmlResult = HTTPHelper.GetHTMLByURL(url);
-            var dom = new HtmlParser().Parse(htmlResult);
-
-
-            var lst = dom.QuerySelectorAll("p").Where(element => element.ClassName == "qj-renaddr");
-
-            var houses = dom.QuerySelectorAll("p").Where(element => element.ClassName == "qj-renaddr").Select(element =>
-            {
-
-                return new HouseInfo
-                {
-                    HouseTitle = element.Children[1].TextContent,
-                    HouseURL = element.Children[0].GetAttribute("href"),
-                    Money = "0",
-                    HouseLocation = element.Children[1].TextContent.Replace("租房", "")
-                };
-            });
-
             return View();
         }
 
@@ -51,13 +31,14 @@ namespace _58HouseSearch.Controllers
             }
            
 
-            var pageNum = GetPageNum(costFrom, costTo, cnName);
-            if(pageNum==0)
+            var pageCount = GetPageNum(costFrom, costTo, cnName);
+            if(pageCount == 0)
                 return Json(new { IsSuccess = false, Error = $"没有找到价格区间为{costFrom} - {costTo}的房子。" });
 
+            var roomList = Enumerable.Range(1, pageCount).Select(index => GetRoomList(costFrom, costTo, cnName, index)).Aggregate((a, b) => a.Concat(b));
+            return Json(new { IsSuccess = true, HouseInfos = roomList });
 
-
-            return Json(new { IsSuccess = true });
+         
 
         }
 
@@ -75,17 +56,25 @@ namespace _58HouseSearch.Controllers
             var url = $"http://{cnName}.58.com/zufang/pn{index}/?isreal=true&minprice={costFrom}_{costTo}";
             var htmlResult = HTTPHelper.GetHTMLByURL(url);
             var page = new HtmlParser().Parse(htmlResult);
-            return page.QuerySelectorAll("p").Where(element => element.ClassName== "qj-renaddr").Select(element =>
+            List<HouseInfo> houseList = new List<HouseInfo>();
+            foreach (var element in page.QuerySelectorAll("p").Where(element => element.ClassName == "qj-renaddr"))
             {
-               
-                return new HouseInfo
+                var houseHref = string.IsNullOrEmpty(element.Children[1].GetAttribute("href")) ? element.Children[1].GetAttribute("href") :
+                   element.Children[0].GetAttribute("href");
+                if (string.IsNullOrEmpty(houseHref))
+                    continue;
+
+                houseList.Add(new HouseInfo
                 {
-                    HouseTitle = element.Children[1].TextContent,
-                    HouseURL = element.Children[0].GetAttribute("href"),
+                    HouseTitle = element.Children[0].TextContent,
+                    HouseURL = houseHref + $"?isreal=true&minprice={costFrom}_{costTo}",
                     Money = "0",
-                    HouseLocation = element.Children[1].TextContent.Replace("租房","")
-                };
-            });
+                    HouseLocation = element.Children[1].TextContent.Replace("租房", "")
+                });
+
+            }
+            return houseList;
+
         }
 
 

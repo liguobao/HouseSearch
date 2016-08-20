@@ -1,17 +1,140 @@
-﻿@{
-    Layout = null;
-}
+﻿<html>
 
-<!DOCTYPE html>
 
-<html>
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>58诚信房源高德搜房</title>
+    <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css" />
+    <link rel="stylesheet" href="http://cache.amap.com/lbs/static/jquery.range.css" />
+    <script src="http://cache.amap.com/lbs/static/jquery-1.9.1.js"></script>
+    <script src="http://cache.amap.com/lbs/static/es5.min.js"></script>
+    <script src="http://webapi.amap.com/maps?v=1.3&key=8a971a2f88a0ec7458d43b8bc03b6462&plugin=AMap.ArrivalRange,AMap.Scale,AMap.Geocoder,AMap.Transfer,AMap.Autocomplete,AMap.CitySearch"></script>
+    <script src="http://cache.amap.com/lbs/static/jquery.range.js"></script>
+    <script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
+    <link rel="stylesheet" href="http://cdn.amazeui.org/amazeui/2.7.1/css/amazeui.min.css" />
+    <script src="http://cdn.amazeui.org/amazeui/2.7.1/js/amazeui.min.js"></script>
+
+    <style>
+        .control-panel {
+            position: absolute;
+            top: 30px;
+            right: 20px;
+        }
+
+        .control-entry {
+            width: 400px;
+            background-color: rgba(119, 136, 153, 0.8);
+            font-family: fantasy, sans-serif;
+            text-align: left;
+            overflow: auto;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        #transfer-panel {
+            position: absolute;
+            background-color: white;
+            max-height: 80%;
+            overflow-y: auto;
+            top: 30px;
+            left: 20px;
+            width: 250px;
+        }
+    </style>
+
+    <script>
+        var getDataAction = '@Url.Action("GetHonestHouseData")';
+        var cityNameCNPY, cityName;
+
+        var map = [],rentMarkerArray = [], polygonArray = [],amapTransfer;
+        var infoWindow, scale, x, y, t, vehicle = "SUBWAY,BUS";
+        var workAddress, workMarker, arrivalRange;
+        var allCityInfo = [];
+        $.getJSON("DomainJS/city.json", function (data)
+        {
+            allCityInfo = data;
+        });
+
+
+    </script>
+    <script src="~/DomainJS/honesthome.js"></script>
+
 </head>
+
+
+
+
+
 <body>
-    <div>
-        
+    <div id="container"></div>
+    <div class="control-panel" style="width:400px;">
+
+
+        <div class="control-entry">
+            <div>
+                <a href="../58HouseSearch/">58同城品牌公寓</a>
+                <a href="../58HouseSearch/HonestHouse" style="margin-left:20px;">58同城诚信房源</a>
+            </div>
+        </div>
+
+        <div class="control-entry">
+            <div>
+                <input type="radio" name="lacationType" value="1" checked="checked" onclick="LacationTypeChange()" />IP定位
+                <br />
+                <input type="radio" name="lacationType" value="0" onclick="LacationTypeChange()" />移动地图自动定位
+                <br />
+            </div>
+        </div>
+
+        <div class="control-entry">
+            <div id="IPLocation"></div>
+        </div>
+
+        <div class="control-entry">
+            <label>价格区间：</label>
+            <input id="costFrom" type="text" style="width:20%" /> 到
+            <input id="costTo" type="text" style="width:20%" />
+            <input id="Get58Data" type="button" value="获取数据" class="am-btn am-btn-default" style="margin-left:10px;" />
+        </div>
+
+
+
+        <div class="control-entry">
+            <label>选择工作地点：</label>
+            <div class="control-input">
+                <input id="work-location" type="text" style="width:60%">
+            </div>
+
+
+        </div>
+        <div class="control-entry">
+            <label>选择通勤方式：</label>
+            <div class="control-input">
+                <input type="radio" name="vehicle" value="SUBWAY,BUS" onclick="takeBus(this)" checked /> 公交+地铁
+                <input type="radio" name="vehicle" value="SUBWAY" onclick="takeSubway(this)" /> 地铁
+            </div>
+        </div>
+
+        <div class="control-entry">
+            <label>参考代码：</label>
+            <div class="control-input">
+                <a href="https://github.com/liguobao/58HouseSearch">Github源码（无耻求收藏）</a>
+                <br />
+                <a href="https://www.shiyanlou.com/courses/599">实验楼教程</a>
+                <br />
+                <a href="https://zhuanlan.zhihu.com/p/21883516">高德API+Python解决租房问题</a>
+                <br />
+                <a href="http://lbs.amap.com/">高德地图API</a>
+                <br />
+                <a href="http://sh.58.com/zufang/?isreal=true">58同城诚信房源专区</a>
+            </div>
+        </div>
+
     </div>
+    <div id="transfer-panel"></div>
+
 </body>
+
 </html>
