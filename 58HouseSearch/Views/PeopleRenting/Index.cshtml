@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
-    <title>58诚信房源高德搜房</title>
+    <title>互助租房-高德搜房</title>
     <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css" />
     <link rel="stylesheet" href="http://cache.amap.com/lbs/static/jquery.range.css" />
     <script src="http://cache.amap.com/lbs/static/jquery-1.9.1.js"></script>
@@ -43,23 +43,62 @@
             width: 250px;
         }
     </style>
+    <script src="~/DomainJS/housecommon.js"></script>
 
     <script>
-        var getDataAction = '@Url.Action("GetHonestHouseData")';
-        var cityNameCNPY, cityName;
-
-        var map = [],rentMarkerArray = [], polygonArray = [],amapTransfer;
+        var getDataAction = '@Url.Action("GetRentingData")';
+        var cityNameCNPY, cityName = "上海";
+        var map = [], rentMarkerArray = [], polygonArray = [], amapTransfer;
         var infoWindow, scale, x, y, t, vehicle = "SUBWAY,BUS";
         var workAddress, workMarker, arrivalRange;
         var allCityInfo = [];
-        $.getJSON("DomainJS/city.json", function (data)
-        {
+        $.getJSON("DomainJS/city.json", function (data) {
             allCityInfo = data;
         });
 
+        var getRentingDatabyPageIndexURL = '@Url.Action("GetRentingDatabyPageIndex")';
+
+
+        $(function ()
+        {
+            $.AMUI.progress.start();
+            for(var i=1;i<=20;i++)
+            {
+                GetDataByIndex(i,20);
+            }
+        })
+
+
+        function GetDataByIndex(index,pagecount)
+        {
+            $.ajax({
+                type: "post",
+                url: getRentingDatabyPageIndexURL,
+                data: { index: index },
+                success:
+                    function (result) {
+                        if (result.IsSuccess) {
+                            var rent_locations = new Set();
+                            result.HouseInfos.forEach(function (item, index) {
+                                rent_locations.add(item);
+                            });
+                            rent_locations.forEach(function (element, index) {
+                                addMarkerByAddress(element.HouseLocation, element.Money, element.HouseURL, element.HouseTime);
+                            });
+                        } else {
+                            console.log(result.Error);
+                        }
+                        if (index == pagecount)
+                        {
+                            $.AMUI.progress.done();
+                        }
+                    }
+            });
+        }
+
 
     </script>
-    <script src="~/DomainJS/home.js"></script>
+   
 
 </head>
 
@@ -70,6 +109,7 @@
 <body>
     <div id="container"></div>
     <div class="control-panel" style="width:400px;">
+
         <div class="control-entry">
             <div>
                 <label>当前访问量：</label>
@@ -79,32 +119,21 @@
 
         <div class="control-entry">
             <div>
-                <a href="~/HonestHouse">58同城诚信房源</a>
-                <a href="~/PeopleRenting" style="margin-left:20px;">上海互助租房</a>
+                <a href="~/PeopleRenting">上海互助租房</a>
+                <a href="~/HonestHouse" style="margin-left:20px;">58同城诚信房源</a>
             </div>
         </div>
 
         <div class="control-entry">
-            <div>
-                <input type="radio" name="lacationType" value="1" checked="checked" onclick="LacationTypeChange()" />IP定位
-                <br />
-                <input type="radio" name="lacationType" value="0" onclick="LacationTypeChange()" />移动地图自动定位
-                <br />
-            </div>
+            <div id="IPLocation"><label>互助租房-高德搜房-上海专版</label></div>
         </div>
 
-        <div class="control-entry">
-            <div id="IPLocation"></div>
-        </div>
-
-        <div class="control-entry">
+        @*<div class="control-entry">
             <label>价格区间：</label>
-            <input id="costFrom" type="text" style="width:20%" /> 到
-            <input id="costTo" type="text" style="width:20%" />
-            <input id="Get58Data" type="button" value="获取数据" class="am-btn am-btn-default" style="margin-left:10px;" />
-        </div>
-
-
+            <input id="costFrom" type="text" style="width:20%"  disabled="disabled"/> 到
+            <input id="costTo" type="text" style="width:20%"  disabled="disabled"/>
+            <input id="Get58Data" type="button" value="获取数据" class="am-btn am-btn-default" style="margin-left:10px;" disabled="disabled" />
+        </div>*@
 
         <div class="control-entry">
             <label>选择工作地点：</label>
@@ -127,13 +156,13 @@
             <div class="control-input">
                 <a href="https://github.com/liguobao/58HouseSearch">Github源码（无耻求收藏）</a>
                 <br />
-                <a href="https://www.shiyanlou.com/courses/599">实验楼教程</a>
+                <a href="http://www.huzhumaifang.com/Renting/">互助租房首页</a>
+                <br />
+                <a href="http://weibo.com/u/5389952376?refer_flag=1001030101_&is_hot=1">互助租房-微博</a>
                 <br />
                 <a href="https://zhuanlan.zhihu.com/p/21883516">高德API+Python解决租房问题</a>
                 <br />
                 <a href="http://lbs.amap.com/">高德地图API</a>
-                <br />
-                <a href="http://sh.58.com/zufang/?isreal=true">58同城诚信房源专区</a>
             </div>
         </div>
 

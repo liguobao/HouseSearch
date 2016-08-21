@@ -14,5 +14,7 @@ namespace _58HouseSearch.Models
         public string HouseLocation { get; set; }
 
         public string Money { get; set; }
+
+        public string HouseTime { get; set; }
     }
 }

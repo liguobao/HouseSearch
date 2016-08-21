@@ -11,6 +11,8 @@ namespace _58HouseSearch.Models
 
         public string PVTime { get; set; }
 
+        public string PVActionAddress { get; set; }
+
     }
 
     public class WebPVInfo

@@ -55,10 +55,14 @@ namespace _58HouseSearch
                 {
                     using (System.IO.Stream streamReceive = webResponse.GetResponseStream())
                     {
-                        using (System.IO.StreamReader sr = new System.IO.StreamReader(streamReceive, Encoding.Default))
+                        var encoding = Encoding.Default;
+                        if (contentype.Contains("utf"))
+                            encoding = Encoding.UTF8;
+                        using (System.IO.StreamReader sr = new System.IO.StreamReader(streamReceive, encoding))
                         {
                             htmlCode = sr.ReadToEnd();
                         }
+
                     }
                 }
                 return htmlCode;
@@ -70,7 +74,7 @@ namespace _58HouseSearch
         }
 
 
-        public static void WritePVInfo(string jsonPath, string userHostAddress)
+        public static void WritePVInfo(string jsonPath, string userHostAddress,string actionAddress)
         {
             try
             {
@@ -90,12 +94,12 @@ namespace _58HouseSearch
                         {
                             webPV = new WebPVInfo();
                             webPV.PVCount = 1;
-                            webPV.LstPVInfo = new List<PVInfo>() { new PVInfo() { PVIP = userHostAddress, PVTime = DateTime.Now.ToString() } };
+                            webPV.LstPVInfo = new List<PVInfo>() { new PVInfo() { PVIP = userHostAddress, PVTime = DateTime.Now.ToString(),PVActionAddress = actionAddress } };
                         }
                         else
                         {
                             webPV.PVCount = webPV.PVCount + 1;
-                            webPV.LstPVInfo.Add(new PVInfo() { PVIP = userHostAddress, PVTime = DateTime.Now.ToString() });
+                            webPV.LstPVInfo.Add(new PVInfo() { PVIP = userHostAddress, PVTime = DateTime.Now.ToString(), PVActionAddress = actionAddress });
                         }
                         reader.Close();
 
