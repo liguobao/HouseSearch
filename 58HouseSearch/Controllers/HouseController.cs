@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using _58HouseSearch.Models;
 using AngleSharp.Parser.Html;
 
+
 namespace _58HouseSearch.Controllers
 {
     public class HouseController : Controller
@@ -13,8 +14,11 @@ namespace _58HouseSearch.Controllers
         // GET: /House/
         public ActionResult Index()
         {
+            HTTPHelper.WritePVInfo(Server.MapPath("./pv.json"),Request.UserHostAddress);
             return View();
         }
+
+       
 
         public ActionResult Get58CityRoomData(int costFrom, int costTo, string cnName)
         {

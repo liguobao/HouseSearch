@@ -91,7 +91,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\ChineseToSpell.cs" />
     <Compile Include="Controllers\HonestHouseController.cs" />
     <Compile Include="Controllers\HouseController.cs" />
     <Compile Include="Global.asax.cs">
@@ -99,6 +98,7 @@
     </Compile>
     <Compile Include="Common\HTTPHelper.cs" />
     <Compile Include="Models\HouseInfo.cs" />
+    <Compile Include="Models\PVInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -127,6 +127,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="DomainJS\city.json" />
+    <Content Include="pv.json" />
     <None Include="Properties\PublishProfiles\58house.pubxml" />
     <Content Include="Views\HonestHouse\Index.cshtml" />
   </ItemGroup>

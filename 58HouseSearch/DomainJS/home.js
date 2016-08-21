@@ -41,6 +41,11 @@ $(function () {
 
     showCityInfo(map);
    
+
+    $.getJSON("pv.json", function (data) {
+        $("#lblPVCount").text(data.PVCount);
+    });
+   
 })
 
 

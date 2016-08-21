@@ -15,6 +15,7 @@ namespace _58HouseSearch.Controllers
 
         public ActionResult Index()
         {
+            HTTPHelper.WritePVInfo(Server.MapPath("./pv.json"), Request.UserHostAddress);
             return View();
         }
 
