@@ -106,6 +106,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="CSS\common.css" />
     <Content Include="DomainJS\home.js" />
     <Content Include="DomainJS\housecommon.js" />
     <Content Include="Global.asax" />

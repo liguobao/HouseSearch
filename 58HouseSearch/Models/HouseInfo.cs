@@ -16,5 +16,7 @@ namespace _58HouseSearch.Models
         public string Money { get; set; }
 
         public string HouseTime { get; set; }
+
+        public decimal HousePrice { get; set; }
     }
 }

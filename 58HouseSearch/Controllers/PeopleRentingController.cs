@@ -65,12 +65,17 @@ namespace _58HouseSearch.Controllers
                 var locationContent = locationInfoContent.Split('，')[0];
                 var location = locationContent.Remove(0, locationContent.IndexOf("租") + 1);
 
+                decimal housePrice = 0;
+                decimal.TryParse(screening_price.Replace("￥", "").Replace("元/月", ""),out housePrice);
+
                 return (new HouseInfo()
                 {
                     Money = screening_price,
                     HouseURL = "http://www.huzhumaifang.com" + locationInfo.GetAttribute("href"),
                     HouseLocation = location,
-                    HouseTime = screening_time
+                    HouseTime = screening_time,
+                    HousePrice = housePrice,
+
                 });
             });
         }
