@@ -37,6 +37,11 @@ $(function () {
         $("#lblPVCount").text(data.PVCount);
     });
 
+    //初始化打开侧边栏
+    $('#search-offcanvas').offCanvas({ effect: 'overlay' });
+
+    //将上面input自动补全结果置于页面最上层
+    $(".amap-sug-result").css("z-index", 9999);
 })
 
 

@@ -46,6 +46,11 @@ $(function () {
         $("#lblPVCount").text(data.PVCount);
     });
    
+    $('#search-offcanvas').offCanvas({ effect: 'overlay' });
+
+    $(".amap-sug-result").css("z-index", 9999);
+
+    
 })
 
 

@@ -42,77 +42,90 @@
 
 <body>
     <div id="container"></div>
-    <div class="control-panel" style="width:400px;">
-      
-        <div class="control-entry">
-            <div>
-                <label>当前访问量：</label>
-                <label id="lblPVCount"></label>
-            </div>
-        </div>
 
-        <div class="control-entry">
-            <div>
-                <a href="~/HonestHouse">58同城诚信房源</a>
-                <a href="~/PeopleRenting" style="margin-left:20px;">上海互助租房</a>
-            </div>
-        </div>
-
-        <div class="control-entry">
-            <div>
-                <input type="radio" name="lacationType" value="1" checked="checked" onclick="LacationTypeChange()" />IP定位
-                <br />
-                <input type="radio" name="lacationType" value="0" onclick="LacationTypeChange()" />移动地图自动定位
-                <br />
-            </div>
-        </div>
-
-
-        <div class="control-entry">
-        <div id="IPLocation"></div>
-        </div>
-        
-          <div class="control-entry">
-            <label>价格区间：</label>
-            <input id="costFrom" type="text" style="width:20%" /> 到
-            <input id="costTo" type="text" style="width:20%" />
-            <input id="Get58Data" type="button" value="获取数据" class="am-btn am-btn-default" style="margin-left:10px;" />
-        </div>
-
-
-
-        <div class="control-entry">
-            <label>选择工作地点：</label>
-            <div class="control-input">
-                <input id="work-location" type="text" style="width:60%">
-            </div>
-
-
-        </div>
-        <div class="control-entry">
-            <label>选择通勤方式：</label>
-            <div class="control-input">
-                <input type="radio" name="vehicle" value="SUBWAY,BUS" onclick="takeBus(this)" checked /> 公交+地铁
-                <input type="radio" name="vehicle" value="SUBWAY" onclick="takeSubway(this)" /> 地铁
-            </div>
-        </div>
-
-        <div class="control-entry">
-            <label>参考代码：</label>
-            <div class="control-input">
-                <a href="https://github.com/liguobao/58HouseSearch">Github源码（无耻求收藏）</a>
-                <br />
-                <a href="https://www.shiyanlou.com/courses/599">实验楼教程</a>
-                <br />
-                <a href="https://zhuanlan.zhihu.com/p/21883516">高德API+Python解决租房问题</a>
-                <br />
-                <a href="http://lbs.amap.com/">高德地图API</a>
-                <br />
-                <a href="http://sh.58.com/pinpaigongyu/">58同城品牌公寓</a>
-            </div>
-        </div>
-
+    <div class="button-panel">
+        <!-- 按钮触发器， 需要指定 target -->
+        <button class="am-btn am-btn-success" data-am-offcanvas="{target: '#search-offcanvas'}">获取数据</button>
     </div>
+
+    <div id="search-offcanvas" class="am-offcanvas">
+        <div class="am-offcanvas-bar am-offcanvas-bar-flip" style="width:430px;z-index:-999">
+            <div class="am-offcanvas-content">
+
+
+                <div class="control-entry">
+                    <div>
+                        <label>当前访问量：</label>
+                        <label id="lblPVCount"></label>
+                    </div>
+                </div>
+
+                <div class="control-entry">
+                    <div>
+                        <a href="~/HonestHouse">58同城诚信房源</a>
+                        <a href="~/PeopleRenting" style="margin-left:20px;">上海互助租房</a>
+                    </div>
+                </div>
+
+                <div class="control-entry">
+                    <div>
+                        <input type="radio" name="lacationType" value="1" checked="checked" onclick="LacationTypeChange()" />IP定位
+                        <br />
+                        <input type="radio" name="lacationType" value="0" onclick="LacationTypeChange()" />移动地图自动定位
+                        <br />
+                    </div>
+                </div>
+
+
+                <div class="control-entry">
+                    <div id="IPLocation"></div>
+                </div>
+
+                <div class="control-entry">
+                    <label>价格区间：</label>
+                    <input id="costFrom" type="text" style="width:20%" /> 到
+                    <input id="costTo" type="text" style="width:20%" />
+                    <input id="Get58Data" type="button" value="获取数据" class="am-btn am-btn-default" style="margin-left:10px;" />
+                </div>
+
+
+
+                <div class="control-entry">
+                    <label>选择工作地点：</label>
+                    <div class="control-input">
+                        <input id="work-location" type="text" style="width:60%">
+                    </div>
+
+
+                </div>
+                <div class="control-entry">
+                    <label>选择通勤方式：</label>
+                    <div class="control-input">
+                        <input type="radio" name="vehicle" value="SUBWAY,BUS" onclick="takeBus(this)" checked /> 公交+地铁
+                        <input type="radio" name="vehicle" value="SUBWAY" onclick="takeSubway(this)" /> 地铁
+                    </div>
+                </div>
+
+                <div class="control-entry">
+                    <label>参考代码：</label>
+                    <div class="control-input">
+                        <a href="https://github.com/liguobao/58HouseSearch">Github源码（无耻求收藏）</a>
+                        <br />
+                        <a href="https://www.shiyanlou.com/courses/599">实验楼教程</a>
+                        <br />
+                        <a href="https://zhuanlan.zhihu.com/p/21883516">高德API+Python解决租房问题</a>
+                        <br />
+                        <a href="http://lbs.amap.com/">高德地图API</a>
+                        <br />
+                        <a href="http://sh.58.com/pinpaigongyu/">58同城品牌公寓</a>
+                    </div>
+                </div>
+
+                </div>
+            </div>
+        </div>
+
+              
     <div id="transfer-panel"></div>
 
 </body>
