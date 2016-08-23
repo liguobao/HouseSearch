@@ -42,6 +42,7 @@ $(function () {
 
     //将上面input自动补全结果置于页面最上层
     $(".amap-sug-result").css("z-index", 9999);
+    
 })
 
 
@@ -198,26 +199,27 @@ function loadWorkRange(x, y, t, color, v) {
     });
 }
 
-function addMarkerByAddress(address, memoy, href,housetime,price) {
+function addMarkerByAddress(address, memoy, href, housetime, price,markBG) {
     var geocoder = new AMap.Geocoder({
         city: cityName,
         radius: 1000
     });
+
     geocoder.getLocation(address, function (status, result) {
         if (status === "complete" && result.info === 'OK') {
             var geocode = result.geocodes[0];
             rentMarker = new AMap.Marker({
                 map: map,
                 title: address,
-                icon: 'http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png',
+                icon: 'IMG/' + markBG,
                 position: [geocode.location.getLng(), geocode.location.getLat()]
             });
             rentMarkerArray.push(rentMarker);
 
-            rentMarker.setLabel({//label默认蓝框白底左上角显示，样式className为：amap-marker-label
-                offset: new AMap.Pixel(-28, 38),//修改label相对于maker的位置
-                content: "租金：" + price
-            });
+            //rentMarker.setLabel({//label默认蓝框白底左上角显示，样式className为：amap-marker-label
+            //    offset: new AMap.Pixel(-28, 38),//修改label相对于maker的位置
+            //    content: "租金：" + price
+            //});
 
             rentMarker.content = "<div><a target = '_blank' href='" + href + "'>房源：" + address + "<br/>租金：" + memoy + "   发布时间：" +housetime+ "</a><div>";
             rentMarker.on('click', function (e) {

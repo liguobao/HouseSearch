@@ -58,7 +58,8 @@
                                 rent_locations.add(item);
                             });
                             rent_locations.forEach(function (element, index) {
-                                addMarkerByAddress(element.HouseLocation, element.Money, element.HouseURL, element.HouseTime, element.HousePrice);
+                                addMarkerByAddress(element.HouseLocation, element.Money, element.HouseURL,
+                                    element.HouseTime, element.HousePrice, element.LocationMarkBG);
                             });
                         } else {
                             console.log(result.Error);
@@ -67,6 +68,7 @@
                         {
                             $.AMUI.progress.done();
                         }
+                       
                     }
             });
         }
@@ -84,9 +86,30 @@
 <body>
     <div id="container"></div>
 
-    <div class="button-panel">
+    <div class="button-panel-offcanvas" >
         <!-- 按钮触发器， 需要指定 target -->
-        <button class="am-btn am-btn-success" data-am-offcanvas="{target: '#search-offcanvas'}">上班导航</button>
+        <button class="am-btn am-btn-success" data-am-offcanvas="{target: '#search-offcanvas'}" >上班导航</button>
+    </div>
+    <div class="button-panel" style="margin-top:60px;">
+            <img src="IMG/Blue.PNG"/>0-1000
+            <br />
+            <img src="IMG/PaleGreen.PNG" style="margin-left:3px;"/>1000-2000
+            <br />
+            <img src="IMG/LightGreen.PNG"  style="margin-left:6px;"/>2000-3000
+            <br />
+            <img src="IMG/PaleYellow.PNG"  style="margin-left:9px;"/>3000-4000
+            <br />
+            <img src="IMG/OrangeYellow.PNG"  style="margin-left:12px;"/>4000-5000
+            <br />
+            <img src="IMG/PaleRed.PNG"  style="margin-left:15px;"/>5000-6000
+            <br />
+            <img src="IMG/Red.PNG"  style="margin-left:18px;"/>6000-7000
+            <br />
+            <img src="IMG/Pink.PNG"  style="margin-left:20px;"/>7000-8000
+            <br />
+            <img src="IMG/Violet.PNG"  style="margin-left:22px;"/>8000-9000
+            <br />
+            <img src="IMG/Black.PNG" style="margin-left:24px;"/>9000 +
     </div>
       
       <!-- 侧边栏内容 -->

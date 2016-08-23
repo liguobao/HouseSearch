@@ -91,6 +91,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\CommonEnum.cs" />
     <Compile Include="Controllers\HonestHouseController.cs" />
     <Compile Include="Controllers\HouseController.cs" />
     <Compile Include="Controllers\PeopleRentingController.cs" />
@@ -110,6 +111,16 @@
     <Content Include="DomainJS\home.js" />
     <Content Include="DomainJS\housecommon.js" />
     <Content Include="Global.asax" />
+    <Content Include="IMG\Blue.png" />
+    <Content Include="IMG\PaleGreen.png" />
+    <Content Include="IMG\LightGreen.png" />
+    <Content Include="IMG\PaleYellow.png" />
+    <Content Include="IMG\OrangeYellow.png" />
+    <Content Include="IMG\PaleRed.png" />
+    <Content Include="IMG\Red.png" />
+    <Content Include="IMG\Pink.png" />
+    <Content Include="IMG\Violet.png" />
+    <Content Include="IMG\Black.png" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

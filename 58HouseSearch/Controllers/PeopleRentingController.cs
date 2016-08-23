@@ -1,4 +1,5 @@
-﻿using _58HouseSearch.Models;
+﻿using _58HouseSearch.Common;
+using _58HouseSearch.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,6 +69,8 @@ namespace _58HouseSearch.Controllers
                 decimal housePrice = 0;
                 decimal.TryParse(screening_price.Replace("￥", "").Replace("元/月", ""),out housePrice);
 
+                var markBGType = (housePrice / 1000) > (int)LocationMarkBGType.Black ? LocationMarkBGType.Black : (LocationMarkBGType)(housePrice / 1000);
+
                 return (new HouseInfo()
                 {
                     Money = screening_price,
@@ -75,6 +78,7 @@ namespace _58HouseSearch.Controllers
                     HouseLocation = location,
                     HouseTime = screening_time,
                     HousePrice = housePrice,
+                    LocationMarkBG = markBGType.ToString() + ".PNG",
 
                 });
             });

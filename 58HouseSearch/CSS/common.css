@@ -10,6 +10,13 @@
             right: 20px;
         }
 
+
+        .button-panel-offcanvas {
+            position: absolute;
+            top: 30px;
+            right: 45px;
+        }
+
        .control-commonentry {
             width: 300px;
             background-color: rgba(119, 136, 153, 0.8);
