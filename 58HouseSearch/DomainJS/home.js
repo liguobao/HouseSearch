@@ -95,7 +95,7 @@ function MapMoveToLocationCity()
                 var cityinfo = (data['city'] || data['province']);
                 cityName = cityinfo.substring(0, cityinfo.length - 1);
                 ConvertCityCNNameToShortCut();
-
+                $("#IPLocationCity").text("城市：" + cityName);
                 document.getElementById('IPLocation').innerHTML = '地图中心所在城市：' + cityName;
 
             }
@@ -213,6 +213,8 @@ function AutoGet58houseData(map) {
 
 
                 document.getElementById('IPLocation').innerHTML = '您当前所在城市：' + cityName;
+
+                $("#IPLocationCity").text("城市：" + cityName);
                 //地图显示当前城市
                 map.setBounds(citybounds);
             }
