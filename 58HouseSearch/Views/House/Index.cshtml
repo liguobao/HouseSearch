@@ -20,6 +20,7 @@
 
     <script>
         var getDataAction = '@Url.Action("Get58CityRoomData")';
+        var getDataByIndexAction = '@Url.Action("Get58CityRoomDataByIndex")';
         var cityNameCNPY, cityName;
  
         var map = [],rentMarkerArray = [], polygonArray = [],amapTransfer;
@@ -47,6 +48,29 @@
         <!-- 按钮触发器， 需要指定 target -->
         <button class="am-btn am-btn-success" data-am-offcanvas="{target: '#search-offcanvas'}">获取数据</button>
     </div>
+
+    <div class="button-panel" style="margin-top:60px;">
+        <img src="IMG/Little/Blue.PNG" />0-1000
+        <br />
+        <img src="IMG/Little/PaleGreen.PNG" style="margin-top:10px;"/>1000-2000
+        <br />
+        <img src="IMG/Little/LightGreen.PNG" style="margin-top:10px;" />2000-3000
+        <br />
+        <img src="IMG/Little/PaleYellow.PNG" style="margin-top:10px;" />3000-4000
+        <br />
+        <img src="IMG/Little/OrangeYellow.PNG" style="margin-top:10px;"/>4000-5000
+        <br />
+        <img src="IMG/Little/PaleRed.PNG" style="margin-top:10px;" />5000-6000
+        <br />
+        <img src="IMG/Little/Red.PNG" style="margin-top:10px;"/>6000-7000
+        <br />
+        <img src="IMG/Little/Pink.PNG" style="margin-top:10px;" />7000-8000
+        <br />
+        <img src="IMG/Little/Violet.PNG" style="margin-top:10px;"/>8000-9000
+        <br />
+        <img src="IMG/Little/Black.PNG" style="margin-top:10px;"/>9000 +
+    </div>
+
 
     <div id="search-offcanvas" class="am-offcanvas">
         <div class="am-offcanvas-bar am-offcanvas-bar-flip" style="width:430px;z-index:-999">

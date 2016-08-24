@@ -20,6 +20,7 @@
 
     <script>
         var getDataAction = '@Url.Action("GetHonestHouseData")';
+        var getDataByIndexAction = '@Url.Action("GetHonestHouseDataByIndex")';
         var cityNameCNPY, cityName;
 
         var map = [],rentMarkerArray = [], polygonArray = [],amapTransfer;
@@ -33,7 +34,8 @@
 
 
     </script>
-    <script src="~/DomainJS/home.js"></script>
+
+    <script src="~/DomainJS/honesthouse.js"></script>
 
 </head>
 
@@ -47,6 +49,28 @@
     <div class="button-panel">
         <!-- 按钮触发器， 需要指定 target -->
         <button class="am-btn am-btn-success" data-am-offcanvas="{target: '#search-offcanvas'}">获取数据</button>
+    </div>
+
+    <div class="button-panel" style="margin-top:60px;">
+        <img src="IMG/Blue.PNG" />0-1000
+        <br />
+        <img src="IMG/Gradient/PaleGreen.PNG" style="margin-left:3px;" />1000-2000
+        <br />
+        <img src="IMG/Gradient/LightGreen.PNG" style="margin-left:6px;" />2000-3000
+        <br />
+        <img src="IMG/Gradient/PaleYellow.PNG" style="margin-left:9px;" />3000-4000
+        <br />
+        <img src="IMG/Gradient/OrangeYellow.PNG" style="margin-left:12px;" />4000-5000
+        <br />
+        <img src="IMG/Gradient/PaleRed.PNG" style="margin-left:15px;" />5000-6000
+        <br />
+        <img src="IMG/Gradient/Red.PNG" style="margin-left:18px;" />6000-7000
+        <br />
+        <img src="IMG/Gradient/Pink.PNG" style="margin-left:20px;" />7000-8000
+        <br />
+        <img src="IMG/Gradient/Violet.PNG" style="margin-left:22px;" />8000-9000
+        <br />
+        <img src="IMG/Gradient/Black.PNG" style="margin-left:24px;" />9000 +
     </div>
 
 

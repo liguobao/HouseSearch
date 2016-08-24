@@ -211,7 +211,7 @@ function addMarkerByAddress(address, memoy, href, housetime, price,markBG) {
             rentMarker = new AMap.Marker({
                 map: map,
                 title: address,
-                icon: 'IMG/' + markBG,
+                icon: 'IMG/Gradient/' + markBG,
                 position: [geocode.location.getLng(), geocode.location.getLat()]
             });
             rentMarkerArray.push(rentMarker);

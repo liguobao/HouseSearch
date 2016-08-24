@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using _58HouseSearch.Models;
 using AngleSharp.Parser.Html;
-
+using _58HouseSearch.Common;
 
 namespace _58HouseSearch.Controllers
 {
@@ -47,6 +47,42 @@ namespace _58HouseSearch.Controllers
             {
                 return Json(new { IsSuccess = false, Error = "获取数据异常。" + ex.ToString() });
             }
+        }
+
+
+
+        public ActionResult Get58CityRoomDataByIndex(string cnName,int index)
+        {
+            var lstHouseInfo = GetRoomListByIndex(cnName, index);
+            if(lstHouseInfo==null)
+                return Json(new { IsSuccess = false, Error = "没有房源信息..." });
+            return Json(new { IsSuccess = true, HouseInfos = lstHouseInfo });
+        }
+
+
+
+        private IEnumerable<HouseInfo> GetRoomListByIndex(string cnName, int index)
+        {
+            var url = $"http://{cnName}.58.com/pinpaigongyu/pn/{index}";
+            var htmlResult = HTTPHelper.GetHTMLByURL(url);
+            var page = new HtmlParser().Parse(htmlResult);
+            return page.QuerySelectorAll("li").Where(element => element.HasAttribute("logr")).Select(element =>
+            {
+                var houseTitle = element.QuerySelector("h2").TextContent;
+                var houseInfoList = houseTitle.Split(' ');
+                decimal housePrice = 0;
+                decimal.TryParse(element.QuerySelector("b").TextContent, out housePrice);
+                var markBGType = (housePrice / 1000) > (int)LocationMarkBGType.Black ? LocationMarkBGType.Black : (LocationMarkBGType)(housePrice / 1000);
+
+                return new HouseInfo
+                {
+                    HouseTitle = houseTitle,
+                    HouseURL = $"http://{cnName}.58.com" + element.QuerySelector("a").GetAttribute("href"),
+                    Money = element.QuerySelector("b").TextContent,
+                    HouseLocation = new[] { "公寓", "青年社区" }.All(s => houseInfoList.Contains(s)) ? houseInfoList[0] : houseInfoList[1],
+                    LocationMarkBG = markBGType.ToString() + ".PNG",
+                };
+            });
         }
 
         private IEnumerable<HouseInfo> GetRoomList(int costFrom, int costTo, string cnName,int index)
