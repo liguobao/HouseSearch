@@ -136,6 +136,13 @@ function Get58DataClick() {
     var costFrom = $("#costFrom").val();
     var costTo = $("#costTo").val();
 
+    if (costFrom == "" || costTo == "") {
+        alert("请输入价格区间...");
+        $("#Get58Data").attr("disabled", false);
+        $.AMUI.progress.done();
+        return;
+    }
+
     if (isNaN(costFrom) || isNaN(costTo)) {
         alert("请输入正确的整数。");
         $("#Get58Data").attr("disabled", false);
@@ -208,8 +215,8 @@ function AutoGet58houseData(map) {
                 ConvertCityCNNameToShortCut();
 
                 $.AMUI.progress.start();
-                for (var i = 1; i <= 20; i++) {
-                    GetDataByIndex(i, 20);
+                for (var i = 1; i <= 50; i++) {
+                    GetDataByIndex(i, 50);
                 }
 
                 $("#IPLocationCity").text("城市：" + cityName);
