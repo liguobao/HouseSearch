@@ -215,8 +215,8 @@ function AutoGet58houseData(map) {
                 ConvertCityCNNameToShortCut();
 
                 $.AMUI.progress.start();
-                for (var i = 1; i <= 50; i++) {
-                    GetDataByIndex(i, 50);
+                for (var i = 1; i <= 15; i++) {
+                    GetDataByIndex(i, 15);
                 }
 
                 $("#IPLocationCity").text("城市：" + cityName);
@@ -249,6 +249,12 @@ function workLocationSelected(e) {
     workAddress = e.poi.name;
     loadWorkLocation();
 }
+
+function takeWalking(radio) {
+    vehicle = radio.value;
+    loadWorkLocation();
+}
+
 
 function loadWorkMarker(x, y, locationName) {
     workMarker = new AMap.Marker({
@@ -300,20 +306,7 @@ function addMarkerByAddress(address,memoy,href) {
 
             rentMarker.content = "<div><a target = '_blank' href='"+ href + "'>房源：" + address + "  租金：" + memoy + "</a><div>"
             rentMarker.on('click', function (e) {
-                infoWindow.setContent(e.target.content);
-                infoWindow.open(map, e.target.getPosition());
-                if (amapTransfer) amapTransfer.clear();
-                amapTransfer = new AMap.Transfer({
-                    map: map,
-                    policy: AMap.TransferPolicy.LEAST_TIME,
-                    city: cityName,
-                    panel: 'transfer-panel'
-                });
-                amapTransfer.search([{
-                    keyword: workAddress
-                }, {
-                    keyword: address
-                }], function (status, result) { })
+                addTransfer(e, address);
             });
         }
     })
@@ -339,23 +332,46 @@ function addMarkerByAddressAndMarkBG(address, memoy, href, markBG) {
 
             rentMarker.content = "<div><a target = '_blank' href='" + href + "'>房源：" + address + "  租金：" + memoy + "</a><div>"
             rentMarker.on('click', function (e) {
-                infoWindow.setContent(e.target.content);
-                infoWindow.open(map, e.target.getPosition());
-                if (amapTransfer) amapTransfer.clear();
-                amapTransfer = new AMap.Transfer({
-                    map: map,
-                    policy: AMap.TransferPolicy.LEAST_TIME,
-                    city: cityName,
-                    panel: 'transfer-panel'
-                });
-                amapTransfer.search([{
-                    keyword: workAddress
-                }, {
-                    keyword: address
-                }], function (status, result) { })
+                addTransfer(e, address);
             });
         }
     })
+}
+
+
+function addTransfer(e, address) {
+    if (vehicle != 'WALKING') {
+        infoWindow.setContent(e.target.content);
+        infoWindow.open(map, e.target.getPosition());
+        if (amapTransfer) amapTransfer.clear();
+        amapTransfer = new AMap.Transfer({
+            map: map,
+            policy: AMap.TransferPolicy.LEAST_TIME,
+            city: cityName,
+            panel: 'transfer-panel'
+        });
+        amapTransfer.search([{
+            keyword: workAddress
+        }, {
+            keyword: address
+        }], function (status, result) { })
+    } else {
+        infoWindow.setContent(e.target.content);
+        infoWindow.open(map, e.target.getPosition());
+        if (amapTransfer) amapTransfer.clear();
+
+        amapTransfer = new AMap.Walking({
+            map: map,
+            panel: "transfer-panel",
+            city: cityName,
+        });
+
+        amapTransfer.search([
+            { keyword: workAddress },
+            { keyword: address }
+        ], function (status, result) {
+        });
+    }
 }
 
 

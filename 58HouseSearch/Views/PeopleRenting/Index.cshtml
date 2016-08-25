@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="http://cache.amap.com/lbs/static/jquery.range.css" />
     <script src="http://cache.amap.com/lbs/static/jquery-1.9.1.js"></script>
     <script src="http://cache.amap.com/lbs/static/es5.min.js"></script>
-    <script src="http://webapi.amap.com/maps?v=1.3&key=8a971a2f88a0ec7458d43b8bc03b6462&plugin=AMap.ArrivalRange,AMap.Scale,AMap.Geocoder,AMap.Transfer,AMap.Autocomplete,AMap.CitySearch"></script>
+    <script src="http://webapi.amap.com/maps?v=1.3&key=8a971a2f88a0ec7458d43b8bc03b6462&plugin=AMap.ArrivalRange,AMap.Scale,AMap.Geocoder,AMap.Transfer,AMap.Autocomplete,AMap.CitySearch,AMap.Walking"></script>
     <script src="http://cache.amap.com/lbs/static/jquery.range.js"></script>
     <script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
     <link rel="stylesheet" href="http://cdn.amazeui.org/amazeui/2.7.1/css/amazeui.min.css" />
@@ -157,6 +157,7 @@
                             <div class="control-input">
                                 <input type="radio" name="vehicle" value="SUBWAY,BUS" onclick="takeBus(this)" checked /> 公交+地铁
                                 <input type="radio" name="vehicle" value="SUBWAY" onclick="takeSubway(this)" /> 地铁
+                                <input type="radio" name="vehicle" value="WALKING" onclick="takeWalking(this)" /> 步行
                             </div>
                         </div>
 
