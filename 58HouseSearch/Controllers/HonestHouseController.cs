@@ -1,4 +1,5 @@
-﻿using _58HouseSearch.Models;
+﻿using _58HouseSearch.Common;
+using _58HouseSearch.Models;
 using AngleSharp.Parser.Html;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace _58HouseSearch.Controllers
 
         public ActionResult Index()
         {
+            HTTPHelper.WritePVInfo(Server.MapPath("./pv.json"), Request.UserHostAddress, Request.Path);
             return View();
         }
 
@@ -30,26 +32,73 @@ namespace _58HouseSearch.Controllers
                 return Json(new { IsSuccess = false, Error = "城市定位失败，建议清除浏览器缓存后重新进入。" });
             }
            
+            try
+            {
+                var pageCount = GetPageNum(costFrom, costTo, cnName);
+                if (pageCount == 0)
+                    return Json(new { IsSuccess = false, Error = $"没有找到价格区间为{costFrom} - {costTo}的房源信息,大部分情况是因为该市没有诚信房源数据。" });
 
-            var pageCount = GetPageNum(costFrom, costTo, cnName);
-            if(pageCount == 0)
-                return Json(new { IsSuccess = false, Error = $"没有找到价格区间为{costFrom} - {costTo}的房子。" });
-
-            var roomList = Enumerable.Range(1, pageCount).Select(index => GetRoomList(costFrom, costTo, cnName, index)).Aggregate((a, b) => a.Concat(b));
-            return Json(new { IsSuccess = true, HouseInfos = roomList });
+                var roomList = Enumerable.Range(1, pageCount).Select(index => GetRoomList(costFrom, costTo, cnName, index)).Aggregate((a, b) => a.Concat(b));
+                return Json(new { IsSuccess = true, HouseInfos = roomList });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { IsSuccess = false, Error = "由于某种诡异的原因，爬取数据奔溃了...建议重试或者重新输入条件。下面是你看不懂的异常信息："+ex.ToString()  });
+            }
+          
 
          
 
         }
 
-        /// <summary>
-        /// 未完成
-        /// </summary>
-        /// <param name="costFrom"></param>
-        /// <param name="costTo"></param>
-        /// <param name="cnName"></param>
-        /// <param name="index"></param>
-        /// <returns></returns>
+
+
+        public ActionResult GetHonestHouseDataByIndex( string cnName,int index)
+        {
+          
+            try
+            {
+                var roomList = GetRoomListByIndex(cnName,index);
+                if(roomList==null)
+                    return  Json(new { IsSuccess = false, Error = "并没有找到房源信息..." });
+                return Json(new { IsSuccess = true, HouseInfos = roomList });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { IsSuccess = false, Error = "由于某种诡异的原因，爬取数据奔溃了...建议重试或者重新输入条件。下面是你看不懂的异常信息：" + ex.ToString() });
+            }
+
+
+
+
+        }
+
+        private IEnumerable<HouseInfo> GetRoomListByIndex(string cnName, int index)
+        {
+            var url = $"http://{cnName}.58.com/zufang/pn{index}/?isreal=true";
+            var htmlResult = HTTPHelper.GetHTMLByURL(url);
+            var page = new HtmlParser().Parse(htmlResult);
+            var houseList = page.QuerySelectorAll("tr[logr]").Where(room=> room.QuerySelector("b.pri")!=null).Select(room =>
+            {
+                decimal housePrice = 0;
+                decimal.TryParse(room.QuerySelector("b.pri").TextContent, out housePrice);
+                var markBGType = (housePrice / 1000) > (int)LocationMarkBGType.Black ? LocationMarkBGType.Black : (LocationMarkBGType)(housePrice / 1000);
+                return new HouseInfo
+                {
+                    // HouseLocation=room.QuerySelector("a.a_xq1").TextContent.Replace("租房",""),
+                    HouseLocation = room.QuerySelector("span.f12") != null && !string.IsNullOrEmpty(room.QuerySelector("span.f12").TextContent) ?
+                   room.QuerySelector("span.f12").TextContent.Replace("租房", "") : room.QuerySelector("a.a_xq1") != null && !string.IsNullOrEmpty(room.QuerySelector("a.a_xq1").TextContent) ?
+                   room.QuerySelector("a.a_xq1").TextContent.Replace("租房", "") : "",
+                    HouseTitle = room.QuerySelector("a.t") != null ? room.QuerySelector("a.t").TextContent : "",
+                    Money = room.QuerySelector("b.pri") != null ? room.QuerySelector("b.pri").TextContent : "",
+                    HouseURL = $"http://{cnName}.58.com/zufang/{room.GetAttribute("logr").Split('_')[3]}x.shtml",
+                    LocationMarkBG = markBGType.ToString()+".png",
+                };
+            } );
+            return houseList.Where(room => !string.IsNullOrEmpty(room.HouseLocation) && !string.IsNullOrEmpty(room.HouseTitle) && !string.IsNullOrEmpty(room.Money));
+        }
+
+
 
         private IEnumerable<HouseInfo> GetRoomList(int costFrom, int costTo, string cnName, int index)
         {
@@ -59,13 +108,18 @@ namespace _58HouseSearch.Controllers
             var houseList = page.QuerySelectorAll("tr[logr]").Select(room =>
               new HouseInfo
               {
-                   HouseLocation=room.QuerySelector("a.a_xq1").TextContent.Replace("租房",""),
-                   HouseTitle=room.QuerySelector("a.t").TextContent,
-                   Money=room.QuerySelector("b.pri").TextContent,
+                  // HouseLocation=room.QuerySelector("a.a_xq1").TextContent.Replace("租房",""),
+                  HouseLocation = room.QuerySelector("span.f12")!=null && !string.IsNullOrEmpty(room.QuerySelector("span.f12").TextContent)? 
+                  room.QuerySelector("span.f12").TextContent.Replace("租房", ""): room.QuerySelector("a.a_xq1")!=null &&!string.IsNullOrEmpty(room.QuerySelector("a.a_xq1").TextContent)?
+                  room.QuerySelector("a.a_xq1").TextContent.Replace("租房", "") :"",
+                   HouseTitle= room.QuerySelector("a.t")!=null? room.QuerySelector("a.t").TextContent:"",
+                   Money= room.QuerySelector("b.pri")!=null ?room.QuerySelector("b.pri").TextContent:"",
                    HouseURL= $"http://{cnName}.58.com/zufang/{room.GetAttribute("logr").Split('_')[3]}x.shtml"
               });
-            return houseList;
+            return houseList.Where(room=>!string.IsNullOrEmpty(room.HouseLocation) && !string.IsNullOrEmpty(room.HouseTitle) && !string.IsNullOrEmpty(room.Money));
         }
+
+
         public int GetPageNum(int costFrom, int costTo, string cnName)
         {
             var url = $"http://{cnName}.58.com/zufang/pn1/?isreal=true&minprice={costFrom}_{costTo}";
@@ -76,7 +130,7 @@ namespace _58HouseSearch.Controllers
                 int number = 0;
                 return int.TryParse(page.TextContent, out number) ? number : 0;
             });
-            return pageNums?.Max() ?? 0;
+            return pageNums!=null && pageNums.Count()!=0 ? pageNums.Max() : 0;
         }
 
     }

@@ -7,29 +7,23 @@ $(function () {
         e.stopPropagation();
     });
 
-    $('#txtCityNameCN').bind('blur', function (e) {
-        e.preventDefault();
-        cityName = $("#txtCityNameCN").val();
-        FillCityInfoByTxtCityNameCN();
-        loadWorkLocation();
-        e.stopPropagation();
-    });
+   
 
-     map = new AMap.Map("container", {
+    map = new AMap.Map("container", {
         resizeEnable: true,
         zoomEnable: true,
         center: [121.297428, 31.1345],
         zoom: 11
     });
 
-     scale = new AMap.Scale();
-     map.addControl(scale);
+    scale = new AMap.Scale();
+    map.addControl(scale);
 
-     arrivalRange = new AMap.ArrivalRange();
- 
- 
+    arrivalRange = new AMap.ArrivalRange();
 
-     infoWindow = new AMap.InfoWindow({
+
+
+    infoWindow = new AMap.InfoWindow({
         offset: new AMap.Pixel(0, -30)
     });
 
@@ -39,13 +33,20 @@ $(function () {
 
     AMap.event.addListener(auto, "select", workLocationSelected);
 
-    showCityInfo(map);
-   
+    $.getJSON("pv.json", function (data) {
+        $("#lblPVCount").text(data.PVCount);
+    });
+
+    //初始化打开侧边栏
+    $('#search-offcanvas').offCanvas({ effect: 'overlay' });
+
+    //将上面input自动补全结果置于页面最上层
+    $(".amap-sug-result").css("z-index", 9999);
+    
 })
 
 
-function MapMoveToLocationCity()
-{
+function MapMoveToLocationCity() {
     map.on('moveend', getCity);
     function getCity() {
         map.getCity(function (data) {
@@ -62,8 +63,7 @@ function MapMoveToLocationCity()
     }
 }
 
-function ConvertCityCNNameToShortCut()
-{
+function ConvertCityCNNameToShortCut() {
     var filterarray = $.grep(allCityInfo, function (obj) {
         return obj.cityName == cityName;
     });
@@ -71,14 +71,11 @@ function ConvertCityCNNameToShortCut()
 }
 
 
-function LacationTypeChange()
-{
-    if ($("input[name='lacationType']:checked").val() == '1')
-    {
+function LacationTypeChange() {
+    if ($("input[name='lacationType']:checked").val() == '1') {
         showCityInfo(map);
-     
-    }else
-    {
+
+    } else {
         MapMoveToLocationCity();
     }
 }
@@ -116,7 +113,7 @@ function Get58DataClick() {
                         rent_locations.add(item);
                     });
                     rent_locations.forEach(function (element, index) {
-                        addMarkerByAddress(element.HouseLocation,element.HouseURL);
+                        addMarkerByAddress(element.HouseLocation, element.Money, element.HouseURL);
                     });
                     $("#Get58Data").attr("disable", false);
 
@@ -170,6 +167,12 @@ function workLocationSelected(e) {
     loadWorkLocation();
 }
 
+function takeWalking(radio) {
+    vehicle = radio.value;
+    loadWorkLocation();
+}
+
+
 function loadWorkMarker(x, y, locationName) {
     workMarker = new AMap.Marker({
         map: map,
@@ -202,42 +205,75 @@ function loadWorkRange(x, y, t, color, v) {
     });
 }
 
-function addMarkerByAddress(address,houseHref) {
+function addMarkerByAddress(address, memoy, href, housetime, price,markBG) {
     var geocoder = new AMap.Geocoder({
         city: cityName,
         radius: 1000
     });
+
     geocoder.getLocation(address, function (status, result) {
         if (status === "complete" && result.info === 'OK') {
             var geocode = result.geocodes[0];
             rentMarker = new AMap.Marker({
                 map: map,
                 title: address,
-                icon: 'http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png',
+                icon: 'IMG/Gradient/' + markBG,
                 position: [geocode.location.getLng(), geocode.location.getLat()]
             });
             rentMarkerArray.push(rentMarker);
 
-            rentMarker.content = "<div>房源：<a target = '_blank' href='http://" + cityNameCNPY + ".58.com/" + houseHref + "'>" + address + "</a><div>"
+            //rentMarker.setLabel({//label默认蓝框白底左上角显示，样式className为：amap-marker-label
+            //    offset: new AMap.Pixel(-28, 38),//修改label相对于maker的位置
+            //    content: "租金：" + price
+            //});
+
+            rentMarker.content = "<div><a target = '_blank' href='" + href + "'>房源：" + address + "<br/>租金：" + memoy + "   发布时间：" +housetime+ "</a><div>";
             rentMarker.on('click', function (e) {
-                infoWindow.setContent(e.target.content);
-                infoWindow.open(map, e.target.getPosition());
-                if (amapTransfer) amapTransfer.clear();
-                amapTransfer = new AMap.Transfer({
-                    map: map,
-                    policy: AMap.TransferPolicy.LEAST_TIME,
-                    city: cityName,
-                    panel: 'transfer-panel'
-                });
-                amapTransfer.search([{
-                    keyword: workAddress
-                }, {
-                    keyword: address
-                }], function (status, result) { })
+                addTransfer(e, address);
             });
         }
     })
 }
+
+
+
+function addTransfer(e, address) {
+    if (vehicle != 'WALKING') {
+        infoWindow.setContent(e.target.content);
+        infoWindow.open(map, e.target.getPosition());
+        if (amapTransfer) amapTransfer.clear();
+        amapTransfer = new AMap.Transfer({
+            map: map,
+            policy: AMap.TransferPolicy.LEAST_TIME,
+            city: cityName,
+            panel: 'transfer-panel'
+        });
+        amapTransfer.search([{
+            keyword: workAddress
+        }, {
+            keyword: address
+        }], function (status, result) { })
+    } else {
+        infoWindow.setContent(e.target.content);
+        infoWindow.open(map, e.target.getPosition());
+        if (amapTransfer) amapTransfer.clear();
+
+        amapTransfer = new AMap.Walking({
+            map: map,
+            panel: "transfer-panel",
+            city: cityName,
+        });
+
+        amapTransfer.search([
+            { keyword: workAddress },
+            { keyword: address }
+        ], function (status, result) {
+        });
+    }
+}
+
+
+
 
 function delWorkLocation() {
     if (polygonArray) map.remove(polygonArray);

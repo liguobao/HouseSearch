@@ -15,7 +15,7 @@
     <AssemblyName>58HouseSearch</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -91,23 +91,47 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\ChineseToSpell.cs" />
+    <Compile Include="Common\CommonEnum.cs" />
     <Compile Include="Controllers\HonestHouseController.cs" />
     <Compile Include="Controllers\HouseController.cs" />
+    <Compile Include="Controllers\PeopleRentingController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Common\HTTPHelper.cs" />
     <Compile Include="Models\HouseInfo.cs" />
+    <Compile Include="Models\PVInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Content Include="DomainJS\honesthome.js" />
+    <Content Include="CSS\common.css" />
+    <Content Include="DomainJS\honesthouse.js" />
     <Content Include="DomainJS\home.js" />
+    <Content Include="DomainJS\housecommon.js" />
     <Content Include="Global.asax" />
+    <Content Include="IMG\Gradient\Blue.png" />
+    <Content Include="IMG\Little\Black.png" />
+    <Content Include="IMG\Little\Blue.png" />
+    <Content Include="IMG\Little\LightGreen.png" />
+    <Content Include="IMG\Little\OrangeYellow.png" />
+    <Content Include="IMG\Little\PaleGreen.png" />
+    <Content Include="IMG\Little\PaleRed.png" />
+    <Content Include="IMG\Little\PaleYellow.png" />
+    <Content Include="IMG\Little\Pink.png" />
+    <Content Include="IMG\Little\Red.png" />
+    <Content Include="IMG\Little\Violet.png" />
+    <Content Include="IMG\Gradient\PaleGreen.png" />
+    <Content Include="IMG\Gradient\LightGreen.png" />
+    <Content Include="IMG\Gradient\PaleYellow.png" />
+    <Content Include="IMG\Gradient\OrangeYellow.png" />
+    <Content Include="IMG\Gradient\PaleRed.png" />
+    <Content Include="IMG\Gradient\Red.png" />
+    <Content Include="IMG\Gradient\Pink.png" />
+    <Content Include="IMG\Gradient\Violet.png" />
+    <Content Include="IMG\Gradient\Black.png" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -128,8 +152,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="DomainJS\city.json" />
+    <Content Include="pv.json" />
     <None Include="Properties\PublishProfiles\58house.pubxml" />
     <Content Include="Views\HonestHouse\Index.cshtml" />
+    <Content Include="Views\PeopleRenting\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -149,7 +175,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>32995</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:60737/</IISUrl>
+          <IISUrl>http://localhost/58HouseSearch</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

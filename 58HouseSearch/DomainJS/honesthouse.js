@@ -27,6 +27,7 @@ $(function () {
 
      arrivalRange = new AMap.ArrivalRange();
  
+ 
 
      infoWindow = new AMap.InfoWindow({
         offset: new AMap.Pixel(0, -30)
@@ -135,8 +136,7 @@ function Get58DataClick() {
     var costFrom = $("#costFrom").val();
     var costTo = $("#costTo").val();
 
-
-    if (costFrom == "" || costTo=="") {
+    if (costFrom == "" || costTo == "") {
         alert("请输入价格区间...");
         $("#Get58Data").attr("disabled", false);
         $.AMUI.progress.done();
@@ -144,13 +144,11 @@ function Get58DataClick() {
     }
 
     if (isNaN(costFrom) || isNaN(costTo)) {
-        alert("请输入正确的整数...");
+        alert("请输入正确的整数。");
         $("#Get58Data").attr("disabled", false);
         $.AMUI.progress.done();
         return;
     }
-
-
 
 
     $.ajax({
@@ -192,6 +190,7 @@ function showCityInfo(map) {
                 cityName = cityinfo.substring(0, cityinfo.length - 1);
                 ConvertCityCNNameToShortCut();
 
+                $("#IPLocationCity").text("城市：" + cityName);
                 document.getElementById('IPLocation').innerHTML = '您当前所在城市：' + cityName;
                 //地图显示当前城市
                 map.setBounds(citybounds);
@@ -220,10 +219,8 @@ function AutoGet58houseData(map) {
                     GetDataByIndex(i, 15);
                 }
 
-
-                document.getElementById('IPLocation').innerHTML = '您当前所在城市：' + cityName;
-
                 $("#IPLocationCity").text("城市：" + cityName);
+                document.getElementById('IPLocation').innerHTML = '您当前所在城市：' + cityName;
                 //地图显示当前城市
                 map.setBounds(citybounds);
             }
@@ -247,17 +244,17 @@ function takeSubway(radio) {
     loadWorkLocation()
 }
 
-function takeWalking(radio) {
-    vehicle = radio.value;
-    loadWorkLocation();
-}
-
-
 
 function workLocationSelected(e) {
     workAddress = e.poi.name;
     loadWorkLocation();
 }
+
+function takeWalking(radio) {
+    vehicle = radio.value;
+    loadWorkLocation();
+}
+
 
 function loadWorkMarker(x, y, locationName) {
     workMarker = new AMap.Marker({
@@ -342,8 +339,7 @@ function addMarkerByAddressAndMarkBG(address, memoy, href, markBG) {
 }
 
 
-function addTransfer(e, address)
-{
+function addTransfer(e, address) {
     if (vehicle != 'WALKING') {
         infoWindow.setContent(e.target.content);
         infoWindow.open(map, e.target.getPosition());
@@ -377,6 +373,7 @@ function addTransfer(e, address)
         });
     }
 }
+
 
 
 
