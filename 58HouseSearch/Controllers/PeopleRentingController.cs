@@ -48,7 +48,7 @@ namespace _58HouseSearch.Controllers
         {
             var htmlResult = HTTPHelper.GetHTMLByURL(indexURL);
             var page = new AngleSharp.Parser.Html.HtmlParser().Parse(htmlResult);
-            return Convert.ToInt32(page.QuerySelector("a.end").TextContent);
+            return Convert.ToInt32(page.QuerySelector("a.end")?.TextContent ?? "0");
         }
 
 
@@ -56,14 +56,12 @@ namespace _58HouseSearch.Controllers
         {
             var htmlResult = HTTPHelper.GetHTMLByURL(url);
             var page = new AngleSharp.Parser.Html.HtmlParser().Parse(htmlResult);
-            var uiInfo = page.GetElementsByClassName("screening_left_ul");
-            return uiInfo.FirstOrDefault().QuerySelectorAll("li").Select(element =>
+            return page.QuerySelector("ul.screening_left_ul").QuerySelectorAll("li").Select(element =>
             {
                 var screening_time = element.QuerySelector("p.screening_time").TextContent;
                 var screening_price = element.QuerySelector("h5").TextContent;
-                var locationInfo = element.QuerySelectorAll("a").FirstOrDefault();
-                var locationInfoContent = locationInfo.TextContent;
-                var locationContent = locationInfoContent.Split('，')[0];
+                var locationInfo = element.QuerySelector("a");
+                var locationContent = locationInfo.TextContent.Split('，').FirstOrDefault();
                 var location = locationContent.Remove(0, locationContent.IndexOf("租") + 1);
 
                 decimal housePrice = 0;
@@ -71,7 +69,7 @@ namespace _58HouseSearch.Controllers
 
                 var markBGType = (housePrice / 1000) > (int)LocationMarkBGType.Black ? LocationMarkBGType.Black : (LocationMarkBGType)(housePrice / 1000);
 
-                return (new HouseInfo()
+                return new HouseInfo
                 {
                     Money = screening_price,
                     HouseURL = "http://www.huzhumaifang.com" + locationInfo.GetAttribute("href"),
@@ -80,7 +78,7 @@ namespace _58HouseSearch.Controllers
                     HousePrice = housePrice,
                     LocationMarkBG = markBGType.ToString() + ".PNG",
 
-                });
+                };
             });
         }
 

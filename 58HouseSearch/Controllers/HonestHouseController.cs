@@ -1,5 +1,6 @@
 ﻿using _58HouseSearch.Common;
 using _58HouseSearch.Models;
+using AngleSharp.Dom;
 using AngleSharp.Parser.Html;
 using System;
 using System.Collections.Generic;
@@ -109,14 +110,19 @@ namespace _58HouseSearch.Controllers
               new HouseInfo
               {
                   // HouseLocation=room.QuerySelector("a.a_xq1").TextContent.Replace("租房",""),
-                  HouseLocation = room.QuerySelector("span.f12")!=null && !string.IsNullOrEmpty(room.QuerySelector("span.f12").TextContent)? 
-                  room.QuerySelector("span.f12").TextContent.Replace("租房", ""): room.QuerySelector("a.a_xq1")!=null &&!string.IsNullOrEmpty(room.QuerySelector("a.a_xq1").TextContent)?
-                  room.QuerySelector("a.a_xq1").TextContent.Replace("租房", "") :"",
-                   HouseTitle= room.QuerySelector("a.t")!=null? room.QuerySelector("a.t").TextContent:"",
-                   Money= room.QuerySelector("b.pri")!=null ?room.QuerySelector("b.pri").TextContent:"",
-                   HouseURL= $"http://{cnName}.58.com/zufang/{room.GetAttribute("logr").Split('_')[3]}x.shtml"
+                  HouseLocation = GetLocation(room),
+                  HouseTitle = room.QuerySelector("a.t")?.TextContent,
+                  Money = room.QuerySelector("b.pri")?.TextContent,
+                  HouseURL = $"http://{cnName}.58.com/zufang/{room.GetAttribute("logr").Split('_')[3]}x.shtml"
               });
             return houseList.Where(room=>!string.IsNullOrEmpty(room.HouseLocation) && !string.IsNullOrEmpty(room.HouseTitle) && !string.IsNullOrEmpty(room.Money));
+        }
+
+        private string GetLocation(IElement room)
+        {
+            var first = room.QuerySelector("span.f12")?.TextContent;
+            var second = room.QuerySelector("a.a_xq1")?.TextContent;
+            return !string.IsNullOrEmpty(first) ? first : second;
         }
 
 
