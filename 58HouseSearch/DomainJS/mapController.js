@@ -118,31 +118,54 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker', 'polygon
             return;
         }
 
+
         $.ajax({
             type: "post",
-            url: getDataAction,
+            url: getDataPageCount,
             data: { costFrom: costFrom, costTo: costTo, cnName: city.shortName },
-            success: function(result) {
-                if (result.IsSuccess) {
-                    $.AMUI.progress.start();
-                    marker.clearArray();
-                    var rent_locations = new Set();
-                    result.HouseInfos.forEach(function(item, index) {
-                        rent_locations.add(item);
-                    });
-                    rent_locations.forEach(function(element, index) {
-                        marker.add(element.HouseLocation, element.Money, element.HouseURL);
-                    });
-                    $("#Get58Data").attr("disable", false);
+            success: function (result)
+            {
+                if(result && result.IsSuccess)
+                {
+                    for(var index=1;index <= result.PageCount;index ++)
+                    {
+                        $.ajax({
+                            type: "post",
+                            url: getDataByPageIndexAction,
+                            data: { costFrom: costFrom, costTo: costTo, cnName: city.shortName, index:index },
+                            success: function (result) {
+                                if (result.IsSuccess) {
+                                    var rent_locations = new Set();
+                                    result.HouseInfos.forEach(function (item, index) {
+                                        rent_locations.add(item);
+                                    });
+                                    rent_locations.forEach(function (element, index) {
+                                        marker.add(element.HouseLocation, element.Money, element.HouseURL,
+                                            element.LocationMarkBG);
+                                    });
+                                  
+                                } else {
+                                    console.log(result.Error);
+                                }
+                                if (index == result.PageCount)
+                                {
+                                    $.AMUI.progress.done();
+                                }
+                            }
+                        });
+                    }
 
-                    $.AMUI.progress.done();
-                } else {
+                }else
+                {
                     alert(result.Error);
                 }
-                $("#Get58Data").attr("disabled", false);
-                $.AMUI.progress.done();
             }
         });
+
+
+         
+
+        
     };
 
     var move2Location = function() {

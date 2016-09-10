@@ -19,7 +19,6 @@ namespace _58HouseSearch.Controllers
             return View();
         }
 
-
         public ActionResult GetRentingData()
         {
             //var indexURL = "http://www.huzhumaifang.com/Renting/index";
