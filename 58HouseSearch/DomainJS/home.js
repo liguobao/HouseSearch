@@ -20,7 +20,7 @@
 
 "use strict";
 
-require(['domready!', 'jquery', 'AMUI', 'mapController', 'city', 'commuteGo'], function(doc, $, AMUI, mapController, city, commuteGo) {
+require(['domready!', 'jquery', 'AMUI', 'mapController', 'city', 'commuteGo'], function (doc, $, AMUI, mapController, city, commuteGo) {
     city.initAllCityInfo();
     mapController.init();
 
@@ -30,6 +30,7 @@ require(['domready!', 'jquery', 'AMUI', 'mapController', 'city', 'commuteGo'], f
 
     $('#Get58Data').bind('click', function(e) {
         e.preventDefault();
+     
         mapController.Get58DataClick();
         e.stopPropagation();
     });

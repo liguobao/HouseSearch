@@ -19,7 +19,7 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker', 'polygon
     var GetDataByIndex = function(index, pagecount) {
         $.ajax({
             type: "post",
-            url: getDataByIndexAction,
+            url: getViewDefaultDataAction,
             data: { cnName: city.shortName, index: index },
             success: function(result) {
                 if (result.IsSuccess) {
@@ -112,12 +112,15 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker', 'polygon
         }
 
         if (isNaN(costFrom) || isNaN(costTo)) {
-            alert("请输入正确的整数...");
+            alert("请输入正确的整数......");
             $("#Get58Data").attr("disabled", false);
             $.AMUI.progress.done();
             return;
         }
 
+        marker.clearArray();
+        
+    
 
         $.ajax({
             type: "post",
@@ -127,7 +130,10 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker', 'polygon
             {
                 if(result && result.IsSuccess)
                 {
-                    for(var index=1;index <= result.PageCount;index ++)
+                    var pageCount = result.PageCount;
+                    console.log("数据总页数为：" + pageCount);
+
+                    for (var index = 0; index < pageCount; index++)
                     {
                         $.ajax({
                             type: "post",
@@ -143,14 +149,15 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker', 'polygon
                                         marker.add(element.HouseLocation, element.Money, element.HouseURL,
                                             element.LocationMarkBG);
                                     });
-                                  
+                                    //console.log("第" + result.PageIndex + "页加载完成。");
                                 } else {
                                     console.log(result.Error);
                                 }
-                                if (index == result.PageCount)
-                                {
+                               
+                                if (result.PageIndex == pageCount - 1) {
                                     $.AMUI.progress.done();
                                 }
+                               
                             }
                         });
                     }
@@ -192,6 +199,9 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker', 'polygon
             move2Location();
         }
     }
+
+   
+
 
     return {
         init: init,

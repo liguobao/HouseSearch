@@ -12,13 +12,15 @@
     <link rel="stylesheet" href="http://cdn.amazeui.org/amazeui/2.7.1/css/amazeui.min.css" />
     <link href="~/CSS/common.css" rel="stylesheet" />
     <script>
-        var getDataAction = '@Url.Action("GetHonestHouseData")';
-        var getDataByIndexAction = '@Url.Action("GetHonestHouseDataByIndex")';
+      
+        var getViewDefaultDataAction = '@Url.Action("GetDefaultHonestHouseData")';
+        var getDataPageCount = '@Url.Action("GetHonestHousePageCount")';
+        var getDataByPageIndexAction = '@Url.Action("GetHonestHouseDataByCostAndPageIndex")';
     </script>
 
-    <script src="/DomainJS/lib/require.2.1.1.min.js" defer async="true"></script>
+    <script src="~/DomainJS/lib/require.2.1.1.min.js" defer async="true"></script>
     <!-- <script src="/DomainJS/require.2.1.1.min.js" data-main="/DomainJS/home"></script> -->
-    <script src="/DomainJS/lib/require.2.1.1.min.js" data-main="/DomainJS/main-built"></script>
+    <script src="~/DomainJS/lib/require.2.1.1.min.js" data-main="/DomainJS/main-built"></script>
 
 </head>
 

@@ -56,10 +56,10 @@ namespace _58HouseSearch.Controllers
             try
             {
                 var roomList = GetRoomList(costFrom, costTo, cnName, index);
-                return Json(new { IsSuccess = true, HouseInfos = roomList });
+                return Json(new { IsSuccess = true, HouseInfos = roomList ,PageIndex= index});
             }catch(Exception ex)
             {
-                return Json(new { IsSuccess = false, Error = "获取数据异常。" + ex.ToString() });
+                return Json(new { IsSuccess = false, Error = "获取数据异常。" + ex.ToString() , PageIndex = index });
             }
            
         }
@@ -96,7 +96,7 @@ namespace _58HouseSearch.Controllers
 
 
 
-        public ActionResult Get58CityRoomDataByIndex(string cnName,int index)
+        public ActionResult GetDefault58CityRoomData(string cnName,int index)
         {
             var lstHouseInfo = GetRoomListByIndex(cnName, index);
             if(lstHouseInfo==null)

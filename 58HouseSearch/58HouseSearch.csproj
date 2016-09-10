@@ -115,6 +115,12 @@
     <Content Include="DomainJS\domready.js" />
     <Content Include="DomainJS\es5.js" />
     <Content Include="DomainJS\home.js" />
+    <Content Include="DomainJS\lib\addToolbar.js" />
+    <Content Include="DomainJS\lib\amazeui.2.7.1.min.js" />
+    <Content Include="DomainJS\lib\es5.js" />
+    <Content Include="DomainJS\lib\jquery-1.11.3.min.js" />
+    <Content Include="DomainJS\lib\jquery.range.js" />
+    <Content Include="DomainJS\lib\require.2.1.1.min.js" />
     <Content Include="DomainJS\main-built.js" />
     <Content Include="DomainJS\mapController.js" />
     <Content Include="DomainJS\mapSignleton.js" />
@@ -165,7 +171,6 @@
   <ItemGroup>
     <Content Include="DomainJS\city.json" />
     <Content Include="DomainJS\package.sh" />
-    <Content Include="DomainJS\pv.json" />
     <None Include="Properties\PublishProfiles\58house.pubxml" />
     <Content Include="Views\HonestHouse\Index.cshtml" />
     <Content Include="Views\PeopleRenting\Index.cshtml" />
@@ -188,7 +193,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>32995</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:59903/</IISUrl>
+          <IISUrl>http://localhost:32995/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
