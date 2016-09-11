@@ -11,11 +11,11 @@
     optimizeCss: 'standard',
     removeCombined: true,
     paths: {
-        jquery: 'lib/jquery-1.11.3.min',
-        es5: 'lib/es5',
-        "jquery.range": 'lib/jquery.range',
-        AMUI: 'lib/amazeui.2.7.1.min',
-        addToolbar: 'lib/addToolbar',
+        jquery: 'jquery-1.11.3.min',
+        es5: 'es5',
+        "jquery.range": 'jquery.range',
+        AMUI: 'amazeui.2.7.1.min',
+        addToolbar: 'addToolbar',
     },
 
     shim: {
@@ -30,5 +30,5 @@
         }
     },
     name: "home",
-    out: "housecommom.js"
+    out: "main-built.js"
 })

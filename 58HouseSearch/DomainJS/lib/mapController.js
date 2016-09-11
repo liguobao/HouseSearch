@@ -156,7 +156,6 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker', 'polygon
                                
                                 if (result.PageIndex == pageCount - 1) {
                                     $.AMUI.progress.done();
-                                    $("#Get58Data").attr("disabled", false);
                                 }
                                
                             }
