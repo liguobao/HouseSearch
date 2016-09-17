@@ -21,7 +21,9 @@ namespace _58HouseSearch.Controllers
             return View();
         }
 
-        public ActionResult GetHonestHouseData(int costFrom, int costTo, string cnName)
+      
+
+        public ActionResult GetHonestHousePageCount(int costFrom, int costTo, string cnName)
         {
             if (costTo <= 0 || costTo < costFrom)
             {
@@ -32,29 +34,60 @@ namespace _58HouseSearch.Controllers
             {
                 return Json(new { IsSuccess = false, Error = "城市定位失败，建议清除浏览器缓存后重新进入。" });
             }
-           
+
+            try
+            {
+                var pageCount = GetPageNum(costFrom, costTo, cnName);
+                if (pageCount == 0)
+                    return Json(new { IsSuccess = false, Error = $"没有找到价格区间为{costFrom} - {costTo}的房源信息,大部分情况是因为该市没有诚信房源数据。" });
+                return Json(new { IsSuccess = true, PageCount = pageCount });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { IsSuccess = false, Error = "由于某种诡异的原因，爬取数据奔溃了...建议重试或者重新输入条件。下面是你看不懂的异常信息：" + ex.ToString() });
+            }
+
+
+
+
+        }
+
+
+        public ActionResult GetHonestHouseDataByCostAndPageIndex(int costFrom, int costTo, string cnName,int index)
+        {
+            if (costTo <= 0 || costTo < costFrom)
+            {
+                return Json(new { IsSuccess = false, Error = "输入数据有误，请重新输入。" });
+            }
+
+            if (string.IsNullOrEmpty(cnName))
+            {
+                return Json(new { IsSuccess = false, Error = "城市定位失败，建议清除浏览器缓存后重新进入。" });
+            }
+
             try
             {
                 var pageCount = GetPageNum(costFrom, costTo, cnName);
                 if (pageCount == 0)
                     return Json(new { IsSuccess = false, Error = $"没有找到价格区间为{costFrom} - {costTo}的房源信息,大部分情况是因为该市没有诚信房源数据。" });
 
-                var roomList = Enumerable.Range(1, pageCount).Select(index => GetRoomList(costFrom, costTo, cnName, index)).Aggregate((a, b) => a.Concat(b));
-                return Json(new { IsSuccess = true, HouseInfos = roomList });
+                var roomList = GetRoomList(costFrom, costTo, cnName, index);
+                return Json(new { IsSuccess = true, HouseInfos = roomList,PageIndex=index });
             }
             catch (Exception ex)
             {
-                return Json(new { IsSuccess = false, Error = "由于某种诡异的原因，爬取数据奔溃了...建议重试或者重新输入条件。下面是你看不懂的异常信息："+ex.ToString()  });
+                return Json(new { IsSuccess = false, Error = "由于某种诡异的原因，爬取数据奔溃了...建议重试或者重新输入条件。下面是你看不懂的异常信息：" + ex.ToString() });
             }
-          
 
-         
+
+
 
         }
 
 
 
-        public ActionResult GetHonestHouseDataByIndex( string cnName,int index)
+
+        public ActionResult GetDefaultHonestHouseData( string cnName,int index)
         {
           
             try
@@ -126,7 +159,7 @@ namespace _58HouseSearch.Controllers
         }
 
 
-        public int GetPageNum(int costFrom, int costTo, string cnName)
+        private int GetPageNum(int costFrom, int costTo, string cnName)
         {
             var url = $"http://{cnName}.58.com/zufang/pn1/?isreal=true&minprice={costFrom}_{costTo}";
             var htmlResult = HTTPHelper.GetHTMLByURL(url);

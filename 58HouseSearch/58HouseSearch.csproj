@@ -108,9 +108,27 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="CSS\common.css" />
-    <Content Include="DomainJS\honesthouse.js" />
+    <Content Include="DomainJS\amazeui.2.7.1.min.js" />
+    <Content Include="DomainJS\build.js" />
+    <Content Include="DomainJS\city.js" />
+    <Content Include="DomainJS\commuteGo.js" />
+    <Content Include="DomainJS\domready.js" />
+    <Content Include="DomainJS\es5.js" />
     <Content Include="DomainJS\home.js" />
-    <Content Include="DomainJS\housecommon.js" />
+    <Content Include="DomainJS\housecommom.js" />
+    <Content Include="DomainJS\lib\addToolbar.js" />
+    <Content Include="DomainJS\lib\amazeui.2.7.1.min.js" />
+    <Content Include="DomainJS\lib\es5.js" />
+    <Content Include="DomainJS\lib\jquery-1.11.3.min.js" />
+    <Content Include="DomainJS\lib\jquery.range.js" />
+    <Content Include="DomainJS\lib\require.2.1.1.min.js" />
+    <Content Include="DomainJS\mapController.js" />
+    <Content Include="DomainJS\mapSignleton.js" />
+    <Content Include="DomainJS\marker.js" />
+    <Content Include="DomainJS\polygon.js" />
+    <Content Include="DomainJS\transfer.js" />
+    <Content Include="DomainJS\vehicle.js" />
+    <Content Include="DomainJS\workLocation.js" />
     <Content Include="Global.asax" />
     <Content Include="IMG\Gradient\Blue.png" />
     <Content Include="IMG\Little\Black.png" />
@@ -152,7 +170,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="DomainJS\city.json" />
-    <Content Include="pv.json" />
+    <Content Include="DomainJS\package.sh" />
     <None Include="Properties\PublishProfiles\58house.pubxml" />
     <Content Include="Views\HonestHouse\Index.cshtml" />
     <Content Include="Views\PeopleRenting\Index.cshtml" />
@@ -175,7 +193,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>32995</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:59903/</IISUrl>
+          <IISUrl>http://localhost:32995/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

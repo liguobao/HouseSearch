@@ -18,7 +18,52 @@ namespace _58HouseSearch.Controllers
             return View();
         }
 
-       
+        /// <summary>
+        /// 获取本次请求总页面，用于下次请求总数
+        /// </summary>
+        /// <param name="costFrom"></param>
+        /// <param name="costTo"></param>
+        /// <param name="cnName"></param>
+        /// <returns></returns>
+        public ActionResult Get58CityRoomPageCount(int costFrom, int costTo, string cnName)
+        {
+
+            if (costTo <= 0 || costTo < costFrom)
+            {
+                return Json(new { IsSuccess = false, Error = "输入数据有误，请重新输入。" });
+            }
+
+            if (string.IsNullOrEmpty(cnName))
+            {
+                return Json(new { IsSuccess = false, Error = "城市定位失败，建议清除浏览器缓存后重新进入。" });
+            }
+
+            var listSum = GetListSum(costFrom, costTo, cnName);
+            var pageCount = listSum % 20 == 0 ? listSum / 20 : listSum / 20 + 1;
+            if (pageCount == 0)
+            {
+                return Json(new { IsSuccess = false, Error = $"没有找到价格区间为{costFrom} - {costTo}的房子。" });
+            }
+
+            return Json(new { IsSuccess = true,PageCount = pageCount });
+
+
+        }
+        
+
+        public ActionResult Get58CityRoomDataByCostAndIndex(int costFrom, int costTo, string cnName,int index)
+        {
+            try
+            {
+                var roomList = GetRoomList(costFrom, costTo, cnName, index);
+                return Json(new { IsSuccess = true, HouseInfos = roomList ,PageIndex= index});
+            }catch(Exception ex)
+            {
+                return Json(new { IsSuccess = false, Error = "获取数据异常。" + ex.ToString() , PageIndex = index });
+            }
+           
+        }
+
 
         public ActionResult Get58CityRoomData(int costFrom, int costTo, string cnName)
         {
@@ -51,7 +96,7 @@ namespace _58HouseSearch.Controllers
 
 
 
-        public ActionResult Get58CityRoomDataByIndex(string cnName,int index)
+        public ActionResult GetDefault58CityRoomData(string cnName,int index)
         {
             var lstHouseInfo = GetRoomListByIndex(cnName, index);
             if(lstHouseInfo==null)

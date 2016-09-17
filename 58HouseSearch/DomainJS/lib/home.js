@@ -1,10 +1,10 @@
 ﻿require.config({
-    baseUrl: '/DomainJS/',
+    baseUrl: '/DomainJS/lib/',
     paths: {
-        jquery: "lib/jquery-1.11.3.min",
-        "AMUI": "lib/amazeui.2.7.1.min",
-        "jquery.range": "lib/jquery.range",
-        "es5": "lib/es5",
+        jquery: "jquery-1.11.3.min",
+        "AMUI": "amazeui.2.7.1.min",
+        "jquery.range": "jquery.range",
+        "es5": "es5",
         "mapController": "mapController",
         "addToolbar": "addToolbar",
     },

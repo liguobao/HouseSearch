@@ -10,7 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/58HouseSearch.dll">
-      <publishTime>08/25/2016 23:39:54</publishTime>
+      <publishTime>09/11/2016 23:39:01</publishTime>
     </File>
     <File Include="bin/AngleSharp.dll">
       <publishTime>08/12/2016 21:52:12</publishTime>
@@ -90,14 +90,32 @@
     <File Include="CSS/common.css">
       <publishTime>08/24/2016 00:04:17</publishTime>
     </File>
+    <File Include="DomainJS/amazeui.2.7.1.min.js">
+      <publishTime>09/11/2016 23:02:33</publishTime>
+    </File>
+    <File Include="DomainJS/build.js">
+      <publishTime>09/11/2016 23:31:09</publishTime>
+    </File>
     <File Include="DomainJS/chinesetospell.js">
       <publishTime>08/07/2016 17:35:03</publishTime>
     </File>
+    <File Include="DomainJS/city.js">
+      <publishTime>09/11/2016 23:02:33</publishTime>
+    </File>
     <File Include="DomainJS/city.json">
-      <publishTime>08/13/2016 10:27:49</publishTime>
+      <publishTime>09/11/2016 23:02:33</publishTime>
+    </File>
+    <File Include="DomainJS/commuteGo.js">
+      <publishTime>09/11/2016 23:02:33</publishTime>
+    </File>
+    <File Include="DomainJS/domready.js">
+      <publishTime>09/11/2016 23:02:33</publishTime>
+    </File>
+    <File Include="DomainJS/es5.js">
+      <publishTime>09/11/2016 23:02:33</publishTime>
     </File>
     <File Include="DomainJS/home.js">
-      <publishTime>08/25/2016 23:22:36</publishTime>
+      <publishTime>09/11/2016 23:19:57</publishTime>
     </File>
     <File Include="DomainJS/honesthome.js">
       <publishTime>08/20/2016 09:41:46</publishTime>
@@ -105,8 +123,56 @@
     <File Include="DomainJS/honesthouse.js">
       <publishTime>08/25/2016 23:28:25</publishTime>
     </File>
+    <File Include="DomainJS/housecommom.js">
+      <publishTime>09/11/2016 23:35:00</publishTime>
+    </File>
     <File Include="DomainJS/housecommon.js">
       <publishTime>08/25/2016 23:28:35</publishTime>
+    </File>
+    <File Include="DomainJS/lib/addToolbar.js">
+      <publishTime>09/10/2016 23:56:47</publishTime>
+    </File>
+    <File Include="DomainJS/lib/amazeui.2.7.1.min.js">
+      <publishTime>09/10/2016 23:56:47</publishTime>
+    </File>
+    <File Include="DomainJS/lib/es5.js">
+      <publishTime>09/10/2016 23:56:47</publishTime>
+    </File>
+    <File Include="DomainJS/lib/jquery-1.11.3.min.js">
+      <publishTime>09/10/2016 23:56:47</publishTime>
+    </File>
+    <File Include="DomainJS/lib/jquery.range.js">
+      <publishTime>09/10/2016 23:56:47</publishTime>
+    </File>
+    <File Include="DomainJS/lib/require.2.1.1.min.js">
+      <publishTime>09/10/2016 23:56:47</publishTime>
+    </File>
+    <File Include="DomainJS/main-built.js">
+      <publishTime>09/11/2016 01:29:10</publishTime>
+    </File>
+    <File Include="DomainJS/mapController.js">
+      <publishTime>09/11/2016 23:29:30</publishTime>
+    </File>
+    <File Include="DomainJS/mapSignleton.js">
+      <publishTime>09/11/2016 23:02:34</publishTime>
+    </File>
+    <File Include="DomainJS/marker.js">
+      <publishTime>09/11/2016 23:02:34</publishTime>
+    </File>
+    <File Include="DomainJS/package.sh">
+      <publishTime>09/11/2016 23:02:34</publishTime>
+    </File>
+    <File Include="DomainJS/polygon.js">
+      <publishTime>09/11/2016 23:02:34</publishTime>
+    </File>
+    <File Include="DomainJS/transfer.js">
+      <publishTime>09/11/2016 23:02:34</publishTime>
+    </File>
+    <File Include="DomainJS/vehicle.js">
+      <publishTime>09/11/2016 23:02:34</publishTime>
+    </File>
+    <File Include="DomainJS/workLocation.js">
+      <publishTime>09/11/2016 23:02:34</publishTime>
     </File>
     <File Include="favicon.ico">
       <publishTime>08/20/2016 10:15:44</publishTime>
@@ -211,13 +277,13 @@
       <publishTime>08/25/2016 23:38:13</publishTime>
     </File>
     <File Include="Views/HonestHouse/Index.cshtml">
-      <publishTime>08/25/2016 23:32:11</publishTime>
+      <publishTime>09/11/2016 23:40:55</publishTime>
     </File>
     <File Include="Views/House/Index.cshtml">
-      <publishTime>08/25/2016 23:29:09</publishTime>
+      <publishTime>09/11/2016 23:40:38</publishTime>
     </File>
     <File Include="Views/PeopleRenting/Index.cshtml">
-      <publishTime>08/25/2016 23:32:01</publishTime>
+      <publishTime>09/11/2016 23:40:31</publishTime>
     </File>
     <File Include="Views/Web.config">
       <publishTime>08/07/2016 12:32:02</publishTime>
