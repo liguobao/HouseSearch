@@ -114,6 +114,7 @@
     <Content Include="DomainJS\commuteGo.js" />
     <Content Include="DomainJS\domready.js" />
     <Content Include="DomainJS\es5.js" />
+    <Content Include="DomainJS\helper.js" />
     <Content Include="DomainJS\home.js" />
     <Content Include="DomainJS\housecommom.js" />
     <Content Include="DomainJS\lib\addToolbar.js" />

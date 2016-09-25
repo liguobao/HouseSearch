@@ -1,7 +1,8 @@
 "use strict";
 
 // 地图控制器相关，封装了地图对象
-var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker', 'polygon', 'workLocation', 'city', 'commuteGo'], function($, AMUI, mapSignleton, marker, polygon, workLocation, city, commuteGo) {
+var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker', 'polygon', 'workLocation', 'city', 'commuteGo', "helper"],
+    function ($, AMUI, mapSignleton, marker, polygon, workLocation, city, commuteGo,helper) {
     var _map = mapSignleton.map;
     var _amapTransfer = null;
     var _infoWindow = mapSignleton.infoWindow;
@@ -57,8 +58,14 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker', 'polygon
 
         showCityInfo(function() {
             $.AMUI.progress.start();
-            for (var i = 1; i <= 15; i++) {
-                GetDataByIndex(i, 15);
+            
+            var pageCount = helper.getQueryString("PageCount");
+            console.log(pageCount);
+            if (!pageCount) {
+                pageCount = 15;
+            }
+            for (var i = 1; i <= pageCount; i++) {
+                GetDataByIndex(i, pageCount);
             }
         })
     }
