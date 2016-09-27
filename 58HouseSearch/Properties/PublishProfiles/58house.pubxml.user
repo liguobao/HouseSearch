@@ -6,56 +6,56 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <_PublishTargetUrl>E:\website\58house</_PublishTargetUrl>
+    <_PublishTargetUrl>D:\website\58house</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/58HouseSearch.dll">
-      <publishTime>09/11/2016 23:39:01</publishTime>
+      <publishTime>09/27/2016 22:04:51</publishTime>
     </File>
     <File Include="bin/AngleSharp.dll">
-      <publishTime>08/12/2016 21:52:12</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="bin/HtmlAgilityPack.dll">
       <publishTime>08/07/2016 12:36:04</publishTime>
     </File>
     <File Include="bin/Microsoft.Web.Infrastructure.dll">
-      <publishTime>08/07/2016 12:32:04</publishTime>
+      <publishTime>07/08/2013 15:15:08</publishTime>
     </File>
     <File Include="bin/Microsoft.Web.Mvc.FixedDisplayModes.dll">
       <publishTime>08/07/2016 12:32:04</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
-      <publishTime>08/12/2016 21:52:12</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="bin/System.Net.Http.Formatting.dll">
-      <publishTime>08/07/2016 12:32:05</publishTime>
+      <publishTime>07/09/2013 11:04:28</publishTime>
     </File>
     <File Include="bin/System.Web.Helpers.dll">
       <publishTime>08/07/2016 12:32:04</publishTime>
     </File>
     <File Include="bin/System.Web.Http.dll">
-      <publishTime>05/07/2013 13:09:16</publishTime>
+      <publishTime>07/09/2013 11:04:28</publishTime>
     </File>
     <File Include="bin/System.Web.Http.SelfHost.dll">
       <publishTime>05/20/2013 08:04:52</publishTime>
     </File>
     <File Include="bin/System.Web.Http.WebHost.dll">
-      <publishTime>05/07/2013 13:09:18</publishTime>
+      <publishTime>07/09/2013 11:04:28</publishTime>
     </File>
     <File Include="bin/System.Web.Mvc.dll">
-      <publishTime>08/07/2016 12:32:04</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="bin/System.Web.Razor.dll">
-      <publishTime>08/07/2016 12:32:04</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="bin/System.Web.WebPages.Deployment.dll">
-      <publishTime>08/07/2016 12:32:04</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="bin/System.Web.WebPages.dll">
-      <publishTime>08/07/2016 12:32:04</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="bin/System.Web.WebPages.Razor.dll">
-      <publishTime>08/07/2016 12:32:04</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="bin/zh-Hans/System.Net.Http.Formatting.resources.dll">
       <publishTime>07/09/2013 11:33:54</publishTime>
@@ -64,58 +64,61 @@
       <publishTime>08/07/2016 12:32:05</publishTime>
     </File>
     <File Include="bin/zh-Hans/System.Web.Http.resources.dll">
-      <publishTime>08/07/2016 12:32:06</publishTime>
+      <publishTime>07/09/2013 11:33:54</publishTime>
     </File>
     <File Include="bin/zh-Hans/System.Web.Http.SelfHost.resources.dll">
       <publishTime>07/09/2013 11:33:54</publishTime>
     </File>
     <File Include="bin/zh-Hans/System.Web.Http.WebHost.resources.dll">
-      <publishTime>08/07/2016 12:32:06</publishTime>
+      <publishTime>07/09/2013 11:34:00</publishTime>
     </File>
     <File Include="bin/zh-Hans/System.Web.Mvc.resources.dll">
-      <publishTime>08/07/2016 12:32:06</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="bin/zh-Hans/System.Web.Razor.resources.dll">
-      <publishTime>08/07/2016 12:32:05</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="bin/zh-Hans/System.Web.WebPages.Deployment.resources.dll">
-      <publishTime>08/07/2016 12:32:05</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="bin/zh-Hans/System.Web.WebPages.Razor.resources.dll">
-      <publishTime>08/07/2016 12:32:05</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="bin/zh-Hans/System.Web.WebPages.resources.dll">
-      <publishTime>08/07/2016 12:32:05</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="CSS/common.css">
-      <publishTime>08/24/2016 00:04:17</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="DomainJS/amazeui.2.7.1.min.js">
-      <publishTime>09/11/2016 23:02:33</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="DomainJS/build.js">
-      <publishTime>09/11/2016 23:31:09</publishTime>
+      <publishTime>09/27/2016 20:29:24</publishTime>
     </File>
     <File Include="DomainJS/chinesetospell.js">
       <publishTime>08/07/2016 17:35:03</publishTime>
     </File>
     <File Include="DomainJS/city.js">
-      <publishTime>09/11/2016 23:02:33</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="DomainJS/city.json">
-      <publishTime>09/11/2016 23:02:33</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="DomainJS/commuteGo.js">
-      <publishTime>09/11/2016 23:02:33</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="DomainJS/domready.js">
-      <publishTime>09/11/2016 23:02:33</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="DomainJS/es5.js">
-      <publishTime>09/11/2016 23:02:33</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
+    </File>
+    <File Include="DomainJS/helper.js">
+      <publishTime>09/27/2016 20:29:24</publishTime>
     </File>
     <File Include="DomainJS/home.js">
-      <publishTime>09/11/2016 23:19:57</publishTime>
+      <publishTime>09/27/2016 21:16:01</publishTime>
     </File>
     <File Include="DomainJS/honesthome.js">
       <publishTime>08/20/2016 09:41:46</publishTime>
@@ -124,61 +127,61 @@
       <publishTime>08/25/2016 23:28:25</publishTime>
     </File>
     <File Include="DomainJS/housecommom.js">
-      <publishTime>09/11/2016 23:35:00</publishTime>
+      <publishTime>09/27/2016 20:29:24</publishTime>
     </File>
     <File Include="DomainJS/housecommon.js">
       <publishTime>08/25/2016 23:28:35</publishTime>
     </File>
     <File Include="DomainJS/lib/addToolbar.js">
-      <publishTime>09/10/2016 23:56:47</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="DomainJS/lib/amazeui.2.7.1.min.js">
-      <publishTime>09/10/2016 23:56:47</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="DomainJS/lib/es5.js">
-      <publishTime>09/10/2016 23:56:47</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="DomainJS/lib/jquery-1.11.3.min.js">
-      <publishTime>09/10/2016 23:56:47</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="DomainJS/lib/jquery.range.js">
-      <publishTime>09/10/2016 23:56:47</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="DomainJS/lib/require.2.1.1.min.js">
-      <publishTime>09/10/2016 23:56:47</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="DomainJS/main-built.js">
       <publishTime>09/11/2016 01:29:10</publishTime>
     </File>
     <File Include="DomainJS/mapController.js">
-      <publishTime>09/11/2016 23:29:30</publishTime>
+      <publishTime>09/27/2016 20:29:24</publishTime>
     </File>
     <File Include="DomainJS/mapSignleton.js">
-      <publishTime>09/11/2016 23:02:34</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="DomainJS/marker.js">
-      <publishTime>09/11/2016 23:02:34</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="DomainJS/package.sh">
-      <publishTime>09/11/2016 23:02:34</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="DomainJS/polygon.js">
-      <publishTime>09/11/2016 23:02:34</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="DomainJS/transfer.js">
-      <publishTime>09/11/2016 23:02:34</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="DomainJS/vehicle.js">
-      <publishTime>09/11/2016 23:02:34</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="DomainJS/workLocation.js">
-      <publishTime>09/11/2016 23:02:34</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="favicon.ico">
       <publishTime>08/20/2016 10:15:44</publishTime>
     </File>
     <File Include="Global.asax">
-      <publishTime>08/07/2016 12:32:02</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="IMG/Black.png">
       <publishTime>08/23/2016 23:01:56</publishTime>
@@ -187,67 +190,67 @@
       <publishTime>08/23/2016 23:05:41</publishTime>
     </File>
     <File Include="IMG/Gradient/Black.png">
-      <publishTime>08/24/2016 20:28:35</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="IMG/Gradient/Blue.png">
-      <publishTime>08/24/2016 20:34:53</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="IMG/Gradient/LightGreen.png">
-      <publishTime>08/24/2016 20:33:59</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="IMG/Gradient/OrangeYellow.png">
-      <publishTime>08/24/2016 20:32:26</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="IMG/Gradient/PaleGreen.png">
-      <publishTime>08/24/2016 20:34:27</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="IMG/Gradient/PaleRed.png">
-      <publishTime>08/24/2016 20:31:33</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="IMG/Gradient/PaleYellow.png">
-      <publishTime>08/24/2016 20:33:17</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="IMG/Gradient/Pink.png">
-      <publishTime>08/24/2016 20:29:54</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="IMG/Gradient/Red.png">
-      <publishTime>08/24/2016 20:30:38</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="IMG/Gradient/Violet.png">
-      <publishTime>08/24/2016 20:29:23</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="IMG/LightGreen.png">
       <publishTime>08/23/2016 23:04:59</publishTime>
     </File>
     <File Include="IMG/Little/Black.png">
-      <publishTime>08/24/2016 20:09:43</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="IMG/Little/Blue.png">
-      <publishTime>08/24/2016 20:10:30</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="IMG/Little/LightGreen.png">
-      <publishTime>08/24/2016 20:12:48</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="IMG/Little/OrangeYellow.png">
-      <publishTime>08/24/2016 20:13:44</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="IMG/Little/PaleGreen.png">
-      <publishTime>08/24/2016 20:12:09</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="IMG/Little/PaleRed.png">
-      <publishTime>08/24/2016 20:14:25</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="IMG/Little/PaleYellow.png">
-      <publishTime>08/24/2016 20:13:18</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="IMG/Little/Pink.png">
-      <publishTime>08/24/2016 20:15:35</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="IMG/Little/Red.png">
-      <publishTime>08/24/2016 20:14:53</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="IMG/Little/Violet.png">
-      <publishTime>08/24/2016 20:16:01</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="IMG/OrangeYellow.png">
       <publishTime>08/23/2016 23:03:57</publishTime>
@@ -271,25 +274,25 @@
       <publishTime>08/23/2016 23:02:16</publishTime>
     </File>
     <File Include="packages.config">
-      <publishTime>08/12/2016 21:52:11</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="pv.json">
       <publishTime>08/25/2016 23:38:13</publishTime>
     </File>
     <File Include="Views/HonestHouse/Index.cshtml">
-      <publishTime>09/11/2016 23:40:55</publishTime>
+      <publishTime>09/27/2016 20:29:24</publishTime>
     </File>
     <File Include="Views/House/Index.cshtml">
-      <publishTime>09/11/2016 23:40:38</publishTime>
+      <publishTime>09/27/2016 21:50:58</publishTime>
     </File>
     <File Include="Views/PeopleRenting/Index.cshtml">
-      <publishTime>09/11/2016 23:40:31</publishTime>
+      <publishTime>09/27/2016 20:29:24</publishTime>
     </File>
     <File Include="Views/Web.config">
-      <publishTime>08/07/2016 12:32:02</publishTime>
+      <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>08/12/2016 22:33:56</publishTime>
+      <publishTime>09/27/2016 20:53:51</publishTime>
     </File>
   </ItemGroup>
 </Project>

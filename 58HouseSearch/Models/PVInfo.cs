@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -19,6 +20,6 @@ namespace _58HouseSearch.Models
     {
         public long PVCount { get; set; }
 
-        public List<PVInfo> LstPVInfo { get; set; }
+        public ConcurrentBag<PVInfo> LstPVInfo { get; set; }
     }
 }

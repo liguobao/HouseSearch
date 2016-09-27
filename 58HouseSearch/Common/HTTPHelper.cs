@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using Newtonsoft.Json.Converters;
 using _58HouseSearch.Models;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 
 namespace _58HouseSearch
 {
@@ -73,14 +74,20 @@ namespace _58HouseSearch
             }
         }
 
+        private static WebPVInfo _webPVInfo;
 
-        public static void WritePVInfo(string jsonPath, string userHostAddress,string actionAddress)
+        /// <summary>
+        /// 获取PV数据
+        /// </summary>
+        /// <param name="pvJsonPath"></param>
+        /// <returns></returns>
+        public static WebPVInfo GetTheWebPVInfo(string pvJsonPath)
         {
-            try
+            if (_webPVInfo == null)
             {
-                using (StreamReader sr = new StreamReader(jsonPath))
+                using (StreamReader sr = new StreamReader(pvJsonPath))
                 {
-
+                    try
                     {
                         JsonSerializer serializer = new JsonSerializer();
                         serializer.Converters.Add(new JavaScriptDateTimeConverter());
@@ -89,40 +96,100 @@ namespace _58HouseSearch
                         //构建Json.net的读取流  
                         JsonReader reader = new JsonTextReader(sr);
                         //对读取出的Json.net的reader流进行反序列化，并装载到模型中  
-                        var webPV = serializer.Deserialize<WebPVInfo>(reader);
-                        if (webPV == null)
-                        {
-                            webPV = new WebPVInfo();
-                            webPV.PVCount = 1;
-                            webPV.LstPVInfo = new List<PVInfo>() { new PVInfo() { PVIP = userHostAddress, PVTime = DateTime.Now.ToString(),PVActionAddress = actionAddress } };
-                        }
-                        else
-                        {
-                            webPV.PVCount = webPV.PVCount + 1;
-                            webPV.LstPVInfo.Add(new PVInfo() { PVIP = userHostAddress, PVTime = DateTime.Now.ToString(), PVActionAddress = actionAddress });
-                        }
+                        _webPVInfo = serializer.Deserialize<WebPVInfo>(reader);
                         reader.Close();
-
-                        using (StreamWriter sw = new StreamWriter(jsonPath))
-                        {
-                            //构建Json.net的写入流  
-                            JsonWriter writer = new JsonTextWriter(sw);
-                            //把模型数据序列化并写入Json.net的JsonWriter流中  
-                            serializer.Serialize(writer, webPV);
-                            //ser.Serialize(writer, ht);  
-                            writer.Close();
-                            sw.Close();
-                        }
+                    }catch
+                    {
+                        _webPVInfo = new WebPVInfo();
+                        _webPVInfo.LstPVInfo = new ConcurrentBag<PVInfo>();
                     }
                 }
-
             }
-            catch(Exception ex)
+            return _webPVInfo;
+        }
+
+        /// <summary>
+        /// 写入访问记录
+        /// </summary>
+        /// <param name="jsonPath"></param>
+        /// <param name="userHostAddress"></param>
+        /// <param name="actionAddress"></param>
+        public static void WritePVInfo(string jsonPath, string userHostAddress, string actionAddress)
+        {
+            try
+            {
+                WebPVInfo webPV = AddPVLog(jsonPath, userHostAddress, actionAddress);
+
+                WriteToJsonFile(jsonPath, webPV);
+            }
+            catch (Exception ex)
             {
 
             }
-        
-           
+
+
+        }
+
+        /// <summary>
+        /// 增加访问记录
+        /// </summary>
+        /// <param name="jsonPath"></param>
+        /// <param name="userHostAddress"></param>
+        /// <param name="actionAddress"></param>
+        /// <returns></returns>
+        private static WebPVInfo AddPVLog(string jsonPath, string userHostAddress, string actionAddress)
+        {
+            var webPV = GetTheWebPVInfo(jsonPath);
+            if (webPV == null)
+            {
+                webPV = new WebPVInfo();
+                webPV.PVCount = 1;
+                webPV.LstPVInfo = new ConcurrentBag<PVInfo>()
+                    {
+                        new PVInfo()
+                        {
+                            PVIP = userHostAddress,
+                            PVTime = DateTime.Now.ToString(),
+                            PVActionAddress = actionAddress
+                        }
+                    };
+            }
+            else
+            {
+
+                webPV.LstPVInfo.Add(new PVInfo() { PVIP = userHostAddress, PVTime = DateTime.Now.ToString(), PVActionAddress = actionAddress });
+                webPV.PVCount = webPV.LstPVInfo.Count;
+            }
+
+            return webPV;
+        }
+
+        /// <summary>
+        /// PV数据写入文件
+        /// </summary>
+        /// <param name="jsonPath"></param>
+        /// <param name="webPV"></param>
+        private static void WriteToJsonFile(string jsonPath, WebPVInfo webPV)
+        {
+            if (webPV.PVCount % 10 == 0)
+            {
+
+                using (StreamWriter sw = new StreamWriter(jsonPath))
+                {
+                    JsonSerializer serializer = new JsonSerializer();
+                    serializer.Converters.Add(new JavaScriptDateTimeConverter());
+                    serializer.NullValueHandling = NullValueHandling.Ignore;
+                    //构建Json.net的写入流  
+                    JsonWriter writer = new JsonTextWriter(sw);
+                    //把模型数据序列化并写入Json.net的JsonWriter流中  
+                    serializer.Serialize(writer, webPV);
+                    //ser.Serialize(writer, ht);  
+                    writer.Close();
+                    sw.Close();
+                }
+            }
         }
     }
+
+    
 }

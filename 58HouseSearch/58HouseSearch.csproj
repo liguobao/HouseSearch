@@ -92,6 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\CommonEnum.cs" />
+    <Compile Include="Controllers\CommomController.cs" />
     <Compile Include="Controllers\HonestHouseController.cs" />
     <Compile Include="Controllers\HouseController.cs" />
     <Compile Include="Controllers\PeopleRentingController.cs" />
