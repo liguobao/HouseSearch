@@ -21,7 +21,7 @@ namespace _58HouseSearch.Controllers
         {
             try
             {
-                var pvInfo = HTTPHelper.GetTheWebPVInfo(Server.MapPath("../pv.json"));
+                var pvInfo = HTTPHelper.GetTheWebPVInfo();
                 return Json(new { IsSuccess = true, PVCount = pvInfo.PVCount });
             }
             catch (Exception ex)

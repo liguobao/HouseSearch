@@ -16,10 +16,16 @@ namespace _58HouseSearch.Models
 
     }
 
+    [Serializable]
     public class WebPVInfo
     {
         public long PVCount { get; set; }
 
-        public ConcurrentBag<PVInfo> LstPVInfo { get; set; }
+        public List<PVInfo> LstPVInfo { get; set; }
+
+        [System.Xml.Serialization.XmlIgnore]
+        [System.Web.Script.Serialization.ScriptIgnore]
+        [NonSerialized]
+        public ConcurrentBag<PVInfo> SalesLstPVInfo;
     }
 }

@@ -9,6 +9,7 @@ using _58HouseSearch.Models;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
 
+
 namespace _58HouseSearch
 {
     public class HTTPHelper
@@ -74,18 +75,26 @@ namespace _58HouseSearch
             }
         }
 
+        internal static WebPVInfo GetTheWebPVInfo()
+        {
+            return _webPVInfo;
+        }
+
         private static WebPVInfo _webPVInfo;
+
+        private static string _pvJsonPath;
 
         /// <summary>
         /// 获取PV数据
         /// </summary>
         /// <param name="pvJsonPath"></param>
         /// <returns></returns>
-        public static WebPVInfo GetTheWebPVInfo(string pvJsonPath)
+        public static WebPVInfo InitWebPVInfo(string pvJsonPath)
         {
+            _pvJsonPath = pvJsonPath;
             if (_webPVInfo == null)
             {
-                using (StreamReader sr = new StreamReader(pvJsonPath))
+                using (StreamReader sr = new StreamReader(_pvJsonPath))
                 {
                     try
                     {
@@ -97,11 +106,20 @@ namespace _58HouseSearch
                         JsonReader reader = new JsonTextReader(sr);
                         //对读取出的Json.net的reader流进行反序列化，并装载到模型中  
                         _webPVInfo = serializer.Deserialize<WebPVInfo>(reader);
+                        _webPVInfo.SalesLstPVInfo = new ConcurrentBag<PVInfo>();
+                        if (_webPVInfo.LstPVInfo!=null)
+                        {
+                            _webPVInfo.LstPVInfo.ForEach(item=>_webPVInfo.SalesLstPVInfo.Add(item));
+                        }
                         reader.Close();
-                    }catch
+                        LogHelper.WriteLog("The First WebPVInfo Deserialize Success!");
+                    }catch(Exception ex)
                     {
                         _webPVInfo = new WebPVInfo();
-                        _webPVInfo.LstPVInfo = new ConcurrentBag<PVInfo>();
+                        _webPVInfo.LstPVInfo = new List<PVInfo>();
+                        _webPVInfo.SalesLstPVInfo = new ConcurrentBag<PVInfo>();
+
+                        LogHelper.WriteError("Deserialize WebPVInfo Exception", ex);
                     }
                 }
             }
@@ -114,17 +132,16 @@ namespace _58HouseSearch
         /// <param name="jsonPath"></param>
         /// <param name="userHostAddress"></param>
         /// <param name="actionAddress"></param>
-        public static void WritePVInfo(string jsonPath, string userHostAddress, string actionAddress)
+        public static void WritePVInfo(string userHostAddress, string actionAddress)
         {
             try
             {
-                WebPVInfo webPV = AddPVLog(jsonPath, userHostAddress, actionAddress);
-
-                WriteToJsonFile(jsonPath, webPV);
+                WebPVInfo webPV = AddPVLog( userHostAddress, actionAddress);
+                WriteToJsonFile(webPV);
             }
             catch (Exception ex)
             {
-
+                LogHelper.WriteError("WritePVInfo Exception", ex);
             }
 
 
@@ -137,31 +154,12 @@ namespace _58HouseSearch
         /// <param name="userHostAddress"></param>
         /// <param name="actionAddress"></param>
         /// <returns></returns>
-        private static WebPVInfo AddPVLog(string jsonPath, string userHostAddress, string actionAddress)
+        private static WebPVInfo AddPVLog(string userHostAddress, string actionAddress)
         {
-            var webPV = GetTheWebPVInfo(jsonPath);
-            if (webPV == null)
-            {
-                webPV = new WebPVInfo();
-                webPV.PVCount = 1;
-                webPV.LstPVInfo = new ConcurrentBag<PVInfo>()
-                    {
-                        new PVInfo()
-                        {
-                            PVIP = userHostAddress,
-                            PVTime = DateTime.Now.ToString(),
-                            PVActionAddress = actionAddress
-                        }
-                    };
-            }
-            else
-            {
 
-                webPV.LstPVInfo.Add(new PVInfo() { PVIP = userHostAddress, PVTime = DateTime.Now.ToString(), PVActionAddress = actionAddress });
-                webPV.PVCount = webPV.LstPVInfo.Count;
-            }
-
-            return webPV;
+            _webPVInfo.SalesLstPVInfo.Add(new PVInfo() { PVIP = userHostAddress, PVTime = DateTime.Now.ToString(), PVActionAddress = actionAddress });
+            _webPVInfo.PVCount = _webPVInfo.SalesLstPVInfo.Count;
+            return _webPVInfo;
         }
 
         /// <summary>
@@ -169,12 +167,12 @@ namespace _58HouseSearch
         /// </summary>
         /// <param name="jsonPath"></param>
         /// <param name="webPV"></param>
-        private static void WriteToJsonFile(string jsonPath, WebPVInfo webPV)
+        private static void WriteToJsonFile(WebPVInfo webPV)
         {
             if (webPV.PVCount % 10 == 0)
             {
 
-                using (StreamWriter sw = new StreamWriter(jsonPath))
+                using (StreamWriter sw = new StreamWriter(_pvJsonPath))
                 {
                     JsonSerializer serializer = new JsonSerializer();
                     serializer.Converters.Add(new JavaScriptDateTimeConverter());
@@ -182,6 +180,12 @@ namespace _58HouseSearch
                     //构建Json.net的写入流  
                     JsonWriter writer = new JsonTextWriter(sw);
                     //把模型数据序列化并写入Json.net的JsonWriter流中  
+
+                    webPV.LstPVInfo = new List<PVInfo>();
+                    foreach(var item in webPV.SalesLstPVInfo)
+                    {
+                        webPV.LstPVInfo.Add(item);
+                    }
                     serializer.Serialize(writer, webPV);
                     //ser.Serialize(writer, ht);  
                     writer.Close();

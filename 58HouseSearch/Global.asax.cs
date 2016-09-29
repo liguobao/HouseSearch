@@ -19,6 +19,8 @@ namespace _58HouseSearch
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            log4net.Config.XmlConfigurator.Configure();
+            HTTPHelper.InitWebPVInfo(Server.MapPath("./pv.json"));
         }
     }
 }
