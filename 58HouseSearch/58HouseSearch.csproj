@@ -181,6 +181,7 @@
     <None Include="Properties\PublishProfiles\58house.pubxml" />
     <Content Include="Views\HonestHouse\Index.cshtml" />
     <Content Include="Views\PeopleRenting\Index.cshtml" />
+    <Content Include="Views\Commom\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

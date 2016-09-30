@@ -136,8 +136,12 @@ namespace _58HouseSearch
         {
             try
             {
-                WebPVInfo webPV = AddPVLog( userHostAddress, actionAddress);
-                WriteToJsonFile(webPV);
+               AddPVLog( userHostAddress, actionAddress);
+
+                if (_webPVInfo.PVCount % 10 == 0)
+                {
+                    WriteToJsonFile();
+                }
             }
             catch (Exception ex)
             {
@@ -167,30 +171,27 @@ namespace _58HouseSearch
         /// </summary>
         /// <param name="jsonPath"></param>
         /// <param name="webPV"></param>
-        private static void WriteToJsonFile(WebPVInfo webPV)
+        public static void WriteToJsonFile()
         {
-            if (webPV.PVCount % 10 == 0)
+           
+            using (StreamWriter sw = new StreamWriter(_pvJsonPath))
             {
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Converters.Add(new JavaScriptDateTimeConverter());
+                serializer.NullValueHandling = NullValueHandling.Ignore;
+                //构建Json.net的写入流  
+                JsonWriter writer = new JsonTextWriter(sw);
+                //把模型数据序列化并写入Json.net的JsonWriter流中  
 
-                using (StreamWriter sw = new StreamWriter(_pvJsonPath))
+                _webPVInfo.LstPVInfo = new List<PVInfo>();
+                foreach(var item in _webPVInfo.SalesLstPVInfo)
                 {
-                    JsonSerializer serializer = new JsonSerializer();
-                    serializer.Converters.Add(new JavaScriptDateTimeConverter());
-                    serializer.NullValueHandling = NullValueHandling.Ignore;
-                    //构建Json.net的写入流  
-                    JsonWriter writer = new JsonTextWriter(sw);
-                    //把模型数据序列化并写入Json.net的JsonWriter流中  
-
-                    webPV.LstPVInfo = new List<PVInfo>();
-                    foreach(var item in webPV.SalesLstPVInfo)
-                    {
-                        webPV.LstPVInfo.Add(item);
-                    }
-                    serializer.Serialize(writer, webPV);
-                    //ser.Serialize(writer, ht);  
-                    writer.Close();
-                    sw.Close();
+                    _webPVInfo.LstPVInfo.Add(item);
                 }
+                serializer.Serialize(writer, _webPVInfo);
+                //ser.Serialize(writer, ht);  
+                writer.Close();
+                sw.Close();
             }
         }
     }

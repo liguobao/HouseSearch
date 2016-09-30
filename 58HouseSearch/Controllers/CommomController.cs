@@ -13,6 +13,7 @@ namespace _58HouseSearch.Controllers
 
         public ActionResult Index()
         {
+            HTTPHelper.WriteToJsonFile();
             return View();
         }
 
