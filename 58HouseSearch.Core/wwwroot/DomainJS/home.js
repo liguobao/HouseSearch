@@ -42,11 +42,11 @@ require(['domready!', 'jquery', 'AMUI', 'mapController', 'city', 'commuteGo'], f
         data: { },
         success: function (result)
         {
-            if (result.IsSuccess){
-                $("#lblPVCount").text(result.PVCount);
+            if (result.isSuccess){
+                $("#lblPVCount").text(result.pVCount);
             }else {
                 $("#lblPVCount").text(0);
-                console.log(result.Error);
+                console.log(result.error);
             }
         }
     });

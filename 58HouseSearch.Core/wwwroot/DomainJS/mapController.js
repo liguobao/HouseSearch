@@ -23,17 +23,17 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker', 'polygon
             url: getViewDefaultDataAction,
             data: { cnName: city.shortName, index: index },
             success: function(result) {
-                if (result.IsSuccess) {
+                if (result.isSuccess) {
                     var rent_locations = new Set();
-                    result.HouseInfos.forEach(function(item, index) {
+                    result.houseInfos.forEach(function(item, index) {
                         rent_locations.add(item);
                     });
                     rent_locations.forEach(function(element, index) {
-                        marker.add(element.HouseLocation, element.Money, element.HouseURL,
-                            element.LocationMarkBG);
+                        marker.add(element.houseLocation, element.money, element.houseURL,
+                            element.locationMarkBG);
                     });
                 } else {
-                    console.log(result.Error);
+                    console.log(result.error);
                 }
                 if (index == pagecount) {
                     $.AMUI.progress.done();
@@ -60,10 +60,11 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker', 'polygon
             $.AMUI.progress.start();
             
             var pageCount = helper.getQueryString("PageCount");
-            console.log(pageCount);
+           
             if (!pageCount) {
                 pageCount = 15;
             }
+            console.log(pageCount);
             for (var i = 1; i <= pageCount; i++) {
                 GetDataByIndex(i, pageCount);
             }
@@ -135,9 +136,9 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker', 'polygon
             data: { costFrom: costFrom, costTo: costTo, cnName: city.shortName },
             success: function (result)
             {
-                if(result && result.IsSuccess)
+                if(result && result.isSuccess)
                 {
-                    var pageCount = result.PageCount;
+                    var pageCount = result.pageCount;
                     console.log("数据总页数为：" + pageCount);
 
                     for (var index = 0; index < pageCount; index++)
@@ -147,21 +148,21 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker', 'polygon
                             url: getDataByPageIndexAction,
                             data: { costFrom: costFrom, costTo: costTo, cnName: city.shortName, index:index },
                             success: function (result) {
-                                if (result.IsSuccess) {
+                                if (result.isSuccess) {
                                     var rent_locations = new Set();
-                                    result.HouseInfos.forEach(function (item, index) {
+                                    result.houseInfos.forEach(function (item, index) {
                                         rent_locations.add(item);
                                     });
                                     rent_locations.forEach(function (element, index) {
-                                        marker.add(element.HouseLocation, element.Money, element.HouseURL,
-                                            element.LocationMarkBG);
+                                        marker.add(element.houseLocation, element.money, element.houseURL,
+                                            element.locationMarkBG);
                                     });
                                     //console.log("第" + result.PageIndex + "页加载完成。");
                                 } else {
-                                    console.log(result.Error);
+                                    console.log(result.error);
                                 }
                                
-                                if (result.PageIndex == pageCount - 1) {
+                                if (result.pageIndex == pageCount - 1) {
                                     $.AMUI.progress.done();
                                     $("#Get58Data").attr("disabled", false);
                                 }
