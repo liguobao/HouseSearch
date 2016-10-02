@@ -1,4 +1,5 @@
 ﻿
+using Newtonsoft.Json;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 namespace _58HouseSearch.Core.Models
@@ -19,7 +20,8 @@ namespace _58HouseSearch.Core.Models
         public long PVCount { get; set; }
 
         public List<PVInfo> LstPVInfo { get; set; }
- 
+
+        [JsonIgnoreAttribute]
         public ConcurrentBag<PVInfo> SalesLstPVInfo;
     }
 }

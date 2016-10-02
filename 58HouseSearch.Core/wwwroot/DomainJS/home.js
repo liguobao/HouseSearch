@@ -38,12 +38,12 @@ require(['domready!', 'jquery', 'AMUI', 'mapController', 'city', 'commuteGo'], f
  
     $.ajax({
         type: "post",
-        url: "../Commom/GetPVCount",
+        url: "../PVInfo/GetPVCount",
         data: { },
         success: function (result)
         {
             if (result.isSuccess){
-                $("#lblPVCount").text(result.pVCount);
+                $("#lblPVCount").text(result.pvCount);
             }else {
                 $("#lblPVCount").text(0);
                 console.log(result.error);

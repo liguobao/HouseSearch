@@ -155,10 +155,8 @@ namespace _58HouseSearch.Core
                 }
                 serializer.Serialize(writer, _webPVInfo);
               
-                writer.Close();
-                sw.Flush();
-
-
+                //writer.Close();
+                //sw.Flush();
             }
         }
     }
