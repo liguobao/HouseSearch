@@ -41,7 +41,8 @@
   "publishOptions": {
     "include": [
       "wwwroot",
-      "web.config"
+      "web.config",
+      "Views"
     ]
   },
   "runtimes": { "ubuntu.14.04-x64": {} }
