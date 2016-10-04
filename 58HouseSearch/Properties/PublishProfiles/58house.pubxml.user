@@ -10,10 +10,10 @@
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/58HouseSearch.dll">
-      <publishTime>09/29/2016 23:22:56</publishTime>
+      <publishTime>10/04/2016 13:49:30</publishTime>
     </File>
     <File Include="bin/AngleSharp.dll">
-      <publishTime>09/05/2016 22:30:23</publishTime>
+      <publishTime>09/10/2016 20:54:38</publishTime>
     </File>
     <File Include="bin/HtmlAgilityPack.dll">
       <publishTime>08/07/2016 12:36:04</publishTime>
@@ -277,10 +277,13 @@
       <publishTime>08/23/2016 23:02:16</publishTime>
     </File>
     <File Include="packages.config">
-      <publishTime>09/28/2016 22:53:04</publishTime>
+      <publishTime>10/01/2016 16:35:18</publishTime>
     </File>
     <File Include="pv.json">
       <publishTime>08/25/2016 23:38:13</publishTime>
+    </File>
+    <File Include="Views/Commom/Index.cshtml">
+      <publishTime>10/04/2016 13:58:15</publishTime>
     </File>
     <File Include="Views/HonestHouse/Index.cshtml">
       <publishTime>09/27/2016 20:29:24</publishTime>
@@ -295,7 +298,7 @@
       <publishTime>09/05/2016 22:30:23</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>09/29/2016 23:22:57</publishTime>
+      <publishTime>10/04/2016 13:49:32</publishTime>
     </File>
   </ItemGroup>
 </Project>
