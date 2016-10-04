@@ -76,7 +76,7 @@ namespace _58HouseSearch.Core.Controllers
                     HouseLocation = location,
                     HouseTime = screening_time,
                     HousePrice = housePrice,
-                    LocationMarkBG = markBGType.ToString() + ".PNG",
+                    LocationMarkBG = markBGType.ToString() + ".png",
 
                 };
             });
