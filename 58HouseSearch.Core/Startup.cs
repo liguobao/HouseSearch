@@ -43,7 +43,7 @@ namespace _58HouseSearch.Core
                     template: "{controller=House}/{action=Index}/{id?}");  //（手动高亮）
             });
 
-            HTTPHelper.InitWebPVInfo(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\pv.json"));
+            HTTPHelper.InitWebPVInfo(Path.Combine(env.WebRootPath, "pv.json"));
 
         }
     }

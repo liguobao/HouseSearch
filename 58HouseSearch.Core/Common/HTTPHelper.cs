@@ -1,9 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.IO;
-using System.Net;
 using System.Text;
-using System.Text.RegularExpressions;
 using Newtonsoft.Json.Converters;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
@@ -31,7 +29,7 @@ namespace _58HouseSearch.Core
             }
             catch (System.Exception ex)
             {
-
+                Console.WriteLine(ex.ToString());
                 return string.Empty;
             }
 
