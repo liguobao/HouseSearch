@@ -124,7 +124,12 @@ namespace _58HouseSearch.Core
         private static WebPVInfo AddPVLog(string userHostAddress, string actionAddress)
         {
 
-            _webPVInfo.SalesLstPVInfo.Add(new PVInfo() { PVIP = userHostAddress, PVTime = DateTime.Now.ToString(), PVActionAddress = actionAddress });
+            _webPVInfo.SalesLstPVInfo.Add(new PVInfo()
+            {
+                PVIP = userHostAddress,
+                PVTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                PVActionAddress = actionAddress
+            });
             _webPVInfo.PVCount = _webPVInfo.SalesLstPVInfo.Count;
             return _webPVInfo;
         }
