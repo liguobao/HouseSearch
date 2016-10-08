@@ -15,7 +15,7 @@ namespace _58HouseSearch.Controllers
 
         public ActionResult Index()
         {
-            HTTPHelper.WritePVInfo(Server.MapPath("./pv.json"), Request.UserHostAddress, Request.Path);
+            HTTPHelper.WritePVInfo(Request.UserHostAddress, Request.Path);
             return View();
         }
 
@@ -75,11 +75,13 @@ namespace _58HouseSearch.Controllers
                     HouseLocation = location,
                     HouseTime = screening_time,
                     HousePrice = housePrice,
-                    LocationMarkBG = markBGType.ToString() + ".PNG",
+                    LocationMarkBG = markBGType.ToString() + ".png",
 
                 };
             });
         }
+
+
 
     }
 }

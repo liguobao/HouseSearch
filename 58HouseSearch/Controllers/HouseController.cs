@@ -14,7 +14,7 @@ namespace _58HouseSearch.Controllers
         // GET: /House/
         public ActionResult Index()
         {
-            HTTPHelper.WritePVInfo(Server.MapPath("./pv.json"), Request.UserHostAddress, Request.Path);
+            HTTPHelper.WritePVInfo(Request.UserHostAddress, Request.Path);
             return View();
         }
 
@@ -125,7 +125,7 @@ namespace _58HouseSearch.Controllers
                     HouseURL = $"http://{cnName}.58.com" + element.QuerySelector("a").GetAttribute("href"),
                     Money = element.QuerySelector("b").TextContent,
                     HouseLocation = new[] { "公寓", "青年社区" }.All(s => houseInfoList.Contains(s)) ? houseInfoList[0] : houseInfoList[1],
-                    LocationMarkBG = markBGType.ToString() + ".PNG",
+                    LocationMarkBG = markBGType.ToString() + ".png",
                 };
             });
         }

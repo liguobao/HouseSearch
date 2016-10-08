@@ -35,8 +35,20 @@ require(['domready!', 'jquery', 'AMUI', 'mapController', 'city', 'commuteGo'], f
         e.stopPropagation();
     });
 
-    $.getJSON("pv.json", function(data) {
-        $("#lblPVCount").text(data.PVCount);
+ 
+    $.ajax({
+        type: "post",
+        url: "../Commom/GetPVCount",
+        data: { },
+        success: function (result)
+        {
+            if (result.IsSuccess){
+                $("#lblPVCount").text(result.PVCount);
+            }else {
+                $("#lblPVCount").text(0);
+                console.log(result.Error);
+            }
+        }
     });
 
     $('#search-offcanvas').offCanvas({ effect: 'overlay' });

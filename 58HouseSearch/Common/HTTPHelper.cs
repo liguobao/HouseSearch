@@ -7,6 +7,8 @@ using System.Text.RegularExpressions;
 using Newtonsoft.Json.Converters;
 using _58HouseSearch.Models;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
+
 
 namespace _58HouseSearch
 {
@@ -73,14 +75,28 @@ namespace _58HouseSearch
             }
         }
 
-
-        public static void WritePVInfo(string jsonPath, string userHostAddress,string actionAddress)
+        internal static WebPVInfo GetTheWebPVInfo()
         {
-            try
-            {
-                using (StreamReader sr = new StreamReader(jsonPath))
-                {
+            return _webPVInfo;
+        }
 
+        private static WebPVInfo _webPVInfo;
+
+        private static string _pvJsonPath;
+
+        /// <summary>
+        /// 获取PV数据
+        /// </summary>
+        /// <param name="pvJsonPath"></param>
+        /// <returns></returns>
+        public static WebPVInfo InitWebPVInfo(string pvJsonPath)
+        {
+            _pvJsonPath = pvJsonPath;
+            if (_webPVInfo == null)
+            {
+                using (StreamReader sr = new StreamReader(_pvJsonPath))
+                {
+                    try
                     {
                         JsonSerializer serializer = new JsonSerializer();
                         serializer.Converters.Add(new JavaScriptDateTimeConverter());
@@ -89,40 +105,96 @@ namespace _58HouseSearch
                         //构建Json.net的读取流  
                         JsonReader reader = new JsonTextReader(sr);
                         //对读取出的Json.net的reader流进行反序列化，并装载到模型中  
-                        var webPV = serializer.Deserialize<WebPVInfo>(reader);
-                        if (webPV == null)
+                        _webPVInfo = serializer.Deserialize<WebPVInfo>(reader);
+                        _webPVInfo.SalesLstPVInfo = new ConcurrentBag<PVInfo>();
+                        if (_webPVInfo.LstPVInfo!=null)
                         {
-                            webPV = new WebPVInfo();
-                            webPV.PVCount = 1;
-                            webPV.LstPVInfo = new List<PVInfo>() { new PVInfo() { PVIP = userHostAddress, PVTime = DateTime.Now.ToString(),PVActionAddress = actionAddress } };
-                        }
-                        else
-                        {
-                            webPV.PVCount = webPV.PVCount + 1;
-                            webPV.LstPVInfo.Add(new PVInfo() { PVIP = userHostAddress, PVTime = DateTime.Now.ToString(), PVActionAddress = actionAddress });
+                            _webPVInfo.LstPVInfo.ForEach(item=>_webPVInfo.SalesLstPVInfo.Add(item));
                         }
                         reader.Close();
+                        LogHelper.WriteLog("The First WebPVInfo Deserialize Success!");
+                    }catch(Exception ex)
+                    {
+                        _webPVInfo = new WebPVInfo();
+                        _webPVInfo.LstPVInfo = new List<PVInfo>();
+                        _webPVInfo.SalesLstPVInfo = new ConcurrentBag<PVInfo>();
 
-                        using (StreamWriter sw = new StreamWriter(jsonPath))
-                        {
-                            //构建Json.net的写入流  
-                            JsonWriter writer = new JsonTextWriter(sw);
-                            //把模型数据序列化并写入Json.net的JsonWriter流中  
-                            serializer.Serialize(writer, webPV);
-                            //ser.Serialize(writer, ht);  
-                            writer.Close();
-                            sw.Close();
-                        }
+                        LogHelper.WriteError("Deserialize WebPVInfo Exception", ex);
                     }
                 }
-
             }
-            catch(Exception ex)
+            return _webPVInfo;
+        }
+
+        /// <summary>
+        /// 写入访问记录
+        /// </summary>
+        /// <param name="jsonPath"></param>
+        /// <param name="userHostAddress"></param>
+        /// <param name="actionAddress"></param>
+        public static void WritePVInfo(string userHostAddress, string actionAddress)
+        {
+            try
             {
+               AddPVLog( userHostAddress, actionAddress);
 
+                if (_webPVInfo.PVCount % 10 == 0)
+                {
+                    WriteToJsonFile();
+                }
             }
-        
+            catch (Exception ex)
+            {
+                LogHelper.WriteError("WritePVInfo Exception", ex);
+            }
+
+
+        }
+
+        /// <summary>
+        /// 增加访问记录
+        /// </summary>
+        /// <param name="jsonPath"></param>
+        /// <param name="userHostAddress"></param>
+        /// <param name="actionAddress"></param>
+        /// <returns></returns>
+        private static WebPVInfo AddPVLog(string userHostAddress, string actionAddress)
+        {
+
+            _webPVInfo.SalesLstPVInfo.Add(new PVInfo() { PVIP = userHostAddress, PVTime = DateTime.Now.ToString(), PVActionAddress = actionAddress });
+            _webPVInfo.PVCount = _webPVInfo.SalesLstPVInfo.Count;
+            return _webPVInfo;
+        }
+
+        /// <summary>
+        /// PV数据写入文件
+        /// </summary>
+        /// <param name="jsonPath"></param>
+        /// <param name="webPV"></param>
+        public static void WriteToJsonFile()
+        {
            
+            using (StreamWriter sw = new StreamWriter(_pvJsonPath))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Converters.Add(new JavaScriptDateTimeConverter());
+                serializer.NullValueHandling = NullValueHandling.Ignore;
+                //构建Json.net的写入流  
+                JsonWriter writer = new JsonTextWriter(sw);
+                //把模型数据序列化并写入Json.net的JsonWriter流中  
+
+                _webPVInfo.LstPVInfo = new List<PVInfo>();
+                foreach(var item in _webPVInfo.SalesLstPVInfo)
+                {
+                    _webPVInfo.LstPVInfo.Add(item);
+                }
+                serializer.Serialize(writer, _webPVInfo);
+                //ser.Serialize(writer, ht);  
+                writer.Close();
+                sw.Close();
+            }
         }
     }
+
+    
 }

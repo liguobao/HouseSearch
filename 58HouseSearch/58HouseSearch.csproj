@@ -40,8 +40,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AngleSharp, Version=0.9.7.21214, Culture=neutral, PublicKeyToken=e83494dcdc6d31ea, processorArchitecture=MSIL">
-      <HintPath>..\packages\AngleSharp.0.9.7\lib\net45\AngleSharp.dll</HintPath>
+    <Reference Include="AngleSharp, Version=0.9.8.1, Culture=neutral, PublicKeyToken=e83494dcdc6d31ea, processorArchitecture=MSIL">
+      <HintPath>..\packages\AngleSharp.0.9.8.1\lib\net45\AngleSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
@@ -92,6 +96,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\CommonEnum.cs" />
+    <Compile Include="Common\LogHelper.cs" />
+    <Compile Include="Controllers\CommomController.cs" />
     <Compile Include="Controllers\HonestHouseController.cs" />
     <Compile Include="Controllers\HouseController.cs" />
     <Compile Include="Controllers\PeopleRentingController.cs" />
@@ -114,6 +120,7 @@
     <Content Include="DomainJS\commuteGo.js" />
     <Content Include="DomainJS\domready.js" />
     <Content Include="DomainJS\es5.js" />
+    <Content Include="DomainJS\helper.js" />
     <Content Include="DomainJS\home.js" />
     <Content Include="DomainJS\housecommom.js" />
     <Content Include="DomainJS\lib\addToolbar.js" />
@@ -174,6 +181,7 @@
     <None Include="Properties\PublishProfiles\58house.pubxml" />
     <Content Include="Views\HonestHouse\Index.cshtml" />
     <Content Include="Views\PeopleRenting\Index.cshtml" />
+    <Content Include="Views\Commom\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
