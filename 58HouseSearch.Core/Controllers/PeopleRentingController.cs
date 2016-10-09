@@ -31,12 +31,15 @@ namespace _58HouseSearch.Core.Controllers
 
         public ActionResult GetRentingDatabyPageIndex(int index)
         {
+
+            var roomurl = $"http://www.huzhumaifang.com/Renting/index/p/{index}.html";
             try
             {
-                var roomList = GetRoomList($"http://www.huzhumaifang.com/Renting/index/p/{index}.html");
+                var roomList = GetRoomList(roomurl);
                 return Json(new { IsSuccess = true, HouseInfos = roomList });
             }catch(Exception ex)
             {
+                LogHelper.Error("GetRentingDatabyPageIndex Exception", ex,new { URL= roomurl });
                 return Json(new { IsSuccess = false, Error =$"http://www.huzhumaifang.com/Renting/index/p/{index}.html"+
                     "获取数据异常，可能是哪里挂了吧。看不懂的异常如下：" +ex.ToString() });
             }

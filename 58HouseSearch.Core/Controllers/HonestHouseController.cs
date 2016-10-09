@@ -44,12 +44,10 @@ namespace _58HouseSearch.Core.Controllers
             }
             catch (Exception ex)
             {
+                LogHelper.Error("GetHonestHousePageCount Exception", ex, new { CNName = cnName, CostFrom = costFrom , CostTo  = costTo });
+
                 return Json(new { IsSuccess = false, Error = "由于某种诡异的原因，爬取数据奔溃了...建议重试或者重新输入条件。下面是你看不懂的异常信息：" + ex.ToString() });
             }
-
-
-
-
         }
 
 
@@ -76,6 +74,9 @@ namespace _58HouseSearch.Core.Controllers
             }
             catch (Exception ex)
             {
+
+                LogHelper.Error("GetHonestHouseDataByCostAndPageIndex Exception", ex, new { CNName = cnName, Index = index });
+
                 return Json(new { IsSuccess = false, Error = "由于某种诡异的原因，爬取数据奔溃了...建议重试或者重新输入条件。下面是你看不懂的异常信息：" + ex.ToString() });
             }
 
@@ -99,12 +100,10 @@ namespace _58HouseSearch.Core.Controllers
             }
             catch (Exception ex)
             {
+                LogHelper.Error("GetDefaultHonestHouseData Exception", ex,new { CNName = cnName,Index = index});
+
                 return Json(new { IsSuccess = false, Error = "由于某种诡异的原因，爬取数据奔溃了...建议重试或者重新输入条件。下面是你看不懂的异常信息：" + ex.ToString() });
             }
-
-
-
-
         }
 
         private IEnumerable<HouseInfo> GetRoomListByIndex(string cnName, int index)

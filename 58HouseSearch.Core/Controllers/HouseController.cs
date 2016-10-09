@@ -63,6 +63,9 @@ namespace _58HouseSearch.Core.Controllers
             }
             catch (Exception ex)
             {
+
+                LogHelper.Error("Get58CityRoomDataByCostAndIndex Exception", ex, new { CNName = cnName, CostFrom = costFrom, CostTo = costTo,Index =index });
+
                 return Json(new { IsSuccess = false, Error = "获取数据异常。" + ex.ToString(), PageIndex = index });
             }
 
@@ -94,6 +97,9 @@ namespace _58HouseSearch.Core.Controllers
             }
             catch (Exception ex)
             {
+
+                LogHelper.Error("Get58CityRoomData Exception", ex, new { CNName = cnName, CostFrom = costFrom, CostTo = costTo });
+
                 return Json(new { IsSuccess = false, Error = "获取数据异常。" + ex.ToString() });
             }
         }
