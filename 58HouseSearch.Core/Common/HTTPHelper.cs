@@ -127,7 +127,7 @@ namespace _58HouseSearch.Core
             _webPVInfo.SalesLstPVInfo.Add(new PVInfo()
             {
                 PVIP = userHostAddress,
-                PVTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                PVTime = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),
                 PVActionAddress = actionAddress
             });
             _webPVInfo.PVCount = _webPVInfo.SalesLstPVInfo.Count;
