@@ -16,7 +16,7 @@ namespace _58HouseSearch.Core.Controllers
 
         public ActionResult Index()
         {
-            HTTPHelper.WritePVInfo(Request.HttpContext.Connection.RemoteIpAddress.ToString(), Request.Path);
+            PVHelper.WritePVInfo(Request.HttpContext.Connection.RemoteIpAddress.ToString(), Request.Path);
             return View();
         }
 

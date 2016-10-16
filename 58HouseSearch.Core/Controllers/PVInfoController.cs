@@ -12,7 +12,7 @@ namespace _58HouseSearch.Core.Controllers
 
         public ActionResult Index()
         {
-            var webPVInfo = HTTPHelper.GetTheWebPVInfo();
+            var webPVInfo = PVHelper.GetTheWebPVInfo();
             Dictionary<DateTime, List<PVInfo>> dicDateToLstPVInfo = new Dictionary<DateTime, List<PVInfo>>();
             foreach(var pvInfo in webPVInfo.SalesLstPVInfo)
             {
@@ -34,8 +34,8 @@ namespace _58HouseSearch.Core.Controllers
 
         public ActionResult WritePVToJson()
         {
-            HTTPHelper.WriteToJsonFile();
-            return View(HTTPHelper.GetTheWebPVInfo());
+            PVHelper.WriteToJsonFile();
+            return View(PVHelper.GetTheWebPVInfo());
             
         }
 
@@ -43,7 +43,7 @@ namespace _58HouseSearch.Core.Controllers
         {
             try
             {
-                var pvInfo = HTTPHelper.GetTheWebPVInfo();
+                var pvInfo = PVHelper.GetTheWebPVInfo();
                 return Json(new { IsSuccess = true, PVCount = pvInfo.PVCount });
             }
             catch (Exception ex)
