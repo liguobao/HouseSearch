@@ -9,6 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
+using System.Text;
+using NLog.Extensions.Logging;
 
 namespace _58HouseSearch.Core
 {
@@ -25,6 +27,9 @@ namespace _58HouseSearch.Core
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+           // loggerFactory.AddNLog();//添加NLog
+            env.ConfigureNLog("nlog.config");
+
             loggerFactory.AddConsole();
 
             if (env.IsDevelopment())
@@ -43,7 +48,7 @@ namespace _58HouseSearch.Core
                     template: "{controller=House}/{action=Index}/{id?}");  //（手动高亮）
             });
 
-            HTTPHelper.InitWebPVInfo(Path.Combine(env.WebRootPath, "pv.json"));
+            PVHelper.InitWebPVInfo(Path.Combine(env.WebRootPath, "pv.json"));
 
         }
     }

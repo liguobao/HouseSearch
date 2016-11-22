@@ -8,7 +8,8 @@ using Newtonsoft.Json.Converters;
 using _58HouseSearch.Models;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
-
+using System.Threading.Tasks;
+using System.Linq;
 
 namespace _58HouseSearch
 {
@@ -94,10 +95,22 @@ namespace _58HouseSearch
             _pvJsonPath = pvJsonPath;
             if (_webPVInfo == null)
             {
+                if(!File.Exists(pvJsonPath))
+                {
+                   var pvFile =  File.Create(pvJsonPath);
+                    pvFile.Close();
+                    _webPVInfo = new WebPVInfo();
+                    _webPVInfo.LstPVInfo = new List<PVInfo>();
+                    _webPVInfo.SalesLstPVInfo = new ConcurrentBag<PVInfo>();
+                    return _webPVInfo;
+                }
+
                 using (StreamReader sr = new StreamReader(_pvJsonPath))
                 {
                     try
                     {
+                       
+
                         JsonSerializer serializer = new JsonSerializer();
                         serializer.Converters.Add(new JavaScriptDateTimeConverter());
                         serializer.NullValueHandling = NullValueHandling.Ignore;

@@ -42,7 +42,8 @@
     "include": [
       "wwwroot",
       "web.config",
-      "Views"
+      "Views",
+      "nlog.config"
     ]
   },
   "runtimes": { "ubuntu.14.04-x64": {} }
