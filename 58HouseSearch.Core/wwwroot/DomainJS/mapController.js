@@ -17,11 +17,19 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker', 'polygon
         }
     }
 
-    var GetDataByIndex = function(index, pagecount) {
+    var GetDataByIndex = function (index, pagecount, dataResource) {
+
+        var dataInfo = [];
+        if (dataResource==="douban") {
+            dataInfo = { groupID: "", index: index };
+        } else{
+            dataInfo = { cnName: city.shortName, index: index };
+        }
+
         $.ajax({
             type: "post",
             url: getViewDefaultDataAction,
-            data: { cnName: city.shortName, index: index },
+            data: dataInfo,
             success: function(result) {
                 if (result.isSuccess) {
                     var rent_locations = new Set();
@@ -42,6 +50,8 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker', 'polygon
             }
         });
     }
+
+
 
     var init = function() {
 
@@ -66,7 +76,7 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker', 'polygon
             }
             console.log(pageCount);
             for (var i = 1; i <= pageCount; i++) {
-                GetDataByIndex(i, pageCount);
+                GetDataByIndex(i, pageCount, dataResource);
             }
         })
     }
