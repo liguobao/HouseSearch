@@ -36,9 +36,11 @@ namespace _58HouseSearch.Core
                 {
                     var pvFile = File.Create(pvJsonPath);
                     pvFile.Flush();
-                    _webPVInfo = new WebPVInfo();
-                    _webPVInfo.LstPVInfo = new List<PVInfo>();
-                    _webPVInfo.SalesLstPVInfo = new ConcurrentBag<PVInfo>();
+                    _webPVInfo = new WebPVInfo()
+                    {
+                        LstPVInfo = new List<PVInfo>(),
+                        SalesLstPVInfo = new ConcurrentBag<PVInfo>()
+                    };
                     return _webPVInfo;
                 }
 
@@ -48,28 +50,28 @@ namespace _58HouseSearch.Core
                     try
                     {
                         StreamReader sr = new StreamReader(stream);
-
-                        JsonSerializer serializer = new JsonSerializer();
-                        serializer.Converters.Add(new JavaScriptDateTimeConverter());
-                        serializer.NullValueHandling = NullValueHandling.Ignore;
-
-                        //构建Json.net的读取流  
-                        JsonReader reader = new JsonTextReader(sr);
-                        //对读取出的Json.net的reader流进行反序列化，并装载到模型中  
-                        _webPVInfo = serializer.Deserialize<WebPVInfo>(reader);
-                        _webPVInfo.SalesLstPVInfo = new ConcurrentBag<PVInfo>();
-                        if (_webPVInfo.LstPVInfo != null)
+                        JsonSerializer serializer = new JsonSerializer
                         {
-                            _webPVInfo.LstPVInfo.ForEach(item => _webPVInfo.SalesLstPVInfo.Add(item));
+                            NullValueHandling = NullValueHandling.Ignore,
+                            Converters = { new JavaScriptDateTimeConverter() }
+                        };
+                        //构建Json.net的读取流  
+                        using (var reader = new JsonTextReader(sr))
+                        {
+                            _webPVInfo = serializer.Deserialize<WebPVInfo>(reader);
+                            _webPVInfo.SalesLstPVInfo = new ConcurrentBag<PVInfo>();
+                            _webPVInfo?.LstPVInfo.ForEach(item => _webPVInfo.SalesLstPVInfo.Add(item));
                         }
-                        reader.Close();
+                        //对读取出的Json.net的reader流进行反序列化，并装载到模型中  
                         // LogHelper.WriteLog("The First WebPVInfo Deserialize Success!");
                     }
                     catch (Exception ex)
                     {
-                        _webPVInfo = new WebPVInfo();
-                        _webPVInfo.LstPVInfo = new List<PVInfo>();
-                        _webPVInfo.SalesLstPVInfo = new ConcurrentBag<PVInfo>();
+                        _webPVInfo = new WebPVInfo()
+                        {
+                            LstPVInfo = new List<PVInfo>(),
+                            SalesLstPVInfo = new ConcurrentBag<PVInfo>()
+                        };
 
                         // LogHelper.WriteError("Deserialize WebPVInfo Exception", ex);
                     }
@@ -99,8 +101,6 @@ namespace _58HouseSearch.Core
             {
                 // LogHelper.WriteError("WritePVInfo Exception", ex);
             }
-
-
         }
 
         /// <summary>
@@ -133,20 +133,16 @@ namespace _58HouseSearch.Core
             using (var stream = new FileStream(_pvJsonPath, FileMode.OpenOrCreate))
             {
                 StreamWriter sw = new StreamWriter(stream);
-                JsonSerializer serializer = new JsonSerializer();
-                serializer.Converters.Add(new JavaScriptDateTimeConverter());
-                serializer.NullValueHandling = NullValueHandling.Ignore;
+                JsonSerializer serializer = new JsonSerializer
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                    Converters = { new JavaScriptDateTimeConverter() }
+                };
                 //构建Json.net的写入流  
                 JsonWriter writer = new JsonTextWriter(sw);
                 //把模型数据序列化并写入Json.net的JsonWriter流中  
-
-                _webPVInfo.LstPVInfo = new List<PVInfo>();
-                foreach (var item in _webPVInfo.SalesLstPVInfo)
-                {
-                    _webPVInfo.LstPVInfo.Add(item);
-                }
+                _webPVInfo.LstPVInfo = new List<PVInfo>(_webPVInfo.SalesLstPVInfo);
                 serializer.Serialize(writer, _webPVInfo);
-
                 //writer.Close();
                 //sw.Flush();
             }

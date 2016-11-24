@@ -18,7 +18,7 @@ namespace _58HouseSearch.Core.Controllers
 
             if (string.IsNullOrEmpty(groupID))
                 groupID = "shanghaizufang";
-            var url = $"https://www.douban.com/group/{groupID}/discussion?start=0";;
+            var url = $"https://www.douban.com/group/{groupID}/discussion?start=0";
             var htmlResult = HTTPHelper.GetHTMLByURL(url);
             var page = new HtmlParser().Parse(htmlResult);
 
