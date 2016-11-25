@@ -24,13 +24,8 @@ namespace _58HouseSearch.Core.Controllers
         {
             if (string.IsNullOrEmpty(groupID))
                 groupID = "shanghaizufang";
-<<<<<<< HEAD
-            var url = $"https://www.douban.com/group/{groupID}/discussion?start=0";
-            var htmlResult = HTTPHelper.GetHTMLByURL(url);
-=======
             var url = $"https://www.douban.com/group/{groupID}/discussion?start={index*25}";
             var htmlResult = HTTPHelper.GetHTML(url);
->>>>>>> refs/remotes/liguobao/master
             var page = new HtmlParser().Parse(htmlResult);
             var lstRoomInfo = page.QuerySelectorAll("td.title").Select(item => new HouseInfo()
             {
