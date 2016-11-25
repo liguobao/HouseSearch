@@ -35,24 +35,18 @@ namespace _58HouseSearch.Core.Controllers
             {
                 return Json(new { IsSuccess = false, Error = "输入数据有误，请重新输入。" });
             }
-
             if (string.IsNullOrEmpty(cnName))
             {
                 return Json(new { IsSuccess = false, Error = "城市定位失败，建议清除浏览器缓存后重新进入。" });
             }
-
             var listSum = GetListSum(costFrom, costTo, cnName);
             var pageCount = listSum % 20 == 0 ? listSum / 20 : listSum / 20 + 1;
             if (pageCount == 0)
             {
                 return Json(new { IsSuccess = false, Error = $"没有找到价格区间为{costFrom} - {costTo}的房子。" });
             }
-
             return Json(new { IsSuccess = true, PageCount = pageCount });
-
-
         }
-
 
         public ActionResult Get58CityRoomDataByCostAndIndex(int costFrom, int costTo, string cnName, int index)
         {
@@ -63,14 +57,11 @@ namespace _58HouseSearch.Core.Controllers
             }
             catch (Exception ex)
             {
-
                 LogHelper.Error("Get58CityRoomDataByCostAndIndex Exception", ex, new { CNName = cnName, CostFrom = costFrom, CostTo = costTo,Index =index });
-
                 return Json(new { IsSuccess = false, Error = "获取数据异常。" + ex.ToString(), PageIndex = index });
             }
 
         }
-
 
         public ActionResult Get58CityRoomData(int costFrom, int costTo, string cnName)
         {
@@ -78,12 +69,10 @@ namespace _58HouseSearch.Core.Controllers
             {
                 return Json(new { IsSuccess = false, Error = "输入数据有误，请重新输入。" });
             }
-
             if (string.IsNullOrEmpty(cnName))
             {
                 return Json(new { IsSuccess = false, Error = "城市定位失败，建议清除浏览器缓存后重新进入。" });
             }
-
             try
             {
                 var listSum = GetListSum(costFrom, costTo, cnName);
@@ -104,8 +93,6 @@ namespace _58HouseSearch.Core.Controllers
             }
         }
 
-
-
         public ActionResult GetDefault58CityRoomData(string cnName, int index)
         {
             var lstHouseInfo = GetRoomListByIndex(cnName, index);
@@ -113,8 +100,6 @@ namespace _58HouseSearch.Core.Controllers
                 return Json(new { IsSuccess = false, Error = "没有房源信息..." });
             return Json(new { IsSuccess = true, HouseInfos = lstHouseInfo });
         }
-
-
 
         private IEnumerable<HouseInfo> GetRoomListByIndex(string cnName, int index)
         {
@@ -125,9 +110,9 @@ namespace _58HouseSearch.Core.Controllers
             {
                 var houseTitle = element.QuerySelector("h2").TextContent;
                 var houseInfoList = houseTitle.Split(' ');
-                decimal housePrice = 0;
-                decimal.TryParse(element.QuerySelector("b").TextContent, out housePrice);
-                var markBGType = (housePrice / 1000) > (int)LocationMarkBGType.Black ? LocationMarkBGType.Black : (LocationMarkBGType)(housePrice / 1000);
+                int housePrice = 0;
+                int.TryParse(element.QuerySelector("b").TextContent, out housePrice);
+                var markBGType = LocationMarkBGType.SelectColor(housePrice/1000);
 
                 return new HouseInfo
                 {
@@ -135,7 +120,7 @@ namespace _58HouseSearch.Core.Controllers
                     HouseURL = $"http://{cnName}.58.com" + element.QuerySelector("a").GetAttribute("href"),
                     Money = element.QuerySelector("b").TextContent,
                     HouseLocation = new[] { "公寓", "青年社区" }.All(s => houseInfoList.Contains(s)) ? houseInfoList[0] : houseInfoList[1],
-                    LocationMarkBG = markBGType.ToString() + ".png",
+                    LocationMarkBG = markBGType,
                 };
             });
         }

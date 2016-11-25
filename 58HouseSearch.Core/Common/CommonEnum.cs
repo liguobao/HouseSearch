@@ -4,58 +4,74 @@ namespace _58HouseSearch.Core.Common
     /// <summary>
     /// 颜色枚举
     /// </summary>
-    public enum LocationMarkBGType
+    public static class LocationMarkBGType
     {
         /// <summary>
         /// 蓝色
         /// </summary>
-        Blue =0,
+        public static string Blue { get; } = "Blue.png";
 
         /// <summary>
         /// 浅绿
         /// </summary>
-        PaleGreen = 1,
+        public static string PaleGreen { get; } = "PaleGreen.png";
 
         /// <summary>
         /// 明绿
         /// </summary>
-        LightGreen = 2,
-
+        public static string LightGreen { get; } = "LightGreen.png";
 
         /// <summary>
         /// 浅黄
         /// </summary>
-        PaleYellow = 3,
+        public static string PaleYellow { get; } = "PaleYellow.png";
 
         /// <summary>
         /// 橙黄
         /// </summary>
-        OrangeYellow=4,
+        public static string OrangeYellow { get; } = "OrangeYellow.png";
 
         /// <summary>
         /// 
         /// </summary>
-        PaleRed = 5,
+        public static string PaleRed { get; } = "PaleRed.png";
 
         /// <summary>
         /// 红色
         /// </summary>
-        Red=6,
+        public static string Red { get; } = "Red.png";
 
         /// <summary>
         /// 粉红
         /// </summary>
-        Pink=7,
+        public static string Pink { get; } = "Pink.png";
 
         /// <summary>
         /// 紫色
         /// </summary>
-        Violet = 8,
+        public static string Violet { get; } = "Violet.png";
 
         /// <summary>
         /// 黑色
         /// </summary>
-        Black = 9,
+        public static string Black { get; } = "Black.png";
 
+        public static string SelectColor(int num)
+        {
+            switch(num)
+            {
+                case 0: return Blue;
+                case 1:return PaleGreen;
+                case 2:return LightGreen;
+                case 3:return PaleYellow;
+                case 4:return OrangeYellow;
+                case 5:return PaleRed;
+                case 6:return Red;
+                case 7:return Pink;
+                case 8:return Violet;
+                default:
+                    return Black;
+            }
+        }
     }
 }

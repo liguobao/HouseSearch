@@ -1,6 +1,7 @@
 ﻿
 using _58HouseSearch.Core.Common;
 using _58HouseSearch.Core.Models;
+using AngleSharp.Parser.Html;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -46,19 +47,17 @@ namespace _58HouseSearch.Core.Controllers
           
         }
 
-
         private int GetPageCount(string indexURL)
         {
             var htmlResult = HTTPHelper.GetHTMLByURL(indexURL);
-            var page = new AngleSharp.Parser.Html.HtmlParser().Parse(htmlResult);
+            var page = new HtmlParser().Parse(htmlResult);
             return Convert.ToInt32(page.QuerySelector("a.end")?.TextContent ?? "0");
         }
-
 
         private IEnumerable<HouseInfo> GetRoomList(string url)
         {
             var htmlResult = HTTPHelper.GetHTMLByURL(url);
-            var page = new AngleSharp.Parser.Html.HtmlParser().Parse(htmlResult);
+            var page = new HtmlParser().Parse(htmlResult);
             return page.QuerySelector("ul.screening_left_ul").QuerySelectorAll("li").Select(element =>
             {
                 var screening_time = element.QuerySelector("p.screening_time").TextContent;
@@ -67,10 +66,10 @@ namespace _58HouseSearch.Core.Controllers
                 var locationContent = locationInfo.TextContent.Split('，').FirstOrDefault();
                 var location = locationContent.Remove(0, locationContent.IndexOf("租") + 1);
 
-                decimal housePrice = 0;
-                decimal.TryParse(screening_price.Replace("￥", "").Replace("元/月", ""),out housePrice);
+                int housePrice = 0;
+                int.TryParse(screening_price.Replace("￥", "").Replace("元/月", ""),out housePrice);
 
-                var markBGType = (housePrice / 1000) > (int)LocationMarkBGType.Black ? LocationMarkBGType.Black : (LocationMarkBGType)(housePrice / 1000);
+                var markBGType = LocationMarkBGType.SelectColor(housePrice/1000);
 
                 return new HouseInfo
                 {
@@ -79,7 +78,7 @@ namespace _58HouseSearch.Core.Controllers
                     HouseLocation = location,
                     HouseTime = screening_time,
                     HousePrice = housePrice,
-                    LocationMarkBG = markBGType.ToString() + ".png",
+                    LocationMarkBG = markBGType,
 
                 };
             });

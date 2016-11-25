@@ -1,13 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.IO;
-using System.Text;
-using Newtonsoft.Json.Converters;
-using System.Collections.Generic;
-using System.Collections.Concurrent;
-using _58HouseSearch.Core.Models;
-using System.Net;
-using System.Text.RegularExpressions;
+﻿using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 
@@ -16,32 +7,19 @@ namespace _58HouseSearch.Core
     public class HTTPHelper
     {
 
-        public static string GetHTMLByURL(string Url, string type = "UTF-8")
+        public static HttpClient Client { get; } = new HttpClient();
+
+        public static string GetHTMLByURL(string url)
         {
             try
             {
-                Url = Url.ToLower();
-
-                System.Net.WebRequest wRequest = System.Net.WebRequest.Create(Url);
-                wRequest.ContentType = "text/html; charset=utf-8";
-                
-                wRequest.Method = "get";
-                wRequest.UseDefaultCredentials = true;
-                // Get the response instance.
-                var task = wRequest.GetResponseAsync();
-                System.Net.WebResponse wResp = task.Result;
-                System.IO.Stream respStream = wResp.GetResponseStream();
-                using (System.IO.StreamReader reader = new System.IO.StreamReader(respStream, Encoding.GetEncoding(type)))
-                {
-                    return reader.ReadToEnd();
-                }
+                return Client.GetStringAsync(url).Result;          
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
                 return string.Empty;
             }
-
         }
 
 
@@ -49,11 +27,10 @@ namespace _58HouseSearch.Core
         {
             try
             {
-                HttpClient client = new HttpClient();
-                client.DefaultRequestHeaders.Add("Accept-Encoding", "gzip, deflate");
-                client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("Mozilla", "4.0"));
-                client.DefaultRequestHeaders.ExpectContinue = true;
-                var task = client.GetStringAsync(url);
+                Client.DefaultRequestHeaders.Add("Accept-Encoding", "gzip, deflate");
+                Client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("Mozilla", "4.0"));
+                Client.DefaultRequestHeaders.ExpectContinue = true;
+                var task = Client.GetStringAsync(url);
                 return task.Result; 
             }
             catch (System.Exception ex)

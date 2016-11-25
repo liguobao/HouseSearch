@@ -52,6 +52,5 @@ namespace _58HouseSearch.Core.Controllers
             }
            
         }
-
     }
 }
