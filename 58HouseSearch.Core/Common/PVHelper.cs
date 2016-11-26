@@ -143,7 +143,7 @@ namespace _58HouseSearch.Core
                 //把模型数据序列化并写入Json.net的JsonWriter流中  
                 _webPVInfo.LstPVInfo = new List<PVInfo>(_webPVInfo.SalesLstPVInfo);
                 serializer.Serialize(writer, _webPVInfo);
-                //writer.Close();
+                writer.Close();
                 //sw.Flush();
             }
         }
