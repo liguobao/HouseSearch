@@ -1,6 +1,7 @@
 "use strict";
 
-define(['mapSignleton', 'vehicle', 'polygon', 'marker', 'city'], function(mapSignleton, vehicle, polygon, marker, city) {
+define(['mapSignleton', 'vehicle', 'polygon', 'marker', 'city'],
+    function (mapSignleton, vehicle, polygon, marker, city,helper) {
     var _map = mapSignleton.map;
 
     var load = function() {
@@ -9,8 +10,7 @@ define(['mapSignleton', 'vehicle', 'polygon', 'marker', 'city'], function(mapSig
             city: city.name,
             radius: 1000
         });
-
-        geocoder.getLocation(mapSignleton.workAddress, function(status, result) {
+        geocoder.getLocation(mapSignleton.workAddress, function (status, result) {
             if (status === "complete" && result.info === 'OK') {
                 var geocode = result.geocodes[0];
                 var x = geocode.location.getLng();
@@ -19,7 +19,7 @@ define(['mapSignleton', 'vehicle', 'polygon', 'marker', 'city'], function(mapSig
                 polygon.load(x, y, 60, "#3f67a5", vehicle.type);
                 _map.setZoomAndCenter(12, [x, y]);
             }
-        })
+        });
     }
 
     var clear = function() {

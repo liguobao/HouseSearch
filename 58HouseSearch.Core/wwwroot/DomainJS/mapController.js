@@ -1,8 +1,10 @@
 "use strict";
 
 // 地图控制器相关，封装了地图对象
-var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker', 'polygon', 'workLocation', 'city', 'commuteGo', "helper"],
-    function ($, AMUI, mapSignleton, marker, polygon, workLocation, city, commuteGo,helper) {
+var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
+    'polygon', 'workLocation','city', 'commuteGo', "helper"],
+    function ($, AMUI, mapSignleton, marker, polygon, workLocation, city, commuteGo, helper) {
+
     var _map = mapSignleton.map;
     var _amapTransfer = null;
     var _infoWindow = mapSignleton.infoWindow;
@@ -21,7 +23,7 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker', 'polygon
 
         var dataInfo = [];
         if (dataResource==="douban") {
-            dataInfo = { groupID: "", index: index };
+            dataInfo = { groupID: helper.getQueryString("groupID"), index: index };
         } else{
             dataInfo = { cnName: city.shortName, index: index };
         }
@@ -66,13 +68,17 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker', 'polygon
             input: "work-location"
         }), "select", function(e) { workLocation.onSelected(e); }.bind(workLocation));
 
+        if (dataResource == "douban") {
+            _map.setCity(helper.getQueryString("cityname"));
+        }
+
         showCityInfo(function() {
             $.AMUI.progress.start();
             
             var pageCount = helper.getQueryString("PageCount");
            
             if (!pageCount) {
-                pageCount = 15;
+                pageCount = dataResource == "douban" ? 5 : 15;
             }
             console.log(pageCount);
             for (var i = 1; i <= pageCount; i++) {

@@ -1,5 +1,5 @@
 // 城市信息处理相关
-var city = define(['jquery'], function($) {
+var city = define(['jquery', "helper"], function ($, helper) {
     var _shortName = null;
     var _name = null;
     var _allCityInfo = [];
@@ -26,6 +26,9 @@ var city = define(['jquery'], function($) {
             _shortName = value;
         },
         get name() {
+            if (dataResource == "douban") {
+                _name = helper.getQueryString("cityname");
+            }
             return _name;
         },
         set name(value) {

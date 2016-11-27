@@ -30,7 +30,12 @@
 <body>
     <div id="container"></div>
 
-    <div style="position:absolute;margin-left:60px;color:red;font:500">所有的房源信息均来自网络，本网站不对其真实性负责，特此声明。问题反馈：codelover@qq.com</div>
+    <div style="position:absolute;margin-left:60px;color:red;font:500">
+        所有的房源信息均来自网络，本网站不对其真实性负责，特此声明。问题反馈：codelover@qq.com
+        <br />
+        <a>豆瓣小组数据URL格式：http://codelover.link:8080/DoubanHome?groupID=小组ID&cityname=城市名</a>
+        
+    </div>
 
     <div class="button-panel-offcanvas">
         <!-- 按钮触发器， 需要指定 target -->
@@ -74,6 +79,12 @@
                     <div>
                         <a href="~/PeopleRenting">上海互助租房</a>
                         <a href="~/HonestHouse" style="margin-left:20px;">58同城诚信房源</a>
+                        <br />
+                        <a href="~/DoubanHome">豆瓣租房(上海)</a>
+                        <a href="~/DoubanHome?groupID=26926&cityname=北京" style="margin-left:20px;">豆瓣租房(北京)</a>
+                        <br />
+                        <a href="~/DoubanHome?groupID=szzf&cityname=深圳" >豆瓣租房(深圳)</a>
+                        <a href="~/DoubanHome?groupID=gz020&cityname=广州" style="margin-left:20px;">豆瓣租房(广州)</a>
                     </div>
                 </div>
 
@@ -110,17 +121,13 @@
                     <div class="control-input">
                         <a href="https://github.com/liguobao/58HouseSearch">Github源码（无耻求收藏）</a>
                         <br />
-                        <a href="http://www.huzhumaifang.com/Renting/">互助租房首页</a>
-                        <br />
                         <a href="http://weibo.com/u/5389952376?refer_flag=1001030101_&is_hot=1">互助租房-微博</a>
                         <br />
                         <a href="https://zhuanlan.zhihu.com/p/21883516">高德API+Python解决租房问题</a>
-                        <br />
-                        <a href="http://lbs.amap.com/">高德地图API</a>
                     </div>
                 </div>
 
-                <div class="control-entry">
+                <div class="control-commonentry">
                     <label>问题反馈：</label>
 
                     <br />
