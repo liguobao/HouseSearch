@@ -25,6 +25,7 @@ namespace _58HouseSearch.Core
             }
             catch (Exception ex)
             {
+                LogHelper.Error("GetHTMLByURL Exception", ex, new { URL = url });
                 Console.WriteLine(ex.ToString());
                 return string.Empty;
             }
@@ -41,8 +42,10 @@ namespace _58HouseSearch.Core
             }
             catch (System.Exception ex)
             {
+                LogHelper.Error("GetHTMLByURL Exception", ex, new { URL = url });
                 Console.WriteLine(ex.ToString());
                 return string.Empty;
+             
             }
         }
        

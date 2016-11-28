@@ -1,7 +1,7 @@
 ﻿using NLog;
 using System;
 
-namespace _58HouseSearch.Core.Common
+namespace _58HouseSearch.Core
 {
     public static class LogHelper
     {
