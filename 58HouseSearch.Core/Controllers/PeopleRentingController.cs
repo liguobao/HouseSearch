@@ -58,11 +58,11 @@ namespace _58HouseSearch.Core.Controllers
         {
             var htmlResult = HTTPHelper.GetHTMLByURL(url);
             var page = new HtmlParser().Parse(htmlResult);
-            return page.QuerySelector("ul.screening_left_ul").QuerySelectorAll("li").Select(element =>
+            return page.QuerySelector("ul.screening_left_ul").QuerySelectorAll("li").Select(room =>
             {
-                var screening_time = element.QuerySelector("p.screening_time").TextContent;
-                var screening_price = element.QuerySelector("h5").TextContent;
-                var locationInfo = element.QuerySelector("a");
+                var screening_time = room.QuerySelector("p.screening_time").TextContent;
+                var screening_price = room.QuerySelector("h5").TextContent;
+                var locationInfo = room.QuerySelector("a");
                 var locationContent = locationInfo.TextContent.Split('，').FirstOrDefault();
                 var location = locationContent.Remove(0, locationContent.IndexOf("租") + 1);
 
@@ -79,12 +79,8 @@ namespace _58HouseSearch.Core.Controllers
                     HouseTime = screening_time,
                     HousePrice = housePrice,
                     LocationMarkBG = markBGType,
-
                 };
             });
         }
-
-
-
     }
 }
