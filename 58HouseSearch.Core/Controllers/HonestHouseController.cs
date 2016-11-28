@@ -81,8 +81,8 @@ namespace _58HouseSearch.Core.Controllers
           
             try
             {
-                var pages = GetPageNumByIndex(cnName);
-                if(pages==0) return Json(new { IsSuccess = false, Error = "并没有找到房源信息..." });
+                //var pages = GetPageNumByIndex(cnName);
+                //if(pages==0) return Json(new { IsSuccess = false, Error = "并没有找到房源信息..." });
                 var roomList = GetRoomListByIndex(cnName,index);
                 if(roomList==null) return  Json(new { IsSuccess = false, Error = "并没有找到房源信息..." });
                 return Json(new { IsSuccess = true, HouseInfos = roomList });
@@ -113,7 +113,7 @@ namespace _58HouseSearch.Core.Controllers
         private IEnumerable<HouseInfo> ParseRoom(string html)
         {
             var page = new HtmlParser().Parse(html);
-            return page.QuerySelector("ul.listUl").QuerySelectorAll("li.").Select(room =>
+            return page.QuerySelector("ul.listUl").QuerySelectorAll("li[logr]").Select(room =>
             {
                 int housePrice = 0;
                 int.TryParse(room.QuerySelector("b").TextContent, out housePrice);
@@ -121,7 +121,7 @@ namespace _58HouseSearch.Core.Controllers
                 var a = room.QuerySelector("a");
                 return new HouseInfo
                 {
-                    HouseLocation = room.QuerySelector("p,add").QuerySelectorAll("a").Last().TextContent.Replace("租房", ""),
+                    HouseLocation = room.QuerySelector("p.add").QuerySelectorAll("a").Last().TextContent.Replace("租房", ""),
                     HouseTitle = a.TextContent,
                     Money = housePrice.ToString(),
                     HouseURL = a.GetAttribute("href"),
