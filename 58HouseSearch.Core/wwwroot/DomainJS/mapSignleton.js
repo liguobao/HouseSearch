@@ -7,7 +7,6 @@ define(function() {
         center: [121.297428, 31.1345],
         zoom: 11
     });
-
     var _workAddress = null;
 
     return {

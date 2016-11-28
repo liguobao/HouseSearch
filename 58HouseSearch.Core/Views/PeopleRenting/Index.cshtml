@@ -12,13 +12,14 @@
     <link rel="stylesheet" href="http://cdn.amazeui.org/amazeui/2.7.1/css/amazeui.min.css" />
     <link href="~/CSS/common.css" rel="stylesheet" />
     <script src="~/DomainJS/lib/require.2.1.1.min.js" defer async="true"></script>
-    @*<script src="~/DomainJS/lib/require.2.1.1.min.js" data-main="/DomainJS/home"></script>*@ 
-    <script src="~/DomainJS/lib/require.2.1.1.min.js" data-main="/DomainJS/housecommom"></script>
+    <script src="~/DomainJS/lib/require.2.1.1.min.js" data-main="/DomainJS/home"></script> 
+    @*<script src="~/DomainJS/lib/require.2.1.1.min.js" data-main="/DomainJS/housecommom"></script>*@
   
 
     <script>
         var getDataAction = '@Url.Action("GetRentingData")';
         var getViewDefaultDataAction = '@Url.Action("GetRentingDatabyPageIndex")';
+        var dataResource = "";
     </script>
 </head>
 
@@ -73,6 +74,12 @@
                             <div>
                                 <a href="~/PeopleRenting">上海互助租房</a>
                                 <a href="~/HonestHouse" style="margin-left:20px;">58同城诚信房源</a>
+                                <br />
+                                <a href="~/DoubanHome">豆瓣租房(上海)</a>
+                                <a href="~/DoubanHome?groupID=26926&cityname=北京" style="margin-left:20px;">豆瓣租房(北京)</a>
+                                <br />
+                                <a href="~/DoubanHome?groupID=szzf&cityname=深圳">豆瓣租房(深圳)</a>
+                                <a href="~/DoubanHome?groupID=gz020&cityname=广州" style="margin-left:20px;">豆瓣租房(广州)</a>
                             </div>
                         </div>
 

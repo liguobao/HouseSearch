@@ -32,8 +32,18 @@ namespace _58HouseSearch.Core.Controllers
                 HouseTitle = item.QuerySelector("a").GetAttribute("title"),
                 HouseURL = item.QuerySelector("a").GetAttribute("href"),
                 HouseLocation = item.QuerySelector("a").GetAttribute("title"),
+                Money ="暂无"
             });
             return Json(new { IsSuccess = true, HouseInfos = lstRoomInfo });
+        }
+
+        public IActionResult GetDoubanCity(string groupID = "")
+        {
+            if (string.IsNullOrEmpty(groupID))
+                groupID = "shanghaizufang";
+            var url = $"https://www.douban.com/group/{groupID}/";
+            var htmlResult = HTTPHelper.GetHTML(url);
+            return Json(new { IsSuccess = true,cityName ="上海" });
         }
     }
 }
