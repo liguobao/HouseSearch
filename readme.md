@@ -1,6 +1,10 @@
 ### 58同城品牌公寓爬虫
 
 
+### 2016.12.02
+1. 新增HouseCrawler.Core，计划基于此版本做数据固化以及定时爬虫
+2. 58HouseSearch为ASP.NET MVC4版本，58HouseSearch.Core为ASP.NET core版本，两者暂停更新
+
 ### 2016.11.27
 1. 完成豆瓣租房小组功能上线
 2. 细化功能待产品姐姐PRD了
