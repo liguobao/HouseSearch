@@ -1,6 +1,32 @@
 ### 58同城品牌公寓爬虫
 
 
+项目缘起于[高德API+Python解决租房问题](https://zhuanlan.zhihu.com/p/21883516),
+修修补补之后上线了[58公寓高德搜房(全国版)：http://codelover.link:8080/](http://codelover.link:8080/)。
+
+经过了多次代码优化、内容改版、新增房源等...
+
+相关文章可移步知乎专栏：[一只程序汪的自我修养](https://zhuanlan.zhihu.com/codelover)
+
+简单介绍一下工程结构：
+
+1. ASP.NET MVC4：58HouseSearch\58HouseSearch.sln
+2. ASP.NET Core：58HouseSearch.Core\58HouseSearch.Core.sln
+
+以上两个版本大体逻辑一致，Core版本为当前线上版本，新增了豆瓣租房小组数据。
+
+下一个版本为HouseCrawler.Core，初步计划以下功能：
+
+1. 爬虫数据固化到数据，优化爬虫策略
+2. 前端页面改版，交互优化，内容引导等
+
+
+
+
+
+以下是日常更新：
+
+
 ### 2016.12.02
 1. 新增HouseCrawler.Core，计划基于此版本做数据固化以及定时爬虫
 2. 58HouseSearch为ASP.NET MVC4版本，58HouseSearch.Core为ASP.NET core版本，两者暂停更新
