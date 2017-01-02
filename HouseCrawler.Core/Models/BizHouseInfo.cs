@@ -1,33 +1,48 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace HouseCrawler.Core.Models
+namespace HouseCrawler.Core
 {
-    public class HouseInfo
+    public class BizHouseInfo
     {
+
+        public Guid Id { get; set; }
+
         /// <summary>
         /// 标题
         /// </summary>
+        [MaxLength(2048)]
         public string HouseTitle { get; set; }
+
+        [MaxLength(4096)]
+        public string HouseText { get; set; }
 
         /// <summary>
         /// 房间URL
         /// </summary>
-        public string HouseURL { get; set; }
+        [MaxLength(512)]
+        public string HouseOnlineURL { get; set; }
 
         /// <summary>
         /// 地理位置（一般用于定位）
         /// </summary>
+        [MaxLength(2048)]
         public string HouseLocation { get; set; }
 
         /// <summary>
         /// 价钱（可能非纯数字）
         /// </summary>
-        public string Money { get; set; }
+        [MaxLength(64)]
+        public string DisPlayPrice { get; set; }
 
         /// <summary>
         /// 发布时间
         /// </summary>
-        public string HouseTime { get; set; }
+        [MaxLength(2048)]
+        public DateTime PubTime { get; set; }
 
         /// <summary>
         /// 价格（纯数字）
@@ -35,14 +50,10 @@ namespace HouseCrawler.Core.Models
         public decimal HousePrice { get; set; }
 
         /// <summary>
-        /// 定位图标
-        /// </summary>
-        public string LocationMarkBG { get; set; }
-
-        /// <summary>
         /// 所在城市
         /// </summary>
-        public string CityName { get; set; }
+        [MaxLength(64)]
+        public string LocationCityName { get; set; }
 
         /// <summary>
         /// 创建时间
@@ -52,6 +63,8 @@ namespace HouseCrawler.Core.Models
         /// <summary>
         /// 来源网站
         /// </summary>
+        [MaxLength(512)]
         public string SoureceDaminURL { get; set; }
+
     }
 }

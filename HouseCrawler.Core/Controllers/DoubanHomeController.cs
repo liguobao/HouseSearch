@@ -15,6 +15,51 @@ namespace HouseCrawler.Core.Controllers
         // GET: /<controller>/
         public IActionResult Index(string groupID="",int endstart= 0)
         {
+
+            //var dataContent = new CrawlerDataContent();
+            //dataContent.Add(new BizCrawlerConfiguration()
+            //{
+            //    ConfigconfigurationKey = 0,
+            //    ConfigconfigurationName = "douban",
+            //    ConfigconfigurationValue = "{'groupid':'HZhome','cityname':'杭州','pagecount':5}",
+            //    DataCreateTime = DateTime.Now,
+            //    IsEnabled = true,
+            //});
+            //dataContent.Add(new BizCrawlerConfiguration()
+            //{
+            //    ConfigconfigurationKey = 0,
+            //    ConfigconfigurationName = "douban",
+            //    ConfigconfigurationValue = "{'groupid':'shanghaizufang','cityname':'上海','pagecount':5}",
+            //    DataCreateTime = DateTime.Now,
+            //    IsEnabled = true,
+            //});
+            //dataContent.Add(new BizCrawlerConfiguration()
+            //{
+            //    ConfigconfigurationKey = 0,
+            //    ConfigconfigurationName = "douban",
+            //    ConfigconfigurationValue = "{'groupid':'26926','cityname':'北京','pagecount':5}",
+            //    DataCreateTime = DateTime.Now,
+            //    IsEnabled = true,
+            //});
+            //dataContent.Add(new BizCrawlerConfiguration()
+            //{
+            //    ConfigconfigurationKey = 0,
+            //    ConfigconfigurationName = "douban",
+            //    ConfigconfigurationValue = "{'groupid':'szzf','cityname':'深圳','pagecount':5}",
+            //    DataCreateTime = DateTime.Now,
+            //    IsEnabled = true,
+            //});
+            //dataContent.Add(new BizCrawlerConfiguration()
+            //{
+            //    ConfigconfigurationKey = 0,
+            //    ConfigconfigurationName = "douban",
+            //    ConfigconfigurationValue = "{'groupid':'gz020','cityname':'广州','pagecount':5}",
+            //    DataCreateTime = DateTime.Now,
+            //    IsEnabled = true,
+            //});
+            //dataContent.SaveChanges();
+            DoubanHouseCrawler.CrawlerHouseInfo();
+
             PVHelper.WritePVInfo(Request.HttpContext.Connection.RemoteIpAddress.ToString(), Request.Path);
             return View();
         }
@@ -35,6 +80,8 @@ namespace HouseCrawler.Core.Controllers
                 Money ="暂无"
             });
             return Json(new { IsSuccess = true, HouseInfos = lstRoomInfo });
+
+         
         }
 
         public IActionResult GetDoubanCity(string groupID = "")
