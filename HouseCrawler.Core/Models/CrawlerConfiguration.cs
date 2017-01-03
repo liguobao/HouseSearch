@@ -22,4 +22,16 @@ namespace HouseCrawler.Core
 
         public int ConfigconfigurationKey { get; set; }
     }
+
+    public static class ConstConfigconfiguration
+    {
+        public static string DoubanConfigconfigurationName = "douban";
+
+        public static string PinPaiGongYuConfigconfigurationName = "pinpaigongyu";
+
+
+
+    }
+
+
 }

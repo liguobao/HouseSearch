@@ -15,7 +15,7 @@ namespace HouseCrawler.Core
 
         public static void Error(string message,Exception ex,object oj =null)
         {
-            Logger.Error(message, ex, oj);
+            Logger.Error(message + "Exception:" + ex.ToString(), ex, oj);
         }
        
     }

@@ -60,7 +60,7 @@ namespace HouseCrawler.Core
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=House}/{action=Index}/{id?}");  //（手动高亮）
+                    template: "{controller=House}/{action=Index}/{id?}"); 
             });
 
             PVHelper.InitWebPVInfo(Path.Combine(env.WebRootPath, "pv.json"));
