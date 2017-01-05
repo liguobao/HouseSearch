@@ -11,26 +11,25 @@ namespace HouseCrawler.Core
         public Guid Id { get; set; }
 
         [MaxLength(255)]
-        public string ConfigconfigurationName { get; set; }
+        public string ConfigurationName { get; set; }
 
         [MaxLength(255)]
-        public string ConfigconfigurationValue { get; set; }
+        public string ConfigurationValue { get; set; }
 
         public DateTime DataCreateTime { get; set; }
 
         public bool IsEnabled { get; set; }
 
-        public int ConfigconfigurationKey { get; set; }
+        public int ConfigurationKey { get; set; }
     }
 
-    public static class ConstConfigconfiguration
+    public static class ConstConfigurationName
     {
-        public static string DoubanConfigconfigurationName = "douban";
+        public static string Douban = "douban";
 
-        public static string PinPaiGongYuConfigconfigurationName = "pinpaigongyu";
+        public static string PinPaiGongYu = "pinpaigongyu";
 
-
-
+        public static string HuZhuZuFang = "huzhuzufang";
     }
 
 

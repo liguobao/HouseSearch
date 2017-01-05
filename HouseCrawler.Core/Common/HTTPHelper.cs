@@ -32,6 +32,23 @@ namespace HouseCrawler.Core
         }
 
 
+        public static HttpClient AndroidHttpClient { get; } = new HttpClient
+        {
+            DefaultRequestHeaders =
+            {
+                {"User-Agent","Android" }
+            }
+        };
+
+        public static string GetJsonResultByURL(string postUrl)
+        {
+            var result = AndroidHttpClient.PostAsync(postUrl, new StringContent("")).Result;
+            return result.Content.ReadAsStringAsync().Result;
+        }
+
+
+
+
         public static string GetHTML(string url)
         {
             try

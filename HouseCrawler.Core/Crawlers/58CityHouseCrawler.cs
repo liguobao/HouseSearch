@@ -14,10 +14,10 @@ namespace HouseCrawler.Core
 
         public static void CapturPinPaiHouseInfo()
         {
-            foreach (var doubanConf in dataContent.CrawlerConfigurations.Where(c => c.ConfigconfigurationName
-               == ConstConfigconfiguration.PinPaiGongYuConfigconfigurationName && c.IsEnabled).ToList())
+            foreach (var doubanConf in dataContent.CrawlerConfigurations.Where(c => c.ConfigurationName
+               == ConstConfigurationName.PinPaiGongYu && c.IsEnabled).ToList())
             {
-                var confInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(doubanConf.ConfigconfigurationValue);
+                var confInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(doubanConf.ConfigurationValue);
                 for (var index = 0; index < confInfo.pagecount.Value; index++)
                 {
                     var url = $"http://{confInfo.shortcut.Value}.58.com/pinpaigongyu/pn/{index}";
@@ -56,7 +56,7 @@ namespace HouseCrawler.Core
                     DisPlayPrice = element.QuerySelector("b").TextContent,
                     HouseLocation = new[] { "公寓", "青年社区" }.All(s => houseInfoList.Contains(s)) ? houseInfoList[0] : houseInfoList[1],
                     DataCreateTime = DateTime.Now,
-                    SoureceDaminURL = ConstConfigconfiguration.PinPaiGongYuConfigconfigurationName,
+                    SoureceDaminURL = ConstConfigurationName.PinPaiGongYu,
                     HousePrice = housePrice,
                     HouseText = houseTitle,
                     LocationCityName = confInfo.cityname.Value,

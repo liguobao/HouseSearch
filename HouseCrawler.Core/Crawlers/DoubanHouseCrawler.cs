@@ -17,10 +17,10 @@ namespace HouseCrawler.Core
             try
             {
 
-                foreach (var doubanConf in dataContent.CrawlerConfigurations.Where(c => c.ConfigconfigurationName
-                == ConstConfigconfiguration.DoubanConfigconfigurationName).ToList())
+                foreach (var doubanConf in dataContent.CrawlerConfigurations.Where(c => c.ConfigurationName
+                == ConstConfigurationName.Douban).ToList())
                 {
-                    var confInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(doubanConf.ConfigconfigurationValue);
+                    var confInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(doubanConf.ConfigurationValue);
                     for (var index = 0; index < confInfo.pagecount.Value; index++)
                     {
                         GetDataFromOnlineWeb(confInfo.groupid.Value, index,
