@@ -24,7 +24,7 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
         var dataInfo = [];
         if (dataResource==="douban") {
             dataInfo = { groupID: helper.getQueryString("groupID"), index: index };
-        } else{
+        }else{
             dataInfo = { cnName: city.shortName, index: index };
         }
 
@@ -70,6 +70,8 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
 
         if (dataResource == "douban") {
             _map.setCity(helper.getQueryString("cityname"));
+        } else if (dataResource == "huzhuzufang") {
+             _map.setCity("上海");
         }
 
         showCityInfo(function() {

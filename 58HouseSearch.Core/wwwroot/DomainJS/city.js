@@ -28,6 +28,9 @@ var city = define(['jquery', "helper"], function ($, helper) {
         get name() {
             if (dataResource == "douban") {
                 _name = helper.getQueryString("cityname");
+            } else if (dataResource == "huzhuzufang")
+            {
+                _name = "上海";
             }
             return _name;
         },
