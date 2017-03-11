@@ -1,0 +1,70 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\CSS\common.css" />
+    <Content Include="wwwroot\DomainJS\amazeui.2.7.1.min.js" />
+    <Content Include="wwwroot\DomainJS\build.js" />
+    <Content Include="wwwroot\DomainJS\city.js" />
+    <Content Include="wwwroot\DomainJS\city.json" />
+    <Content Include="wwwroot\DomainJS\commuteGo.js" />
+    <Content Include="wwwroot\DomainJS\domready.js" />
+    <Content Include="wwwroot\DomainJS\es5.js" />
+    <Content Include="wwwroot\DomainJS\helper.js" />
+    <Content Include="wwwroot\DomainJS\home.js" />
+    <Content Include="wwwroot\DomainJS\housecommom.js" />
+    <Content Include="wwwroot\DomainJS\lib\addToolbar.js" />
+    <Content Include="wwwroot\DomainJS\lib\amazeui.2.7.1.min.js" />
+    <Content Include="wwwroot\DomainJS\lib\Chart.js" />
+    <Content Include="wwwroot\DomainJS\lib\es5.js" />
+    <Content Include="wwwroot\DomainJS\lib\jquery-1.11.3.min.js" />
+    <Content Include="wwwroot\DomainJS\lib\jquery.range.js" />
+    <Content Include="wwwroot\DomainJS\lib\require.2.1.1.min.js" />
+    <Content Include="wwwroot\DomainJS\mapController.js" />
+    <Content Include="wwwroot\DomainJS\mapSignleton.js" />
+    <Content Include="wwwroot\DomainJS\marker.js" />
+    <Content Include="wwwroot\DomainJS\package.bat" />
+    <Content Include="wwwroot\DomainJS\package.sh" />
+    <Content Include="wwwroot\DomainJS\polygon.js" />
+    <Content Include="wwwroot\DomainJS\transfer.js" />
+    <Content Include="wwwroot\DomainJS\vehicle.js" />
+    <Content Include="wwwroot\DomainJS\workLocation.js" />
+    <Content Include="wwwroot\IMG\Gradient\Black.png" />
+    <Content Include="wwwroot\IMG\Gradient\Blue.png" />
+    <Content Include="wwwroot\IMG\Gradient\LightGreen.png" />
+    <Content Include="wwwroot\IMG\Gradient\OrangeYellow.png" />
+    <Content Include="wwwroot\IMG\Gradient\PaleGreen.png" />
+    <Content Include="wwwroot\IMG\Gradient\PaleRed.png" />
+    <Content Include="wwwroot\IMG\Gradient\PaleYellow.png" />
+    <Content Include="wwwroot\IMG\Gradient\Pink.png" />
+    <Content Include="wwwroot\IMG\Gradient\Red.png" />
+    <Content Include="wwwroot\IMG\Gradient\Violet.png" />
+    <Content Include="wwwroot\IMG\Little\Black.png" />
+    <Content Include="wwwroot\IMG\Little\Blue.png" />
+    <Content Include="wwwroot\IMG\Little\LightGreen.png" />
+    <Content Include="wwwroot\IMG\Little\OrangeYellow.png" />
+    <Content Include="wwwroot\IMG\Little\PaleGreen.png" />
+    <Content Include="wwwroot\IMG\Little\PaleRed.png" />
+    <Content Include="wwwroot\IMG\Little\PaleYellow.png" />
+    <Content Include="wwwroot\IMG\Little\Pink.png" />
+    <Content Include="wwwroot\IMG\Little\Red.png" />
+    <Content Include="wwwroot\IMG\Little\Violet.png" />
+    <Content Include="wwwroot\pv.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AngleSharp" Version="0.9.9" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="1.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.1" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="1.0.0-rtm-beta4" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.3.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot\NLogFile\" />
+  </ItemGroup>
+
+</Project>

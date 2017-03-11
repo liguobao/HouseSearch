@@ -13,7 +13,8 @@
 简单介绍一下工程结构：
 
 1. ASP.NET MVC4：58HouseSearch\58HouseSearch.sln
-2. ASP.NET Core：58HouseSearch.Core\58HouseSearch.Core.sln
+2. ASP.NET Core：58HouseSearch.Core\58HouseSearch.Core.sln（已迁移至VS2017）
+
 
 以上两个版本大体逻辑一致，Core版本为当前线上版本，新增了豆瓣租房小组数据。
 
@@ -27,6 +28,9 @@
 
 
 以下是日常更新：
+
+### 2017.03.11
+1. 迁移至.NET Core1.1.1,项目变更为csproj，VS2017可用，如需要老版本，自助切换至forVS2015分支，没必要情况代码不同步（懒嘛
 
 
 ### 2016.12.02
