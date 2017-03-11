@@ -12,6 +12,7 @@ using System.IO;
 using System.Text;
 using NLog.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
+using NLog.Web;
 
 namespace HouseCrawler.Core
 {

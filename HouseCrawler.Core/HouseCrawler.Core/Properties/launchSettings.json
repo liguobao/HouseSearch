@@ -1,9 +1,9 @@
-{
+﻿{
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:1819/",
+      "applicationUrl": "http://localhost:61215/",
       "sslPort": 0
     }
   },
@@ -18,10 +18,10 @@
     "HouseCrawler.Core": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "http://localhost:61216"
     }
   }
 }
