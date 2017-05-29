@@ -12,6 +12,8 @@ namespace HouseCrawler.Core.Controllers
 
         public ActionResult Index()
         {
+            PeopleRentingCrawler.CapturHouseInfo();
+
             var webPVInfo = PVHelper.GetTheWebPVInfo();
             Dictionary<DateTime, List<PVInfo>> dicDateToLstPVInfo = new Dictionary<DateTime, List<PVInfo>>();
             foreach(var pvInfo in webPVInfo.SalesLstPVInfo)

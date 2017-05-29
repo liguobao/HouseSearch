@@ -43,10 +43,13 @@ namespace HouseCrawler.Core
                                };
 
             var tmp = new List<BizHouseInfo>();
+
+            HashSet<string> hsHouseOnlineURL = GetAllHouseOnlineURL();
+
             foreach (var houseInfo in lstHouseInfo)
             {
                 var houseURL = $"http://www.huzhumaifang.com/Renting/house_detail/id/{houseInfo.houseId.ToObject<Int32>()}.html";
-                if (dataContent.HouseInfos.Any(h => h.HouseOnlineURL == houseURL))
+                if (hsHouseOnlineURL.Contains(houseURL))
                     continue;
 
                 var desc = houseInfo.houseDescript.ToObject<string>().Replace("😄", "");
@@ -65,6 +68,19 @@ namespace HouseCrawler.Core
                 });
             }
             dataContent.SaveChanges();
+        }
+
+        private static HashSet<string> GetAllHouseOnlineURL()
+        {
+            var hsHouseOnlineURL = new HashSet<string>();
+            dataContent.HouseInfos.Where(h => !string.IsNullOrEmpty(h.HouseOnlineURL)).Select(h => h.HouseOnlineURL).Distinct().ToList().ForEach(url =>
+            {
+                if (!hsHouseOnlineURL.Contains(url))
+                {
+                    hsHouseOnlineURL.Add(url);
+                }
+            });
+            return hsHouseOnlineURL;
         }
     }
 }

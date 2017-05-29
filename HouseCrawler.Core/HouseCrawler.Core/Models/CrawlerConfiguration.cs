@@ -8,7 +8,7 @@ namespace HouseCrawler.Core
 {
     public class BizCrawlerConfiguration
     {
-        public Guid Id { get; set; }
+        public long Id { get; set; }
 
         [MaxLength(255)]
         public string ConfigurationName { get; set; }

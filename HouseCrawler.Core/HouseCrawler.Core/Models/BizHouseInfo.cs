@@ -9,7 +9,7 @@ namespace HouseCrawler.Core
     public class BizHouseInfo
     {
 
-        public Guid Id { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         /// 标题
