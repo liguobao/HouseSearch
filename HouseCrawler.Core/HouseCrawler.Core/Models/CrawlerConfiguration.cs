@@ -30,6 +30,8 @@ namespace HouseCrawler.Core
         public static string PinPaiGongYu = "pinpaigongyu";
 
         public static string HuZhuZuFang = "huzhuzufang";
+
+        public static string PeopleRenting = "peoplerenting";
     }
 
 

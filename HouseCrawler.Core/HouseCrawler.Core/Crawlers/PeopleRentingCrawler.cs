@@ -13,9 +13,12 @@ namespace HouseCrawler.Core
 
         public static void CapturHouseInfo()
         {
-            for(var pageNum = 1;pageNum<30;pageNum++)
+            var peopleRentingConf = dataContent.CrawlerConfigurations.FirstOrDefault(conf=>conf.ConfigurationName== ConstConfigurationName.PeopleRenting);
+
+            var pageCount = peopleRentingConf != null ? Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(peopleRentingConf.ConfigurationValue).pagecount.Value : 10;
+            for (var pageIndex = 1;pageIndex< pageCount; pageIndex++)
             {
-                GetDataByWebAPI(pageNum);
+                GetDataByWebAPI(pageIndex);
             }
           
 

@@ -8,6 +8,7 @@ namespace HouseCrawler.Core
 {
     public class AppSettings
     {
+        public static string CityJsonFilePath = "";
     }
 
     public class ConnectionStrings

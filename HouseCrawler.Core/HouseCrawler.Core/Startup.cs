@@ -66,6 +66,8 @@ namespace HouseCrawler.Core
 
             PVHelper.InitWebPVInfo(Path.Combine(env.WebRootPath, "pv.json"));
 
+            AppSettings.CityJsonFilePath = Path.Combine(env.WebRootPath, "DomainJS//pv.json");
+
             ConnectionStrings.MySQLConnectionString = new ConfigurationBuilder()
              .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json").Build()["ConnectionStrings:MySQLConnectionString"];

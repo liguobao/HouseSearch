@@ -1,16 +1,18 @@
 ﻿建表SQL：
 
+
 CREATE TABLE `CrawlerConfigurations` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
-  `ConfigurationName` varchar(50) DEFAULT NULL,
-  `ConfigurationValue` varchar(500) DEFAULT NULL,
-  `DataCreateTime` datetime DEFAULT NULL,
-  `IsEnabled` tinyint(1) DEFAULT NULL,
-  `ConfigurationKey` int(11) DEFAULT NULL,
+  `ConfigurationName` varchar(50) DEFAULT NULL COMMENT '配置名称',
+  `ConfigurationValue` varchar(500) DEFAULT NULL COMMENT '配置值，一般是json',
+  `DataCreateTime` datetime DEFAULT NULL COMMENT '创建时间',
+  `IsEnabled` tinyint(1) DEFAULT NULL COMMENT '是否有效',
+  `ConfigurationKey` int(11) DEFAULT NULL COMMENT 'key',
+  `DataChange_LastTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '时间戳',
   PRIMARY KEY (`ID`),
   KEY `idx_key` (`ConfigurationKey`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
-SELECT * FROM housecrawler.CrawlerConfigurations;
+) ENGINE=InnoDB AUTO_INCREMENT=435 DEFAULT CHARSET=utf8mb4;
+
 
 CREATE TABLE `HouseInfos` (
   `Id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -25,6 +27,7 @@ CREATE TABLE `HouseInfos` (
   `SoureceDaminURL` varchar(512) DEFAULT NULL,
   `HouseInfoscol` varchar(45) DEFAULT NULL,
   `HouseText` varchar(8000) DEFAULT NULL,
+  `DataChange_LastTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`Id`),
   KEY `idx_onlineurl` (`HouseOnlineURL`(191))
-) ENGINE=InnoDB AUTO_INCREMENT=397 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=1419 DEFAULT CHARSET=utf8mb4;
