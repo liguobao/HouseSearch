@@ -27,10 +27,9 @@ namespace HouseCrawler.Core
                     var htmlResult = HTTPHelper.GetHTMLByURL(url);
                     var page = new HtmlParser().Parse(htmlResult);
                     var lstLi = page.QuerySelectorAll("li").Where(element => element.HasAttribute("logr"));
-                    if ((lstLi == null || lstLi.Count() == 0) && index == 0)
+                    if (lstLi == null || lstLi.Count() == 0)
                     {
-                        doubanConf.IsEnabled = false;
-                        break;
+                        continue;
                     }
 
                     GetDataOnPageDoc(confInfo, page);
@@ -69,8 +68,31 @@ namespace HouseCrawler.Core
             }
         }
 
+        /// <summary>
+        /// 过滤无效的城市配置
+        /// </summary>
+        public static void FilterInvalidCityConfig()
+        {
+            foreach (var doubanConf in dataContent.CrawlerConfigurations.Where(c => c.ConfigurationName
+               == ConstConfigurationName.PinPaiGongYu).ToList())
+            {
+                var confInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(doubanConf.ConfigurationValue);
+                var url = $"http://{confInfo.shortcutname.Value}.58.com/pinpaigongyu/pn/0";
+                var htmlResult = HTTPHelper.GetHTMLByURL(url);
+                var page = new HtmlParser().Parse(htmlResult);
+                var lstLi = page.QuerySelectorAll("li").Where(element => element.HasAttribute("logr"));
+                if ((lstLi == null || lstLi.Count() == 0))
+                {
+                    doubanConf.IsEnabled = false;
+                }
+            }
+            dataContent.SaveChanges();
+        }
 
 
+        /// <summary>
+        /// 初始化配置数据，首次运行项目才需要
+        /// </summary>
         public static void InitConfiguration()
         {
 
@@ -1799,7 +1821,7 @@ namespace HouseCrawler.Core
                 var lst = new List<BizCrawlerConfiguration>();
                 foreach (var cityInfo in lstCity)
                 {
-                    if (cityInfo != null && cityInfo.cityName != null && cityInfo.cityName.Value != null && cityInfo.shortCut!=null && cityInfo.shortCut.Value!=null)
+                    if (cityInfo != null && cityInfo.cityName != null && cityInfo.cityName.Value != null && cityInfo.shortCut != null && cityInfo.shortCut.Value != null)
                     {
                         lst.Add(new BizCrawlerConfiguration()
                         {

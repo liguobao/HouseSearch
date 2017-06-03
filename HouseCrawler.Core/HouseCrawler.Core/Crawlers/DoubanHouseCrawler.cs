@@ -12,7 +12,7 @@ namespace HouseCrawler.Core
 
         private static CrawlerDataContent dataContent = new CrawlerDataContent();
 
-        public static void CaptureHouseInfo()
+        public static void CaptureHouseInfoFromConfig()
         {
             try
             {
@@ -21,29 +21,60 @@ namespace HouseCrawler.Core
                     .Where(c => c.ConfigurationName == ConstConfigurationName.Douban).ToList())
                 {
                     var confInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(doubanConf.ConfigurationValue);
-                    for (var index = 0; index < confInfo.pagecount.Value; index++)
+                    for (var pageIndex = 0; pageIndex < confInfo.pagecount.Value; pageIndex++)
                     {
-                        GetDataFromOnlineWeb(confInfo.groupid.Value, index,
-                            confInfo.cityname.Value);
+                        var lstHouseInfo = GetDataFromOnlineWeb(confInfo.groupid.Value, confInfo.cityname.Value, pageIndex);
+                        dataContent.Add(lstHouseInfo);
+                        dataContent.SaveChanges();
                     }
                 }
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 LogHelper.Error("DoubanHouseCrawler CrawlerHouseInfo Exception", ex);
             }
         }
 
-        public static void GetDataFromOnlineWeb(string groupID,int index,string cityName)
+        public static void AddDoubanGroupConfig(string groupID, string cityName, int pageIndex = 0)
         {
-            var url = $"https://www.douban.com/group/{groupID}/discussion?start={index * 25}";
+            var cityInfo = $"{{ 'groupid':'{groupID}','cityname':'{cityName}','pagecount':5}}";
+
+            var lstHouseInfo = GetDataFromOnlineWeb(groupID, cityName, pageIndex);
+
+            #region add douban group config
+
+            if (lstHouseInfo.Count > 0)
+            {
+                var config =   new BizCrawlerConfiguration()
+                {
+                    ConfigurationKey = 0,
+                    ConfigurationValue = cityInfo,
+                    ConfigurationName = ConstConfigurationName.Douban,
+                    DataCreateTime = DateTime.Now,
+                    IsEnabled = true,
+                };
+                dataContent.Add(config);
+                dataContent.SaveChanges();
+            }
+            #endregion
+
+
+        }
+
+
+        public static List<BizHouseInfo> GetDataFromOnlineWeb(string groupID, string cityName, int pageIndex)
+        {
+            List<BizHouseInfo> lstHouseInfo = new List<BizHouseInfo>();
+
+
+            var url = $"https://www.douban.com/group/{groupID}/discussion?start={pageIndex * 25}";
             var htmlResult = HTTPHelper.GetHTML(url);
             if (string.IsNullOrEmpty(htmlResult))
-                return;
+                return lstHouseInfo;
             var page = htmlParser.Parse(htmlResult);
 
-            foreach(var trItem in page.QuerySelector("table.olt").QuerySelectorAll("tr"))
+            foreach (var trItem in page.QuerySelector("table.olt").QuerySelectorAll("tr"))
             {
                 var titleItem = trItem.QuerySelector("td.title");
                 if (titleItem == null)
@@ -64,10 +95,10 @@ namespace HouseCrawler.Core
                     HousePrice = 0,
                     LocationCityName = cityName
                 };
-                dataContent.Add(houseInfo);
-
+                lstHouseInfo.Add(houseInfo);
             }
-            dataContent.SaveChanges();
+            return lstHouseInfo;
+
         }
 
     }
