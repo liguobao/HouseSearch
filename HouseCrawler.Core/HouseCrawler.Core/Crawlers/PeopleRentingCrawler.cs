@@ -67,7 +67,7 @@ namespace HouseCrawler.Core
                     DisPlayPrice = houseInfo.houseRentPrice.ToString(),
                     LocationCityName = "上海",
                     PubTime = houseInfo.houseCreateTime.ToObject<DateTime>(),
-                    SoureceDaminURL = ConstConfigurationName.HuZhuZuFang,
+                    Sourece = ConstConfigurationName.HuZhuZuFang,
                 });
             }
             dataContent.SaveChanges();

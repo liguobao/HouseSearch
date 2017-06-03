@@ -52,6 +52,6 @@ namespace HouseCrawler.Core.Models
         /// <summary>
         /// 来源网站
         /// </summary>
-        public string SoureceDaminURL { get; set; }
+        public string Sourece { get; set; }
     }
 }

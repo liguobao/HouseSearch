@@ -58,7 +58,7 @@ namespace HouseCrawler.Core
                     DisPlayPrice = element.QuerySelector("b").TextContent,
                     HouseLocation = new[] { "公寓", "青年社区" }.All(s => houseInfoList.Contains(s)) ? houseInfoList[0] : houseInfoList[1],
                     DataCreateTime = DateTime.Now,
-                    SoureceDaminURL = ConstConfigurationName.PinPaiGongYu,
+                    Sourece = ConstConfigurationName.PinPaiGongYu,
                     HousePrice = housePrice,
                     HouseText = houseTitle,
                     LocationCityName = confInfo.cityname.Value,

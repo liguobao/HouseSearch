@@ -91,7 +91,7 @@ namespace HouseCrawler.Core
                     ? DateTime.Parse(DateTime.Now.ToString("yyyy-") + titleItem.QuerySelector("td.time").InnerHtml)
                     : DateTime.Now,
                     DisPlayPrice = "",
-                    SoureceDaminURL = "www.douban.com",
+                    Sourece = ConstConfigurationName.Douban,
                     HousePrice = 0,
                     LocationCityName = cityName
                 };
