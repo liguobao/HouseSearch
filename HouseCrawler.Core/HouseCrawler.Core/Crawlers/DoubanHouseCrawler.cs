@@ -91,7 +91,7 @@ namespace HouseCrawler.Core
                     ? DateTime.Parse(DateTime.Now.ToString("yyyy-") + titleItem.QuerySelector("td.time").InnerHtml)
                     : DateTime.Now,
                     DisPlayPrice = "",
-                    Sourece = ConstConfigurationName.Douban,
+                    Source = ConstConfigurationName.Douban,
                     HousePrice = 0,
                     LocationCityName = cityName
                 };

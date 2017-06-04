@@ -26,7 +26,7 @@ var city = define(['jquery', "helper"], function ($, helper) {
             _shortName = value;
         },
         get name() {
-            if (dataResource == "douban") {
+            if (dataResource == "douban" || dataResource=="houselist") {
                 _name = helper.getQueryString("cityname");
             }
             return _name;

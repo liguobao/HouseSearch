@@ -13,7 +13,7 @@ namespace HouseCrawler.Core
         [MaxLength(255)]
         public string ConfigurationName { get; set; }
 
-        [MaxLength(255)]
+        [MaxLength(4096)]
         public string ConfigurationValue { get; set; }
 
         public DateTime DataCreateTime { get; set; }
@@ -31,10 +31,25 @@ namespace HouseCrawler.Core
 
         public static string HuZhuZuFang = "huzhuzufang";
 
-        public static string PeopleRenting = "peoplerenting";
-
         public static string CityHouseInfo = "cityhouse";
+
+
+        public static string ConvertToDisPlayName(string configurationName)
+        {
+            Dictionary<string, string> dicNameToDisplayName = new Dictionary<string, string>()
+            {
+                { ConstConfigurationName.Douban,"豆瓣小組"},
+                { ConstConfigurationName.PinPaiGongYu,"品牌公寓"},
+                { ConstConfigurationName.HuZhuZuFang,"互助租房"},
+                { ConstConfigurationName.CityHouseInfo,"城市租房信息"},
+            };
+
+            return (dicNameToDisplayName.ContainsKey(configurationName))? dicNameToDisplayName[configurationName]:"";
+        }
     }
+
+
+
 
 
 }

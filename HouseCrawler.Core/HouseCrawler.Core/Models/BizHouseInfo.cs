@@ -64,7 +64,7 @@ namespace HouseCrawler.Core
         /// 来源网站
         /// </summary>
         [MaxLength(512)]
-        public string Sourece { get; set; }
+        public string Source { get; set; }
 
     }
 }

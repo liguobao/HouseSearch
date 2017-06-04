@@ -13,7 +13,7 @@ namespace HouseCrawler.Core
 
         public static void CapturHouseInfo()
         {
-            var peopleRentingConf = dataContent.CrawlerConfigurations.FirstOrDefault(conf=>conf.ConfigurationName== ConstConfigurationName.PeopleRenting);
+            var peopleRentingConf = dataContent.CrawlerConfigurations.FirstOrDefault(conf=>conf.ConfigurationName== ConstConfigurationName.HuZhuZuFang);
 
             var pageCount = peopleRentingConf != null ? Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(peopleRentingConf.ConfigurationValue).pagecount.Value : 10;
             for (var pageIndex = 1;pageIndex< pageCount; pageIndex++)
@@ -67,7 +67,7 @@ namespace HouseCrawler.Core
                     DisPlayPrice = houseInfo.houseRentPrice.ToString(),
                     LocationCityName = "上海",
                     PubTime = houseInfo.houseCreateTime.ToObject<DateTime>(),
-                    Sourece = ConstConfigurationName.HuZhuZuFang,
+                    Source = ConstConfigurationName.HuZhuZuFang,
                 });
             }
             dataContent.SaveChanges();

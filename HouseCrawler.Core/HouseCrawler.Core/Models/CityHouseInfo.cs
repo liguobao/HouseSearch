@@ -24,12 +24,12 @@ namespace HouseCrawler.Core.Models
             List<CityHouseInfo> lstCityHouse = new List<CityHouseInfo>();
             foreach( var cityHouseGroup in dataContent.HouseInfos.GroupBy(h => h.LocationCityName))
             {
-                foreach(var sourceGroupHouses in cityHouseGroup.GroupBy(h => h.Sourece))
+                foreach(var sourceGroupHouses in cityHouseGroup.GroupBy(h => h.Source))
                 {
                     var cityHouseInfo = new CityHouseInfo();
                     cityHouseInfo.CityName = sourceGroupHouses.First().LocationCityName;
                     cityHouseInfo.HouseSum = sourceGroupHouses.Count();
-                    cityHouseInfo.Source = sourceGroupHouses.First().Sourece;
+                    cityHouseInfo.Source = sourceGroupHouses.First().Source;
                     cityHouseInfo.UpdateTime = DateTime.Now;
                     lstCityHouse.Add(cityHouseInfo);
                 }
@@ -54,6 +54,18 @@ namespace HouseCrawler.Core.Models
                 dataContent.SaveChanges();
             }
          
+        }
+
+
+        public static List<CityHouseInfo> LoadCityHouseInfo()
+        {
+            var lstCityHouseInfo = new List<CityHouseInfo>();
+            BizCrawlerConfiguration config = dataContent.CrawlerConfigurations.FirstOrDefault(c => c.ConfigurationName == ConstConfigurationName.CityHouseInfo);
+            if (config != null)
+            {
+                lstCityHouseInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<List<CityHouseInfo>>(config.ConfigurationValue);
+            }
+            return lstCityHouseInfo;
         }
 
     }

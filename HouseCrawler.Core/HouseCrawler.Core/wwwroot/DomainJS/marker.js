@@ -22,7 +22,7 @@ define(['mapSignleton', 'city', 'transfer'], function(mapSignleton, city, transf
                 var rentMarker = new AMap.Marker({
                     map: _map,
                     title: address,
-                    icon: markBG ? 'IMG/Little/' + markBG : 'http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png',
+                    icon: /*markBG ? window.location.host+'/IMG/Little/' + markBG :*/ 'http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png',
                     position: [geocode.location.getLng(), geocode.location.getLat()]
                 });
                 _markerArray.push(rentMarker);

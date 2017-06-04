@@ -22,9 +22,13 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
     var GetDataByIndex = function (index, pagecount, dataResource) {
 
         var dataInfo = [];
-        if (dataResource==="douban") {
+        if (dataResource=="douban" ) {
             dataInfo = { groupID: helper.getQueryString("groupID"), index: index };
-        } else{
+        } else if (dataResource == "houselist") {
+            var source = helper.getQueryString("sourece") ? helper.getQueryString("sourece") : "";
+            dataInfo = { cityName: helper.getQueryString("cityname"), sourece: source, count: pagecount };
+        }
+        else {
             dataInfo = { cnName: city.shortName, index: index };
         }
 
@@ -68,7 +72,7 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
             input: "work-location"
         }), "select", function(e) { workLocation.onSelected(e); }.bind(workLocation));
 
-        if (dataResource == "douban") {
+        if (dataResource == "douban" || dataResource == "houselist") {
             _map.setCity(helper.getQueryString("cityname"));
         }
 
@@ -81,9 +85,14 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
                 pageCount = dataResource == "douban" ? 5 : 15;
             }
             console.log(pageCount);
-            for (var i = 1; i <= pageCount; i++) {
-                GetDataByIndex(i, pageCount, dataResource);
+            if (dataResource == "houselist") {
+                GetDataByIndex(i, 100, dataResource);
+            } else {
+                for (var i = 1; i <= pageCount; i++) {
+                    GetDataByIndex(i, pageCount, dataResource);
+                }
             }
+            
         })
     }
 
