@@ -18,7 +18,15 @@ namespace HouseCrawler.Core
             var pageCount = peopleRentingConf != null ? Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(peopleRentingConf.ConfigurationValue).pagecount.Value : 10;
             for (var pageIndex = 1;pageIndex< pageCount; pageIndex++)
             {
-                GetDataByWebAPI(pageIndex);
+                try
+                {
+                    GetDataByWebAPI(pageIndex);
+                }
+                catch(Exception ex)
+                {
+                    LogHelper.Error("PeopleRentingCrawler CrawlerHouseInfo Exception", ex);
+                }
+               
             }
           
 

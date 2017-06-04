@@ -25,8 +25,8 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
         if (dataResource=="douban" ) {
             dataInfo = { groupID: helper.getQueryString("groupID"), index: index };
         } else if (dataResource == "houselist") {
-            var source = helper.getQueryString("sourece") ? helper.getQueryString("sourece") : "";
-            dataInfo = { cityName: helper.getQueryString("cityname"), sourece: source, count: pagecount };
+            var source = helper.getQueryString("source") ? helper.getQueryString("source") : "";
+            dataInfo = { cityName: helper.getQueryString("cityname"), source: source, count: pagecount };
         }
         else {
             dataInfo = { cnName: city.shortName, index: index };
@@ -44,7 +44,7 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
                     });
                     rent_locations.forEach(function(element, index) {
                         marker.add(element.houseLocation, element.money, element.houseURL,
-                            element.locationMarkBG);
+                            element.locationMarkBG, element.displaySource);
                     });
                 } else {
                     console.log(result.error);
@@ -82,11 +82,11 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
             var pageCount = helper.getQueryString("PageCount");
            
             if (!pageCount) {
-                pageCount = dataResource == "douban" ? 5 : 15;
+                pageCount = dataResource == "douban" ? 5 : dataResource == "houselist"?100:15;
             }
             console.log(pageCount);
             if (dataResource == "houselist") {
-                GetDataByIndex(i, 100, dataResource);
+                GetDataByIndex(pageCount, pageCount, dataResource);
             } else {
                 for (var i = 1; i <= pageCount; i++) {
                     GetDataByIndex(i, pageCount, dataResource);

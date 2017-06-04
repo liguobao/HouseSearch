@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace HouseCrawler.Core.Models
 {
-    public class CityHouseInfo
+    public class HouseSourceInfo
     {
         public string CityName { get; set; }
 
@@ -19,14 +19,14 @@ namespace HouseCrawler.Core.Models
 
 
 
-        public static void RefashCityHouseInfo()
+        public static void RefreshHouseSourceInfo()
         {
-            List<CityHouseInfo> lstCityHouse = new List<CityHouseInfo>();
+            List<HouseSourceInfo> lstCityHouse = new List<HouseSourceInfo>();
             foreach( var cityHouseGroup in dataContent.HouseInfos.GroupBy(h => h.LocationCityName))
             {
                 foreach(var sourceGroupHouses in cityHouseGroup.GroupBy(h => h.Source))
                 {
-                    var cityHouseInfo = new CityHouseInfo();
+                    var cityHouseInfo = new HouseSourceInfo();
                     cityHouseInfo.CityName = sourceGroupHouses.First().LocationCityName;
                     cityHouseInfo.HouseSum = sourceGroupHouses.Count();
                     cityHouseInfo.Source = sourceGroupHouses.First().Source;
@@ -57,13 +57,13 @@ namespace HouseCrawler.Core.Models
         }
 
 
-        public static List<CityHouseInfo> LoadCityHouseInfo()
+        public static List<HouseSourceInfo> LoadCityHouseInfo()
         {
-            var lstCityHouseInfo = new List<CityHouseInfo>();
+            var lstCityHouseInfo = new List<HouseSourceInfo>();
             BizCrawlerConfiguration config = dataContent.CrawlerConfigurations.FirstOrDefault(c => c.ConfigurationName == ConstConfigurationName.CityHouseInfo);
             if (config != null)
             {
-                lstCityHouseInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<List<CityHouseInfo>>(config.ConfigurationValue);
+                lstCityHouseInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<List<HouseSourceInfo>>(config.ConfigurationValue);
             }
             return lstCityHouseInfo;
         }

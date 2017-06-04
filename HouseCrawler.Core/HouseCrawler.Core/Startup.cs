@@ -37,6 +37,7 @@ namespace HouseCrawler.Core
         {
             services.AddMvc();
             services.Configure<ConnectionStrings>(Configuration);
+            services.AddTimedJob();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +53,9 @@ namespace HouseCrawler.Core
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            //使用TimedJob
+            app.UseTimedJob();
 
             app.UseStaticFiles();
            

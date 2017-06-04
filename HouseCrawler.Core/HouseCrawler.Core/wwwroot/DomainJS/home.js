@@ -34,7 +34,6 @@ require(['domready!', 'jquery', 'AMUI', 'mapController', 'city', 'commuteGo'], f
         mapController.Get58DataClick();
         e.stopPropagation();
     });
-
  
     $.ajax({
         type: "post",

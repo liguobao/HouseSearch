@@ -9,7 +9,7 @@ using Newtonsoft.Json.Converters;
 
 namespace HouseCrawler.Core
 {
-    public class _58CityHouseCrawler
+    public class PinPaiGongYuHouseCrawler
     {
         private static HtmlParser htmlParser = new HtmlParser();
 
@@ -20,23 +20,32 @@ namespace HouseCrawler.Core
             foreach (var doubanConf in dataContent.CrawlerConfigurations.Where(c => c.ConfigurationName
                == ConstConfigurationName.PinPaiGongYu && c.IsEnabled).ToList())
             {
-                var confInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(doubanConf.ConfigurationValue);
-                for (var index = 0; index < confInfo.pagecount.Value; index++)
+                try
                 {
-                    var url = $"http://{confInfo.shortcutname.Value}.58.com/pinpaigongyu/pn/{index}";
-                    var htmlResult = HTTPHelper.GetHTMLByURL(url);
-                    var page = new HtmlParser().Parse(htmlResult);
-                    var lstLi = page.QuerySelectorAll("li").Where(element => element.HasAttribute("logr"));
-                    if (lstLi == null || lstLi.Count() == 0)
+                    var confInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(doubanConf.ConfigurationValue);
+                    for (var index = 0; index < confInfo.pagecount.Value; index++)
                     {
-                        continue;
+                        var url = $"http://{confInfo.shortcutname.Value}.58.com/pinpaigongyu/pn/{index}";
+                        var htmlResult = HTTPHelper.GetHTMLByURL(url);
+                        var page = new HtmlParser().Parse(htmlResult);
+                        var lstLi = page.QuerySelectorAll("li").Where(element => element.HasAttribute("logr"));
+                        if (lstLi == null || lstLi.Count() == 0)
+                        {
+                            continue;
+                        }
+
+                        GetDataOnPageDoc(confInfo, page);
+
+                        dataContent.SaveChanges();
+
                     }
 
-                    GetDataOnPageDoc(confInfo, page);
-
-                    dataContent.SaveChanges();
-
                 }
+                catch(Exception ex)
+                {
+                    LogHelper.Error("PinPaiGongYuHouseCrawler CrawlerHouseInfo Exception", ex);
+                }
+               
             }
         }
 

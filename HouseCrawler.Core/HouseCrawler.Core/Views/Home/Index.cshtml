@@ -1,4 +1,4 @@
-﻿@model List<HouseCrawler.Core.Models.CityHouseInfo>
+﻿@model List<HouseCrawler.Core.Models.HouseSourceInfo>
 @using HouseCrawler.Core;
 
 <!doctype html>
@@ -38,7 +38,7 @@
     <header class="m-hd">
         <section data-am-sticky class="am-show-md-up">
             <div class="am-container">
-                <a href="/" rel="nofollow"><i class="am-icon-spinner"></i>Your House or Your home</a>
+                <a href="/" rel="nofollow">Your House or Your Home</a>
                 <!--        <ul class="am-fr m-about">
                             <li><a href="/about/" class="am-btn am-btn-danger am-btn-sm am-radius" rel="nofollow">关于我们</a></li>
                             <li><a href="/contact/" class="am-btn am-btn-danger am-btn-sm am-radius" rel="nofollow">联系我们</a></li>
@@ -58,7 +58,7 @@
                             </ul>
                         </li>
                         <li><a href="#" rel="nofollow">最新动态</a></li>
-                        <li><a href="/contact.html" rel="nofollow">联系我？</a></li>
+                        <li><a href="#divContact" rel="nofollow">联系我？</a></li>
                     </ul>
                 </nav>
         </section>
@@ -133,22 +133,43 @@
                 </li>
                 <li class="am-animation-slide-top" data-am-scrollspy="{animation:'slide-top', delay: 100}">
                     <h2><a href="#"  data-am-modal="{target: '#more-cityHouseInfo', closeViaDimmer: 0 ,width: 800,}">More</a></h2>
-                    <p>成都、杭州、武行、长沙、厦门...</p>
+                    <p>成都、杭州、厦门...</p>
                 </li>
-
-                @*<li class="am-animation-slide-top am-animation-delay-1" data-am-scrollspy="{animation:'slide-top', delay: 200}">
-                    <h2><a href="#">广州地区</a></h2>
-                    <p>58同城品牌公寓、豆瓣小组</p>
-                </li>*@
             </ul>
 
+            <ul class="am-avg-sm-2 am-thumbnails">
+                <li class="am-animation-slide-top" data-am-scrollspy="{animation:'slide-top', delay: 200}" style="width:80%">
+                    <h2><a href="#" data-am-modal="{target: '#addCityHouseInfo', closeViaDimmer: 0 ,width: 400,}">新增豆瓣租房小组</a></h2>
+                    <p>你在的城市没有数据？没有对应的租房小组数据？试试手动添加爬虫任务吧！（如：厦门租房小组 https://www.douban.com/group/XMhouse/）</p>
+                   
+                </li>
+            </ul>
 
-          
-
-          
         </section>
 
     </div>
+
+    
+    <div class="am-modal am-modal-no-btn" tabindex="-1" id="addCityHouseInfo">
+            <div class="am-modal-dialog">
+                <div class="am-modal-hd">
+                    新增豆瓣租房小组
+                    <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+                </div>
+                <div class="am-modal-bd">
+                    <div class="am-form-group">
+                     <label>厦门租房:<a href="https://www.douban.com/group/XMhouse/ "  target="_blank">www.douban.com/group/XMhouse</a></label>
+                    </div>
+                    <div class="am-form-group">
+                        <input  style="width:100%" class="am-text-lg am-input-lg" id="doc-ipt-cityName" placeholder="（如：厦门）">
+                    </div>
+                    <div class="am-form-group">
+                        <input  style="width:100%" class="am-text-lg" id="doc-ipt-douban" placeholder="（豆瓣小组GroupID,如：XMhouse）">
+                    </div>
+                    <button type="button" class="am-btn am-btn-default am-round am-btn-secondary am-btn-xl" id="btn-SaveDoubanGroup">添加此豆瓣小组数据</button>
+                </div>
+            </div>
+   </div>
 
 
     <div class="am-modal am-modal-no-btn" tabindex="-1" id="more-cityHouseInfo">
@@ -167,9 +188,12 @@
                             <p>
                                 @foreach (var cityHouseInfo in cityGroup)
                                 {
+                                   
                                     <a href="~/Home/HouseList?cityname=@cityName&source=@cityHouseInfo.Source" target="_blank">
                                       @ConstConfigurationName.ConvertToDisPlayName(cityHouseInfo.Source) (@cityHouseInfo.HouseSum)
                                     </a>
+                                    <br />
+                                    
                                 }
                             </p>
                         </li>
@@ -194,15 +218,16 @@
             <li data-am-scrollspy="{animation:'slide-bottom', delay: 44}">
                 <img src="~/hometemplate/views/IMJ2V2/images/tencent.png" alt="腾讯" class="am-img-responsive">
             </li>
-            <li data-am-scrollspy="{animation:'slide-bottom', delay: 399}">
-                <img src="~/hometemplate/views/IMJ2V2/images/aliyun.png" alt="阿里云" class="am-img-responsive">
-            </li>
+        
             <li data-am-scrollspy="{animation:'slide-bottom', delay: 72}">
                 <img src="~/hometemplate/views/IMJ2V2/images/microsoft.png" alt="微软" class="am-img-responsive">
             </li>
+            <li data-am-scrollspy="{animation:'slide-bottom', delay: 399}">
+                <img src="~/hometemplate/views/IMJ2V2/images/aliyun.png" alt="阿里云" class="am-img-responsive">
+            </li>
         </ul>
     </section>
-    <div class="m-home-box m-contact">
+    <div class="m-home-box m-contact" id="divContact">
         <section class="am-container">
             <hgroup data-am-scrollspy="{animation:'slide-bottom', delay: 100}">
                 <h2>联系我？试试下面的方式咯。</h2>
@@ -254,6 +279,32 @@
                 height: 100,
                 text: str
             });
+
+            $('#btn-SaveDoubanGroup').bind('click', function (e) {
+                e.preventDefault();
+                var doubanGroup = $('#doc-ipt-douban').val();
+                var cityName = $('#doc-ipt-cityName').val()
+                $('#btn-SaveDoubanGroup').attr("disabled", true);
+
+                $.ajax({
+                    type: "post",
+                    url: "../Home/AddDouBanGroup",
+                    data: { doubanGroup: doubanGroup, cityName: cityName },
+                    success: function (result) {
+                        if (result.isSuccess) {
+                            alert("新增成功！正在刷新数据...");
+                            location.reload();
+                        } else {
+                            console.log(result.error);
+                        }
+                        $('#btn-SaveDoubanGroup').attr("disabled", false);
+                    }
+                });
+
+                e.stopPropagation();
+            });
+
+
         })
         // 二维码生成
         //返回顶部

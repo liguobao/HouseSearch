@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AngleSharp.Parser.Html;
+using HouseCrawler.Core.Models;
 
 namespace HouseCrawler.Core
 {
@@ -24,10 +25,11 @@ namespace HouseCrawler.Core
                     for (var pageIndex = 0; pageIndex < confInfo.pagecount.Value; pageIndex++)
                     {
                         var lstHouseInfo = GetDataFromOnlineWeb(confInfo.groupid.Value, confInfo.cityname.Value, pageIndex);
-                        dataContent.Add(lstHouseInfo);
+                        dataContent.AddRange(lstHouseInfo);
                         dataContent.SaveChanges();
                     }
                 }
+                HouseSourceInfo.RefreshHouseSourceInfo();
 
             }
             catch (Exception ex)
@@ -40,6 +42,9 @@ namespace HouseCrawler.Core
         {
             var cityInfo = $"{{ 'groupid':'{groupID}','cityname':'{cityName}','pagecount':5}}";
 
+            var doubanConfig = dataContent.CrawlerConfigurations.FirstOrDefault(c => c.ConfigurationName == ConstConfigurationName.Douban && c.ConfigurationValue == cityInfo);
+            if (doubanConfig != null)
+                return;
             var lstHouseInfo = GetDataFromOnlineWeb(groupID, cityName, pageIndex);
 
             #region add douban group config
@@ -54,19 +59,30 @@ namespace HouseCrawler.Core
                     DataCreateTime = DateTime.Now,
                     IsEnabled = true,
                 };
+                dataContent.AddRange(lstHouseInfo);
                 dataContent.Add(config);
                 dataContent.SaveChanges();
+
+                HouseSourceInfo.RefreshHouseSourceInfo();
             }
             #endregion
-
 
         }
 
 
-        public static List<BizHouseInfo> GetDataFromOnlineWeb(string groupID, string cityName, int pageIndex)
+        private static List<BizHouseInfo> GetDataFromOnlineWeb(string groupID, string cityName, int pageIndex)
         {
-            List<BizHouseInfo> lstHouseInfo = new List<BizHouseInfo>();
+            HashSet<string> hsDoubanHouseURL = new HashSet<string>();
 
+            dataContent.HouseInfos.Where(h=>h.Source== ConstConfigurationName.Douban)
+                .Select(h=>h.HouseOnlineURL).Distinct().ToList()
+                .ForEach(houseURL=> 
+                {
+                    if (!hsDoubanHouseURL.Contains(houseURL))
+                        hsDoubanHouseURL.Add(houseURL);
+                });
+
+            List<BizHouseInfo> lstHouseInfo = new List<BizHouseInfo>();
 
             var url = $"https://www.douban.com/group/{groupID}/discussion?start={pageIndex * 25}";
             var htmlResult = HTTPHelper.GetHTML(url);
@@ -77,7 +93,7 @@ namespace HouseCrawler.Core
             foreach (var trItem in page.QuerySelector("table.olt").QuerySelectorAll("tr"))
             {
                 var titleItem = trItem.QuerySelector("td.title");
-                if (titleItem == null)
+                if (titleItem == null || hsDoubanHouseURL.Contains(titleItem.QuerySelector("a").GetAttribute("href")))
                     continue;
 
                 var houseInfo = new BizHouseInfo()

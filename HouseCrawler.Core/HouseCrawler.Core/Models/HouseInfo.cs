@@ -52,6 +52,9 @@ namespace HouseCrawler.Core.Models
         /// <summary>
         /// 来源网站
         /// </summary>
-        public string Sourece { get; set; }
+        public string Source { get; set; }
+
+        
+        public string DisplaySource { get; set; }
     }
 }

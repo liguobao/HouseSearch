@@ -17,8 +17,9 @@ namespace HouseCrawler.Core.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
+            //DoubanHouseCrawler.CaptureHouseInfoFromConfig();
             //CityHouseInfo.RefashCityHouseInfo();
-            return View(CityHouseInfo.LoadCityHouseInfo());
+            return View(HouseSourceInfo.LoadCityHouseInfo());
         }
 
         public IActionResult HouseList()
@@ -26,19 +27,24 @@ namespace HouseCrawler.Core.Controllers
             return View();
         }
 
-        public IActionResult GetHouseInfo(string cityName, string sourece="", int count = 100)
+        public IActionResult GetHouseInfo(string cityName, string source="", int count = 100)
         {
             var houses = dataContent.HouseInfos.Where(h => h.LocationCityName == cityName);
-            if (!string.IsNullOrEmpty(sourece))
+            if (!string.IsNullOrEmpty(source))
             {
-                houses = houses.Where(h=>h.Source == sourece);
+                houses = houses.Where(h=>h.Source == source);
             }
             var lstHouseInfo = houses.OrderByDescending(h => h.PubTime).Take(count).ToList();
 
             var lstRoomInfo = lstHouseInfo.Select(house=> 
             {
-                int housePrice = (int) house.HousePrice;
-                var markBGType = LocationMarkBGType.SelectColor(housePrice / 1000);
+                var markBGType = string.Empty;
+                int housePrice = (int)house.HousePrice;
+                if (housePrice > 0)
+                {
+                    markBGType = LocationMarkBGType.SelectColor(housePrice / 1000);
+                }
+
                 return new HouseInfo
                 {
                     Money = house.DisPlayPrice,
@@ -47,6 +53,7 @@ namespace HouseCrawler.Core.Controllers
                     HouseTime = house.PubTime.ToString(),
                     HousePrice = housePrice,
                     LocationMarkBG = markBGType,
+                    DisplaySource = ConstConfigurationName.ConvertToDisPlayName(house.Source)
                 };
             });
             return Json(new { IsSuccess = true, HouseInfos = lstRoomInfo });
@@ -55,5 +62,14 @@ namespace HouseCrawler.Core.Controllers
         }
 
 
+        public IActionResult AddDouBanGroup(string doubanGroup,string cityName)
+        {
+            if(string.IsNullOrEmpty(doubanGroup) || string.IsNullOrEmpty(cityName))
+            {
+                return Json(new { IsSuccess = false , error="请输入豆瓣小组Group和城市名称。" });
+            }
+            DoubanHouseCrawler.AddDoubanGroupConfig(doubanGroup, cityName);
+            return Json(new { IsSuccess = true });
+        }
     }
 }

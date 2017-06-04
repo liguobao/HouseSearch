@@ -13,7 +13,7 @@ namespace HouseCrawler.Core.Controllers
         public ActionResult Index()
         {
             //_58CityHouseCrawler.InitConfiguration();
-            _58CityHouseCrawler.CapturPinPaiHouseInfo();
+            PinPaiGongYuHouseCrawler.CapturPinPaiHouseInfo();
 
             var webPVInfo = PVHelper.GetTheWebPVInfo();
             Dictionary<DateTime, List<PVInfo>> dicDateToLstPVInfo = new Dictionary<DateTime, List<PVInfo>>();

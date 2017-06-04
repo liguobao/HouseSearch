@@ -11,23 +11,25 @@ define(['mapSignleton', 'city', 'transfer'], function(mapSignleton, city, transf
         });
     }
 
-    var add = function(address, rent, href, markBG) {
+    var add = function (address, money, href, markBG,displaySource) {
         new AMap.Geocoder({
             city: city.name,
             radius: 1000
-        }).getLocation(address, function(status, result) {
-
+        }).getLocation(address, function (status, result) {
+     
             if (status === "complete" && result.info === 'OK') {
                 var geocode = result.geocodes[0];
                 var rentMarker = new AMap.Marker({
                     map: _map,
                     title: address,
-                    icon: /*markBG ? window.location.host+'/IMG/Little/' + markBG :*/ 'http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png',
+                    icon: markBG ? 'http://7xrayk.com1.z0.glb.clouddn.com/' + markBG : 'http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png',
                     position: [geocode.location.getLng(), geocode.location.getLat()]
                 });
                 _markerArray.push(rentMarker);
 
-                rentMarker.content = "<div><a target = '_blank' href='" + href + "'>房源：" + address + "  租金：" + rent + "</a><div>"
+                var displayMoney = money ? "  租金：" + money : "";
+                var sourceContent = displaySource ? " 来源：" + displaySource : "";
+                rentMarker.content = "<div><a target = '_blank' href='" + href + "'>房源：" + address + displayMoney + sourceContent +"</a><div>"
                 rentMarker.on('click', function(e) {
                     transfer.add(e, address);
                 });
