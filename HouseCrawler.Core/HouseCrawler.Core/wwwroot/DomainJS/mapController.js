@@ -26,7 +26,9 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
             dataInfo = { groupID: helper.getQueryString("groupID"), index: index };
         } else if (dataResource == "houselist") {
             var source = helper.getQueryString("source") ? helper.getQueryString("source") : "";
-            dataInfo = { cityName: helper.getQueryString("cityname"), source: source, count: pagecount };
+            //默认出3天内的数据
+            var withinAnyDays = helper.getQueryString("withinAnyDays") ? helper.getQueryString("withinAnyDays") : 3;
+            dataInfo = { cityName: helper.getQueryString("cityname"), source: source, houseCount: pagecount, withinAnyDays: withinAnyDays };
         }
         else {
             dataInfo = { cnName: city.shortName, index: index };
@@ -82,7 +84,7 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
             var pageCount = helper.getQueryString("PageCount");
            
             if (!pageCount) {
-                pageCount = dataResource == "douban" ? 5 : dataResource == "houselist"?100:15;
+                pageCount = dataResource == "douban" ? 5 : dataResource == "houselist"?200:15;
             }
             console.log(pageCount);
             if (dataResource == "houselist") {

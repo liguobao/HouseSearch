@@ -27,14 +27,14 @@ namespace HouseCrawler.Core.Controllers
             return View();
         }
 
-        public IActionResult GetHouseInfo(string cityName, string source="", int count = 100)
+        public IActionResult GetHouseInfo(string cityName, string source="", int houseCount = 400,int withinAnyDays = 3)
         {
-            var houses = dataContent.HouseInfos.Where(h => h.LocationCityName == cityName);
+            var houses = dataContent.HouseInfos.Where(h => h.LocationCityName == cityName && h.PubTime > DateTime.Now.Date.AddDays(-withinAnyDays));
             if (!string.IsNullOrEmpty(source))
             {
                 houses = houses.Where(h=>h.Source == source);
             }
-            var lstHouseInfo = houses.OrderByDescending(h => h.PubTime).Take(count).ToList();
+            var lstHouseInfo = houses.OrderByDescending(h => h.PubTime).Take(houseCount).ToList();
 
             var lstRoomInfo = lstHouseInfo.Select(house=> 
             {

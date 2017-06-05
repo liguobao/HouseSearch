@@ -53,6 +53,7 @@ namespace HouseCrawler.Core
         /// 所在城市
         /// </summary>
         [MaxLength(64)]
+  
         public string LocationCityName { get; set; }
 
         /// <summary>

@@ -18,7 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="wwwroot\appsettings.json" />
     <Content Include="wwwroot\CSS\common.css" />
     <Content Include="wwwroot\DomainJS\amazeui.2.7.1.min.js" />
     <Content Include="wwwroot\DomainJS\build.js" />
@@ -130,7 +129,6 @@
     <Content Include="wwwroot\IMG\Little\Pink.png" />
     <Content Include="wwwroot\IMG\Little\Red.png" />
     <Content Include="wwwroot\IMG\Little\Violet.png" />
-    <Content Include="wwwroot\pv.json" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AngleSharp" Version="0.9.9" />

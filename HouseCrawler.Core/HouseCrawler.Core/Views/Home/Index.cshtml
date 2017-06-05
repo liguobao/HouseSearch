@@ -189,7 +189,7 @@
                                 @foreach (var cityHouseInfo in cityGroup)
                                 {
                                    
-                                    <a href="~/Home/HouseList?cityname=@cityName&source=@cityHouseInfo.Source" target="_blank">
+                                    <a href="~/Home/HouseList?cityname=@cityName&source=@cityHouseInfo.Source&withinAnyDays=3&PageCount=500" target="_blank">
                                       @ConstConfigurationName.ConvertToDisPlayName(cityHouseInfo.Source) (@cityHouseInfo.HouseSum)
                                     </a>
                                     <br />
