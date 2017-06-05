@@ -6,7 +6,12 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <_NewBackgroundProfile>True</_NewBackgroundProfile>
+    <_NewBackgroundProfile>False</_NewBackgroundProfile>
     <_PublishTargetUrl>C:\code\github\58HouseSearch\HouseCrawler.Core\HouseCrawler.Core\bin\Release\PublishOutput</_PublishTargetUrl>
   </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="MySQLConnectionString">
+      <Value>server=yibaobao.wang;database=housecrawler;uid=liguobao;pwd=lgb0228;charset='utf-8'</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
 </Project>

@@ -11,6 +11,7 @@
     <script src="http://webapi.amap.com/maps?v=1.3&key=8a971a2f88a0ec7458d43b8bc03b6462&plugin=AMap.ArrivalRange,AMap.Scale,AMap.Geocoder,AMap.Transfer,AMap.Autocomplete,AMap.CitySearch,AMap.Walking"></script>
     <link rel="stylesheet" href="http://cdn.amazeui.org/amazeui/2.7.1/css/amazeui.min.css" />
     <link href="~/CSS/common.css" rel="stylesheet" />
+    <script src="~/DomainJS/umeng.js"></script>
     <script>
       
         var getViewDefaultDataAction = '@Url.Action("GetDefaultHonestHouseData")';
@@ -73,12 +74,12 @@
             <div class="am-offcanvas-content">
 
 
-                <div class="control-entry">
+                @*<div class="control-entry">
                     <div>
                         <label>当前访问量：</label>
                         <label id="lblPVCount"></label>
                     </div>
-                </div>
+                </div>*@
 
                 <div class="control-entry">
                     <div>

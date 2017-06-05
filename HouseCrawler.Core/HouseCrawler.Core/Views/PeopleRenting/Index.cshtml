@@ -15,7 +15,7 @@
     <script src="~/DomainJS/lib/require.2.1.1.min.js" data-main="/DomainJS/home"></script> 
     @*<script src="~/DomainJS/lib/require.2.1.1.min.js" data-main="/DomainJS/housecommom"></script>*@
   
-
+    <script src="~/DomainJS/umeng.js"></script>
     <script>
         var getDataAction = '@Url.Action("GetRentingData")';
         var getViewDefaultDataAction = '@Url.Action("GetRentingDatabyPageIndex")';
@@ -63,12 +63,12 @@
                 <div class="am-offcanvas-bar am-offcanvas-bar-flip" style="width:330px;z-index:-999">
                     <div class="am-offcanvas-content">
 
-                        <div class="control-commonentry" id="divOffcanvas">
+                        @*<div class="control-commonentry" id="divOffcanvas">
                             <div>
                                 <label>当前访问量：</label>
                                 <label id="lblPVCount"></label>
                             </div>
-                        </div>
+                        </div>*@
 
                         <div class="control-commonentry">
                             <div>

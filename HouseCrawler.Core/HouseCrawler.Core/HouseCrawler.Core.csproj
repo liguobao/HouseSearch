@@ -7,6 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\hometemplate\uploadfiles\**" />
+    <Content Remove="wwwroot\hometemplate\uploadfiles\**" />
+    <EmbeddedResource Remove="wwwroot\hometemplate\uploadfiles\**" />
+    <None Remove="wwwroot\hometemplate\uploadfiles\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Properties\PublishProfiles\FolderProfile1.pubxml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\appsettings.json" />
     <Content Include="wwwroot\CSS\common.css" />
     <Content Include="wwwroot\DomainJS\amazeui.2.7.1.min.js" />
     <Content Include="wwwroot\DomainJS\build.js" />
@@ -32,23 +44,9 @@
     <Content Include="wwwroot\DomainJS\package.sh" />
     <Content Include="wwwroot\DomainJS\polygon.js" />
     <Content Include="wwwroot\DomainJS\transfer.js" />
+    <Content Include="wwwroot\DomainJS\umeng.js" />
     <Content Include="wwwroot\DomainJS\vehicle.js" />
     <Content Include="wwwroot\DomainJS\workLocation.js" />
-    <Content Include="wwwroot\hometemplate\uploadfiles\image\.DS_Store" />
-    <Content Include="wwwroot\hometemplate\uploadfiles\image\201509\12.jpg" />
-    <Content Include="wwwroot\hometemplate\uploadfiles\image\201509\23.jpg" />
-    <Content Include="wwwroot\hometemplate\uploadfiles\image\201509\32.jpg" />
-    <Content Include="wwwroot\hometemplate\uploadfiles\image\201509\45.jpg" />
-    <Content Include="wwwroot\hometemplate\uploadfiles\image\201509\46.jpg" />
-    <Content Include="wwwroot\hometemplate\uploadfiles\image\201509\47.jpg" />
-    <Content Include="wwwroot\hometemplate\uploadfiles\image\201509\48.jpg" />
-    <Content Include="wwwroot\hometemplate\uploadfiles\image\201509\7.jpg" />
-    <Content Include="wwwroot\hometemplate\uploadfiles\image\201509\7a.jpg" />
-    <Content Include="wwwroot\hometemplate\uploadfiles\image\201509\8.jpg" />
-    <Content Include="wwwroot\hometemplate\uploadfiles\image\201510\12.jpg" />
-    <Content Include="wwwroot\hometemplate\uploadfiles\image\201510\13.jpg" />
-    <Content Include="wwwroot\hometemplate\uploadfiles\image\201510\3.jpg" />
-    <Content Include="wwwroot\hometemplate\views\IMJ2V2\css\.DS_Store" />
     <Content Include="wwwroot\hometemplate\views\IMJ2V2\css\admin.css" />
     <Content Include="wwwroot\hometemplate\views\IMJ2V2\css\amazeui.css" />
     <Content Include="wwwroot\hometemplate\views\IMJ2V2\css\amazeui.min.css" />
@@ -153,6 +151,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="NLogFile\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\nlog.config" />
   </ItemGroup>
 
 </Project>

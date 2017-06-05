@@ -35,20 +35,7 @@ require(['domready!', 'jquery', 'AMUI', 'mapController', 'city', 'commuteGo'], f
         e.stopPropagation();
     });
  
-    $.ajax({
-        type: "post",
-        url: "../PVInfo/GetPVCount",
-        data: { },
-        success: function (result)
-        {
-            if (result.isSuccess){
-                $("#lblPVCount").text(result.pvCount);
-            }else {
-                $("#lblPVCount").text(0);
-                console.log(result.error);
-            }
-        }
-    });
+    
 
     $('#search-offcanvas').offCanvas({ effect: 'overlay' });
 

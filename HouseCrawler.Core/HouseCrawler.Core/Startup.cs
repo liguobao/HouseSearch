@@ -44,7 +44,7 @@ namespace HouseCrawler.Core
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
            // loggerFactory.AddNLog();//添加NLog
-            env.ConfigureNLog("nlog.config");
+            env.ConfigureNLog(Path.Combine(env.WebRootPath, "nlog.config"));
 
 
             loggerFactory.AddConsole();
@@ -68,7 +68,7 @@ namespace HouseCrawler.Core
                     template: "{controller=House}/{action=Index}/{id?}"); 
             });
 
-            PVHelper.InitWebPVInfo(Path.Combine(env.WebRootPath, "pv.json"));
+          
 
             AppSettings.CityJsonFilePath = Path.Combine(env.WebRootPath, "DomainJS//pv.json");
 

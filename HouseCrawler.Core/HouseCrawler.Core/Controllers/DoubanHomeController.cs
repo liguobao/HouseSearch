@@ -15,7 +15,7 @@ namespace HouseCrawler.Core.Controllers
         // GET: /<controller>/
         public IActionResult Index(string groupID="",int endstart= 0)
         {
-            PVHelper.WritePVInfo(Request.HttpContext.Connection.RemoteIpAddress.ToString(), Request.Path);
+           
             return View();
         }
 

@@ -17,10 +17,13 @@
         var getDataByPageIndexAction = '@Url.Action("Get58CityRoomDataByCostAndIndex")';
         var dataResource = "";
     </script>
+    <script src="~/DomainJS/umeng.js"></script>
     <script src="~/DomainJS/lib/require.2.1.1.min.js" defer async="true" ></script>
  
     <script src="~/DomainJS/lib/require.2.1.1.min.js" data-main="/DomainJS/home"></script> 
     @*<script src="~/DomainJS/lib/require.2.1.1.min.js" data-main="/DomainJS/housecommom"></script>*@
+
+    <script src="~/DomainJS/umeng.js"></script>
  
 </head>
 
@@ -66,12 +69,12 @@
             <div class="am-offcanvas-content">
 
 
-                <div class="control-entry">
+                @*<div class="control-entry">
                     <div>
                         <label>当前访问量：</label>
                         <label id="lblPVCount"></label>
                     </div>
-                </div>
+                </div>*@
 
                 <div class="control-entry">
                     <div>
