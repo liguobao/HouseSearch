@@ -5,7 +5,7 @@ var city = define(['jquery', "helper"], function ($, helper) {
     var _allCityInfo = [];
 
     var initAllCityInfo = function() {
-        $.getJSON("DomainJS/city.json", function(data) {
+        $.getJSON("../DomainJS/city.json", function(data) {
             _allCityInfo = data;
         });
     }

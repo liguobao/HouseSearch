@@ -52,7 +52,7 @@ namespace HouseCrawler.Core
 
             //needed for non-NETSTANDARD platforms: configure nlog.config in your project root. NB: you need NLog.Web.AspNetCore package for this. 
             
-            env.ConfigureNLog("nlog.config");
+            env.ConfigureNLog("./wwwroot/nlog.config");
 
             loggerFactory.AddConsole();
 

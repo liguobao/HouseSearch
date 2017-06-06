@@ -8,13 +8,9 @@
 
   <ItemGroup>
     <Compile Remove="wwwroot\hometemplate\uploadfiles\**" />
-    <Compile Remove="wwwroot\NLogFile\**" />
     <Content Remove="wwwroot\hometemplate\uploadfiles\**" />
-    <Content Remove="wwwroot\NLogFile\**" />
     <EmbeddedResource Remove="wwwroot\hometemplate\uploadfiles\**" />
-    <EmbeddedResource Remove="wwwroot\NLogFile\**" />
     <None Remove="wwwroot\hometemplate\uploadfiles\**" />
-    <None Remove="wwwroot\NLogFile\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="nlog.config" />
+    <Content Include="wwwroot\nlog.config" />
     <Content Include="wwwroot\CSS\common.css" />
     <Content Include="wwwroot\DomainJS\amazeui.2.7.1.min.js" />
     <Content Include="wwwroot\DomainJS\build.js" />
@@ -153,10 +149,7 @@
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="1.1.0" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="wwwroot\nlog.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="NLogFile\" />
+    <Folder Include="wwwroot\NLogFile\" />
   </ItemGroup>
 
 </Project>
