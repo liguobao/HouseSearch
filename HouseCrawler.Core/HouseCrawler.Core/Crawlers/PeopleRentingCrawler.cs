@@ -28,7 +28,6 @@ namespace HouseCrawler.Core
                 }
                
             }
-          
 
         }
         private static void GetDataByWebAPI(int pageNum)

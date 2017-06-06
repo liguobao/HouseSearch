@@ -17,6 +17,7 @@ namespace HouseCrawler.Core
         {
             try
             {
+                int captrueHouseCount = 0;
 
                 foreach (var doubanConf in dataContent.CrawlerConfigurations
                     .Where(c => c.ConfigurationName == ConstConfigurationName.Douban).ToList())
@@ -27,10 +28,12 @@ namespace HouseCrawler.Core
                         var lstHouseInfo = GetDataFromOnlineWeb(confInfo.groupid.Value, confInfo.cityname.Value, pageIndex);
                         dataContent.AddRange(lstHouseInfo);
                         dataContent.SaveChanges();
+                        captrueHouseCount = captrueHouseCount + lstHouseInfo.Count;
                     }
                 }
                 HouseSourceInfo.RefreshHouseSourceInfo();
 
+                BizCrawlerLog.SaveLog("爬取豆瓣租房数据",$"本次共爬取到{captrueHouseCount}条数据。",1);
             }
             catch (Exception ex)
             {
