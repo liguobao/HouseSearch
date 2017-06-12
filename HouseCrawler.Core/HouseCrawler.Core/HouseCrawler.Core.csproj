@@ -151,5 +151,9 @@
   <ItemGroup>
     <Folder Include="wwwroot\NLogFile\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Analyser\Analyser.csproj" />
+    <ProjectReference Include="..\Segmenter\Segmenter.csproj" />
+  </ItemGroup>
 
 </Project>

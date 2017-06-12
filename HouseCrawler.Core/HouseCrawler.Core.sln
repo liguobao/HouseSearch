@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HouseCrawler.Core", "HouseCrawler.Core\HouseCrawler.Core.csproj", "{8DA3AC47-1F9D-4E8D-9291-D88FB0BE4CC6}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Analyser", "Analyser\Analyser.csproj", "{9811A403-3367-46EF-AA62-D210CC4C1369}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Segmenter", "Segmenter\Segmenter.csproj", "{6BD2A906-55AC-4771-A156-5DE43DD251A9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{8DA3AC47-1F9D-4E8D-9291-D88FB0BE4CC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8DA3AC47-1F9D-4E8D-9291-D88FB0BE4CC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8DA3AC47-1F9D-4E8D-9291-D88FB0BE4CC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9811A403-3367-46EF-AA62-D210CC4C1369}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9811A403-3367-46EF-AA62-D210CC4C1369}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9811A403-3367-46EF-AA62-D210CC4C1369}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9811A403-3367-46EF-AA62-D210CC4C1369}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BD2A906-55AC-4771-A156-5DE43DD251A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BD2A906-55AC-4771-A156-5DE43DD251A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BD2A906-55AC-4771-A156-5DE43DD251A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BD2A906-55AC-4771-A156-5DE43DD251A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

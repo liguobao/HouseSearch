@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AngleSharp.Parser.Html;
 using HouseCrawler.Core.Models;
+using HouseCrawler.Core.Common;
 
 namespace HouseCrawler.Core
 {
@@ -118,6 +119,32 @@ namespace HouseCrawler.Core
             }
             return lstHouseInfo;
 
+        }
+
+
+
+        public static void AnalyzeDoubanHouseContent()
+        {
+            var lstHouse = dataContent.HouseInfos.Where(h =>
+            h.Source ==ConstConfigurationName.Douban && h.IsAnalyzed == false).Take(100).ToList();
+
+            foreach(var houseInfo in lstHouse)
+            {
+                var housePrice = JiebaTools.GetHousePrice(houseInfo.HouseText);
+                if (housePrice != 0)
+                {
+                    houseInfo.HousePrice = housePrice;
+                }
+                else
+                {
+                    var htmlResult = HTTPHelper.GetHTML(houseInfo.HouseOnlineURL);
+                    var page = htmlParser.Parse(htmlResult);
+                    var topicContent = page.QuerySelector("div.topic-content");
+
+                }
+                
+            }
+            dataContent.SaveChanges();
         }
 
     }

@@ -67,5 +67,10 @@ namespace HouseCrawler.Core
         [MaxLength(512)]
         public string Source { get; set; }
 
+        /// <summary>
+        /// 是否已分析
+        /// </summary>
+        public bool IsAnalyzed { get; set; }
+
     }
 }

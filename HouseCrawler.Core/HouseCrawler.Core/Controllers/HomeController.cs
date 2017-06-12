@@ -17,6 +17,8 @@ namespace HouseCrawler.Core.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
+           // DoubanHouseCrawler.AnalyzeDoubanHouseContent();
+
             LogHelper.Info("Log Test");
             return View(HouseSourceInfo.LoadCityHouseInfo());
         }

@@ -1,0 +1,27 @@
+﻿using JiebaNet.Analyser;
+using JiebaNet.Segmenter;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace HouseCrawler.Core.Common
+{
+    public class JiebaTools
+    {
+        public static decimal GetHousePrice(string text)
+        {
+            decimal housePrice = 0;
+            var extractor = new TfidfExtractor();
+            var keywords = extractor.ExtractTags(text, 100, new List<string>() { "m" });
+            if (keywords != null)
+            {
+
+                var lstProce = keywords.Distinct().Where(s => s.Length <= 5 && s.Length >= 3).OrderByDescending(s => s.Length);
+                var price = lstProce.FirstOrDefault();
+                decimal.TryParse(price, out housePrice);
+            }
+            return housePrice;
+        }
+    }
+}
