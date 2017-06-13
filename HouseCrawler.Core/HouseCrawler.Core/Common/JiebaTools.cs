@@ -11,9 +11,13 @@ namespace HouseCrawler.Core.Common
     {
         public static decimal GetHousePrice(string text)
         {
+
+            //var seg = new JiebaSegmenter();
+            //var li = seg.Cut(text).ToList();
+
             decimal housePrice = 0;
             var extractor = new TfidfExtractor();
-            var keywords = extractor.ExtractTags(text, 100, new List<string>() { "m" });
+            var keywords = extractor.ExtractTags(text, 20, new List<string>() { "m" });
             if (keywords != null)
             {
 

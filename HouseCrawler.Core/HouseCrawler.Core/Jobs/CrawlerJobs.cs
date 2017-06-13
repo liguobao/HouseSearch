@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HouseCrawler.Core.Crawlers
+namespace HouseCrawler.Core
 {
     public class CrawlerJobs : Job
     {

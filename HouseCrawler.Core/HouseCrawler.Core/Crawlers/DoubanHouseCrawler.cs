@@ -131,18 +131,27 @@ namespace HouseCrawler.Core
             foreach(var houseInfo in lstHouse)
             {
                 var housePrice = JiebaTools.GetHousePrice(houseInfo.HouseText);
+                if (housePrice == 0)
+                {
+                    var htmlResult = HTTPHelper.GetHTML(houseInfo.HouseOnlineURL);
+                    if (string.IsNullOrEmpty(htmlResult)) continue;
+                    var page = htmlParser.Parse(htmlResult);
+                    var topicContent = page.QuerySelector("div.topic-content");
+                    if (topicContent == null) continue;
+                    var houseDescription = topicContent.QuerySelector("p");
+                    if (houseDescription == null) continue;
+                    houseInfo.HouseText = houseDescription.TextContent;
+                    housePrice = JiebaTools.GetHousePrice(houseDescription.TextContent); 
+                }
+
                 if (housePrice != 0)
                 {
                     houseInfo.HousePrice = housePrice;
+                    houseInfo.IsAnalyzed = true;
                 }
-                else
-                {
-                    var htmlResult = HTTPHelper.GetHTML(houseInfo.HouseOnlineURL);
-                    var page = htmlParser.Parse(htmlResult);
-                    var topicContent = page.QuerySelector("div.topic-content");
 
-                }
                 
+
             }
             dataContent.SaveChanges();
         }
