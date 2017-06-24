@@ -60,6 +60,10 @@ namespace HouseCrawler.Web
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+            }
 
             //使用TimedJob
             app.UseTimedJob();

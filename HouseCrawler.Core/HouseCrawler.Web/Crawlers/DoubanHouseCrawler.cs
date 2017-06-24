@@ -125,6 +125,7 @@ namespace HouseCrawler.Web
 
         public static void AnalyzeDoubanHouseContent()
         {
+            LogHelper.Info("AnalyzeDoubanHouseContent Start...");
             var lstHouse = dataContent.HouseInfos.Where(h =>
             h.Source ==ConstConfigurationName.Douban && h.IsAnalyzed == false).Take(100).ToList();
 
@@ -147,6 +148,8 @@ namespace HouseCrawler.Web
                 }
             }
             dataContent.SaveChanges();
+
+            LogHelper.Info("AnalyzeDoubanHouseContent Finish.");
         }
 
     }
