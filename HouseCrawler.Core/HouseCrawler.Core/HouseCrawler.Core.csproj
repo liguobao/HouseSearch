@@ -8,9 +8,13 @@
 
   <ItemGroup>
     <Compile Remove="wwwroot\hometemplate\uploadfiles\**" />
+    <Compile Remove="wwwroot\NLogFile\**" />
     <Content Remove="wwwroot\hometemplate\uploadfiles\**" />
+    <Content Remove="wwwroot\NLogFile\**" />
     <EmbeddedResource Remove="wwwroot\hometemplate\uploadfiles\**" />
+    <EmbeddedResource Remove="wwwroot\NLogFile\**" />
     <None Remove="wwwroot\hometemplate\uploadfiles\**" />
+    <None Remove="wwwroot\NLogFile\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -147,9 +151,6 @@
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.4.0" />
     <PackageReference Include="Pomelo.AspNetCore.TimedJob" Version="1.1.0-rtm-10026" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="1.1.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="wwwroot\NLogFile\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Analyser\Analyser.csproj" />

@@ -22,3 +22,5 @@
 /HouseCrawler.Core/Analyser/bin
 /HouseCrawler.Core/Segmenter/bin
 /HouseCrawler.Core/Segmenter/obj
+/HouseCrawler.Core/HouseCrawler.Web/obj
+/HouseCrawler.Core/HouseCrawler.Web/bin

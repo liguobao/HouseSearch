@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Analyser", "Analyser\Analys
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Segmenter", "Segmenter\Segmenter.csproj", "{6BD2A906-55AC-4771-A156-5DE43DD251A9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HouseCrawler.Web", "HouseCrawler.Web\HouseCrawler.Web.csproj", "{4226C20E-E9DE-4BA6-ACF1-B4E41CABA674}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{6BD2A906-55AC-4771-A156-5DE43DD251A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BD2A906-55AC-4771-A156-5DE43DD251A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6BD2A906-55AC-4771-A156-5DE43DD251A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4226C20E-E9DE-4BA6-ACF1-B4E41CABA674}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4226C20E-E9DE-4BA6-ACF1-B4E41CABA674}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4226C20E-E9DE-4BA6-ACF1-B4E41CABA674}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4226C20E-E9DE-4BA6-ACF1-B4E41CABA674}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,249 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\CSS\common.css">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\DomainJS\amazeui.2.7.1.min.js" />
+    <Content Include="wwwroot\DomainJS\build.js" />
+    <Content Include="wwwroot\DomainJS\city.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\DomainJS\city.json" />
+    <Content Include="wwwroot\DomainJS\commuteGo.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\DomainJS\domready.js" />
+    <Content Include="wwwroot\DomainJS\es5.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\DomainJS\helper.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\DomainJS\home.js" />
+    <Content Include="wwwroot\DomainJS\housecommom.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\DomainJS\lib\addToolbar.js" />
+    <Content Include="wwwroot\DomainJS\lib\amazeui.2.7.1.min.js" />
+    <Content Include="wwwroot\DomainJS\lib\Chart.js" />
+    <Content Include="wwwroot\DomainJS\lib\es5.js" />
+    <Content Include="wwwroot\DomainJS\lib\jquery-1.11.3.min.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\DomainJS\lib\jquery.range.js" />
+    <Content Include="wwwroot\DomainJS\lib\require.2.1.1.min.js" />
+    <Content Include="wwwroot\DomainJS\mapController.js" />
+    <Content Include="wwwroot\DomainJS\mapSignleton.js" />
+    <Content Include="wwwroot\DomainJS\marker.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\DomainJS\package.bat" />
+    <Content Include="wwwroot\DomainJS\package.sh" />
+    <Content Include="wwwroot\DomainJS\polygon.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\DomainJS\pv.json">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\DomainJS\transfer.js" />
+    <Content Include="wwwroot\DomainJS\umeng.js" />
+    <Content Include="wwwroot\DomainJS\vehicle.js" />
+    <Content Include="wwwroot\DomainJS\workLocation.js" />
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\css\admin.css" />
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\css\amazeui.css">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\css\amazeui.min.css" />
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\css\style.css">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\css\style.min.css">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\fonts\fontawesome-webfont.eot">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\fonts\fontawesome-webfont.svg">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\fonts\fontawesome-webfont.ttf">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\fonts\fontawesome-webfont.woff">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\fonts\fontawesome-webfont.woff2">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\fonts\FontAwesome.otf" />
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\images\.DS_Store" />
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\images\640x480.jpg" />
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\images\about-bg.jpg">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\images\adobe.png" />
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\images\aliyun.png" />
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\images\apple.png" />
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\images\baidu.png" />
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\images\banner.jpg">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\images\banner1.jpg">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\images\blank.gif" />
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\images\canon.png" />
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\images\case-bg.jpg" />
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\images\contact-bg-1.jpg" />
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\images\dianxin.png" />
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\images\fruitxiao.png">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\images\home-bg.jpg">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\images\loading.gif" />
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\images\logo.png">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\images\logo@2x.png" />
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\images\microsoft.png">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\images\news-bg.jpg" />
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\images\service-bg.jpg">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\images\side-icon01.png">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\images\side-icon02.png">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\images\tencent.png">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\images\we-1.jpg">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\images\we-2.jpg">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\images\we-3.jpg">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\images\weixin.png" />
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\js\.DS_Store" />
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\js\amazeui.ie8polyfill.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\js\amazeui.ie8polyfill.min.js" />
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\js\amazeui.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\js\amazeui.legacy.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\js\amazeui.legacy.min.js" />
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\js\amazeui.min.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\js\amazeui.widgets.helper.js" />
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\js\amazeui.widgets.helper.min.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\js\app.js" />
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\js\backtop.js" />
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\js\echo.min.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\js\handlebars.min.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\js\header.js" />
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\js\iepng.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\js\imagesloaded.pkgd.min.js" />
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\js\jquery.autocomplete.js" />
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\js\jquery.min.js" />
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\js\jquery.qrcode.min.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\js\KinSlideshow.js" />
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\js\photo.js" />
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\js\pic_roll.js" />
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\js\polyfill\rem.min.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\hometemplate\views\IMJ2V2\js\polyfill\respond.min.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\IMG\Gradient\Black.png" />
+    <Content Include="wwwroot\IMG\Gradient\Blue.png" />
+    <Content Include="wwwroot\IMG\Gradient\LightGreen.png" />
+    <Content Include="wwwroot\IMG\Gradient\OrangeYellow.png" />
+    <Content Include="wwwroot\IMG\Gradient\PaleGreen.png" />
+    <Content Include="wwwroot\IMG\Gradient\PaleRed.png" />
+    <Content Include="wwwroot\IMG\Gradient\PaleYellow.png" />
+    <Content Include="wwwroot\IMG\Gradient\Pink.png" />
+    <Content Include="wwwroot\IMG\Gradient\Red.png">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\IMG\Gradient\Violet.png">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\IMG\Little\Black.png" />
+    <Content Include="wwwroot\IMG\Little\Blue.png" />
+    <Content Include="wwwroot\IMG\Little\LightGreen.png" />
+    <Content Include="wwwroot\IMG\Little\OrangeYellow.png">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\IMG\Little\PaleGreen.png">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\IMG\Little\PaleRed.png" />
+    <Content Include="wwwroot\IMG\Little\PaleYellow.png" />
+    <Content Include="wwwroot\IMG\Little\Pink.png" />
+    <Content Include="wwwroot\IMG\Little\Red.png">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\IMG\Little\Violet.png" />
+    <Content Include="wwwroot\nlog.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AngleSharp" Version="0.9.9" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="1.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.3" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="1.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="1.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.2" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="1.1.2" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="1.1.1" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="1.0.0-rtm-beta5" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.4.0" />
+    <PackageReference Include="Pomelo.AspNetCore.TimedJob" Version="1.1.0-rtm-10026" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="1.1.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot\NLogFile\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Analyser\Analyser.csproj" />
+    <ProjectReference Include="..\Segmenter\Segmenter.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="wwwroot\hometemplate\views\IMJ2V2\images\logo%402x.png">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>
