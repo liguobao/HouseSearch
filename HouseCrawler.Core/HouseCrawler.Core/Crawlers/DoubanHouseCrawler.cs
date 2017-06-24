@@ -125,12 +125,16 @@ namespace HouseCrawler.Core
 
         public static void AnalyzeDoubanHouseContent()
         {
+
+            LogHelper.Info("AnalyzeDoubanHouseContent Start...");
+
             var lstHouse = dataContent.HouseInfos.Where(h =>
             h.Source ==ConstConfigurationName.Douban && h.IsAnalyzed == false).Take(100).ToList();
 
             foreach(var houseInfo in lstHouse)
             {
                 var housePrice = JiebaTools.GetHousePrice(houseInfo.HouseText);
+                string houseTextContent = string.Empty;
                 if (housePrice == 0)
                 {
                     var htmlResult = HTTPHelper.GetHTML(houseInfo.HouseOnlineURL);
@@ -140,20 +144,21 @@ namespace HouseCrawler.Core
                     if (topicContent == null) continue;
                     var houseDescription = topicContent.QuerySelector("p");
                     if (houseDescription == null) continue;
-                    houseInfo.HouseText = houseDescription.TextContent;
-                    housePrice = JiebaTools.GetHousePrice(houseDescription.TextContent); 
+                    houseTextContent = houseDescription.TextContent;
+                    housePrice = JiebaTools.GetHousePrice(houseDescription.TextContent);
                 }
-
-                if (housePrice != 0)
+                
+                if(housePrice!=0 || !string.IsNullOrEmpty(houseTextContent))
                 {
-                    houseInfo.HousePrice = housePrice;
                     houseInfo.IsAnalyzed = true;
                 }
-
-                
-
+                houseInfo.HouseText = houseTextContent;
+                houseInfo.HousePrice = housePrice;
+               
             }
             dataContent.SaveChanges();
+
+            LogHelper.Info("AnalyzeDoubanHouseContent Finish...");
         }
 
     }
