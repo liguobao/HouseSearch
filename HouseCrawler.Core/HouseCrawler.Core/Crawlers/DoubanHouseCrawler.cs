@@ -127,38 +127,47 @@ namespace HouseCrawler.Core
         {
 
             LogHelper.Info("AnalyzeDoubanHouseContent Start...");
-
-            var lstHouse = dataContent.HouseInfos.Where(h =>
-            h.Source ==ConstConfigurationName.Douban && h.IsAnalyzed == false).Take(100).ToList();
-
-            foreach(var houseInfo in lstHouse)
+            int index = 0;
+            try
             {
-                var housePrice = JiebaTools.GetHousePrice(houseInfo.HouseText);
-                string houseTextContent = string.Empty;
-                if (housePrice == 0)
-                {
-                    var htmlResult = HTTPHelper.GetHTML(houseInfo.HouseOnlineURL);
-                    if (string.IsNullOrEmpty(htmlResult)) continue;
-                    var page = htmlParser.Parse(htmlResult);
-                    var topicContent = page.QuerySelector("div.topic-content");
-                    if (topicContent == null) continue;
-                    var houseDescription = topicContent.QuerySelector("p");
-                    if (houseDescription == null) continue;
-                    houseTextContent = houseDescription.TextContent;
-                    housePrice = JiebaTools.GetHousePrice(houseDescription.TextContent);
-                }
-                
-                if(housePrice!=0 || !string.IsNullOrEmpty(houseTextContent))
-                {
-                    houseInfo.IsAnalyzed = true;
-                }
-                houseInfo.HouseText = houseTextContent;
-                houseInfo.HousePrice = housePrice;
-               
-            }
-            dataContent.SaveChanges();
+                var lstHouse = dataContent.HouseInfos.Where(h =>
+                h.Source == ConstConfigurationName.Douban && h.IsAnalyzed == false).Take(100).ToList();
 
-            LogHelper.Info("AnalyzeDoubanHouseContent Finish...");
+               
+                foreach (var houseInfo in lstHouse)
+                {
+                    var housePrice = JiebaTools.GetHousePrice(houseInfo.HouseText);
+                    string houseTextContent = string.Empty;
+                    if (housePrice == 0)
+                    {
+                        var htmlResult = HTTPHelper.GetHTML(houseInfo.HouseOnlineURL);
+                        if (string.IsNullOrEmpty(htmlResult)) continue;
+                        var page = htmlParser.Parse(htmlResult);
+                        var topicContent = page.QuerySelector("div.topic-content");
+                        if (topicContent == null) continue;
+                        var houseDescription = topicContent.QuerySelector("p");
+                        if (houseDescription == null) continue;
+                        houseTextContent = houseDescription.TextContent;
+                        housePrice = JiebaTools.GetHousePrice(houseDescription.TextContent);
+                    }
+
+                    if (housePrice != 0 || !string.IsNullOrEmpty(houseTextContent))
+                    {
+                        index++;
+                        houseInfo.IsAnalyzed = true;
+                    }
+                    houseInfo.HouseText = houseTextContent;
+                    houseInfo.HousePrice = housePrice;
+                }
+                dataContent.SaveChanges();
+            }
+            catch(Exception ex)
+            {
+                LogHelper.Error("AnalyzeDoubanHouseContent Exception", ex);
+            }
+           
+
+            LogHelper.Info("AnalyzeDoubanHouseContent Finish,Update Count:" + index);
         }
 
     }

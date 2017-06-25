@@ -10,6 +10,8 @@
 
 相关文章可移步知乎专栏：[一只程序汪的自我修养](https://zhuanlan.zhihu.com/codelover)
 
+
+
 简单介绍一下工程结构：
 
 1. ASP.NET MVC4：58HouseSearch\58HouseSearch.sln
@@ -24,13 +26,11 @@
 2. 前端页面改版，交互优化，内容引导等
 
 
+### HouseCrawler.Core版本说明
 
-
-
-
-
-
-
+1. 当前版本已完成数据固化功能，项目代码为“HouseCrawler.Core”。
+2. 此项目已分成HouseCrawler.Core和HouseCrawler.Web，其中Web已经移除了相关爬虫逻辑，Core中有爬虫+Web；
+3. 已上线部分豆瓣数据分析，使用[jieba.net](https://github.com/linezero/jieba.NET)分词提取价格功能已初步完成。
 
 
 
