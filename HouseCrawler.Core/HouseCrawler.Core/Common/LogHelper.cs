@@ -6,7 +6,7 @@ namespace HouseCrawler.Core
     public static class LogHelper
     {
         private static Logger Logger = LogManager.GetCurrentClassLogger();
-        
+
 
         public static void Info(string message)
         {
