@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
-    <PackageReference Include="Pomelo.AspNetCore.TimedJob" Version="1.1.0-rtm-10032" />
   </ItemGroup>
 
   <ItemGroup>

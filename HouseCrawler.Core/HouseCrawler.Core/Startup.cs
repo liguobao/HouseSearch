@@ -54,11 +54,12 @@ namespace HouseCrawler.Core
             
             env.ConfigureNLog("./wwwroot/nlog.config");
 
-            loggerFactory.AddConsole();
+          
 
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                loggerFactory.AddConsole();
             }
 
             //使用TimedJob

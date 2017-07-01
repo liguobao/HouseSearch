@@ -69,5 +69,35 @@ namespace HouseCrawler.Core.Controllers
             DoubanHouseCrawler.AddDoubanGroupConfig(doubanGroup, cityName);
             return Json(new { IsSuccess = true });
         }
+
+
+        public IActionResult RunJobs()
+        {
+
+            Task.Factory.StartNew(()=> 
+            {
+                try
+                {
+                    DoubanHouseCrawler.AnalyzeDoubanHouseContent();
+
+                    //Job要执行的逻辑代码
+                    PinPaiGongYuHouseCrawler.CapturPinPaiHouseInfo();
+
+                    PeopleRentingCrawler.CapturHouseInfo();
+
+                    DoubanHouseCrawler.CaptureHouseInfoFromConfig();
+
+                    HouseSourceInfo.RefreshHouseSourceInfo();
+
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.Error("RunJobs", ex);
+                }
+
+            });
+
+            return View();
+        }
     }
 }
