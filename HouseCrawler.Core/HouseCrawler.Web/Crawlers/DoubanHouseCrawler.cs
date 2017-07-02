@@ -123,34 +123,6 @@ namespace HouseCrawler.Web
 
 
 
-        public static void AnalyzeDoubanHouseContent()
-        {
-            LogHelper.Info("AnalyzeDoubanHouseContent Start...");
-            var lstHouse = dataContent.HouseInfos.Where(h =>
-            h.Source ==ConstConfigurationName.Douban && h.IsAnalyzed == false).Take(100).ToList();
-
-            foreach(var houseInfo in lstHouse)
-            {
-                var housePrice = JiebaTools.GetHousePrice(houseInfo.HouseText);
-                if (housePrice == 0)
-                {
-                    var htmlResult = HTTPHelper.GetHTML(houseInfo.HouseOnlineURL);
-                    if (string.IsNullOrEmpty(htmlResult)) continue;
-                    var page = htmlParser.Parse(htmlResult);
-                    var topicContent = page.QuerySelector("div.topic-content");
-                    if (topicContent == null) continue;
-                    var houseDescription = topicContent.QuerySelector("p");
-                    if (houseDescription == null) continue;
-                    houseInfo.HouseText = houseDescription.TextContent;
-                    housePrice = JiebaTools.GetHousePrice(houseDescription.TextContent);
-                    houseInfo.HousePrice = housePrice;
-                    houseInfo.IsAnalyzed = true;
-                }
-            }
-            dataContent.SaveChanges();
-
-            LogHelper.Info("AnalyzeDoubanHouseContent Finish.");
-        }
-
+    
     }
 }

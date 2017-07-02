@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using HouseCrawler.Web.Models;
 using HouseCrawler.Web.Common;
 using HouseCrawler.Web;
+using HouseCrawler.Web.DAL;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -26,36 +27,37 @@ namespace HouseCrawler.Core.Controllers
             return View();
         }
 
-        public IActionResult GetHouseInfo(string cityName, string source="", int houseCount = 400,int withinAnyDays = 3)
+        public IActionResult GetHouseInfo(string cityName, string source="", int houseCount = 100,int withinAnyDays = 3)
         {
-            var houses = dataContent.HouseInfos.Where(h => h.LocationCityName == cityName && h.PubTime > DateTime.Now.Date.AddDays(-withinAnyDays));
-            if (!string.IsNullOrEmpty(source))
+            try
             {
-                houses = houses.Where(h=>h.Source == source);
+                var lstHouseInfo = new DBHouseInfoDAL().SearchHouseInfo(cityName, source, houseCount, withinAnyDays);
+                var lstRoomInfo = lstHouseInfo.Select(house =>
+                {
+                    var markBGType = string.Empty;
+                    int housePrice = (int)house.HousePrice;
+                    if (housePrice > 0)
+                    {
+                        markBGType = LocationMarkBGType.SelectColor(housePrice / 1000);
+                    }
+
+                    return new HouseInfo
+                    {
+                        Money = house.DisPlayPrice,
+                        HouseURL = house.HouseOnlineURL,
+                        HouseLocation = house.HouseLocation,
+                        HouseTime = house.PubTime.ToString(),
+                        HousePrice = housePrice,
+                        LocationMarkBG = markBGType,
+                        DisplaySource = ConstConfigurationName.ConvertToDisPlayName(house.Source)
+                    };
+                });
+                 return Json(new { IsSuccess = true, HouseInfos = lstRoomInfo });
+            }catch(Exception ex)
+            {
+                return Json(new { IsSuccess = false, error=ex.ToString() });
             }
-            var lstHouseInfo = houses.OrderByDescending(h => h.PubTime).Take(houseCount).ToList();
-
-            var lstRoomInfo = lstHouseInfo.Select(house=> 
-            {
-                var markBGType = string.Empty;
-                int housePrice = (int)house.HousePrice;
-                if (housePrice > 0)
-                {
-                    markBGType = LocationMarkBGType.SelectColor(housePrice / 1000);
-                }
-
-                return new HouseInfo
-                {
-                    Money = house.DisPlayPrice,
-                    HouseURL =house.HouseOnlineURL,
-                    HouseLocation = house.HouseLocation,
-                    HouseTime = house.PubTime.ToString(),
-                    HousePrice = housePrice,
-                    LocationMarkBG = markBGType,
-                    DisplaySource = ConstConfigurationName.ConvertToDisPlayName(house.Source)
-                };
-            });
-            return Json(new { IsSuccess = true, HouseInfos = lstRoomInfo });
+           
 
 
         }

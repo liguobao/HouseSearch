@@ -237,13 +237,11 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="1.1.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="1.1.1" />
+    <PackageReference Include="MySqlConnector" Version="0.22.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="NLog.Extensions.Logging" Version="1.0.0-rtm-beta5" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.4.0" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="1.1.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Analyser\Analyser.csproj" />
-    <ProjectReference Include="..\Segmenter\Segmenter.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="wwwroot\hometemplate\views\IMJ2V2\images\logo%402x.png">

@@ -37,7 +37,7 @@ namespace HouseCrawler.Web
         {
             services.AddMvc();
             services.Configure<ConnectionStrings>(Configuration);
-            services.AddTimedJob();
+            //services.AddTimedJob();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
@@ -66,7 +66,7 @@ namespace HouseCrawler.Web
             }
 
             //使用TimedJob
-            app.UseTimedJob();
+           // app.UseTimedJob();
 
             app.UseStaticFiles();
            
