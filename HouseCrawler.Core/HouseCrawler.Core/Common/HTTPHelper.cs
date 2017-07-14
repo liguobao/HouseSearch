@@ -59,6 +59,7 @@ namespace HouseCrawler.Core
             }
             catch (System.Exception ex)
             {
+                LogHelper.Info(url);
                 LogHelper.Error("GetHTMLByURL Exception", ex, new { URL = url });
                 Console.WriteLine(ex.ToString());
                 return string.Empty;

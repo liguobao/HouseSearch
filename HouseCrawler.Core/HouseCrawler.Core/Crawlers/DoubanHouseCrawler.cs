@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AngleSharp.Parser.Html;
 using HouseCrawler.Core.Models;
 using HouseCrawler.Core.Common;
+using HouseCrawler.Web.DAL;
 
 namespace HouseCrawler.Core
 {
@@ -121,54 +122,89 @@ namespace HouseCrawler.Core
 
         }
 
-
-
-        public static void AnalyzeDoubanHouseContent()
+        public static void AnalyzeDoubanHouseContentAll()
         {
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
 
-            LogHelper.Info("AnalyzeDoubanHouseContent Start...");
+            Console.WriteLine("AnalyzeDoubanHouseContent Start...");
             int index = 0;
             try
             {
-                var lstHouse = dataContent.HouseInfos.Where(h =>
-                h.Source == ConstConfigurationName.Douban && h.IsAnalyzed == false).Take(100).ToList();
+                var dal = new DBHouseInfoDAL();
 
-               
+                var lstHouse = dal.LoadUnAnalyzeList();
+
                 foreach (var houseInfo in lstHouse)
                 {
                     var housePrice = JiebaTools.GetHousePrice(houseInfo.HouseText);
                     string houseTextContent = string.Empty;
                     if (housePrice == 0)
                     {
-                        var htmlResult = HTTPHelper.GetHTML(houseInfo.HouseOnlineURL);
-                        if (string.IsNullOrEmpty(htmlResult)) continue;
-                        var page = htmlParser.Parse(htmlResult);
-                        var topicContent = page.QuerySelector("div.topic-content");
-                        if (topicContent == null) continue;
-                        var houseDescription = topicContent.QuerySelector("p");
-                        if (houseDescription == null) continue;
-                        houseTextContent = houseDescription.TextContent;
-                        housePrice = JiebaTools.GetHousePrice(houseDescription.TextContent);
+                        AnalyzeFromWebPage(houseInfo, ref housePrice, ref houseTextContent);
+                    }
+                    else
+                    {
+                        houseInfo.Status = 1;
+                        houseInfo.DisPlayPrice = housePrice.ToString();
+                        houseInfo.HousePrice = housePrice;
                     }
 
-                    if (housePrice != 0 || !string.IsNullOrEmpty(houseTextContent))
-                    {
-                        index++;
-                        houseInfo.IsAnalyzed = true;
-                    }
-                    houseInfo.HouseText = houseTextContent;
-                    houseInfo.HousePrice = housePrice;
+                    houseInfo.IsAnalyzed = true;
+                    dal.UpdateHouseInfo(houseInfo);
+                    index++;
+
+                     Console.WriteLine("HouseInfo:" + Newtonsoft.Json.JsonConvert.SerializeObject(houseInfo));
                 }
-                dataContent.SaveChanges();
+               
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 LogHelper.Error("AnalyzeDoubanHouseContent Exception", ex);
             }
-           
 
-            LogHelper.Info("AnalyzeDoubanHouseContent Finish,Update Count:" + index);
+            sw.Stop();
+
+            string copyTime = sw.Elapsed.TotalSeconds.ToString();
+
+            Console.WriteLine("AnalyzeDoubanHouseContent Finish,Update Count:" + index +";花费时间：" + copyTime);
+
         }
 
+        private static void AnalyzeFromWebPage(Web.Model.DBHouseInfo houseInfo,
+            ref decimal housePrice, ref string houseTextContent)
+        {
+            var htmlResult = HTTPHelper.GetHTML(houseInfo.HouseOnlineURL);
+            //没有页面信息
+            if (string.IsNullOrEmpty(htmlResult))
+            {
+                //404页面
+                houseInfo.Status = 2;
+            }
+            else
+            {
+                var page = htmlParser.Parse(htmlResult);
+                var topicContent = page.QuerySelector("div.topic-content");
+                //没有帖子内容
+                if (topicContent == null || topicContent.QuerySelector("p") == null || topicContent.QuerySelector("p") == null)
+                {
+                    houseInfo.Status = 3;
+                }
+                else
+                {
+                    //获取帖子内容
+                    houseTextContent = topicContent.QuerySelector("p").TextContent;
+                    //获取价格信息
+                    housePrice = JiebaTools.GetHousePrice(houseTextContent);
+                    if (housePrice != 0 || !string.IsNullOrEmpty(houseTextContent))
+                    {
+                        houseInfo.Status = 1;
+                    }
+                    houseInfo.DisPlayPrice = housePrice.ToString();
+                    houseInfo.HousePrice = housePrice;
+                    houseInfo.HouseText = houseTextContent;
+                }
+            }
+        }
     }
 }

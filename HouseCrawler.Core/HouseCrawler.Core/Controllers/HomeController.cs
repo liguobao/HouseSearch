@@ -78,17 +78,16 @@ namespace HouseCrawler.Core.Controllers
             {
                 try
                 {
-                    DoubanHouseCrawler.AnalyzeDoubanHouseContent();
 
-                    //Job要执行的逻辑代码
-                    PinPaiGongYuHouseCrawler.CapturPinPaiHouseInfo();
+                    for(int index =1;index <100;index++)
+                    {
+                        Console.WriteLine($"第{index}次开始分析数据。");
 
-                    PeopleRentingCrawler.CapturHouseInfo();
+                        DoubanHouseCrawler.AnalyzeDoubanHouseContentAll();
+                        System.Threading.Thread.Sleep(1000 * 20);
 
-                    DoubanHouseCrawler.CaptureHouseInfoFromConfig();
-
-                    HouseSourceInfo.RefreshHouseSourceInfo();
-
+                        Console.WriteLine($"本次分析数据结束到此...");
+                    }
                 }
                 catch (Exception ex)
                 {

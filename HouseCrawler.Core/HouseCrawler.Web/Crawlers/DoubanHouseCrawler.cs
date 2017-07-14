@@ -67,7 +67,18 @@ namespace HouseCrawler.Web
                 dataContent.Add(config);
                 dataContent.SaveChanges();
 
-                HouseSourceInfo.RefreshHouseSourceInfo();
+                Task.Factory.StartNew(()=> 
+                {
+                    try
+                    {
+                        HouseSourceInfo.RefreshHouseSourceInfo();
+                    }
+                    catch (Exception ex)
+                    {
+                        LogHelper.Error("RefreshHouseSourceInfo", ex);
+                    }
+                });
+                    
             }
             #endregion
 

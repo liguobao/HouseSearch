@@ -76,7 +76,8 @@ namespace HouseCrawler.Core
                     template: "{controller=House}/{action=Index}/{id?}"); 
             });
 
-          
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
 
             AppSettings.CityJsonFilePath = Path.Combine(env.WebRootPath, "DomainJS//pv.json");
 

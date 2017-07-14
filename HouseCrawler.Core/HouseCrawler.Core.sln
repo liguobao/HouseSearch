@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.6
+VisualStudioVersion = 15.0.26430.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HouseCrawler.Core", "HouseCrawler.Core\HouseCrawler.Core.csproj", "{8DA3AC47-1F9D-4E8D-9291-D88FB0BE4CC6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HouseCrawler.Core", "HouseCrawler.Core\HouseCrawler.Core.csproj", "{8DA3AC47-1F9D-4E8D-9291-D88FB0BE4CC6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Analyser", "Analyser\Analyser.csproj", "{9811A403-3367-46EF-AA62-D210CC4C1369}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Segmenter", "Segmenter\Segmenter.csproj", "{6BD2A906-55AC-4771-A156-5DE43DD251A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HouseCrawler.Web", "HouseCrawler.Web\HouseCrawler.Web.csproj", "{4226C20E-E9DE-4BA6-ACF1-B4E41CABA674}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HouseCrawler.Web", "HouseCrawler.Web\HouseCrawler.Web.csproj", "{4226C20E-E9DE-4BA6-ACF1-B4E41CABA674}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

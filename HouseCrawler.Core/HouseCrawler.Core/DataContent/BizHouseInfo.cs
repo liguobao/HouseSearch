@@ -72,5 +72,10 @@ namespace HouseCrawler.Core
         /// </summary>
         public bool IsAnalyzed { get; set; }
 
+        /// <summary>
+        /// 状态（0:未处理 1：有效 2:已作废）
+        /// </summary>
+        public int Status { get; set; }
+
     }
 }
