@@ -132,8 +132,12 @@
                     <p>58同城品牌公寓、豆瓣小组</p>
                 </li>
                 <li class="am-animation-slide-top" data-am-scrollspy="{animation:'slide-top', delay: 100}">
-                    <h2><a href="#"  data-am-modal="{target: '#more-cityHouseInfo', closeViaDimmer: 0 ,width: 800,}">More</a></h2>
+                    <h2><a href="#"  data-am-modal="{target: '#more-cityHouseInfo', closeViaDimmer: 0 ,width: 900,}">More</a></h2>
                     <p>成都、杭州、厦门...</p>
+                </li>
+                <li class="am-animation-slide-top" data-am-scrollspy="{animation:'slide-top', delay: 100}">
+                    <h2><a href="#" data-am-modal="{target: '#divHouseSearch', closeViaDimmer: 0 ,width: 400, height : 300}">高级搜索</a></h2>
+                    <p>很高级...</p>
                 </li>
             </ul>
 
@@ -148,6 +152,53 @@
         </section>
 
     </div>
+
+
+    <div class="am-modal am-modal-no-btn" tabindex="-1" id="divHouseSearch">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd">
+                高级搜索功能
+                <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+            </div>
+            <div class="am-modal-bd">
+               
+                <div class="am-form-group">
+                    <select id="select-cityname" style="width:100%" class="am-text-lg">
+                        @foreach (var cityName in Model.Select(city => city.CityName).Distinct())
+                        { 
+                            <option value="@cityName">@cityName</option>
+                        }
+                    </select>
+                </div>
+                <div class="am-form-group">
+                    <select id="select-source" style="width:100%" class="am-text-lg">
+                        <option value="">全部</option>
+                         <option value="pinpaigongyu">58同城品牌公寓</option>
+                        <option value="huzhuzufang">上海互助租房</option>
+                        <option value="douban">豆瓣租房小组</option>
+                    </select>
+                </div>
+
+                <div class="am-form-group">
+                    <input style="width:100%" class="am-text-lg am-input-lg" id="input-withAnyDays" placeholder="几天内的数据？默认十天" value="10" type="number">
+                </div>
+
+                <div class="am-form-group">
+                    <input style="width:100%" class="am-text-lg am-input-lg" id="input-keyword" placeholder="搜索关键字">
+                </div>
+
+
+                <button type="button" class="am-btn am-btn-default am-round am-btn-secondary am-btn-xl" id="btn-StartSearch">开始搜索...</button>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
 
     
     <div class="am-modal am-modal-no-btn" tabindex="-1" id="addCityHouseInfo">
@@ -189,7 +240,7 @@
                                 @foreach (var cityHouseInfo in cityGroup)
                                 {
                                    
-                                    <a href="~/Home/HouseList?cityname=@cityName&source=@cityHouseInfo.Source&withinAnyDays=3&PageCount=500" target="_blank">
+                                    <a href="~/Home/HouseList?cityname=@cityName&source=@cityHouseInfo.Source&withAnyDays=3&PageCount=500" target="_blank">
                                       @ConstConfigurationName.ConvertToDisPlayName(cityHouseInfo.Source) (@cityHouseInfo.HouseSum)
                                     </a>
                                     <br />
@@ -212,7 +263,8 @@
 
         <hgroup data-am-scrollspy="{animation:'slide-bottom', delay: 100}">
             <h2>感谢他们</h2>
-            <p>回头写...</p>
+            <p>灵感+部分代码来源实验楼<a href="https://www.shiyanlou.com/user/8834/" target="_blank">ekCit</a>的 
+            <a href="https://www.shiyanlou.com/courses/599" target="_blank">高德API+Python解决租房问题</a>课程，感谢他...</p>
         </hgroup>
         <ul class="am-avg-lg-8 am-avg-md-8 am-avg-sm-2  am-thumbnails" data-am-scrollspy="{animation:'slide-bottom', delay: 100}">
             <li data-am-scrollspy="{animation:'slide-bottom', delay: 44}">
@@ -226,6 +278,8 @@
                 <img src="~/hometemplate/views/IMJ2V2/images/aliyun.png" alt="阿里云" class="am-img-responsive">
             </li>
         </ul>
+
+
     </section>
 
 
@@ -310,6 +364,29 @@
                     }
                 });
 
+                e.stopPropagation();
+            });
+
+
+            $('#btn-StartSearch').bind('click', function (e) {
+                e.preventDefault();
+                var cityname = $('#select-cityname').val();
+                var source = $('#select-source').val();
+                var withAnyDays = $('#input-withAnyDays').val();
+                var keyword = $('#input-keyword').val();
+
+                var searchHouseURL = "../Home/HouseList?cityname=" + cityname;
+
+                if (source && source != "") {
+                    searchHouseURL = searchHouseURL  + "&source=" + source;
+                }
+                if (withAnyDays != "") {
+                    searchHouseURL = searchHouseURL + "&withAnyDays=" + withAnyDays;
+                }
+                if (keyword && keyword != "") { 
+                    searchHouseURL = searchHouseURL + "&keyword=" + keyword;
+                }
+                window.open(searchHouseURL);   
                 e.stopPropagation();
             });
 

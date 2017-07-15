@@ -25,9 +25,9 @@ namespace HouseCrawler.Core.Controllers
             return View();
         }
 
-        public IActionResult GetHouseInfo(string cityName, string source="", int houseCount = 400,int withinAnyDays = 3)
+        public IActionResult GetHouseInfo(string cityName, string source="", int houseCount = 400,int withAnyDays = 3)
         {
-            var houses = dataContent.HouseInfos.Where(h => h.LocationCityName == cityName && h.PubTime > DateTime.Now.Date.AddDays(-withinAnyDays));
+            var houses = dataContent.HouseInfos.Where(h => h.LocationCityName == cityName && h.PubTime > DateTime.Now.Date.AddDays(-withAnyDays));
             if (!string.IsNullOrEmpty(source))
             {
                 houses = houses.Where(h=>h.Source == source);

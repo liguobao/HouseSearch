@@ -106,7 +106,7 @@ namespace HouseCrawler.Web.DAL
         ///<summary>
         /// 获得分页记录集IEnumerable<>
         ///</summary>              
-        public IEnumerable<DBHouseInfo> SearchHouseInfo(string cityName, string source = "", int houseCount = 100, int withinAnyDays = 3)
+        public IEnumerable<DBHouseInfo> SearchHouseInfo(string cityName, string source = "", int houseCount = 100, int withAnyDays = 3)
         {
             string sqlText = "SELECT * from HouseInfos where 1=1 ";
 
@@ -124,7 +124,7 @@ namespace HouseCrawler.Web.DAL
                 lstMySqlParameter.Add(new MySqlParameter() { ParameterName = "@Source", Value = source, DbType = DbType.String });
             }
             sqlText = sqlText + " and PubTime>= @PubTime ";
-            lstMySqlParameter.Add(new MySqlParameter() { ParameterName = "@PubTime", Value = DateTime.Now.Date.AddDays(-withinAnyDays), DbType = DbType.Date });
+            lstMySqlParameter.Add(new MySqlParameter() { ParameterName = "@PubTime", Value = DateTime.Now.Date.AddDays(-withAnyDays), DbType = DbType.Date });
             sqlText = sqlText + string.Format(" limit {0} ", houseCount);
 
             using (DbDataReader reader = MyDBHelper.ExecuteDataReader(sqlText, lstMySqlParameter.ToArray()))

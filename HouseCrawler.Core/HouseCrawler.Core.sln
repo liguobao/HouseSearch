@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.14
+VisualStudioVersion = 15.0.26430.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HouseCrawler.Core", "HouseCrawler.Core\HouseCrawler.Core.csproj", "{8DA3AC47-1F9D-4E8D-9291-D88FB0BE4CC6}"
 EndProject
@@ -10,6 +10,12 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Segmenter", "Segmenter\Segmenter.csproj", "{6BD2A906-55AC-4771-A156-5DE43DD251A9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HouseCrawler.Web", "HouseCrawler.Web\HouseCrawler.Web.csproj", "{4226C20E-E9DE-4BA6-ACF1-B4E41CABA674}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQLScript", "SQLScript", "{91B77EF8-0DF3-478A-9C72-C6A15ACC7FA8}"
+	ProjectSection(SolutionItems) = preProject
+		C:\Users\LGB83\Desktop\CrawlerConfigurations.sql = C:\Users\LGB83\Desktop\CrawlerConfigurations.sql
+		C:\Users\LGB83\Desktop\HouseInfos.sql = C:\Users\LGB83\Desktop\HouseInfos.sql
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -27,8 +27,8 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
         } else if (dataResource == "houselist") {
             var source = helper.getQueryString("source") ? helper.getQueryString("source") : "";
             //默认出3天内的数据
-            var withinAnyDays = helper.getQueryString("withinAnyDays") ? helper.getQueryString("withinAnyDays") : 3;
-            dataInfo = { cityName: helper.getQueryString("cityname"), source: source, houseCount: pagecount, withinAnyDays: withinAnyDays };
+            var withAnyDays = helper.getQueryString("withAnyDays") ? helper.getQueryString("withinAnyDays") : 3;
+            dataInfo = { cityName: helper.getQueryString("cityname"), source: source, houseCount: pagecount, withAnyDays: withAnyDays };
         }
         else {
             dataInfo = { cnName: city.shortName, index: index };

@@ -27,11 +27,12 @@ namespace HouseCrawler.Core.Controllers
             return View();
         }
 
-        public IActionResult GetHouseInfo(string cityName, string source="", int houseCount = 100,int withinAnyDays = 3)
+        public IActionResult GetHouseInfo(string cityName, string source="", int houseCount = 100,
+            int withAnyDays = 3,bool showDoubanInvalidData=true, string keyword="")
         {
             try
             {
-                var lstHouseInfo = new DBHouseInfoDAL().SearchHouseInfo(cityName, source, houseCount, withinAnyDays);
+                var lstHouseInfo = new DBHouseInfoDAL().SearchHouseInfo(cityName, source, houseCount, withAnyDays, showDoubanInvalidData, keyword);
                 var lstRoomInfo = lstHouseInfo.Select(house =>
                 {
                     var markBGType = string.Empty;

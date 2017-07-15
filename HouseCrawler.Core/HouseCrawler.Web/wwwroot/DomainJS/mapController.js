@@ -27,8 +27,10 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
         } else if (dataResource == "houselist") {
             var source = helper.getQueryString("source") ? helper.getQueryString("source") : "";
             //默认出3天内的数据
-            var withinAnyDays = helper.getQueryString("withinAnyDays") ? helper.getQueryString("withinAnyDays") : 3;
-            dataInfo = { cityName: helper.getQueryString("cityname"), source: source, houseCount: pagecount, withinAnyDays: withinAnyDays };
+            var withAnyDays = helper.getQueryString("withAnyDays") ? helper.getQueryString("withAnyDays") : 3;
+            var keyword = helper.getQueryString("keyword") ? helper.getQueryString("keyword") : "";
+            var invalidData = helper.getQueryString("invalidData") ? helper.getQueryString("invalidData") : "true";
+            dataInfo = { cityName: helper.getQueryString("cityname"), source: source, houseCount: pagecount, withAnyDays: withAnyDays, keyword: keyword, showDoubanInvalidData: invalidData };
         }
         else {
             dataInfo = { cnName: city.shortName, index: index };

@@ -107,7 +107,7 @@ namespace HouseCrawler.Web.DAL
         /// 获得分页记录集IEnumerable<>
         ///</summary>              
         public IEnumerable<DBHouseInfo> SearchHouseInfo(string cityName, string source = "", 
-            int houseCount = 100, int withinAnyDays = 3,bool isShowInvalidData = false)
+            int houseCount = 100, int withinAnyDays = 3,bool showDoubanInvalidData = true, string keyword = "")
         {
             string sqlText = "SELECT * from HouseInfos where 1=1 ";
 
@@ -125,11 +125,20 @@ namespace HouseCrawler.Web.DAL
                 lstMySqlParameter.Add(new MySqlParameter() { ParameterName = "@Source", Value = source, DbType = DbType.String });
             }
 
-            if(isShowInvalidData)
+            //是否展示豆瓣无效数据
+            if(!showDoubanInvalidData && source == ConstConfigurationName.Douban)
             {
                 sqlText = sqlText + " and Status = @Status and HousePrice > 0 ";
                 //仅仅显示有效数据
                 lstMySqlParameter.Add(new MySqlParameter() { ParameterName = "@Status", Value = 1, DbType = DbType.Int32 });
+            }
+
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                keyword = "%" + keyword +"%";
+                sqlText = sqlText + " and (HouseText like @keyword or HouseLocation like @keyword ) ";
+                //仅仅显示有效数据
+                lstMySqlParameter.Add(new MySqlParameter() { ParameterName = "@keyword", Value = keyword, DbType = DbType.String });
             }
 
 
