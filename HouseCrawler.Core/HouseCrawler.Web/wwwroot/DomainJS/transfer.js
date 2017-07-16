@@ -28,7 +28,8 @@ define(['mapSignleton', 'city', 'vehicle'], function(mapSignleton, city, vehicle
         _amapTransfer.search([
             { keyword: mapSignleton.workAddress },
             { keyword: address }
-        ], function(status, result) {});
+        ], function (status, result) { });
+        $("#transfer-panel").show();
     }
 
     return {

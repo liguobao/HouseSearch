@@ -34,10 +34,34 @@ require(['domready!', 'jquery', 'AMUI', 'mapController', 'city', 'commuteGo'], f
         mapController.Get58DataClick();
         e.stopPropagation();
     });
- 
-    
 
-    $('#search-offcanvas').offCanvas({ effect: 'overlay' });
+    if (!isMobile()) {
+        $('#search-offcanvas').offCanvas({ effect: 'overlay' });
+        $("#btnCloseTransfer").hide();
+    } else {
+        $("#btnWorkTransfer").hide();
+        $("#divGradientList").hide();
+        $("#btnCloseTransfer").show();
+    }
+
+
+    $("#btnCloseTransfer").on("click", function () {
+        $("#transfer-panel").hide();
+    });
 
     $(".amap-sug-result").css("z-index", 9999);
 })
+
+
+function isMobile() {
+    try {
+        if (document.getElementById("bdmark") != null) { return false; }
+        var urlhash = window.location.hash;
+        if (!urlhash.match("fromapp")) {
+            if ((navigator.userAgent.match(/(iPhone|iPod|Android|ios|iPad|Mobile)/i))) {
+                return true;
+            }
+        }
+    } catch (err) { }
+    return false;
+}

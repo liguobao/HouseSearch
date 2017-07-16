@@ -30,16 +30,21 @@
 <body>
     <div id="container"></div>
 
-    <div style="position:absolute;margin-left:60px;color:red;font:500">
-        所有的房源信息均来自网络，本网站不对其真实性负责，特此声明。首次载入无数据可尝试【F5】强制刷新....问题反馈：codelover@qq.com
+    <div style="position:absolute;color:red;">
+        <p> 所有的房源信息均来自网络，本网站不对其真实性负责，特此声明。首次载入无数据可尝试【F5】强制刷新....问题反馈：codelover@qq.com</p>
         <br />
     </div>
 
     <div class="button-panel-offcanvas">
         <!-- 按钮触发器， 需要指定 target -->
-        <button class="am-btn am-btn-success" data-am-offcanvas="{target: '#search-offcanvas'}">上班导航</button>
+        <button class="am-btn am-btn-success" data-am-offcanvas="{target: '#search-offcanvas'}" id="btnWorkTransfer">上班导航</button>
     </div>
-    <div class="button-panel" style="margin-top:60px;">
+
+    <div class="button-panel">
+        <button class="am-btn am-btn-warning  am-round" id="btnCloseTransfer" >关闭</button>
+    </div>
+
+    <div class="button-panel" style="margin-top:60px;" id="divGradientList">
         <img src="~/IMG/Gradient/Blue.png" />0-1000
         <br />
         <img src="~/IMG/Gradient/PaleGreen.png" style="margin-left:3px;margin-top:10px;" />1000-2000
@@ -136,7 +141,7 @@
             </div>
         </div>
     </div>
-
+        
     <div id="transfer-panel"></div>
 
 </body>
