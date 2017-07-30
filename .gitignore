@@ -24,3 +24,5 @@
 /HouseCrawler.Core/Segmenter/obj
 /HouseCrawler.Core/HouseCrawler.Web/obj
 /HouseCrawler.Core/HouseCrawler.Web/bin
+/HouseCrawler.Core/Pomelo.AspNetCore.TimedJob/bin
+/HouseCrawler.Core/Pomelo.AspNetCore.TimedJob/obj

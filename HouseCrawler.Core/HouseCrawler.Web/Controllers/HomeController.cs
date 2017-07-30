@@ -73,5 +73,12 @@ namespace HouseCrawler.Core.Controllers
             DoubanHouseCrawler.AddDoubanGroupConfig(doubanGroup, cityName);
             return Json(new { IsSuccess = true });
         }
+
+
+        public IActionResult MessageList()
+        {
+            return View();
+        }
+
     }
 }
