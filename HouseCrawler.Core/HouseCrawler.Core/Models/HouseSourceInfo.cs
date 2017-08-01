@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HouseCrawler.Web.DBService.DAL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,25 +19,11 @@ namespace HouseCrawler.Core.Models
         private static CrawlerDataContent dataContent = new CrawlerDataContent();
 
 
-
         public static void RefreshHouseSourceInfo()
         {
-            List<HouseSourceInfo> lstCityHouse = new List<HouseSourceInfo>();
-            foreach( var cityHouseGroup in dataContent.HouseInfos.GroupBy(h => h.LocationCityName))
-            {
-                foreach(var sourceGroupHouses in cityHouseGroup.GroupBy(h => h.Source))
-                {
-                    var cityHouseInfo = new HouseSourceInfo();
-                    cityHouseInfo.CityName = sourceGroupHouses.First().LocationCityName;
-                    cityHouseInfo.HouseSum = sourceGroupHouses.Count();
-                    cityHouseInfo.Source = sourceGroupHouses.First().Source;
-                    cityHouseInfo.UpdateTime = DateTime.Now;
-                    lstCityHouse.Add(cityHouseInfo);
-                }
-            }
-
+            var lstCityHouse = new DBHouseSourceInfoDAL().GetHouseSourceInfoList();
             BizCrawlerConfiguration config = dataContent.CrawlerConfigurations.FirstOrDefault(c => c.ConfigurationName == ConstConfigurationName.CityHouseInfo);
-            if(config == null)
+            if (config == null)
             {
                 config = new BizCrawlerConfiguration();
                 config.ConfigurationKey = 0;
@@ -45,7 +32,8 @@ namespace HouseCrawler.Core.Models
                 config.IsEnabled = true;
                 dataContent.Add(config);
                 dataContent.SaveChanges();
-            }else
+            }
+            else
             {
                 config.ConfigurationKey = 0;
                 config.ConfigurationName = ConstConfigurationName.CityHouseInfo;
@@ -53,7 +41,7 @@ namespace HouseCrawler.Core.Models
                 config.IsEnabled = true;
                 dataContent.SaveChanges();
             }
-         
+
         }
 
 

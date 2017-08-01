@@ -74,6 +74,8 @@ namespace HouseCrawler.Core.Controllers
         public IActionResult RunJobs()
         {
 
+            HouseSourceInfo.RefreshHouseSourceInfo();
+
             Task.Factory.StartNew(()=> 
             {
                 try
