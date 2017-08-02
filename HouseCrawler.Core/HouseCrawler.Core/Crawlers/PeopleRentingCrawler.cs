@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using HouseCrawler.Core.DBService.DAL;
 
 namespace HouseCrawler.Core
 {
@@ -54,7 +55,7 @@ namespace HouseCrawler.Core
 
             var tmp = new List<BizHouseInfo>();
 
-            HashSet<string> hsHouseOnlineURL = GetAllHouseOnlineURL();
+            HashSet<string> hsHouseOnlineURL = new CrawlerDAL().GetAllHuzhuzufangHouseOnlineURL();
 
             foreach (var houseInfo in lstHouseInfo)
             {
@@ -80,17 +81,6 @@ namespace HouseCrawler.Core
             dataContent.SaveChanges();
         }
 
-        private static HashSet<string> GetAllHouseOnlineURL()
-        {
-            var hsHouseOnlineURL = new HashSet<string>();
-            dataContent.HouseInfos.Where(h => !string.IsNullOrEmpty(h.HouseOnlineURL)).Select(h => h.HouseOnlineURL).Distinct().ToList().ForEach(url =>
-            {
-                if (!hsHouseOnlineURL.Contains(url))
-                {
-                    hsHouseOnlineURL.Add(url);
-                }
-            });
-            return hsHouseOnlineURL;
-        }
+       
     }
 }

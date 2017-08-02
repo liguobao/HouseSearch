@@ -73,8 +73,7 @@ namespace HouseCrawler.Core.Controllers
 
         public IActionResult RunJobs()
         {
-
-            HouseSourceInfo.RefreshHouseSourceInfo();
+            PeopleRentingCrawler.CapturHouseInfo();
 
             Task.Factory.StartNew(()=> 
             {
@@ -90,6 +89,8 @@ namespace HouseCrawler.Core.Controllers
 
                         Console.WriteLine($"本次分析数据结束到此...");
                     }
+
+                    HouseSourceInfo.RefreshHouseSourceInfo();
                 }
                 catch (Exception ex)
                 {

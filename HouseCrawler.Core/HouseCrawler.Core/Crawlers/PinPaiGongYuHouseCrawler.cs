@@ -6,6 +6,7 @@ using AngleSharp.Parser.Html;
 using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using HouseCrawler.Core.DBService.DAL;
 
 namespace HouseCrawler.Core
 {
@@ -14,6 +15,8 @@ namespace HouseCrawler.Core
         private static HtmlParser htmlParser = new HtmlParser();
 
         private static CrawlerDataContent dataContent = new CrawlerDataContent();
+
+        private static CrawlerDAL crawlerDAL = new CrawlerDAL();
 
         public static void CapturPinPaiHouseInfo()
         {
@@ -58,7 +61,7 @@ namespace HouseCrawler.Core
                 int housePrice = 0;
                 int.TryParse(element.QuerySelector("b").TextContent, out housePrice);
                 var onlineURL = $"http://{confInfo.shortcutname.Value}.58.com" + element.QuerySelector("a").GetAttribute("href");
-                if (dataContent.HouseInfos.Any(h => h.HouseOnlineURL == onlineURL))
+                if (crawlerDAL.ContainsHouseOnlineURL(onlineURL))
                     continue;
                 var houseInfo = new BizHouseInfo
                 {

@@ -6,6 +6,7 @@ using AngleSharp.Parser.Html;
 using HouseCrawler.Core.Models;
 using HouseCrawler.Core.Common;
 using HouseCrawler.Web.DAL;
+using HouseCrawler.Core.DBService.DAL;
 
 namespace HouseCrawler.Core
 {
@@ -14,6 +15,8 @@ namespace HouseCrawler.Core
         private static HtmlParser htmlParser = new HtmlParser();
 
         private static CrawlerDataContent dataContent = new CrawlerDataContent();
+
+        private static CrawlerDAL crawlerDAL = new CrawlerDAL();
 
         public static void CaptureHouseInfoFromConfig()
         {
@@ -77,15 +80,6 @@ namespace HouseCrawler.Core
 
         private static List<BizHouseInfo> GetDataFromOnlineWeb(string groupID, string cityName, int pageIndex)
         {
-            HashSet<string> hsDoubanHouseURL = new HashSet<string>();
-
-            dataContent.HouseInfos.Where(h=>h.Source== ConstConfigurationName.Douban)
-                .Select(h=>h.HouseOnlineURL).Distinct().ToList()
-                .ForEach(houseURL=> 
-                {
-                    if (!hsDoubanHouseURL.Contains(houseURL))
-                        hsDoubanHouseURL.Add(houseURL);
-                });
 
             List<BizHouseInfo> lstHouseInfo = new List<BizHouseInfo>();
 
@@ -98,7 +92,7 @@ namespace HouseCrawler.Core
             foreach (var trItem in page.QuerySelector("table.olt").QuerySelectorAll("tr"))
             {
                 var titleItem = trItem.QuerySelector("td.title");
-                if (titleItem == null || hsDoubanHouseURL.Contains(titleItem.QuerySelector("a").GetAttribute("href")))
+                if (titleItem == null || crawlerDAL.ContainsHouseOnlineURL(titleItem.QuerySelector("a").GetAttribute("href")))
                     continue;
 
                 var houseInfo = new BizHouseInfo()
