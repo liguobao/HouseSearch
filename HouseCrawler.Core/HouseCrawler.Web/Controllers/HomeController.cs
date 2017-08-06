@@ -28,7 +28,7 @@ namespace HouseCrawler.Core.Controllers
         }
 
         public IActionResult GetHouseInfo(string cityName, string source="", int houseCount = 100,
-            int withAnyDays = 3,bool showDoubanInvalidData=true, string keyword="")
+            int withAnyDays = 7,bool showDoubanInvalidData=true, string keyword="")
         {
             try
             {

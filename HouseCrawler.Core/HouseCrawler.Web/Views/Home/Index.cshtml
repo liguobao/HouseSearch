@@ -132,7 +132,7 @@
                     <p>58同城品牌公寓、豆瓣小组</p>
                 </li>
                 <li class="am-animation-slide-top" data-am-scrollspy="{animation:'slide-top', delay: 100}">
-                    <h2><a href="#"  data-am-modal="{target: '#more-cityHouseInfo', closeViaDimmer: 0 ,width: 900,}">More</a></h2>
+                    <h2><a href="#"  data-am-modal="{target: '#more-cityHouseInfo', closeViaDimmer: 0 ,width: 900,height:600}">More</a></h2>
                     <p>成都、杭州、厦门...</p>
                 </li>
                 <li class="am-animation-slide-top" data-am-scrollspy="{animation:'slide-top', delay: 100}">
@@ -223,8 +223,8 @@
    </div>
 
 
-    <div class="am-modal am-modal-no-btn" tabindex="-1" id="more-cityHouseInfo">
-        <div class="am-modal-dialog">
+    <div class="am-modal am-modal-no-btn" tabindex="-1" id="more-cityHouseInfo" >
+        <div class="am-modal-dialog" style="width:900px;height:600px;overflow-y:scroll;">
             <div class="am-modal-hd">
                 全部城市
                 <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
@@ -240,7 +240,7 @@
                                 @foreach (var cityHouseInfo in cityGroup)
                                 {
                                    
-                                    <a href="~/Home/HouseList?cityname=@cityName&source=@cityHouseInfo.Source&withAnyDays=3&PageCount=500" target="_blank">
+                                    <a href="~/Home/HouseList?cityname=@cityName&source=@cityHouseInfo.Source&withAnyDays=7&PageCount=500" target="_blank">
                                       @ConstConfigurationName.ConvertToDisPlayName(cityHouseInfo.Source) (@cityHouseInfo.HouseSum)
                                     </a>
                                     <br />

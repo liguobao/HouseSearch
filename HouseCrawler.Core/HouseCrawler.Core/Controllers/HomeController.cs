@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using HouseCrawler.Core.Models;
 using HouseCrawler.Core.Common;
+using HouseCrawler.Core.Jobs;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -25,16 +26,16 @@ namespace HouseCrawler.Core.Controllers
             return View();
         }
 
-        public IActionResult GetHouseInfo(string cityName, string source="", int houseCount = 400,int withAnyDays = 3)
+        public IActionResult GetHouseInfo(string cityName, string source = "", int houseCount = 400, int withAnyDays = 3)
         {
             var houses = dataContent.HouseInfos.Where(h => h.LocationCityName == cityName && h.PubTime > DateTime.Now.Date.AddDays(-withAnyDays));
             if (!string.IsNullOrEmpty(source))
             {
-                houses = houses.Where(h=>h.Source == source);
+                houses = houses.Where(h => h.Source == source);
             }
             var lstHouseInfo = houses.OrderByDescending(h => h.PubTime).Take(houseCount).ToList();
 
-            var lstRoomInfo = lstHouseInfo.Select(house=> 
+            var lstRoomInfo = lstHouseInfo.Select(house =>
             {
                 var markBGType = string.Empty;
                 int housePrice = (int)house.HousePrice;
@@ -46,7 +47,7 @@ namespace HouseCrawler.Core.Controllers
                 return new HouseInfo
                 {
                     Money = house.DisPlayPrice,
-                    HouseURL =house.HouseOnlineURL,
+                    HouseURL = house.HouseOnlineURL,
                     HouseLocation = house.HouseLocation,
                     HouseTime = house.PubTime.ToString(),
                     HousePrice = housePrice,
@@ -60,11 +61,11 @@ namespace HouseCrawler.Core.Controllers
         }
 
 
-        public IActionResult AddDouBanGroup(string doubanGroup,string cityName)
+        public IActionResult AddDouBanGroup(string doubanGroup, string cityName)
         {
-            if(string.IsNullOrEmpty(doubanGroup) || string.IsNullOrEmpty(cityName))
+            if (string.IsNullOrEmpty(doubanGroup) || string.IsNullOrEmpty(cityName))
             {
-                return Json(new { IsSuccess = false , error="请输入豆瓣小组Group和城市名称。" });
+                return Json(new { IsSuccess = false, error = "请输入豆瓣小组Group和城市名称。" });
             }
             DoubanHouseCrawler.AddDoubanGroupConfig(doubanGroup, cityName);
             return Json(new { IsSuccess = true });
@@ -73,33 +74,36 @@ namespace HouseCrawler.Core.Controllers
 
         public IActionResult RunJobs()
         {
-            PeopleRentingCrawler.CapturHouseInfo();
 
-            Task.Factory.StartNew(()=> 
-            {
-                try
-                {
+           // DoubanHouseCrawler.CaptureHouseInfoFromConfig();
+           // HouseSourceInfo.RefreshHouseSourceInfo();
 
-                    for(int index =1;index <100;index++)
-                    {
-                        Console.WriteLine($"第{index}次开始分析数据。");
 
-                        DoubanHouseCrawler.AnalyzeDoubanHouseContentAll();
-                        System.Threading.Thread.Sleep(1000 * 20);
+            //Task.Factory.StartNew(() =>
+            //{
+            //    try
+            //    {
 
-                        Console.WriteLine($"本次分析数据结束到此...");
-                    }
+            //        PeopleRentingCrawler.CapturHouseInfo();
+            //        DoubanHouseCrawler.CaptureHouseInfoFromConfig();
+            //        DoubanHouseCrawler.AnalyzeDoubanHouseContentAll();
+            //        HouseSourceInfo.RefreshHouseSourceInfo();
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        LogHelper.Error("RunJobs", ex);
+            //    }
 
-                    HouseSourceInfo.RefreshHouseSourceInfo();
-                }
-                catch (Exception ex)
-                {
-                    LogHelper.Error("RunJobs", ex);
-                }
-
-            });
+            //});
 
             return View();
+        }
+
+
+        public IActionResult StartGC()
+        {
+            new GCJob().Run();
+            return Json(new { isSuccess = true });
         }
     }
 }

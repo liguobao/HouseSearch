@@ -26,8 +26,8 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
             dataInfo = { groupID: helper.getQueryString("groupID"), index: index };
         } else if (dataResource == "houselist") {
             var source = helper.getQueryString("source") ? helper.getQueryString("source") : "";
-            //默认出3天内的数据
-            var withAnyDays = helper.getQueryString("withAnyDays") ? helper.getQueryString("withAnyDays") : 3;
+            //默认出7天内的数据
+            var withAnyDays = helper.getQueryString("withAnyDays") ? helper.getQueryString("withAnyDays") : 7;
             var keyword = helper.getQueryString("keyword") ? helper.getQueryString("keyword") : "";
             var invalidData = helper.getQueryString("invalidData") ? helper.getQueryString("invalidData") : "true";
             dataInfo = { cityName: helper.getQueryString("cityname"), source: source, houseCount: pagecount, withAnyDays: withAnyDays, keyword: keyword, showDoubanInvalidData: invalidData };

@@ -107,7 +107,7 @@ namespace HouseCrawler.Web.DAL
         /// 获得分页记录集IEnumerable<>
         ///</summary>              
         public IEnumerable<DBHouseInfo> SearchHouseInfo(string cityName, string source = "", 
-            int houseCount = 100, int withinAnyDays = 3,bool showDoubanInvalidData = true, string keyword = "")
+            int houseCount = 100, int withinAnyDays = 7,bool showDoubanInvalidData = true, string keyword = "")
         {
             string sqlText = "SELECT * from HouseInfos where 1=1 ";
 

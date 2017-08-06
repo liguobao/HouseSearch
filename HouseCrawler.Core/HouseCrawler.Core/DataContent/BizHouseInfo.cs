@@ -24,6 +24,7 @@ namespace HouseCrawler.Core
         /// 房间URL
         /// </summary>
         [MaxLength(512)]
+        [Key]
         public string HouseOnlineURL { get; set; }
 
         /// <summary>

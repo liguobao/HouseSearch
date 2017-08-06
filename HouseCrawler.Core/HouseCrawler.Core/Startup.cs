@@ -13,6 +13,7 @@ using System.Text;
 using NLog.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using NLog.Web;
+using HouseCrawler.Core.Common;
 
 namespace HouseCrawler.Core
 {
@@ -85,6 +86,7 @@ namespace HouseCrawler.Core
              .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json").Build()["ConnectionStrings:MySQLConnectionString"];
 
+            DomainProxyInfo.InitDomainProxyInfo(Path.Combine(env.WebRootPath, "availableProxy.json"));
         }
     }
 }

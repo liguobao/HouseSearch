@@ -208,6 +208,7 @@ namespace HouseCrawler.Web.DAL
             {
                 list.Add(ToModel(reader));
             }
+            reader.Dispose();
             return list;
         }
         #endregion
@@ -224,6 +225,7 @@ namespace HouseCrawler.Web.DAL
             {
                 list.Add(ToModel(reader));
             }
+            reader.Dispose();
             return list;
         }
         #endregion

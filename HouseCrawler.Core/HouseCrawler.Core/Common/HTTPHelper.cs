@@ -1,4 +1,7 @@
-﻿using System;
+﻿using HouseCrawler.Core.Common;
+using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 
@@ -49,7 +52,7 @@ namespace HouseCrawler.Core
 
 
 
-        public static string GetHTML(string url)
+        public static string GetHTML(string url,List<string> LstProxyID=null)
         {
             try
             {
@@ -66,8 +69,57 @@ namespace HouseCrawler.Core
              
             }
         }
-       
+
+        public static string GetHTMLForDouban(string url)
+        {
+            var proxyIPItem = DomainProxyInfo.GetRandomProxyIPItem();
+            HttpClientHandler httpClientHandler = new HttpClientHandler();
+            if (proxyIPItem != null)
+            {
+                httpClientHandler = new HttpClientHandler
+                {
+                    Proxy = new CrawlerProxyInfo($"http://{proxyIPItem.ip}:{proxyIPItem.port}"),
+                    UseProxy = true
+                };
+                LogHelper.Info("URL:" + url + ";ProxyIP:" + Newtonsoft.Json.JsonConvert.SerializeObject(proxyIPItem));
+                Console.WriteLine("URL:" + url + ";ProxyIP:" + Newtonsoft.Json.JsonConvert.SerializeObject(proxyIPItem));
+            }
+
+            try
+            {
+              
+                
+                var httpClient = new HttpClient(httpClientHandler);
+                httpClient.Timeout = new TimeSpan(0,3,0);
+                httpClient.DefaultRequestHeaders.ExpectContinue = true;
+                var task = httpClient.GetStringAsync(url);
+                var htmlDoc= task.Result;
+                if (htmlDoc != null)
+                {
+                    LogHelper.Info("GetStringAsync Success:" + url + ";ProxyIP:" + Newtonsoft.Json.JsonConvert.SerializeObject(proxyIPItem));
+                }
+                return htmlDoc;
+            }
+            catch (System.Exception ex)
+            {
+                if (proxyIPItem != null)
+                {
+                    DomainProxyInfo.GetDomainProxyInfo().lstDoubanProxyIP.Remove(proxyIPItem);
+                    Console.WriteLine("Remove ProxyIP:" + Newtonsoft.Json.JsonConvert.SerializeObject(proxyIPItem));
+                }
+                LogHelper.Error("GetHTMLByURL Exception", ex.InnerException, new { URL = url });
+                Console.WriteLine(ex.InnerException.ToString());
+                return string.Empty;
+
+            }
+        }
+
+
+
     }
 
+
+
+    
 
 }

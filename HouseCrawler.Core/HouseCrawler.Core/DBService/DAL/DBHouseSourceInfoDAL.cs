@@ -43,6 +43,7 @@ namespace HouseCrawler.Web.DBService.DAL
             {
                 list.Add(ToModel(reader));
             }
+            reader.Dispose();
             return list;
         }
         #endregion

@@ -23,18 +23,23 @@ namespace HouseCrawler.Core
             try
             {
                 int captrueHouseCount = 0;
-
                 foreach (var doubanConf in dataContent.CrawlerConfigurations
                     .Where(c => c.ConfigurationName == ConstConfigurationName.Douban).ToList())
                 {
-                    var confInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(doubanConf.ConfigurationValue);
-                    for (var pageIndex = 0; pageIndex < confInfo.pagecount.Value; pageIndex++)
+                    LogHelper.RunActionNotThrowEx(() =>
                     {
-                        var lstHouseInfo = GetDataFromOnlineWeb(confInfo.groupid.Value, confInfo.cityname.Value, pageIndex);
-                        dataContent.AddRange(lstHouseInfo);
-                        dataContent.SaveChanges();
-                        captrueHouseCount = captrueHouseCount + lstHouseInfo.Count;
-                    }
+                        var confInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(doubanConf.ConfigurationValue);
+
+                        for (var pageIndex = 0; pageIndex < confInfo.pagecount.Value; pageIndex++)
+                        {
+                            var lstHouseInfo = GetDataFromOnlineWeb(confInfo.groupid.Value,
+                                confInfo.cityname.Value, pageIndex);
+                            dataContent.AddRange(lstHouseInfo);
+                            dataContent.SaveChanges();
+                            captrueHouseCount = captrueHouseCount + lstHouseInfo.Count;
+                        }
+                    }, "CaptureHouseInfoFromConfig",doubanConf);
+                    
                 }
                 HouseSourceInfo.RefreshHouseSourceInfo();
 
@@ -54,7 +59,6 @@ namespace HouseCrawler.Core
             if (doubanConfig != null)
                 return;
             var lstHouseInfo = GetDataFromOnlineWeb(groupID, cityName, pageIndex);
-
             #region add douban group config
 
             if (lstHouseInfo.Count > 0)
@@ -82,8 +86,8 @@ namespace HouseCrawler.Core
         {
 
             List<BizHouseInfo> lstHouseInfo = new List<BizHouseInfo>();
-
             var url = $"https://www.douban.com/group/{groupID}/discussion?start={pageIndex * 25}";
+
             var htmlResult = HTTPHelper.GetHTML(url);
             if (string.IsNullOrEmpty(htmlResult))
                 return lstHouseInfo;
@@ -92,9 +96,8 @@ namespace HouseCrawler.Core
             foreach (var trItem in page.QuerySelector("table.olt").QuerySelectorAll("tr"))
             {
                 var titleItem = trItem.QuerySelector("td.title");
-                if (titleItem == null || crawlerDAL.ContainsHouseOnlineURL(titleItem.QuerySelector("a").GetAttribute("href")))
+                if (titleItem == null || dataContent.HouseInfos.Find(titleItem.QuerySelector("a").GetAttribute("href"))!=null)
                     continue;
-
                 var houseInfo = new BizHouseInfo()
                 {
                     HouseTitle = titleItem.QuerySelector("a").GetAttribute("title"),
@@ -113,22 +116,19 @@ namespace HouseCrawler.Core
                 lstHouseInfo.Add(houseInfo);
             }
             return lstHouseInfo;
-
         }
 
-        public static void AnalyzeDoubanHouseContentAll()
+        public static void AnalyzeDoubanHouseContentAll(bool isSleep=false)
         {
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             sw.Start();
-
+            LogHelper.Info("AnalyzeDoubanHouseContent Start...");
             Console.WriteLine("AnalyzeDoubanHouseContent Start...");
             int index = 0;
             try
             {
                 var dal = new DBHouseInfoDAL();
-
                 var lstHouse = dal.LoadUnAnalyzeList();
-
                 foreach (var houseInfo in lstHouse)
                 {
                     var housePrice = JiebaTools.GetHousePrice(houseInfo.HouseText);
@@ -148,7 +148,12 @@ namespace HouseCrawler.Core
                     dal.UpdateHouseInfo(houseInfo);
                     index++;
 
-                     Console.WriteLine("HouseInfo:" + Newtonsoft.Json.JsonConvert.SerializeObject(houseInfo));
+                    if(index%100==0 && isSleep)
+                    {
+                        System.Threading.Thread.Sleep(1000 * 120);
+                    }
+
+                    Console.WriteLine("HouseInfo:" + Newtonsoft.Json.JsonConvert.SerializeObject(houseInfo));
                 }
                
             }
@@ -160,7 +165,7 @@ namespace HouseCrawler.Core
             sw.Stop();
 
             string copyTime = sw.Elapsed.TotalSeconds.ToString();
-
+            LogHelper.Info("AnalyzeDoubanHouseContent Finish,Update Count:" + index + ";花费时间：" + copyTime);
             Console.WriteLine("AnalyzeDoubanHouseContent Finish,Update Count:" + index +";花费时间：" + copyTime);
 
         }

@@ -17,21 +17,17 @@ namespace HouseCrawler.Core
             var peopleRentingConf = dataContent.CrawlerConfigurations.FirstOrDefault(conf=>conf.ConfigurationName== ConstConfigurationName.HuZhuZuFang);
 
             var pageCount = peopleRentingConf != null ? Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(peopleRentingConf.ConfigurationValue).pagecount.Value : 10;
+            HashSet<string> hsHouseOnlineURL = new CrawlerDAL().GetAllHuzhuzufangHouseOnlineURL();
             for (var pageIndex = 1;pageIndex< pageCount; pageIndex++)
             {
-                try
+                LogHelper.RunActionNotThrowEx(() => 
                 {
-                    GetDataByWebAPI(pageIndex);
-                }
-                catch(Exception ex)
-                {
-                    LogHelper.Error("PeopleRentingCrawler CrawlerHouseInfo Exception", ex);
-                }
-               
+                    GetDataByWebAPI(pageIndex, hsHouseOnlineURL);
+                }, "CapturHouseInfo", pageIndex);
             }
 
         }
-        private static void GetDataByWebAPI(int pageNum)
+        private static void GetDataByWebAPI(int pageNum, HashSet<string> hsHouseOnlineURL)
         {
             var dicParameter = new JObject()
             {
@@ -55,7 +51,7 @@ namespace HouseCrawler.Core
 
             var tmp = new List<BizHouseInfo>();
 
-            HashSet<string> hsHouseOnlineURL = new CrawlerDAL().GetAllHuzhuzufangHouseOnlineURL();
+          
 
             foreach (var houseInfo in lstHouseInfo)
             {

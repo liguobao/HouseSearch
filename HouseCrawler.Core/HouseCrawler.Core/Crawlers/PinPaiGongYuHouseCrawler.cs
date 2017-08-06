@@ -20,12 +20,14 @@ namespace HouseCrawler.Core
 
         public static void CapturPinPaiHouseInfo()
         {
-            foreach (var doubanConf in dataContent.CrawlerConfigurations.Where(c => c.ConfigurationName
+            foreach (var crawlerConfiguration in dataContent.CrawlerConfigurations.Where(c => c.ConfigurationName
                == ConstConfigurationName.PinPaiGongYu && c.IsEnabled).ToList())
             {
-                try
+
+                LogHelper.RunActionNotThrowEx(() => 
                 {
-                    var confInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(doubanConf.ConfigurationValue);
+                    var confInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(crawlerConfiguration.ConfigurationValue);
+
                     for (var index = 0; index < confInfo.pagecount.Value; index++)
                     {
                         var url = $"http://{confInfo.shortcutname.Value}.58.com/pinpaigongyu/pn/{index}";
@@ -36,23 +38,17 @@ namespace HouseCrawler.Core
                         {
                             continue;
                         }
-
                         GetDataOnPageDoc(confInfo, page);
-
                         dataContent.SaveChanges();
-
                     }
 
-                }
-                catch(Exception ex)
-                {
-                    LogHelper.Error("PinPaiGongYuHouseCrawler CrawlerHouseInfo Exception", ex);
-                }
-               
+                }, "CapturPinPaiHouseInfo", crawlerConfiguration);
+
             }
         }
 
-        private static void GetDataOnPageDoc(dynamic confInfo, AngleSharp.Dom.Html.IHtmlDocument page)
+        private static void GetDataOnPageDoc(dynamic confInfo, 
+            AngleSharp.Dom.Html.IHtmlDocument page)
         {
             foreach (var element in page.QuerySelectorAll("li").Where(element => element.HasAttribute("logr")))
             {
@@ -61,7 +57,7 @@ namespace HouseCrawler.Core
                 int housePrice = 0;
                 int.TryParse(element.QuerySelector("b").TextContent, out housePrice);
                 var onlineURL = $"http://{confInfo.shortcutname.Value}.58.com" + element.QuerySelector("a").GetAttribute("href");
-                if (crawlerDAL.ContainsHouseOnlineURL(onlineURL))
+                if (dataContent.HouseInfos.Find(onlineURL)!=null)
                     continue;
                 var houseInfo = new BizHouseInfo
                 {

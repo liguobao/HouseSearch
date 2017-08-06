@@ -12,7 +12,7 @@ namespace HouseCrawler.Core
         public void Run()
         {
             //Job要执行的逻辑代码
-            DoubanHouseCrawler.AnalyzeDoubanHouseContentAll();
+            DoubanHouseCrawler.AnalyzeDoubanHouseContentAll(true);
         }
     }
 }
