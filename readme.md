@@ -1,5 +1,79 @@
-### 58同城品牌公寓爬虫
+[![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](http://www.gnu.org/licenses/lgpl-3.0)
 
+### [地图搜房](http://woyaozufang.live:8080/)
+
+
+项目缘起于[高德API+Python解决租房问题](https://zhuanlan.zhihu.com/p/21883516),
+修修补补之后上线了[58公寓高德搜房(全国版)：http://codelover.link:8080/](http://codelover.link:8080/)。
+
+经过了多次代码优化、内容改版、新增房源等...
+
+相关文章可移步知乎专栏：[一只程序汪的自我修养](https://zhuanlan.zhihu.com/codelover)
+
+
+
+简单介绍一下工程结构：
+
+1. ASP.NET MVC4：58HouseSearch\58HouseSearch.sln
+2. ASP.NET Core：58HouseSearch.Core\58HouseSearch.Core.sln（已迁移至VS2017）
+
+
+以上两个版本大体逻辑一致，Core版本为当前线上版本，新增了豆瓣租房小组数据。
+
+下一个版本为HouseCrawler.Core，初步计划以下功能：
+
+1. 爬虫数据固化到数据，优化爬虫策略
+2. 前端页面改版，交互优化，内容引导等
+
+
+### HouseCrawler.Core版本说明
+
+1. 当前版本已完成数据固化功能，项目代码为“HouseCrawler.Core”。
+2. 此项目已分成HouseCrawler.Core和HouseCrawler.Web，其中Web已经移除了相关爬虫逻辑，Core中有爬虫+Web；
+3. 已上线部分豆瓣数据分析，使用[jieba.net](https://github.com/linezero/jieba.NET)分词提取价格功能已初步完成。
+
+
+
+以下是日常更新：
+
+### 2017.07.30
+1、 修复TimeJob时间计算的Bug，已提PR到最新代码，由于TimeJob不维护.NET Standard1.6版本的代码，暂时项目也不会升级到.NET Standard2.0,所以先引入TimeJob源码解决问题
+
+### 2017.06.24
+1、新增独立Web项目，把网站和爬虫分离
+2、更新分析数据逻辑
+
+
+### 2017.06.12
+1、引入分词库[jieba.NET](https://github.com/liguobao/jieba.NET) （没有nuget包，暂时以项目的形式引入）
+2、开始做豆瓣数据分析
+
+### 2017.06.06
+1、新增根据发布时间过滤数据、修改默认显示数量
+2、调整代码结构，新增log类
+
+
+### 2017.06.05
+1、修复了昨天的Bug，顺便删除了PV数据的统计
+2、引入友盟做站点统计（实在是懒得弄...）
+3、已更新到[地图搜房：http://codelover.link:8080/](http://codelover.link:8080/)、同时在[yibaobao.wang:8080](yibaobao.wang:8080)有一个备用站点
+
+
+
+### 2017.06.04
+
+1、初步完成HouseCrawler.Core中的数据固化，线上版本每小时拉取一次数据
+2、前端UI改版初步完成，基本可用
+3、已知bug：发布的时候缺少配置文件，稍后解决
+
+
+### 2017.03.11
+1. 迁移至.NET Core1.1.1,项目变更为csproj，VS2017可用，如需要老版本，自助切换至forVS2015分支，没必要情况代码不同步（懒嘛
+
+
+### 2016.12.02
+1. 新增HouseCrawler.Core，计划基于此版本做数据固化以及定时爬虫
+2. 58HouseSearch为ASP.NET MVC4版本，58HouseSearch.Core为ASP.NET core版本，两者暂停更新
 
 ### 2016.11.27
 1. 完成豆瓣租房小组功能上线
