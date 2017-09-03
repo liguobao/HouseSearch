@@ -21,23 +21,25 @@ namespace HouseCrawler.Core
         public string LogTitle { get; set; }
 
 
-        private static CrawlerDataContent dataContent = new CrawlerDataContent();
+        private static readonly CrawlerDataContent DataContent = new CrawlerDataContent();
 
         public static void SaveLog(string logTitle, string logContent,int logType)
         {
-            BizCrawlerLog log = new BizCrawlerLog();
-            log.LogTitle = logTitle;
-            log.LogContent = logContent;
-            log.LogType = logType;
+            var log = new BizCrawlerLog
+            {
+                LogTitle = logTitle,
+                LogContent = logContent,
+                LogType = logType
+            };
 
-            dataContent.Add(log);
-            dataContent.SaveChanges();
+            DataContent.Add(log);
+            DataContent.SaveChanges();
         }
 
 
         public static List<BizCrawlerLog> LoadLogByType(int logType)
         {
-            return dataContent.CrawlerLogs.Where(l => l.LogType ==logType)
+            return DataContent.CrawlerLogs.Where(l => l.LogType ==logType)
                 .OrderByDescending(l=>l.DataChange_LastTime).ToList();
 
         }

@@ -7,28 +7,21 @@ using JiebaNet.Segmenter.PosSeg;
 
 namespace JiebaNet.Analyser
 {
-    public class TfidfExtractor : KeywordExtractor
+    public sealed class TfidfExtractor : KeywordExtractor
     {
         private static readonly string DefaultIdfFile = ConfigManager.IdfFile;
-        private static readonly int DefaultWordCount = 20;
+        private const int DefaultWordCount = 20;
 
-        private JiebaSegmenter Segmenter { get; set; }
-        private PosSegmenter PosSegmenter { get; set; }
-        private IdfLoader Loader { get; set; }
+        private JiebaSegmenter Segmenter { get; }
+        private PosSegmenter PosSegmenter { get; }
+        private IdfLoader Loader { get; }
 
         private IDictionary<string, double> IdfFreq { get; set; }
         private double MedianIdf { get; set; }
 
         public TfidfExtractor(JiebaSegmenter segmenter = null)
         {
-            if (segmenter.IsNull())
-            {
-                Segmenter = new JiebaSegmenter();
-            }
-            else
-            {
-                Segmenter = segmenter;
-            }
+            Segmenter = segmenter.IsNull() ? new JiebaSegmenter() : segmenter;
             PosSegmenter = new PosSegmenter(Segmenter);
             SetStopWords(ConfigManager.StopWordsFile);
             if (StopWords.IsEmpty())
@@ -57,15 +50,7 @@ namespace JiebaNet.Analyser
 
         private IDictionary<string, double> GetWordIfidf(string text, IEnumerable<string> allowPos)
         {
-            IEnumerable<string> words = null;
-            if (allowPos.IsNotEmpty())
-            {
-                words = FilterCutByPos(text, allowPos);
-            }
-            else
-            {
-                words = Segmenter.Cut(text);
-            }
+            var words = allowPos.IsNotEmpty() ? FilterCutByPos(text, allowPos) : Segmenter.Cut(text);
 
             // Calculate TF
             var freq = new Dictionary<string, double>();

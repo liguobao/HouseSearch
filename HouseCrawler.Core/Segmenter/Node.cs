@@ -2,8 +2,8 @@
 {
     public class Node
     {
-        public char Value { get; private set; }
-        public Node Parent { get; private set; }
+        public char Value { get; }
+        public Node Parent { get; }
 
         public Node(char value, Node parent)
         {

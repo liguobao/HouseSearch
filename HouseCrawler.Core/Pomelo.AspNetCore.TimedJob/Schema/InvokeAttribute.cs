@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,12 +14,12 @@ namespace Pomelo.AspNetCore.TimedJob
 
         public bool SkipWhileExecuting { get; set; } = false;
 
-        public string Begin
+        public string BeginS
         {
-            get { return _begin.ToString(); }
-            set { _begin = Convert.ToDateTime(value); }
+            get => Begin.ToString(CultureInfo.InvariantCulture);
+            set => Begin = Convert.ToDateTime(value);
         }
 
-        public DateTime _begin { get; set; }
+        public DateTime Begin { get; set; }
     }
 }

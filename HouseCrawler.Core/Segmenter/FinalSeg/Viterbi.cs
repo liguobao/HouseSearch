@@ -29,10 +29,7 @@ namespace JiebaNet.Segmenter.FinalSeg
         }
 
         // TODO: synchronized
-        public static Viterbi Instance
-        {
-            get { return Lazy.Value; }
-        }
+        public static Viterbi Instance => Lazy.Value;
 
         public IEnumerable<string> Cut(string sentence)
         {

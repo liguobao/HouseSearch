@@ -18,6 +18,7 @@ namespace HouseCrawler.Core
 
 
         public DbSet<BizCrawlerLog> CrawlerLogs { get; set; }
+        /// <inheritdoc />
         /// <summary>
         /// Server =服务器IP，database = 数据库名称 uid=账号，pwd=密码
         /// </summary>

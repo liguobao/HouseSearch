@@ -12,26 +12,26 @@ namespace Pomelo.AspNetCore.TimedJob
 {
     public class TimedJobService
     {
-        private IAssemblyLocator locator { get; set; }
+        private IAssemblyLocator Locator { get; }
 
-        private IServiceProvider services { get; set; }
+        private IServiceProvider Services { get; }
 
-        private IDynamicTimedJobProvider dynamicJobs { get; set; }
+        private IDynamicTimedJobProvider DynamicJobs { get; }
 
-        private ILogger logger { get; set; }
+        private ILogger Logger { get; }
 
-        public Dictionary<string, bool> JobStatus { get; private set; } = new Dictionary<string, bool>();
+        public Dictionary<string, bool> JobStatus { get; } = new Dictionary<string, bool>();
 
-        public Dictionary<string, Timer> JobTimers { get; private set; } = new Dictionary<string, Timer>();
+        public Dictionary<string, Timer> JobTimers { get; } = new Dictionary<string, Timer>();
 
-        private List<TypeInfo> JobTypeCollection { get; set; } = new List<TypeInfo>();
+        private List<TypeInfo> JobTypeCollection { get; } = new List<TypeInfo>();
 
         public TimedJobService(IAssemblyLocator locator, IServiceProvider services)
         {
-            this.services = services;
-            this.locator = locator;
-            this.logger = services.GetService<ILogger>();
-            this.dynamicJobs = services.GetService<IDynamicTimedJobProvider>();
+            this.Services = services;
+            this.Locator = locator;
+            this.Logger = services.GetService<ILogger>();
+            this.DynamicJobs = services.GetService<IDynamicTimedJobProvider>();
             var asm = locator.GetAssemblies();
             foreach (var x in asm)
             {
@@ -43,7 +43,7 @@ namespace Pomelo.AspNetCore.TimedJob
                 }
             }
             StartHardTimers();
-            if (dynamicJobs != null)
+            if (DynamicJobs != null)
                 StartDynamicTimers();
         }
 
@@ -60,10 +60,10 @@ namespace Pomelo.AspNetCore.TimedJob
                         if (invoke != null && invoke.IsEnabled)
                         {
                             long delta = 0;
-                            if (invoke._begin == default(DateTime))
-                                invoke._begin = DateTime.Now;
+                            if (invoke.Begin == default(DateTime))
+                                invoke.Begin = DateTime.Now;
                             else
-                                delta = Convert.ToInt64((invoke._begin - DateTime.Now).TotalMilliseconds.ToString("0"));
+                                delta = Convert.ToInt64((invoke.Begin - DateTime.Now).TotalMilliseconds.ToString("0"));
                             if (delta < 0)
                             {
                                 delta = delta % Convert.ToInt64(invoke.Interval);
@@ -94,7 +94,7 @@ namespace Pomelo.AspNetCore.TimedJob
 
         private void StartDynamicTimers()
         {
-            var jobs = dynamicJobs.GetJobs();
+            var jobs = DynamicJobs.GetJobs();
             foreach (var x in jobs)
             {
                 // 如果Hard Timer已经启动则注销实例
@@ -116,9 +116,9 @@ namespace Pomelo.AspNetCore.TimedJob
                 {
                     if (delta > int.MaxValue)
                     {
-                        for (; delta > Int32.MaxValue; delta = delta - Int32.MaxValue)
+                        for (; delta > int.MaxValue; delta = delta - int.MaxValue)
                         {
-                            await Task.Delay(Int32.MaxValue);
+                            await Task.Delay(int.MaxValue);
                         }
                     }
                     var timer = new Timer(t => {
@@ -131,7 +131,7 @@ namespace Pomelo.AspNetCore.TimedJob
 
         public void RestartDynamicTimers()
         {
-            var jobs = dynamicJobs.GetJobs();
+            var jobs = DynamicJobs.GetJobs();
             foreach (var x in jobs)
             {
                 if (JobTimers.ContainsKey(x.Id))
@@ -157,17 +157,11 @@ namespace Pomelo.AspNetCore.TimedJob
             var argtypes = type.GetConstructors()
                 .First()
                 .GetParameters()
-                .Select(x =>
-                {
-                    if (x.ParameterType == typeof(IServiceProvider))
-                        return services;
-                    else
-                        return services.GetService(x.ParameterType);
-                })
+                .Select(x => x.ParameterType == typeof(IServiceProvider) ? Services : Services.GetService(x.ParameterType))
                 .ToArray();
             var job = Activator.CreateInstance(type.AsType(), argtypes);
             var method = type.GetMethod(function);
-            var paramtypes = method.GetParameters().Select(x => services.GetService(x.ParameterType)).ToArray();
+            var paramtypes = method.GetParameters().Select(x => Services.GetService(x.ParameterType)).ToArray();
             var invokeAttr = method.GetCustomAttribute<InvokeAttribute>();
             lock (this)
             {
@@ -177,14 +171,12 @@ namespace Pomelo.AspNetCore.TimedJob
             }
             try
             {
-                if (logger != null)
-                    logger.LogInformation("Invoking " + identifier + "...");
+                Logger?.LogInformation("Invoking " + identifier + "...");
                 method.Invoke(job, paramtypes);
             }
             catch (Exception ex)
             {
-                if (logger != null)
-                    logger.LogError(ex.ToString());
+                Logger?.LogError(ex.ToString());
             }
             JobStatus[identifier] = false;
             return true;
@@ -192,18 +184,7 @@ namespace Pomelo.AspNetCore.TimedJob
 
         public List<string> GetJobFunctions()
         {
-            var ret = new List<string>();
-            foreach (var x in JobTypeCollection)
-            {
-                foreach (var y in x.DeclaredMethods)
-                {
-                    if (y.GetCustomAttribute<NonJobAttribute>() == null)
-                    {
-                        ret.Add(x.FullName + '.' + y.Name);
-                    }
-                }
-            }
-            return ret;
+            return (from x in JobTypeCollection from y in x.DeclaredMethods where y.GetCustomAttribute<NonJobAttribute>() == null select x.FullName + '.' + y.Name).ToList();
         }
     }
 }

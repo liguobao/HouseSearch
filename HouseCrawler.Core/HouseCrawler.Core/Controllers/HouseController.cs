@@ -110,8 +110,7 @@ namespace HouseCrawler.Core.Controllers
             {
                 var houseTitle = element.QuerySelector("h2").TextContent;
                 var houseInfoList = houseTitle.Split(' ');
-                int housePrice = 0;
-                int.TryParse(element.QuerySelector("b").TextContent, out housePrice);
+                int.TryParse(element.QuerySelector("b").TextContent, out var housePrice);
                 var markBGType = LocationMarkBGType.SelectColor(housePrice/1000);
 
                 return new HouseInfo

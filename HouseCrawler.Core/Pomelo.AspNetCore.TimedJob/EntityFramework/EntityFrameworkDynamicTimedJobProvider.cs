@@ -7,16 +7,16 @@ namespace Pomelo.AspNetCore.TimedJob.EntityFramework
     public class EntityFrameworkDynamicTimedJobProvider<TContext> : IDynamicTimedJobProvider
         where TContext : ITimedJobContext
     {
-        private TContext DB { get; set; }
+        private TContext Db { get; }
 
         public EntityFrameworkDynamicTimedJobProvider(TContext db)
         {
-            DB = db;
+            Db = db;
         }
 
         public IList<DynamicTimedJob> GetJobs()
         {
-            return DB.TimedJobs
+            return Db.TimedJobs
                 .Where(x => x.IsEnabled)
                 .Select(x => new DynamicTimedJob
                 {

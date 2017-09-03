@@ -10,24 +10,25 @@ namespace HouseCrawler.Core
 {
     public class PeopleRentingCrawler
     {
-        private static CrawlerDataContent dataContent = new CrawlerDataContent();
+        private static readonly CrawlerDataContent DataContent = new CrawlerDataContent();
 
         public static void CapturHouseInfo()
         {
-            var peopleRentingConf = dataContent.CrawlerConfigurations.FirstOrDefault(conf=>conf.ConfigurationName== ConstConfigurationName.HuZhuZuFang);
+            var peopleRentingConf = DataContent.CrawlerConfigurations.FirstOrDefault(conf=>conf.ConfigurationName== ConstConfigurationName.HuZhuZuFang);
 
-            var pageCount = peopleRentingConf != null ? Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(peopleRentingConf.ConfigurationValue).pagecount.Value : 10;
-            HashSet<string> hsHouseOnlineURL = new CrawlerDAL().GetAllHuzhuzufangHouseOnlineURL();
+            var pageCount = peopleRentingConf != null ? JsonConvert.DeserializeObject<dynamic>(peopleRentingConf.ConfigurationValue).pagecount.Value : 10;
+            var hsHouseOnlineUrl = new CrawlerDAL().GetAllHuzhuzufangHouseOnlineURL();
             for (var pageIndex = 1;pageIndex< pageCount; pageIndex++)
             {
+                var index = pageIndex;
                 LogHelper.RunActionNotThrowEx(() => 
                 {
-                    GetDataByWebAPI(pageIndex, hsHouseOnlineURL);
+                    GetDataByWebAPI(index, hsHouseOnlineUrl);
                 }, "CapturHouseInfo", pageIndex);
             }
 
         }
-        private static void GetDataByWebAPI(int pageNum, HashSet<string> hsHouseOnlineURL)
+        private static void GetDataByWebAPI(int pageNum, HashSet<string> hsHouseOnlineUrl)
         {
             var dicParameter = new JObject()
             {
@@ -37,8 +38,8 @@ namespace HouseCrawler.Core
                 {"sellRentType","2" },
                 {"searchCondition","{}" }
             };
-            var postHouseURL = $"http://www.huzhumaifang.com:8080/hzmf-integration/getHouseList.action?content={JsonConvert.SerializeObject(dicParameter)}";
-            var resultJson = HTTPHelper.GetJsonResultByURL(postHouseURL);
+            var postHouseUrl = $"http://www.huzhumaifang.com:8080/hzmf-integration/getHouseList.action?content={JsonConvert.SerializeObject(dicParameter)}";
+            var resultJson = HTTPHelper.GetJsonResultByURL(postHouseUrl);
             var resultJObject = JsonConvert.DeserializeObject<JObject>(resultJson);
             var lstHouseInfo = from houseInfo in resultJObject["houseList"]
                                select new
@@ -55,14 +56,14 @@ namespace HouseCrawler.Core
 
             foreach (var houseInfo in lstHouseInfo)
             {
-                var houseURL = $"http://www.huzhumaifang.com/Renting/house_detail/id/{houseInfo.houseId.ToObject<Int32>()}.html";
-                if (hsHouseOnlineURL.Contains(houseURL))
+                var houseUrl = $"http://www.huzhumaifang.com/Renting/house_detail/id/{houseInfo.houseId.ToObject<Int32>()}.html";
+                if (hsHouseOnlineUrl.Contains(houseUrl))
                     continue;
 
                 var desc = houseInfo.houseDescript.ToObject<string>().Replace("😄", "");
-                dataContent.Add(new BizHouseInfo()
+                DataContent.Add(new BizHouseInfo()
                 {
-                    HouseOnlineURL = houseURL,
+                    HouseOnlineURL = houseUrl,
                     HouseLocation = desc,
                     HousePrice = houseInfo.houseRentPrice.ToObject<Int32>(),
                     HouseText = desc,
@@ -74,7 +75,7 @@ namespace HouseCrawler.Core
                     Source = ConstConfigurationName.HuZhuZuFang,
                 });
             }
-            dataContent.SaveChanges();
+            DataContent.SaveChanges();
         }
 
        
