@@ -15,7 +15,7 @@ namespace JiebaNet.Segmenter.PosSeg
         private static readonly Viterbi PosSeg = Viterbi.Instance;
 
         // TODO: 
-        private static readonly object locker = new object();
+        private static readonly object Locker = new object();
 
         #region Regular Expressions
 
@@ -70,7 +70,7 @@ namespace JiebaNet.Segmenter.PosSeg
             }
         }
 
-        private JiebaSegmenter _segmenter;
+        private readonly JiebaSegmenter _segmenter;
 
         public PosSegmenter()
         {

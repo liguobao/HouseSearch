@@ -18,7 +18,7 @@ namespace JiebaNet.Segmenter
                 }
                 return base[key];
             }
-            set { base[key] = value; }
+            set => base[key] = value;
         }
     }
 }

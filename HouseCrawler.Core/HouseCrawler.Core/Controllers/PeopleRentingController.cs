@@ -47,9 +47,9 @@ namespace HouseCrawler.Core.Controllers
           
         }
 
-        private int GetPageCount(string indexURL)
+        private int GetPageCount(string indexUrl)
         {
-            var htmlResult = HTTPHelper.GetHTMLByURL(indexURL);
+            var htmlResult = HTTPHelper.GetHTMLByURL(indexUrl);
             var page = new HtmlParser().Parse(htmlResult);
             return Convert.ToInt32(page.QuerySelector("a.end")?.TextContent ?? "0");
         }
@@ -60,25 +60,24 @@ namespace HouseCrawler.Core.Controllers
             var page = new HtmlParser().Parse(htmlResult);
             return page.QuerySelector("ul.screening_left_ul").QuerySelectorAll("li").Select(room =>
             {
-                var screening_time = room.QuerySelector("p.screening_time").TextContent;
-                var screening_price = room.QuerySelector("h5").TextContent;
+                var screeningTime = room.QuerySelector("p.screening_time").TextContent;
+                var screeningPrice = room.QuerySelector("h5").TextContent;
                 var locationInfo = room.QuerySelector("a");
                 var locationContent = locationInfo.TextContent.Split('，').FirstOrDefault();
                 var location = locationContent.Remove(0, locationContent.IndexOf("租") + 1);
 
-                int housePrice = 0;
-                int.TryParse(screening_price.Replace("￥", "").Replace("元/月", ""),out housePrice);
+                int.TryParse(screeningPrice.Replace("￥", "").Replace("元/月", ""),out var housePrice);
 
-                var markBGType = LocationMarkBGType.SelectColor(housePrice/1000);
+                var markBgType = LocationMarkBGType.SelectColor(housePrice/1000);
 
                 return new HouseInfo
                 {
-                    Money = screening_price,
+                    Money = screeningPrice,
                     HouseURL = "http://www.huzhumaifang.com" + locationInfo.GetAttribute("href"),
                     HouseLocation = location,
-                    HouseTime = screening_time,
+                    HouseTime = screeningTime,
                     HousePrice = housePrice,
-                    LocationMarkBG = markBGType,
+                    LocationMarkBG = markBgType,
                 };
             });
         }

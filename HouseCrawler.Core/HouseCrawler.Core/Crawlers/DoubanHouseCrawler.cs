@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using AngleSharp.Parser.Html;
@@ -12,9 +13,9 @@ namespace HouseCrawler.Core
 {
     public class DoubanHouseCrawler
     {
-        private static HtmlParser htmlParser = new HtmlParser();
+        private static readonly HtmlParser HtmlParser = new HtmlParser();
 
-        private static CrawlerDataContent dataContent = new CrawlerDataContent();
+        private static readonly CrawlerDataContent DataContent = new CrawlerDataContent();
 
         private static CrawlerDAL crawlerDAL = new CrawlerDAL();
 
@@ -23,7 +24,7 @@ namespace HouseCrawler.Core
             try
             {
                 int captrueHouseCount = 0;
-                foreach (var doubanConf in dataContent.CrawlerConfigurations
+                foreach (var doubanConf in DataContent.CrawlerConfigurations
                     .Where(c => c.ConfigurationName == ConstConfigurationName.Douban).ToList())
                 {
                     LogHelper.RunActionNotThrowEx(() =>
@@ -34,8 +35,8 @@ namespace HouseCrawler.Core
                         {
                             var lstHouseInfo = GetDataFromOnlineWeb(confInfo.groupid.Value,
                                 confInfo.cityname.Value, pageIndex);
-                            dataContent.AddRange(lstHouseInfo);
-                            dataContent.SaveChanges();
+                            DataContent.AddRange(lstHouseInfo);
+                            DataContent.SaveChanges();
                             captrueHouseCount = captrueHouseCount + lstHouseInfo.Count;
                         }
                     }, "CaptureHouseInfoFromConfig",doubanConf);
@@ -55,7 +56,7 @@ namespace HouseCrawler.Core
         {
             var cityInfo = $"{{ 'groupid':'{groupID}','cityname':'{cityName}','pagecount':5}}";
 
-            var doubanConfig = dataContent.CrawlerConfigurations.FirstOrDefault(c => c.ConfigurationName == ConstConfigurationName.Douban && c.ConfigurationValue == cityInfo);
+            var doubanConfig = DataContent.CrawlerConfigurations.FirstOrDefault(c => c.ConfigurationName == ConstConfigurationName.Douban && c.ConfigurationValue == cityInfo);
             if (doubanConfig != null)
                 return;
             var lstHouseInfo = GetDataFromOnlineWeb(groupID, cityName, pageIndex);
@@ -71,9 +72,9 @@ namespace HouseCrawler.Core
                     DataCreateTime = DateTime.Now,
                     IsEnabled = true,
                 };
-                dataContent.AddRange(lstHouseInfo);
-                dataContent.Add(config);
-                dataContent.SaveChanges();
+                DataContent.AddRange(lstHouseInfo);
+                DataContent.Add(config);
+                DataContent.SaveChanges();
 
                 HouseSourceInfo.RefreshHouseSourceInfo();
             }
@@ -91,12 +92,12 @@ namespace HouseCrawler.Core
             var htmlResult = HTTPHelper.GetHTML(url);
             if (string.IsNullOrEmpty(htmlResult))
                 return lstHouseInfo;
-            var page = htmlParser.Parse(htmlResult);
+            var page = HtmlParser.Parse(htmlResult);
 
             foreach (var trItem in page.QuerySelector("table.olt").QuerySelectorAll("tr"))
             {
                 var titleItem = trItem.QuerySelector("td.title");
-                if (titleItem == null || dataContent.HouseInfos.Find(titleItem.QuerySelector("a").GetAttribute("href"))!=null)
+                if (titleItem == null || DataContent.HouseInfos.Find(titleItem.QuerySelector("a").GetAttribute("href"))!=null)
                     continue;
                 var houseInfo = new BizHouseInfo()
                 {
@@ -140,7 +141,7 @@ namespace HouseCrawler.Core
                     else
                     {
                         houseInfo.Status = 1;
-                        houseInfo.DisPlayPrice = housePrice.ToString();
+                        houseInfo.DisPlayPrice = housePrice.ToString(CultureInfo.InvariantCulture);
                         houseInfo.HousePrice = housePrice;
                     }
 
@@ -164,7 +165,7 @@ namespace HouseCrawler.Core
 
             sw.Stop();
 
-            string copyTime = sw.Elapsed.TotalSeconds.ToString();
+            var copyTime = sw.Elapsed.TotalSeconds.ToString(CultureInfo.InvariantCulture);
             LogHelper.Info("AnalyzeDoubanHouseContent Finish,Update Count:" + index + ";花费时间：" + copyTime);
             Console.WriteLine("AnalyzeDoubanHouseContent Finish,Update Count:" + index +";花费时间：" + copyTime);
 
@@ -182,7 +183,7 @@ namespace HouseCrawler.Core
             }
             else
             {
-                var page = htmlParser.Parse(htmlResult);
+                var page = HtmlParser.Parse(htmlResult);
                 var topicContent = page.QuerySelector("div.topic-content");
                 //没有帖子内容
                 if (topicContent == null || topicContent.QuerySelector("p") == null || topicContent.QuerySelector("p") == null)
@@ -199,7 +200,7 @@ namespace HouseCrawler.Core
                     {
                         houseInfo.Status = 1;
                     }
-                    houseInfo.DisPlayPrice = housePrice.ToString();
+                    houseInfo.DisPlayPrice = housePrice.ToString(CultureInfo.InvariantCulture);
                     houseInfo.HousePrice = housePrice;
                     houseInfo.HouseText = houseTextContent;
                 }

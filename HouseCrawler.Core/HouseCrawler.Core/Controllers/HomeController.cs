@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +14,7 @@ namespace HouseCrawler.Core.Controllers
 {
     public class HomeController : Controller
     {
-        private CrawlerDataContent dataContent = new CrawlerDataContent();
+        private readonly CrawlerDataContent _dataContent = new CrawlerDataContent();
 
         // GET: /<controller>/
         public IActionResult Index()
@@ -28,7 +29,7 @@ namespace HouseCrawler.Core.Controllers
 
         public IActionResult GetHouseInfo(string cityName, string source = "", int houseCount = 400, int withAnyDays = 3)
         {
-            var houses = dataContent.HouseInfos.Where(h => h.LocationCityName == cityName && h.PubTime > DateTime.Now.Date.AddDays(-withAnyDays));
+            var houses = _dataContent.HouseInfos.Where(h => h.LocationCityName == cityName && h.PubTime > DateTime.Now.Date.AddDays(-withAnyDays));
             if (!string.IsNullOrEmpty(source))
             {
                 houses = houses.Where(h => h.Source == source);
@@ -49,7 +50,7 @@ namespace HouseCrawler.Core.Controllers
                     Money = house.DisPlayPrice,
                     HouseURL = house.HouseOnlineURL,
                     HouseLocation = house.HouseLocation,
-                    HouseTime = house.PubTime.ToString(),
+                    HouseTime = house.PubTime.ToString(CultureInfo.CurrentCulture),
                     HousePrice = housePrice,
                     LocationMarkBG = markBGType,
                     DisplaySource = ConstConfigurationName.ConvertToDisPlayName(house.Source)

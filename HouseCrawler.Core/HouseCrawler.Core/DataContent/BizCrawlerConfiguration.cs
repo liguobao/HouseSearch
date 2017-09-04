@@ -36,12 +36,12 @@ namespace HouseCrawler.Core
 
         public static string ConvertToDisPlayName(string configurationName)
         {
-            Dictionary<string, string> dicNameToDisplayName = new Dictionary<string, string>()
+            var dicNameToDisplayName = new Dictionary<string, string>()
             {
-                { ConstConfigurationName.Douban,"豆瓣小組"},
-                { ConstConfigurationName.PinPaiGongYu,"品牌公寓"},
-                { ConstConfigurationName.HuZhuZuFang,"互助租房"},
-                { ConstConfigurationName.CityHouseInfo,"城市租房信息"},
+                { Douban,"豆瓣小組"},
+                { PinPaiGongYu,"品牌公寓"},
+                { HuZhuZuFang,"互助租房"},
+                { CityHouseInfo,"城市租房信息"},
             };
 
             return (dicNameToDisplayName.ContainsKey(configurationName))? dicNameToDisplayName[configurationName]:"";

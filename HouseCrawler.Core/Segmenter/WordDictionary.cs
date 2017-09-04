@@ -10,7 +10,7 @@ namespace JiebaNet.Segmenter
 {
     public class WordDictionary
     {
-        private static readonly Lazy<WordDictionary> lazy = new Lazy<WordDictionary>(() => new WordDictionary());
+        private static readonly Lazy<WordDictionary> Lazy = new Lazy<WordDictionary>(() => new WordDictionary());
         private static readonly string MainDict = ConfigManager.MainDictFile;
 
         internal IDictionary<string, int> Trie = new Dictionary<string, int>();
@@ -28,10 +28,7 @@ namespace JiebaNet.Segmenter
             Debug.WriteLine("total freq: {0}", Total);
         }
 
-        public static WordDictionary Instance
-        {
-            get { return lazy.Value; }
-        }
+        public static WordDictionary Instance => Lazy.Value;
 
         private void LoadDict()
         {
@@ -42,7 +39,7 @@ namespace JiebaNet.Segmenter
                 var stream = new FileStream(MainDict, FileMode.Open);
                 using (var sr = new StreamReader(stream, Encoding.UTF8))
                 {
-                    string line = null;
+                    string line;
                     while ((line = sr.ReadLine()) != null)
                     {
                         var tokens = line.Split(' ');

@@ -58,11 +58,7 @@ namespace JiebaNet.Analyser
             {
                 foreach (var n in sortedKeys)
                 {
-                    var s = 0d;
-                    foreach (var edge in Graph[n])
-                    {
-                        s += edge.Weight/outSum[edge.End]*ws[edge.End];
-                    }
+                    var s = Graph[n].Sum(edge => edge.Weight / outSum[edge.End] * ws[edge.End]);
                     ws[n] = (1 - d) + d*s;
                 }
             }

@@ -16,7 +16,7 @@ namespace JiebaNet.Segmenter
         private static readonly IFinalSeg FinalSeg = Viterbi.Instance;
         private static readonly ISet<string> LoadedPath = new HashSet<string>();
 
-        private static readonly object locker = new object();
+        private static readonly object Locker = new object();
 
         internal IDictionary<string, string> UserWordTagTab { get; set; }
 
@@ -85,26 +85,12 @@ namespace JiebaNet.Segmenter
             {
                 if (w.Length > 2)
                 {
-                    foreach (var i in Enumerable.Range(0, w.Length - 1))
-                    {
-                        var gram2 = w.Substring(i, 2);
-                        if (WordDict.ContainsWord(gram2))
-                        {
-                            result.Add(gram2);
-                        }
-                    }
+                    result.AddRange(Enumerable.Range(0, w.Length - 1).Select(i => w.Substring(i, 2)).Where(gram2 => WordDict.ContainsWord(gram2)));
                 }
 
                 if (w.Length > 3)
                 {
-                    foreach (var i in Enumerable.Range(0, w.Length - 2))
-                    {
-                        var gram3 = w.Substring(i, 3);
-                        if (WordDict.ContainsWord(gram3))
-                        {
-                            result.Add(gram3);
-                        }
-                    }
+                    result.AddRange(Enumerable.Range(0, w.Length - 2).Select(i => w.Substring(i, 3)).Where(gram3 => WordDict.ContainsWord(gram3)));
                 }
 
                 result.Add(w);
@@ -203,8 +189,10 @@ namespace JiebaNet.Segmenter
         internal IDictionary<int, Pair<int>> Calc(string sentence, IDictionary<int, List<int>> dag)
         {
             var n = sentence.Length;
-            var route = new Dictionary<int, Pair<int>>();
-            route[n] = new Pair<int>(0, 0.0);
+            var route = new Dictionary<int, Pair<int>>
+            {
+                [n] = new Pair<int>(0, 0.0)
+            };
 
             var logtotal = Math.Log(WordDict.Total);
             for (var i = n - 1; i > -1; i--)
@@ -394,7 +382,7 @@ namespace JiebaNet.Segmenter
             var dictFullPath = Path.GetFullPath(userDictFile);
             Debug.WriteLine("Initializing user dictionary: " + userDictFile);
 
-            lock (locker)
+            lock (Locker)
             {
                 if (LoadedPath.Contains(dictFullPath))
                     return;

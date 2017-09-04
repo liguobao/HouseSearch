@@ -22,10 +22,7 @@ namespace JiebaNet.Segmenter.PosSeg
         }
 
         // TODO: synchronized
-        public static Viterbi Instance
-        {
-            get { return Lazy.Value; }
-        }
+        public static Viterbi Instance => Lazy.Value;
 
         public IEnumerable<Pair> Cut(string sentence)
         {

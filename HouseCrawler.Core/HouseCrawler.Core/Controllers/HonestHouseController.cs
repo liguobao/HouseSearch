@@ -115,8 +115,7 @@ namespace HouseCrawler.Core.Controllers
             var page = new HtmlParser().Parse(html);
             return page.QuerySelector("ul.listUl").QuerySelectorAll("li[logr]").Select(room =>
             {
-                int housePrice = 0;
-                int.TryParse(room.QuerySelector("b").TextContent, out housePrice);
+                int.TryParse(room.QuerySelector("b").TextContent, out var housePrice);
                 var markBGType = LocationMarkBGType.SelectColor(housePrice / 1000);
                 var a = room.QuerySelector("a");
                 return new HouseInfo
@@ -147,11 +146,7 @@ namespace HouseCrawler.Core.Controllers
         private int ParsePages(string html)
         {
             var dom = new HtmlParser().Parse(html);
-            var pageNums = dom.QuerySelector(".pager")?.QuerySelectorAll("span")?.Select(page =>
-            {
-                int number = 0;
-                return int.TryParse(page.TextContent, out number) ? number : 0;
-            });
+            var pageNums = dom.QuerySelector(".pager")?.QuerySelectorAll("span")?.Select(page => int.TryParse(page.TextContent, out var number) ? number : 0);
             return pageNums?.Max() ?? 0;
         }
 

@@ -14,19 +14,19 @@ namespace HouseCrawler.Core
     {
         private static HtmlParser htmlParser = new HtmlParser();
 
-        private static CrawlerDataContent dataContent = new CrawlerDataContent();
+        private static readonly CrawlerDataContent DataContent = new CrawlerDataContent();
 
         private static CrawlerDAL crawlerDAL = new CrawlerDAL();
 
         public static void CapturPinPaiHouseInfo()
         {
-            foreach (var crawlerConfiguration in dataContent.CrawlerConfigurations.Where(c => c.ConfigurationName
+            foreach (var crawlerConfiguration in DataContent.CrawlerConfigurations.Where(c => c.ConfigurationName
                == ConstConfigurationName.PinPaiGongYu && c.IsEnabled).ToList())
             {
 
                 LogHelper.RunActionNotThrowEx(() => 
                 {
-                    var confInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(crawlerConfiguration.ConfigurationValue);
+                    var confInfo = JsonConvert.DeserializeObject<dynamic>(crawlerConfiguration.ConfigurationValue);
 
                     for (var index = 0; index < confInfo.pagecount.Value; index++)
                     {
@@ -34,12 +34,12 @@ namespace HouseCrawler.Core
                         var htmlResult = HTTPHelper.GetHTMLByURL(url);
                         var page = new HtmlParser().Parse(htmlResult);
                         var lstLi = page.QuerySelectorAll("li").Where(element => element.HasAttribute("logr"));
-                        if (lstLi == null || lstLi.Count() == 0)
+                        if (!lstLi.Any())
                         {
                             continue;
                         }
                         GetDataOnPageDoc(confInfo, page);
-                        dataContent.SaveChanges();
+                        DataContent.SaveChanges();
                     }
 
                 }, "CapturPinPaiHouseInfo", crawlerConfiguration);
@@ -54,15 +54,14 @@ namespace HouseCrawler.Core
             {
                 var houseTitle = element.QuerySelector("h2").TextContent;
                 var houseInfoList = houseTitle.Split(' ');
-                int housePrice = 0;
-                int.TryParse(element.QuerySelector("b").TextContent, out housePrice);
-                var onlineURL = $"http://{confInfo.shortcutname.Value}.58.com" + element.QuerySelector("a").GetAttribute("href");
-                if (dataContent.HouseInfos.Find(onlineURL)!=null)
+                int.TryParse(element.QuerySelector("b").TextContent, out var housePrice);
+                var onlineUrl = $"http://{confInfo.shortcutname.Value}.58.com" + element.QuerySelector("a").GetAttribute("href");
+                if (DataContent.HouseInfos.Find(onlineUrl)!=null)
                     continue;
                 var houseInfo = new BizHouseInfo
                 {
                     HouseTitle = houseTitle,
-                    HouseOnlineURL = onlineURL,
+                    HouseOnlineURL = onlineUrl,
                     DisPlayPrice = element.QuerySelector("b").TextContent,
                     HouseLocation = new[] { "公寓", "青年社区" }.All(s => houseInfoList.Contains(s)) ? houseInfoList[0] : houseInfoList[1],
                     DataCreateTime = DateTime.Now,
@@ -72,7 +71,7 @@ namespace HouseCrawler.Core
                     LocationCityName = confInfo.cityname.Value,
                     PubTime = DateTime.Now
                 };
-                dataContent.Add(houseInfo);
+                DataContent.Add(houseInfo);
             }
         }
 
@@ -81,20 +80,20 @@ namespace HouseCrawler.Core
         /// </summary>
         public static void FilterInvalidCityConfig()
         {
-            foreach (var doubanConf in dataContent.CrawlerConfigurations.Where(c => c.ConfigurationName
+            foreach (var doubanConf in DataContent.CrawlerConfigurations.Where(c => c.ConfigurationName
                == ConstConfigurationName.PinPaiGongYu).ToList())
             {
-                var confInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(doubanConf.ConfigurationValue);
+                var confInfo = JsonConvert.DeserializeObject<dynamic>(doubanConf.ConfigurationValue);
                 var url = $"http://{confInfo.shortcutname.Value}.58.com/pinpaigongyu/pn/0";
                 var htmlResult = HTTPHelper.GetHTMLByURL(url);
                 var page = new HtmlParser().Parse(htmlResult);
                 var lstLi = page.QuerySelectorAll("li").Where(element => element.HasAttribute("logr"));
-                if ((lstLi == null || lstLi.Count() == 0))
+                if (!lstLi.Any())
                 {
                     doubanConf.IsEnabled = false;
                 }
             }
-            dataContent.SaveChanges();
+            DataContent.SaveChanges();
         }
 
 
@@ -1829,7 +1828,7 @@ namespace HouseCrawler.Core
                 var lst = new List<BizCrawlerConfiguration>();
                 foreach (var cityInfo in lstCity)
                 {
-                    if (cityInfo != null && cityInfo.cityName != null && cityInfo.cityName.Value != null && cityInfo.shortCut != null && cityInfo.shortCut.Value != null)
+                    if (cityInfo?.cityName?.Value != null &&cityInfo.shortCut?.Value != null)
                     {
                         lst.Add(new BizCrawlerConfiguration()
                         {
@@ -1841,8 +1840,8 @@ namespace HouseCrawler.Core
                         });
                     }
                 }
-                dataContent.AddRange(lst);
-                dataContent.SaveChanges();
+                DataContent.AddRange(lst);
+                DataContent.SaveChanges();
 
 
             }

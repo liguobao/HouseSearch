@@ -6,15 +6,15 @@ using JiebaNet.Segmenter.PosSeg;
 
 namespace JiebaNet.Analyser
 {
-    public class TextRankExtractor : KeywordExtractor
+    public sealed class TextRankExtractor : KeywordExtractor
     {
         private static readonly IEnumerable<string> DefaultPosFilter = new List<string>()
         {
             "n", "ng", "nr", "nrfg", "nrt", "ns", "nt", "nz", "v", "vd", "vg", "vi", "vn", "vq"
         };
 
-        private JiebaSegmenter Segmenter { get; set; }
-        private PosSegmenter PosSegmenter { get; set; }
+        private JiebaSegmenter Segmenter { get; }
+        private PosSegmenter PosSegmenter { get; }
 
         public int Span { get; set; }
 
