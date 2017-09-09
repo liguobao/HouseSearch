@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using HouseCrawler.Core.Models;
 using HouseCrawler.Core.Common;
@@ -29,7 +27,8 @@ namespace HouseCrawler.Core.Controllers
 
         public IActionResult GetHouseInfo(string cityName, string source = "", int houseCount = 400, int withAnyDays = 3)
         {
-            var houses = _dataContent.HouseInfos.Where(h => h.LocationCityName == cityName && h.PubTime > DateTime.Now.Date.AddDays(-withAnyDays));
+            var houses = _dataContent.HouseInfos.Where(h => h.LocationCityName == cityName 
+            && h.PubTime > DateTime.Now.Date.AddDays(-withAnyDays));
             if (!string.IsNullOrEmpty(source))
             {
                 houses = houses.Where(h => h.Source == source);
