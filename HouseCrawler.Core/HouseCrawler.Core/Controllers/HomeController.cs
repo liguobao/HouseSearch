@@ -75,8 +75,8 @@ namespace HouseCrawler.Core.Controllers
         public IActionResult RunJobs()
         {
 
-           // DoubanHouseCrawler.CaptureHouseInfoFromConfig();
-           // HouseSourceInfo.RefreshHouseSourceInfo();
+            DoubanHouseCrawler.CaptureHouseInfoFromConfig();
+            HouseSourceInfo.RefreshHouseSourceInfo();
 
 
             //Task.Factory.StartNew(() =>
