@@ -26,3 +26,7 @@
 /HouseCrawler.Core/HouseCrawler.Web/bin
 /HouseCrawler.Core/Pomelo.AspNetCore.TimedJob/bin
 /HouseCrawler.Core/Pomelo.AspNetCore.TimedJob/obj
+/HouseCrawlerWithJava/target
+/HouseCrawlerWithJava/HouseCrawlerWithJava.iml
+/HouseCrawlerWithJava/housecrawler.iws
+/HouseCrawlerWithJava/housecrawler.ips

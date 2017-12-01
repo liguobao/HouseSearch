@@ -1,10 +1,14 @@
 package live.woyaozufang;
 
+import live.woyaozufang.crawler.ICrawler;
+import live.woyaozufang.crawler.impl.DouBanCrawler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.context.WebApplicationContext;
 
 @SpringBootApplication
 public class Application {
