@@ -138,5 +138,8 @@
     <orderEntry type="library" name="Maven: org.slf4j:jcl-over-slf4j:1.7.12" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:jul-to-slf4j:1.7.12" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:log4j-over-slf4j:1.7.12" level="project" />
+    <orderEntry type="library" name="Maven: org.quartz-scheduler:quartz:2.2.2" level="project" />
+    <orderEntry type="library" name="Maven: c3p0:c3p0:0.9.1.1" level="project" />
+    <orderEntry type="library" name="Maven: org.quartz-scheduler:quartz-jobs:2.2.2" level="project" />
   </component>
 </module>

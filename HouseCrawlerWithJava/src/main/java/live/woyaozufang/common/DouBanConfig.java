@@ -5,7 +5,7 @@ public class DouBanConfig {
 
     private String cityname;
 
-    private String pagecount;
+    private Integer pagecount;
 
     public String getGroupid() {
         return groupid;
@@ -23,11 +23,11 @@ public class DouBanConfig {
         this.cityname = cityname;
     }
 
-    public String getPagecount() {
+    public Integer getPagecount() {
         return pagecount;
     }
 
-    public void setPagecount(final String pagecount) {
+    public void setPagecount(final Integer pagecount) {
         this.pagecount = pagecount;
     }
 }
