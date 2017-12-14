@@ -23,13 +23,13 @@ public class DouBanCrawler implements ICrawler {
 
     @Scheduled(fixedRate = 5000)
     public void run() {
+        DouBanSeedProcessor douBanSeedProcessor = new DouBanSeedProcessor();
+        VSCrawler vsCrawler = VSCrawlerBuilder.create().addPipeline(new EmptyPipeline())
+                .setProcessor(douBanSeedProcessor).build();
+        // 清空历史爬去数据,或者会断点续爬
+        vsCrawler.clearTask();
         List<CrawlerConfiguration> configurations = configurationMapper.findByName("douban");
         if (configurations != null) {
-            DouBanSeedProcessor douBanSeedProcessor = new DouBanSeedProcessor();
-            VSCrawler vsCrawler = VSCrawlerBuilder.create().addPipeline(new EmptyPipeline())
-                    .setProcessor(douBanSeedProcessor).build();
-            // 清空历史爬去数据,或者会断点续爬
-            vsCrawler.clearTask();
             String preDoubanURL = "https://www.douban.com/group/%s/discussion?start=%d";
             Gson gson = new Gson();
             for (CrawlerConfiguration configuration : configurations) {
@@ -41,7 +41,7 @@ public class DouBanCrawler implements ICrawler {
                     }
                 }
             }
-            vsCrawler.stopCrawler();
         }
+        vsCrawler.start();
     }
 }
