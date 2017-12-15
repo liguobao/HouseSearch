@@ -16,7 +16,7 @@ namespace HouseCrawler.Core
 
         public string LogContent { get; set; } 
 
-        public DateTime DataChange_LastTime { get; set; }
+      
 
         public string LogTitle { get; set; }
 
@@ -39,8 +39,7 @@ namespace HouseCrawler.Core
 
         public static List<BizCrawlerLog> LoadLogByType(int logType)
         {
-            return DataContent.CrawlerLogs.Where(l => l.LogType ==logType)
-                .OrderByDescending(l=>l.DataChange_LastTime).ToList();
+            return DataContent.CrawlerLogs.Where(l => l.LogType ==logType).ToList();
 
         }
 

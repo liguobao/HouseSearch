@@ -13,14 +13,7 @@ namespace HouseCrawler.Core
     public class HTTPHelper
     {
 
-        public static HttpClient Client { get; } = new HttpClient
-        {
-            DefaultRequestHeaders =
-            {
-                { "Accept-Encoding", "gzip, deflate" },
-                {"User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.79 Safari/537.36 Edge/14.14393" }
-            }
-        };
+        public static HttpClient Client { get; } = new HttpClient();
 
         public static string GetHTMLByURL(string url)
         {
@@ -54,41 +47,6 @@ namespace HouseCrawler.Core
 
         public static HttpClient myClient { get; } = new HttpClient(new HtmlTextHandler());
 
-
-        public static string GetHTML(string url, List<string> LstProxyID = null)
-        {
-            try
-            {
-                Client.DefaultRequestHeaders.ExpectContinue = true;
-                var task = Client.GetStringAsync(url);
-                return task.Result;
-            }
-            catch (System.Exception ex)
-            {
-                LogHelper.Info(url);
-                LogHelper.Error("GetHTMLByURL Exception", ex, new { URL = url });
-                Console.WriteLine(ex.ToString());
-                return string.Empty;
-
-            }
-        }
-
-        public static string GetHTMLForDouban(string url)
-        {
-            try
-            {
-                myClient.DefaultRequestHeaders.ExpectContinue = true;
-                return myClient.GetStringAsync(url).Result;
-            }
-            catch (System.Exception ex)
-            {
-                LogHelper.Info(url);
-                LogHelper.Error("GetHTMLForDouban Exception", ex, new { URL = url });
-                Console.WriteLine(ex.ToString());
-                return string.Empty;
-
-            }
-        }
     }
 
 
@@ -117,6 +75,89 @@ namespace HouseCrawler.Core
                 return charset;
 
             return match.Groups["charset"].Value;
+        }
+    }
+
+
+
+    public class DoubanHTTPHelper
+
+    {
+        private static HttpClient doubanHttpClient;
+
+        private static CookieCollection cookieCollection;
+
+        private static HttpClientHandler handler = new HttpClientHandler();
+
+        public static void InitCookieCollection()
+        {
+            handler.UseCookies = true;
+
+            doubanHttpClient = new HttpClient(handler)
+            {
+               
+            };
+           
+
+            #region 获取登录页Cookie
+            var request = new HttpRequestMessage()
+            {
+                RequestUri = new Uri("https://accounts.douban.com/login?source=group"),
+                Method = HttpMethod.Get,
+            };
+            request.Headers.Add("Host", "accounts.douban.com");
+            request.Headers.Add("Connection", "Keep-Alive");
+            request.Headers.Add("Referer", "https://www.douban.com/group");
+            var response = doubanHttpClient.SendAsync(request).Result;
+            var setCookieValue = response.Headers.GetValues("Set-Cookie");
+            #endregion
+
+            #region 登陆formContent
+
+            var formContent = new FormUrlEncodedContent(new[]
+           {
+                new KeyValuePair<string, string>("source", "source"),
+                new KeyValuePair<string, string>("redir", "https://www.douban.com/group/"),
+                new KeyValuePair<string, string>("form_email", ""),
+                new KeyValuePair<string, string>("form_password", ""),
+                new KeyValuePair<string, string>("login", "登录"),
+            });
+
+            #endregion
+
+
+            #region 登陆请求
+            var loginRequest = new HttpRequestMessage()
+            {
+                RequestUri = new Uri("https://accounts.douban.com/login"),
+                Method = HttpMethod.Post,
+            };
+            loginRequest.Headers.Add("Set-Cookie", setCookieValue);
+            loginRequest.Content = formContent;
+
+            var loginResult = doubanHttpClient.SendAsync(loginRequest).Result;
+            cookieCollection = handler.CookieContainer.GetCookies(new Uri("https://douban.com")); // Retrieving a Cookie
+            LogHelper.Info($"豆瓣登陆结果，result：{Newtonsoft.Json.JsonConvert.SerializeObject(loginResult)}," +
+                $"cookieCollection:{Newtonsoft.Json.JsonConvert.SerializeObject(cookieCollection)}");
+
+            #endregion
+        }
+
+
+        public static string GetHTMLForDouban(string url)
+        {
+            try
+            {
+                doubanHttpClient.DefaultRequestHeaders.ExpectContinue = true;
+                var rsp = doubanHttpClient.GetAsync(url).Result;
+                return rsp.Content.ReadAsStringAsync().Result;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error($"{url}", ex);
+                return string.Empty;
+
+            }
         }
     }
 

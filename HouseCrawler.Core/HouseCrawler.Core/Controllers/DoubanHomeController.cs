@@ -25,7 +25,7 @@ namespace HouseCrawler.Core.Controllers
             if (string.IsNullOrEmpty(groupID))
                 groupID = "shanghaizufang";
             var url = $"https://www.douban.com/group/{groupID}/discussion?start={index*25}";
-            var htmlResult = HTTPHelper.GetHTML(url);
+            var htmlResult = DoubanHTTPHelper.GetHTMLForDouban(url);
             var page = new HtmlParser().Parse(htmlResult);
             var lstRoomInfo = page.QuerySelectorAll("td.title").Select(item => new HouseInfo()
             {
@@ -44,7 +44,7 @@ namespace HouseCrawler.Core.Controllers
             if (string.IsNullOrEmpty(groupID))
                 groupID = "shanghaizufang";
             var url = $"https://www.douban.com/group/{groupID}/";
-            var htmlResult = HTTPHelper.GetHTML(url);
+            var htmlResult = DoubanHTTPHelper.GetHTMLForDouban(url);
             return Json(new { IsSuccess = true,cityName ="上海" });
         }
     }

@@ -89,12 +89,15 @@ namespace HouseCrawler.Core
             List<BizHouseInfo> lstHouseInfo = new List<BizHouseInfo>();
             var url = $"https://www.douban.com/group/{groupID}/discussion?start={pageIndex * 25}";
 
-            var htmlResult = HTTPHelper.GetHTML(url);
+            var htmlResult = DoubanHTTPHelper.GetHTMLForDouban(url);
             if (string.IsNullOrEmpty(htmlResult))
                 return lstHouseInfo;
             var page = HtmlParser.Parse(htmlResult);
+            var tableElement = page.QuerySelector("table.olt");
+            if(tableElement == null)
+                return lstHouseInfo;
 
-            foreach (var trItem in page.QuerySelector("table.olt").QuerySelectorAll("tr"))
+            foreach (var trItem in tableElement.QuerySelectorAll("tr"))
             {
                 var titleItem = trItem.QuerySelector("td.title");
                 if (titleItem == null || DataContent.HouseInfos.Find(titleItem.QuerySelector("a").GetAttribute("href"))!=null)
@@ -174,7 +177,7 @@ namespace HouseCrawler.Core
         private static void AnalyzeFromWebPage(Web.Model.DBHouseInfo houseInfo,
             ref decimal housePrice, ref string houseTextContent)
         {
-            var htmlResult = HTTPHelper.GetHTML(houseInfo.HouseOnlineURL);
+            var htmlResult = DoubanHTTPHelper.GetHTMLForDouban(houseInfo.HouseOnlineURL);
             //没有页面信息
             if (string.IsNullOrEmpty(htmlResult))
             {

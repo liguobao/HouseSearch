@@ -75,9 +75,10 @@ namespace HouseCrawler.Core.Controllers
         public IActionResult RunJobs()
         {
 
+
             DoubanHouseCrawler.CaptureHouseInfoFromConfig();
             HouseSourceInfo.RefreshHouseSourceInfo();
-
+            PinPaiGongYuHouseCrawler.CapturPinPaiHouseInfo();
 
             //Task.Factory.StartNew(() =>
             //{

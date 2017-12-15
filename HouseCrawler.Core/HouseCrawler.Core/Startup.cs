@@ -55,7 +55,7 @@ namespace HouseCrawler.Core
             
             env.ConfigureNLog("./wwwroot/nlog.config");
 
-          
+            DoubanHTTPHelper.InitCookieCollection();
 
             if (env.IsDevelopment())
             {
