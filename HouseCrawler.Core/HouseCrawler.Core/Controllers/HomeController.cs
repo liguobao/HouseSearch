@@ -76,6 +76,7 @@ namespace HouseCrawler.Core.Controllers
         {
 
 
+
             DoubanHouseCrawler.CaptureHouseInfoFromConfig();
             HouseSourceInfo.RefreshHouseSourceInfo();
             PinPaiGongYuHouseCrawler.CapturPinPaiHouseInfo();

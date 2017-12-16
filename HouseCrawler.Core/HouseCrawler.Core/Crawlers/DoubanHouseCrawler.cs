@@ -39,12 +39,12 @@ namespace HouseCrawler.Core
                             DataContent.SaveChanges();
                             captrueHouseCount = captrueHouseCount + lstHouseInfo.Count;
                         }
-                    }, "CaptureHouseInfoFromConfig",doubanConf);
-                    
+                    }, "CaptureHouseInfoFromConfig", doubanConf);
+
                 }
                 HouseSourceInfo.RefreshHouseSourceInfo();
 
-                BizCrawlerLog.SaveLog("爬取豆瓣租房数据",$"本次共爬取到{captrueHouseCount}条数据。",1);
+                BizCrawlerLog.SaveLog("爬取豆瓣租房数据", $"本次共爬取到{captrueHouseCount}条数据。", 1);
             }
             catch (Exception ex)
             {
@@ -64,7 +64,7 @@ namespace HouseCrawler.Core
 
             if (lstHouseInfo.Count > 0)
             {
-                var config =   new BizCrawlerConfiguration()
+                var config = new BizCrawlerConfiguration()
                 {
                     ConfigurationKey = 0,
                     ConfigurationValue = cityInfo,
@@ -94,35 +94,39 @@ namespace HouseCrawler.Core
                 return lstHouseInfo;
             var page = HtmlParser.Parse(htmlResult);
             var tableElement = page.QuerySelector("table.olt");
-            if(tableElement == null)
+            if (tableElement == null)
                 return lstHouseInfo;
 
             foreach (var trItem in tableElement.QuerySelectorAll("tr"))
             {
                 var titleItem = trItem.QuerySelector("td.title");
-                if (titleItem == null || DataContent.HouseInfos.Find(titleItem.QuerySelector("a").GetAttribute("href"))!=null)
+                if (titleItem == null || DataContent.HouseInfos.Find(titleItem.QuerySelector("a").GetAttribute("href")) != null)
                     continue;
+                var houseTitle = titleItem.QuerySelector("a").GetAttribute("title");
+                var housePrice = JiebaTools.GetHousePrice(houseTitle);
                 var houseInfo = new BizHouseInfo()
                 {
-                    HouseTitle = titleItem.QuerySelector("a").GetAttribute("title"),
+                    HouseTitle = houseTitle,
                     HouseOnlineURL = titleItem.QuerySelector("a").GetAttribute("href"),
-                    HouseLocation = titleItem.QuerySelector("a").GetAttribute("title"),
-                    HouseText = titleItem.QuerySelector("a").GetAttribute("title"),
+                    HouseLocation = houseTitle,
+                    HouseText = houseTitle,
                     DataCreateTime = DateTime.Now,
                     PubTime = titleItem.QuerySelector("td.time") != null
                     ? DateTime.Parse(DateTime.Now.ToString("yyyy-") + titleItem.QuerySelector("td.time").InnerHtml)
                     : DateTime.Now,
-                    DisPlayPrice = "",
+                    DisPlayPrice = housePrice >0 ? $"{housePrice}元":"",
                     Source = ConstConfigurationName.Douban,
-                    HousePrice = 0,
-                    LocationCityName = cityName
+                    HousePrice = housePrice,
+                    LocationCityName = cityName,
+                    IsAnalyzed = housePrice > 0,
+                    Status = housePrice > 0 ? 1 : 0,
                 };
                 lstHouseInfo.Add(houseInfo);
             }
             return lstHouseInfo;
         }
 
-        public static void AnalyzeDoubanHouseContentAll(bool isSleep=false)
+        public static void AnalyzeDoubanHouseContentAll(bool isSleep = false)
         {
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             sw.Start();
@@ -152,14 +156,14 @@ namespace HouseCrawler.Core
                     dal.UpdateHouseInfo(houseInfo);
                     index++;
 
-                    if(index%100==0 && isSleep)
+                    if (index % 100 == 0 && isSleep)
                     {
                         System.Threading.Thread.Sleep(1000 * 120);
                     }
 
                     Console.WriteLine("HouseInfo:" + Newtonsoft.Json.JsonConvert.SerializeObject(houseInfo));
                 }
-               
+
             }
             catch (Exception ex)
             {
@@ -170,7 +174,7 @@ namespace HouseCrawler.Core
 
             var copyTime = sw.Elapsed.TotalSeconds.ToString(CultureInfo.InvariantCulture);
             LogHelper.Info("AnalyzeDoubanHouseContent Finish,Update Count:" + index + ";花费时间：" + copyTime);
-            Console.WriteLine("AnalyzeDoubanHouseContent Finish,Update Count:" + index +";花费时间：" + copyTime);
+            Console.WriteLine("AnalyzeDoubanHouseContent Finish,Update Count:" + index + ";花费时间：" + copyTime);
 
         }
 

@@ -93,12 +93,17 @@ namespace HouseCrawler.Core
         {
             handler.UseCookies = true;
 
-            doubanHttpClient = new HttpClient(handler)
-            {
-               
+            doubanHttpClient = new HttpClient(handler) {
+                DefaultRequestHeaders =
+                {
+                    { "Cache-Control", "max-age=0" },
+                    { "Origin", "https://www.douban.com" },
+                    { "Upgrade-Insecure-Requests", "1" },
+                    { "User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36" },
+                    { "Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8" },
+                }
             };
-           
-
+          
             #region 获取登录页Cookie
             var request = new HttpRequestMessage()
             {
@@ -118,8 +123,8 @@ namespace HouseCrawler.Core
            {
                 new KeyValuePair<string, string>("source", "source"),
                 new KeyValuePair<string, string>("redir", "https://www.douban.com/group/"),
-                new KeyValuePair<string, string>("form_email", ""),
-                new KeyValuePair<string, string>("form_password", ""),
+                new KeyValuePair<string, string>("form_email", AppSettings.DoubanAccount),
+                new KeyValuePair<string, string>("form_password", AppSettings.DoubanPassword),
                 new KeyValuePair<string, string>("login", "登录"),
             });
 
@@ -134,7 +139,7 @@ namespace HouseCrawler.Core
             };
             loginRequest.Headers.Add("Set-Cookie", setCookieValue);
             loginRequest.Content = formContent;
-
+            loginRequest.Content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
             var loginResult = doubanHttpClient.SendAsync(loginRequest).Result;
             cookieCollection = handler.CookieContainer.GetCookies(new Uri("https://douban.com")); // Retrieving a Cookie
             LogHelper.Info($"豆瓣登陆结果，result：{Newtonsoft.Json.JsonConvert.SerializeObject(loginResult)}," +
