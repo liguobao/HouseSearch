@@ -1,0 +1,23 @@
+﻿<Properties StartupConfiguration="{8DA3AC47-1F9D-4E8D-9291-D88FB0BE4CC6}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="HouseCrawler.Core/Crawlers/DoubanHouseCrawler.cs">
+    <Files>
+      <File FileName="HouseCrawler.Core/appsettings.json" Line="5" Column="30" />
+      <File FileName="HouseCrawler.Core/Startup.cs" Line="96" Column="1" />
+      <File FileName="HouseCrawler.Core/Common/HTTPHelper.cs" Line="149" Column="1" />
+      <File FileName="HouseCrawler.Core/Crawlers/DoubanHouseCrawler.cs" Line="96" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/liguobao/code/58HouseSearch/HouseCrawler.Core/HouseCrawler.Core/Common/HTTPHelper.cs" relfile="HouseCrawler.Core/Common/HTTPHelper.cs" line="36" column="14" />
+      <Breakpoint file="/Users/liguobao/code/58HouseSearch/HouseCrawler.Core/HouseCrawler.Core/Common/HTTPHelper.cs" relfile="HouseCrawler.Core/Common/HTTPHelper.cs" line="37" column="1" />
+      <Breakpoint file="/Users/liguobao/code/58HouseSearch/HouseCrawler.Core/HouseCrawler.Core/Common/HTTPHelper.cs" relfile="HouseCrawler.Core/Common/HTTPHelper.cs" line="71" column="1" />
+      <Breakpoint file="/Users/liguobao/code/58HouseSearch/HouseCrawler.Core/HouseCrawler.Core/Common/HTTPHelper.cs" relfile="HouseCrawler.Core/Common/HTTPHelper.cs" line="140" column="1" />
+      <Breakpoint file="/Users/liguobao/code/58HouseSearch/HouseCrawler.Core/HouseCrawler.Core/Crawlers/DoubanHouseCrawler.cs" relfile="HouseCrawler.Core/Crawlers/DoubanHouseCrawler.cs" line="96" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.HouseCrawler.Core PreferredExecutionTarget="MonoDevelop.Default" />
+</Properties>

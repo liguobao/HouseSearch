@@ -187,7 +187,7 @@ namespace HouseCrawler.Web.DAL
                 new MySqlParameter() { ParameterName = "@LocationCityName", Value = dbHouseInfo.LocationCityName, DbType = DbType.String },
                 new MySqlParameter() { ParameterName = "@Source", Value = dbHouseInfo.Source, DbType = DbType.String },
                 new MySqlParameter() { ParameterName = "@HouseText", Value = dbHouseInfo.HouseText, DbType = DbType.String },
-                new MySqlParameter() { ParameterName = "@IsAnalyzed", Value = dbHouseInfo.HouseText, DbType = DbType.Boolean },
+                new MySqlParameter() { ParameterName = "@IsAnalyzed", Value = dbHouseInfo.IsAnalyzed, DbType = DbType.Boolean },
                 new MySqlParameter() { ParameterName = "@Status", Value = dbHouseInfo.Status, DbType = DbType.Int32 }
             };
 
