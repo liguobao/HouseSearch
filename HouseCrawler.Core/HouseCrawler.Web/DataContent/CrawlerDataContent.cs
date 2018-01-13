@@ -12,10 +12,7 @@ namespace HouseCrawler.Web
     public class CrawlerDataContent: DbContext
     {
 
-        public DbSet<BizHouseInfo> HouseInfos { get; set; }
-
         public DbSet<BizCrawlerConfiguration> CrawlerConfigurations { get; set; }
-
 
         public DbSet<BizCrawlerLog> CrawlerLogs { get; set; }
         /// <summary>

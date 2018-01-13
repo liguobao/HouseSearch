@@ -32,7 +32,7 @@ namespace HouseCrawler.Core.Controllers
         {
             try
             {
-                var lstHouseInfo = new DBHouseInfoDAL().SearchHouseInfo(cityName, source, houseCount, withAnyDays, showDoubanInvalidData, keyword);
+                var lstHouseInfo = new DBHouseInfoDAL().SearchHouseInfo(cityName, source, houseCount, withAnyDays, keyword);
                 var lstRoomInfo = lstHouseInfo.Select(house =>
                 {
                     var markBGType = string.Empty;
@@ -58,9 +58,6 @@ namespace HouseCrawler.Core.Controllers
             {
                 return Json(new { IsSuccess = false, error=ex.ToString() });
             }
-           
-
-
         }
 
 
@@ -70,7 +67,23 @@ namespace HouseCrawler.Core.Controllers
             {
                 return Json(new { IsSuccess = false , error="请输入豆瓣小组Group和城市名称。" });
             }
-            DoubanHouseCrawler.AddDoubanGroupConfig(doubanGroup, cityName);
+            var cityInfo = $"{{ 'groupid':'{doubanGroup}','cityname':'{cityName}','pagecount':5}}";
+            var doubanConfig = dataContent.CrawlerConfigurations
+                .FirstOrDefault(c => c.ConfigurationName == ConstConfigurationName.Douban && c.ConfigurationValue == cityInfo);
+            if (doubanConfig != null)
+            {
+                return Json(new { IsSuccess = true });
+            }
+            var config = new BizCrawlerConfiguration()
+            {
+                ConfigurationKey = 0,
+                ConfigurationValue = cityInfo,
+                ConfigurationName = ConstConfigurationName.Douban,
+                DataCreateTime = DateTime.Now,
+                IsEnabled = true,
+            };
+            dataContent.Add(config);
+            dataContent.SaveChanges();
             return Json(new { IsSuccess = true });
         }
 

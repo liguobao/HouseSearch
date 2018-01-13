@@ -15,7 +15,6 @@ namespace HouseCrawler.Web.Controllers
         [Route("/Error")]
         public IActionResult Index()
         {
-
             var exceptionFeature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
 
             if (exceptionFeature != null)

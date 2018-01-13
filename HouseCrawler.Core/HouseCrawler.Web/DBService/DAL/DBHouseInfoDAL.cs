@@ -12,26 +12,12 @@ using System.Data.Common;
 
 namespace HouseCrawler.Web.DAL
 {
+
     public partial class DBHouseInfoDAL
     {
 
 
-        #region  根据Id删除数据记录
-        /// <summary>
-        /// 根据Id删除数据记录
-        /// </summary>
-        public int DeleteById(long id)
-        {
-            string sql = "DELETE from HouseInfos WHERE Id = @Id";
 
-            MySqlParameter[] para = new MySqlParameter[]
-            {
-                new MySqlParameter(){SourceColumn="@Id",Value =id,DbType =DbType.Int64}
-            };
-
-            return MyDBHelper.ExecuteNonQuery(sql, para);
-        }
-        #endregion
 
 
 
@@ -48,10 +34,10 @@ namespace HouseCrawler.Web.DAL
             houseInfo.HouseOnlineURL = (string)ToModelValue(dr, "HouseOnlineURL");
             houseInfo.HouseLocation = (string)ToModelValue(dr, "HouseLocation");
             houseInfo.DisPlayPrice = (string)ToModelValue(dr, "DisPlayPrice");
-            houseInfo.PubTime = (DateTime?)ToModelValue(dr, "PubTime");
-            houseInfo.HousePrice = (decimal?)ToModelValue(dr, "HousePrice");
+            houseInfo.PubTime = (DateTime)ToModelValue(dr, "PubTime");
+            houseInfo.HousePrice = (decimal)ToModelValue(dr, "HousePrice");
             houseInfo.LocationCityName = (string)ToModelValue(dr, "LocationCityName");
-            houseInfo.DataCreateTime = (DateTime?)ToModelValue(dr, "DataCreateTime");
+            houseInfo.DataCreateTime = (DateTime)ToModelValue(dr, "DataCreateTime");
             houseInfo.Source = (string)ToModelValue(dr, "Source");
             houseInfo.HouseText = (string)ToModelValue(dr, "HouseText");
             houseInfo.DataChange_LastTime = (DateTime?)ToModelValue(dr, "DataChange_LastTime");
@@ -74,10 +60,10 @@ namespace HouseCrawler.Web.DAL
             houseInfo.HouseOnlineURL = (string)ToModelValue(dr, "HouseOnlineURL");
             houseInfo.HouseLocation = (string)ToModelValue(dr, "HouseLocation");
             houseInfo.DisPlayPrice = (string)ToModelValue(dr, "DisPlayPrice");
-            houseInfo.PubTime = (DateTime?)ToModelValue(dr, "PubTime");
-            houseInfo.HousePrice = (decimal?)ToModelValue(dr, "HousePrice");
+            houseInfo.PubTime = (DateTime)ToModelValue(dr, "PubTime");
+            houseInfo.HousePrice = (decimal)ToModelValue(dr, "HousePrice");
             houseInfo.LocationCityName = (string)ToModelValue(dr, "LocationCityName");
-            houseInfo.DataCreateTime = (DateTime?)ToModelValue(dr, "DataCreateTime");
+            houseInfo.DataCreateTime = (DateTime)ToModelValue(dr, "DataCreateTime");
             houseInfo.Source = (string)ToModelValue(dr, "Source");
             houseInfo.HouseText = (string)ToModelValue(dr, "HouseText");
             houseInfo.DataChange_LastTime = (DateTime?)ToModelValue(dr, "DataChange_LastTime");
@@ -87,16 +73,6 @@ namespace HouseCrawler.Web.DAL
         #endregion
 
 
-        #region  获得总记录数
-        ///<summary>
-        /// 获得总记录数
-        ///</summary>        
-        public int GetTotalCount()
-        {
-            string sql = "SELECT count(*) FROM HouseInfos";
-            return (int)MyDBHelper.ExecuteScalar(sql);
-        }
-        #endregion
 
 
 
@@ -106,50 +82,81 @@ namespace HouseCrawler.Web.DAL
         ///<summary>
         /// 获得分页记录集IEnumerable<>
         ///</summary>              
-        public IEnumerable<DBHouseInfo> SearchHouseInfo(string cityName, string source = "", 
-            int houseCount = 100, int withinAnyDays = 7,bool showDoubanInvalidData = true, string keyword = "")
+        public IEnumerable<DBHouseInfo> SearchHouseInfo(string cityName, string source = "",
+            int houseCount = 100, int withinAnyDays = 7, string keyword = "")
         {
-            string sqlText = "SELECT * from HouseInfos where 1=1 ";
+            List<DBHouseInfo> houses = new List<DBHouseInfo>();
+            if (string.IsNullOrEmpty(source))
+            {
+                var douban = GetSQLText(cityName, ConstConfigurationName.Douban, houseCount, withinAnyDays, keyword);
+                using (DbDataReader reader = MyDBHelper.ExecuteDataReader(douban.Item1, douban.Item2.ToArray()))
+                {
+                    houses.AddRange(ToModels(reader));
+                }
+                var huzu = GetSQLText(cityName, ConstConfigurationName.HuZhuZuFang, houseCount, withinAnyDays, keyword);
+                using (DbDataReader reader = MyDBHelper.ExecuteDataReader(douban.Item1, douban.Item2.ToArray()))
+                {
+                    houses.AddRange(ToModels(reader));
+                }
 
+                var pinpai = GetSQLText(cityName, ConstConfigurationName.PinPaiGongYu, houseCount, withinAnyDays, keyword);
+                using (DbDataReader reader = MyDBHelper.ExecuteDataReader(douban.Item1, douban.Item2.ToArray()))
+                {
+                    houses.AddRange(ToModels(reader));
+                }
+            }
+            else
+            {
+                var result = GetSQLText(cityName, source, houseCount, withinAnyDays, keyword);
+                using (DbDataReader reader = MyDBHelper.ExecuteDataReader(result.Item1, result.Item2.ToArray()))
+                {
+                    houses.AddRange(ToModels(reader));
+                }
+            }
+            return houses;
+        }
+
+        private static Tuple<string, List<MySqlParameter>> GetSQLText(string cityName, string source, int houseCount,
+            int withinAnyDays, string keyword)
+        {
+            string sqlText = $"SELECT * from { GetTableName(source)} where 1=1 ";
             List<MySqlParameter> lstMySqlParameter = new List<MySqlParameter>();
-
             if (!string.IsNullOrEmpty(cityName))
             {
                 sqlText = sqlText + " and LocationCityName = @LocationCityName ";
                 lstMySqlParameter.Add(new MySqlParameter() { ParameterName = "@LocationCityName", Value = cityName, DbType = DbType.String });
 
             }
-            if (!string.IsNullOrEmpty(source))
-            {
-                sqlText = sqlText + " and Source = @Source ";
-                lstMySqlParameter.Add(new MySqlParameter() { ParameterName = "@Source", Value = source, DbType = DbType.String });
-            }
-
-            //是否展示豆瓣无效数据
-            if(!showDoubanInvalidData && source == ConstConfigurationName.Douban)
-            {
-                sqlText = sqlText + " and Status = @Status and HousePrice > 0 ";
-                //仅仅显示有效数据
-                lstMySqlParameter.Add(new MySqlParameter() { ParameterName = "@Status", Value = 1, DbType = DbType.Int32 });
-            }
 
             if (!string.IsNullOrEmpty(keyword))
             {
-                keyword = "%" + keyword +"%";
+                string keywordTxt = "%" + keyword + "%";
                 sqlText = sqlText + " and (HouseText like @keyword or HouseLocation like @keyword ) ";
                 //仅仅显示有效数据
-                lstMySqlParameter.Add(new MySqlParameter() { ParameterName = "@keyword", Value = keyword, DbType = DbType.String });
+                lstMySqlParameter.Add(new MySqlParameter() { ParameterName = "@keyword", Value = keywordTxt, DbType = DbType.String });
             }
+            sqlText = sqlText + string.Format(" order by PubTime limit {0} ", houseCount);
 
+            return Tuple.Create<string, List<MySqlParameter>>(sqlText, lstMySqlParameter);
+        }
 
-            sqlText = sqlText + " and PubTime>= @PubTime ";
-            lstMySqlParameter.Add(new MySqlParameter() { ParameterName = "@PubTime", Value = DateTime.Now.Date.AddDays(-withinAnyDays), DbType = DbType.Date });
-            sqlText = sqlText + string.Format(" limit {0} ", houseCount);
-
-            using (DbDataReader reader = MyDBHelper.ExecuteDataReader(sqlText, lstMySqlParameter.ToArray()))
+        private static string GetTableName(string source)
+        {
+            string tableName = "HouseInfos";
+            if (source == ConstConfigurationName.Douban)
             {
-                return ToModels(reader);
+                tableName = "DoubanHouseInfos";
             }
+            else if (source == ConstConfigurationName.HuZhuZuFang)
+            {
+                tableName = "MutualHouseInfos";
+            }
+            else if (source == ConstConfigurationName.PinPaiGongYu)
+            {
+                tableName = "ApartmentHouseInfos";
+            };
+
+            return tableName;
         }
         #endregion
 

@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HouseCrawler.Web
+namespace HouseCrawler.Core
 {
-    public class BizHouseInfo
+ 
+    public class BaseHouseInfo
     {
 
         public long Id { get; set; }
@@ -24,6 +26,7 @@ namespace HouseCrawler.Web
         /// 房间URL
         /// </summary>
         [MaxLength(512)]
+        [Key]
         public string HouseOnlineURL { get; set; }
 
         /// <summary>
@@ -71,6 +74,11 @@ namespace HouseCrawler.Web
         /// 是否已分析
         /// </summary>
         public bool IsAnalyzed { get; set; }
+
+        /// <summary>
+        /// 状态（0:未处理 1：有效 2:已作废）
+        /// </summary>
+        public int Status { get; set; }
 
     }
 }
