@@ -1,70 +1,163 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+	<RuntimeIdentifiers>win7-x86;win7-x64;osx.10.11-x64;ubuntu.16.04-x64;ubuntu.14.04-x64</RuntimeIdentifiers>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="wwwroot\CSS\common.css" />
-    <Content Include="wwwroot\DomainJS\amazeui.2.7.1.min.js" />
-    <Content Include="wwwroot\DomainJS\build.js" />
-    <Content Include="wwwroot\DomainJS\city.js" />
-    <Content Include="wwwroot\DomainJS\city.json" />
-    <Content Include="wwwroot\DomainJS\commuteGo.js" />
-    <Content Include="wwwroot\DomainJS\domready.js" />
-    <Content Include="wwwroot\DomainJS\es5.js" />
-    <Content Include="wwwroot\DomainJS\helper.js" />
-    <Content Include="wwwroot\DomainJS\home.js" />
-    <Content Include="wwwroot\DomainJS\housecommom.js" />
-    <Content Include="wwwroot\DomainJS\lib\addToolbar.js" />
-    <Content Include="wwwroot\DomainJS\lib\amazeui.2.7.1.min.js" />
-    <Content Include="wwwroot\DomainJS\lib\Chart.js" />
-    <Content Include="wwwroot\DomainJS\lib\es5.js" />
-    <Content Include="wwwroot\DomainJS\lib\jquery-1.11.3.min.js" />
-    <Content Include="wwwroot\DomainJS\lib\jquery.range.js" />
-    <Content Include="wwwroot\DomainJS\lib\require.2.1.1.min.js" />
-    <Content Include="wwwroot\DomainJS\mapController.js" />
-    <Content Include="wwwroot\DomainJS\mapSignleton.js" />
-    <Content Include="wwwroot\DomainJS\marker.js" />
-    <Content Include="wwwroot\DomainJS\package.bat" />
-    <Content Include="wwwroot\DomainJS\package.sh" />
-    <Content Include="wwwroot\DomainJS\polygon.js" />
-    <Content Include="wwwroot\DomainJS\transfer.js" />
-    <Content Include="wwwroot\DomainJS\vehicle.js" />
-    <Content Include="wwwroot\DomainJS\workLocation.js" />
-    <Content Include="wwwroot\IMG\Gradient\Black.png" />
-    <Content Include="wwwroot\IMG\Gradient\Blue.png" />
-    <Content Include="wwwroot\IMG\Gradient\LightGreen.png" />
-    <Content Include="wwwroot\IMG\Gradient\OrangeYellow.png" />
-    <Content Include="wwwroot\IMG\Gradient\PaleGreen.png" />
-    <Content Include="wwwroot\IMG\Gradient\PaleRed.png" />
-    <Content Include="wwwroot\IMG\Gradient\PaleYellow.png" />
-    <Content Include="wwwroot\IMG\Gradient\Pink.png" />
-    <Content Include="wwwroot\IMG\Gradient\Red.png" />
-    <Content Include="wwwroot\IMG\Gradient\Violet.png" />
-    <Content Include="wwwroot\IMG\Little\Black.png" />
-    <Content Include="wwwroot\IMG\Little\Blue.png" />
-    <Content Include="wwwroot\IMG\Little\LightGreen.png" />
-    <Content Include="wwwroot\IMG\Little\OrangeYellow.png" />
-    <Content Include="wwwroot\IMG\Little\PaleGreen.png" />
-    <Content Include="wwwroot\IMG\Little\PaleRed.png" />
-    <Content Include="wwwroot\IMG\Little\PaleYellow.png" />
-    <Content Include="wwwroot\IMG\Little\Pink.png" />
-    <Content Include="wwwroot\IMG\Little\Red.png" />
-    <Content Include="wwwroot\IMG\Little\Violet.png" />
-    <Content Include="wwwroot\pv.json" />
+    <Compile Remove="wwwroot\hometemplate\uploadfiles\**" />
+    <Compile Remove="wwwroot\NLogFile\**" />
+    <Content Remove="wwwroot\hometemplate\uploadfiles\**" />
+    <Content Remove="wwwroot\NLogFile\**" />
+    <EmbeddedResource Remove="wwwroot\hometemplate\uploadfiles\**" />
+    <EmbeddedResource Remove="wwwroot\NLogFile\**" />
+    <None Remove="wwwroot\hometemplate\uploadfiles\**" />
+    <None Remove="wwwroot\NLogFile\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AngleSharp" Version="0.9.9.1" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.2.0-beta3" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.0.1" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="1.0.0-rtm-rc5" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.5.0-rc2" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AngleSharp" Version="0.9.9" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore" Version="1.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.2" />
-    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.1" />
-    <PackageReference Include="NLog.Extensions.Logging" Version="1.0.0-rtm-beta4" />
-    <PackageReference Include="NLog.Web.AspNetCore" Version="4.3.1" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="wwwroot\NLogFile\" />
+    <Content Update="wwwroot/CSS\common.css">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/DomainJS\city.js">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/DomainJS\commuteGo.js">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/DomainJS\es5.js">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/DomainJS\helper.js">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/DomainJS\housecommom.js">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/DomainJS\lib\jquery-1.11.3.min.js">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/DomainJS\marker.js">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/DomainJS\polygon.js">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/DomainJS\pv.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/hometemplate\views\IMJ2V2\css\amazeui.css">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/hometemplate\views\IMJ2V2\css\style.css">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/hometemplate\views\IMJ2V2\fonts\fontawesome-webfont.eot">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/hometemplate\views\IMJ2V2\fonts\fontawesome-webfont.svg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/hometemplate\views\IMJ2V2\fonts\fontawesome-webfont.ttf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/hometemplate\views\IMJ2V2\fonts\fontawesome-webfont.woff">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/hometemplate\views\IMJ2V2\fonts\fontawesome-webfont.woff2">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/hometemplate\views\IMJ2V2\images\about-bg.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/hometemplate\views\IMJ2V2\images\banner.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/hometemplate\views\IMJ2V2\images\banner1.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/hometemplate\views\IMJ2V2\images\fruitxiao.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/hometemplate\views\IMJ2V2\images\home-bg.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/hometemplate\views\IMJ2V2\images\logo%402x.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/hometemplate\views\IMJ2V2\images\logo.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/hometemplate\views\IMJ2V2\images\microsoft.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/hometemplate\views\IMJ2V2\images\service-bg.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/hometemplate\views\IMJ2V2\images\side-icon01.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/hometemplate\views\IMJ2V2\images\side-icon02.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/hometemplate\views\IMJ2V2\images\tencent.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/hometemplate\views\IMJ2V2\images\we-1.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/hometemplate\views\IMJ2V2\images\we-2.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/hometemplate\views\IMJ2V2\images\we-3.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/hometemplate\views\IMJ2V2\js\amazeui.js">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/hometemplate\views\IMJ2V2\js\echo.min.js">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/hometemplate\views\IMJ2V2\js\handlebars.min.js">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/hometemplate\views\IMJ2V2\js\iepng.js">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/hometemplate\views\IMJ2V2\js\jquery.qrcode.min.js">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/hometemplate\views\IMJ2V2\js\polyfill\rem.min.js">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/hometemplate\views\IMJ2V2\js\polyfill\respond.min.js">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/IMG\Gradient\Red.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/IMG\Gradient\Violet.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/IMG\Little\OrangeYellow.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/IMG\Little\PaleGreen.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/IMG\Little\Red.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
