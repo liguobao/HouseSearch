@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using HouseCrawler.Core.DataContent;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 
 namespace HouseCrawler.Core
 {
     public class CrawlerDataContent: DbContext
     {
 
-        public DbSet<BizHouseInfo> HouseInfos { get; set; }
+        public DbSet<ApartmentHouseInfo> ApartmentHouseInfos { get; set; }
+
+        public DbSet<DoubanHouseInfo> DoubanHouseInfos { get; set; }
+
+        public DbSet<MutualHouseInfo> MutualHouseInfos { get; set; }
 
         public DbSet<BizCrawlerConfiguration> CrawlerConfigurations { get; set; }
 

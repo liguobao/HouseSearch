@@ -9,7 +9,7 @@ namespace HouseCrawler.Core
 {
     public class CrawlerJobs : Job
     {
-        [Invoke(BeginS = "2017-11-30 00:00", Interval = 1000 * 3600, SkipWhileExecuting = true)]
+        [Invoke(Begin = "2018-01-12 00:00", Interval = 1000 * 3600, SkipWhileExecuting = true)]
         public void Run()
         {
             //Job要执行的逻辑代码

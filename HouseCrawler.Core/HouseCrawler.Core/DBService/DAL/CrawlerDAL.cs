@@ -19,7 +19,7 @@ namespace HouseCrawler.Core.DBService.DAL
         public  HashSet<String> GetAllHuzhuzufangHouseOnlineURL()
         {
             HashSet<String> hsURL = new HashSet<string>();
-            string sqlText = "select distinct HouseOnlineURL from housecrawler.HouseInfos where Source ='huzhuzufang'";
+            string sqlText = "select distinct HouseOnlineURL from MutualHouseInfos";
             using (DbDataReader reader = MyDBHelper.ExecuteDataReader(sqlText))
             {
                 while (reader.Read())

@@ -96,6 +96,8 @@ namespace HouseCrawler.Core
             DoubanHTTPHelper.InitCookieCollection();
 
             DomainProxyInfo.InitDomainProxyInfo(Path.Combine(env.WebRootPath, "availableProxy.json"));
+
+          
         }
     }
 }

@@ -63,7 +63,7 @@ namespace HouseCrawler.Web.Model
         /// <summary>
         /// 
         /// </summary>
-		public DateTime? PubTime
+		public DateTime PubTime
 		{
 			 get;
              set;
@@ -72,7 +72,7 @@ namespace HouseCrawler.Web.Model
         /// <summary>
         /// 
         /// </summary>
-		public decimal? HousePrice
+		public decimal HousePrice
 		{
 			 get;
              set;
@@ -90,7 +90,7 @@ namespace HouseCrawler.Web.Model
         /// <summary>
         /// 
         /// </summary>
-		public DateTime? DataCreateTime
+		public DateTime DataCreateTime
 		{
 			 get;
              set;

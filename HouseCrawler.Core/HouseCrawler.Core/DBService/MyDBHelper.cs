@@ -1,11 +1,7 @@
 ﻿using HouseCrawler.Core;
 using MySql.Data.MySqlClient;
-using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HouseCrawler.Web
 {
@@ -108,23 +104,7 @@ namespace HouseCrawler.Web
 
 
 
-        //#region 返回查询后的数据表第一行DataRow
-        ///// <summary>
-        ///// 返回查询后的数据表第一行DataRow
-        ///// </summary>
-        ///// <param name="cmdText">执行语句</param>
-        ///// <param name="parameters">params参数集合</param>
-        //public DataRow GetDataRow(string cmdText, params MySqlParameter[] parameters)
-        //{
-        //    DataTable dt = ExecuteDataTable(cmdText, parameters);
-        //    if (dt.Rows.Count > 0)
-        //        return dt.Rows[0];
-        //    else
-        //        return null;
-
-        //}
-        //#endregion
-
+       
         #region 执行存储过程 ExecuteNonQuery(),返回受影响的行数
         /// <summary>
         /// 执行存储过程 ExecuteNonQuery(),返回受影响的行数

@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace HouseCrawler.Core
 {
-    public class BizHouseInfo
+ 
+    public class BaseHouseInfo
     {
 
         public long Id { get; set; }

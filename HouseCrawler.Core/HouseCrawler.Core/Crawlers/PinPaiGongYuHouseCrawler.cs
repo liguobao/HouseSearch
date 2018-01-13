@@ -7,6 +7,7 @@ using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using HouseCrawler.Core.DBService.DAL;
+using HouseCrawler.Core.DataContent;
 
 namespace HouseCrawler.Core
 {
@@ -56,9 +57,9 @@ namespace HouseCrawler.Core
                 var houseInfoList = houseTitle.Split(' ');
                 int.TryParse(element.QuerySelector("b").TextContent, out var housePrice);
                 var onlineUrl = $"http://{confInfo.shortcutname.Value}.58.com" + element.QuerySelector("a").GetAttribute("href");
-                if (DataContent.HouseInfos.Find(onlineUrl)!=null)
+                if (DataContent.ApartmentHouseInfos.Find(onlineUrl)!=null)
                     continue;
-                var houseInfo = new BizHouseInfo
+                var houseInfo = new ApartmentHouseInfo
                 {
                     HouseTitle = houseTitle,
                     HouseOnlineURL = onlineUrl,
@@ -71,7 +72,7 @@ namespace HouseCrawler.Core
                     LocationCityName = confInfo.cityname.Value,
                     PubTime = DateTime.Now
                 };
-                DataContent.Add(houseInfo);
+                DataContent.ApartmentHouseInfos.Add(houseInfo);
             }
         }
 

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26621.2
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HouseCrawler.Core", "HouseCrawler.Core\HouseCrawler.Core.csproj", "{8DA3AC47-1F9D-4E8D-9291-D88FB0BE4CC6}"
 EndProject
@@ -16,8 +16,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQLScript", "SQLScript", "{
 		..\..\..\..\Users\LGB83\Desktop\CrawlerConfigurations.sql = ..\..\..\..\Users\LGB83\Desktop\CrawlerConfigurations.sql
 		..\..\..\..\Users\LGB83\Desktop\HouseInfos.sql = ..\..\..\..\Users\LGB83\Desktop\HouseInfos.sql
 	EndProjectSection
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pomelo.AspNetCore.TimedJob", "Pomelo.AspNetCore.TimedJob\Pomelo.AspNetCore.TimedJob.csproj", "{25AF3AEB-9A83-44E3-95FC-E38A296EB07F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +39,6 @@ Global
 		{4226C20E-E9DE-4BA6-ACF1-B4E41CABA674}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4226C20E-E9DE-4BA6-ACF1-B4E41CABA674}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4226C20E-E9DE-4BA6-ACF1-B4E41CABA674}.Release|Any CPU.Build.0 = Release|Any CPU
-		{25AF3AEB-9A83-44E3-95FC-E38A296EB07F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{25AF3AEB-9A83-44E3-95FC-E38A296EB07F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{25AF3AEB-9A83-44E3-95FC-E38A296EB07F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{25AF3AEB-9A83-44E3-95FC-E38A296EB07F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using HouseCrawler.Core.Models;
 using HouseCrawler.Core.Common;
 using HouseCrawler.Core.Jobs;
+using HouseCrawler.Web.DAL;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -25,17 +26,12 @@ namespace HouseCrawler.Core.Controllers
             return View();
         }
 
-        public IActionResult GetHouseInfo(string cityName, string source = "", int houseCount = 400, int withAnyDays = 3)
+        public IActionResult GetHouseInfo(string cityName, string source = "", int houseCount = 400, 
+            int withAnyDays = 3,string keyword ="")
         {
-            var houses = _dataContent.HouseInfos.Where(h => h.LocationCityName == cityName 
-            && h.PubTime > DateTime.Now.Date.AddDays(-withAnyDays));
-            if (!string.IsNullOrEmpty(source))
-            {
-                houses = houses.Where(h => h.Source == source);
-            }
-            var lstHouseInfo = houses.OrderByDescending(h => h.PubTime).Take(houseCount).ToList();
+            var houses = new DBHouseInfoDAL().SearchHouseInfo(cityName, source, houseCount, withAnyDays, keyword);
 
-            var lstRoomInfo = lstHouseInfo.Select(house =>
+            var lstRoomInfo = houses.Select(house =>
             {
                 var markBGType = string.Empty;
                 int housePrice = (int)house.HousePrice;

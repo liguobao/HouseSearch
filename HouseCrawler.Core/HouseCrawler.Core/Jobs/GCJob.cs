@@ -9,7 +9,7 @@ namespace HouseCrawler.Core.Jobs
 {
     public class GCJob : Job
     {
-        [Invoke(BeginS = "2017-11-30 04:30", Interval = 1000 * 3600 * 6, SkipWhileExecuting = true)]
+        [Invoke(Begin = "2018-01-10 04:30", Interval = 1000 * 3600 * 6, SkipWhileExecuting = true)]
         public void Run()
         {
             LogHelper.Info("开始GC...");

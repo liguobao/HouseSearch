@@ -31,6 +31,8 @@ namespace HouseCrawler.Core
         }
 
 
+
+
         public static HttpClient AndroidHttpClient { get; } = new HttpClient
         {
             DefaultRequestHeaders =

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using HouseCrawler.Core.DBService.DAL;
+using HouseCrawler.Core.DataContent;
 
 namespace HouseCrawler.Core
 {
@@ -50,7 +51,7 @@ namespace HouseCrawler.Core
                                    houseId = houseInfo["houseId"]
                                };
 
-            var tmp = new List<BizHouseInfo>();
+            var tmp = new List<MutualHouseInfo>();
 
           
 
@@ -61,7 +62,7 @@ namespace HouseCrawler.Core
                     continue;
 
                 var desc = houseInfo.houseDescript.ToObject<string>().Replace("😄", "");
-                DataContent.Add(new BizHouseInfo()
+                DataContent.MutualHouseInfos.Add(new MutualHouseInfo()
                 {
                     HouseOnlineURL = houseUrl,
                     HouseLocation = desc,
