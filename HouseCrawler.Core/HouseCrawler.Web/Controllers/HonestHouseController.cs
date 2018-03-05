@@ -112,6 +112,10 @@ namespace HouseCrawler.Web.Controllers
 
         private IEnumerable<HouseInfo> ParseRoom(string html)
         {
+            if (html.Contains("验证码"))
+            {
+                return new List<HouseInfo>();
+            }
             var page = new HtmlParser().Parse(html);
             return page.QuerySelector("ul.listUl").QuerySelectorAll("li[logr]").Select(room =>
             {

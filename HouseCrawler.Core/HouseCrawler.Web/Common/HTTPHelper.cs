@@ -1,26 +1,23 @@
 ﻿using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace HouseCrawler.Web
 {
     public class HTTPHelper
     {
 
-        public static HttpClient Client { get; } = new HttpClient
-        {
-             DefaultRequestHeaders =
-            {
-                { "Accept-Encoding", "gzip, deflate" },
-                {"User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.79 Safari/537.36 Edge/14.14393" }
-            }
-        };
+        public static HttpClient ClientWithHtmlText { get; } = new HttpClient(new HtmlTextHandler()) ;
+
 
         public static string GetHTMLByURL(string url)
         {
             try
             {
-                var html =  Client.GetStringAsync(url).Result;
+                var html = ClientWithHtmlText.GetStringAsync(url).Result;
                 return html;         
             }
             catch (Exception ex)
@@ -46,15 +43,12 @@ namespace HouseCrawler.Web
             return result.Content.ReadAsStringAsync().Result;
         }
 
-
-
-
         public static string GetHTML(string url)
         {
             try
             {
-                Client.DefaultRequestHeaders.ExpectContinue = true;
-                var task = Client.GetStringAsync(url);
+                ClientWithHtmlText.DefaultRequestHeaders.ExpectContinue = true;
+                var task = ClientWithHtmlText.GetStringAsync(url);
                 return task.Result; 
             }
             catch (System.Exception ex)
@@ -68,5 +62,32 @@ namespace HouseCrawler.Web
        
     }
 
+
+    class HtmlTextHandler : HttpClientHandler
+    {
+        protected async override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            var response = await base.SendAsync(request, cancellationToken);
+
+            var contentType = response.Content.Headers.ContentType;
+            contentType.CharSet = await getCharSetAsync(response.Content);
+
+            return response;
+        }
+
+        private async Task<string> getCharSetAsync(HttpContent httpContent)
+        {
+            var charset = httpContent.Headers.ContentType.CharSet;
+            if (!string.IsNullOrEmpty(charset))
+                return charset;
+
+            var content = await httpContent.ReadAsStringAsync();
+            var match = Regex.Match(content, @"charset=(?<charset>.+?)""", RegexOptions.IgnoreCase);
+            if (!match.Success)
+                return charset;
+
+            return match.Groups["charset"].Value;
+        }
+    }
 
 }
