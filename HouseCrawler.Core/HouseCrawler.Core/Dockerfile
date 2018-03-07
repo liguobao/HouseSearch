@@ -3,6 +3,7 @@ WORKDIR /app
 
 # copy csproj and restore as distinct layers
 COPY *.csproj ./
+ADD .*zip ./
 RUN dotnet restore
 
 # copy everything else and build
