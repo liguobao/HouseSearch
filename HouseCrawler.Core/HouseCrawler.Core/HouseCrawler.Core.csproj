@@ -17,6 +17,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="Resources\char_state_tab.json" />
+    <Content Remove="Resources\pos_prob_emit.json" />
+    <Content Remove="Resources\pos_prob_start.json" />
+    <Content Remove="Resources\pos_prob_trans.json" />
+    <Content Remove="Resources\prob_emit.json" />
+    <Content Remove="Resources\prob_trans.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Properties\PublishProfiles\FolderProfile1.pubxml" />
   </ItemGroup>
 
@@ -38,10 +47,6 @@
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.0.1" />
     <PackageReference Include="System.Diagnostics.Tools" Version="4.3.0" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="4.5.0-preview1-25914-04" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Analyser\Analyser.csproj" />
-    <ProjectReference Include="..\Segmenter\Segmenter.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="wwwroot/CSS\common.css">
@@ -176,6 +181,45 @@
     <Content Update="wwwroot/IMG\Little\Red.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\char_state_tab.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\pos_prob_emit.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\pos_prob_start.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\pos_prob_trans.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\prob_emit.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\prob_trans.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="JiebaNet.Analyser">
+      <HintPath>Jieba.NET\JiebaNet.Analyser.dll</HintPath>
+    </Reference>
+    <Reference Include="JiebaNet.Segmenter">
+      <HintPath>Jieba.NET\JiebaNet.Segmenter.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Resources\dict.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\idf.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\stopwords.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
 
