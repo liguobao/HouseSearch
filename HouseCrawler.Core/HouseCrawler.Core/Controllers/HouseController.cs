@@ -104,7 +104,7 @@ namespace HouseCrawler.Core.Controllers
         private IEnumerable<HouseInfo> GetRoomListByIndex(string cnName, int index)
         {
             var url = $"http://{cnName}.58.com/pinpaigongyu/pn/{index}";
-            var htmlResult = HTTPHelper.GetHTMLByURL(url);
+            var htmlResult = PinPaiGongYuHouseCrawler.GetHouseHTML(url);
             var page = new HtmlParser().Parse(htmlResult);
             return page.QuerySelectorAll("li").Where(element => element.HasAttribute("logr")).Select(element =>
             {
@@ -127,7 +127,7 @@ namespace HouseCrawler.Core.Controllers
         private IEnumerable<HouseInfo> GetRoomList(int costFrom, int costTo, string cnName, int index)
         {
             var url = $"http://{cnName}.58.com/pinpaigongyu/pn/{index}/?minprice={costFrom}_{costTo}";
-            var htmlResult = HTTPHelper.GetHTMLByURL(url);
+            var htmlResult = PinPaiGongYuHouseCrawler.GetHouseHTML(url);
             var page = new HtmlParser().Parse(htmlResult);
             return page.QuerySelectorAll("li").Where(element => element.HasAttribute("logr")).Select(element =>
             {
@@ -146,7 +146,7 @@ namespace HouseCrawler.Core.Controllers
         private int GetListSum(int costFrom, int costTo, string cnName)
         {
             var url = $"http://{cnName}.58.com/pinpaigongyu/pn/{1}/?minprice={costFrom}_{costTo}";
-            var htmlResult = HTTPHelper.GetHTMLByURL(url);
+            var htmlResult = PinPaiGongYuHouseCrawler.GetHouseHTML(url);
             var dom = new HtmlParser().Parse(htmlResult);
             var countNode = dom.GetElementsByClassName("listsum").FirstOrDefault()?.QuerySelector("em");
             return Convert.ToInt32((countNode?.TextContent) ?? "0");

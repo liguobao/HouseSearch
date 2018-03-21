@@ -47,15 +47,8 @@ namespace HouseCrawler.Core
         {
             //add NLog to .NET Core
             loggerFactory.AddNLog();
-
-            //Enable ASP.NET Core features (NLog.web) - only needed for ASP.NET Core users
-            app.AddNLogWeb();
-
             //needed for non-NETSTANDARD platforms: configure nlog.config in your project root. NB: you need NLog.Web.AspNetCore package for this. 
-            
-            env.ConfigureNLog("./wwwroot/nlog.config");
-
-           
+            env.ConfigureNLog("Resources/nlog.config");
 
             if (env.IsDevelopment())
             {
@@ -79,9 +72,6 @@ namespace HouseCrawler.Core
 
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-
-            AppSettings.CityJsonFilePath = Path.Combine(env.WebRootPath, "DomainJS//pv.json");
-
             ConnectionStrings.MySQLConnectionString = new ConfigurationBuilder()
              .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json").Build()["ConnectionStrings:MySQLConnectionString"];
@@ -94,9 +84,6 @@ namespace HouseCrawler.Core
             .AddJsonFile("appsettings.json").Build()["DoubanPassword"];
 
             DoubanHTTPHelper.InitCookieCollection();
-
-            DomainProxyInfo.InitDomainProxyInfo(Path.Combine(env.WebRootPath, "availableProxy.json"));
-
           
         }
     }

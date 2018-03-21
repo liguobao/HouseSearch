@@ -12,8 +12,6 @@ namespace HouseCrawler.Core
 {
     public class AppSettings
     {
-        public static string CityJsonFilePath = "";
-
         public static string DoubanAccount { get; set; }
 
         public static string DoubanPassword { get; set; }
