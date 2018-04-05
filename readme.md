@@ -16,20 +16,12 @@
 
 1. ASP.NET MVC4：58HouseSearch\58HouseSearch.sln
 2. ASP.NET Core：58HouseSearch.Core\58HouseSearch.Core.sln（已迁移至VS2017）
-
-
-以上两个版本大体逻辑一致，Core版本为当前线上版本，新增了豆瓣租房小组数据。
-
-下一个版本为HouseCrawler.Core，初步计划以下功能：
-
-1. 爬虫数据固化到数据，优化爬虫策略
-2. 前端页面改版，交互优化，内容引导等
-
+3. ASP.NET Core 2.0：HouseCrawler.Core（Core为爬虫，Web为网站）
 
 ### HouseCrawler.Core版本说明
 
 1. 当前版本已完成数据固化功能，项目代码为“HouseCrawler.Core”。
-2. 此项目已分成HouseCrawler.Core和HouseCrawler.Web，其中Web已经移除了相关爬虫逻辑，Core中有爬虫+Web；
+2. 此项目已分成HouseCrawler.Core和HouseCrawler.Web，其中Web已经移除了相关爬虫逻辑，Core为爬虫相关；
 3. 已上线部分豆瓣数据分析，使用[jieba.net](https://github.com/linezero/jieba.NET)分词提取价格功能已初步完成。
 
 
@@ -37,40 +29,47 @@
 以下是日常更新：
 
 
+### 2018.04.05
+1. 移除Core中网页相关内容+DAL访问数据库的代码
+2. 重写爬虫相关代码，抓到API的均用API替代原来的爬页面
+3. 完善Docker部署
+4. 新增CCB（CCB建融家园）房源数据
+
+
 ### 2017.12.15
-1、 修复了豆瓣爬虫失效问题，新增模拟登陆功能（还没有彻底完成）
-2、 新增Java版本爬虫，下来会使用vscrawler爬虫框架重写爬虫服务。
+1. 修复了豆瓣爬虫失效问题，新增模拟登陆功能（还没有彻底完成）
+2. 新增Java版本爬虫，下来会使用vscrawler爬虫框架重写爬虫服务。
 
 
 ### 2017.07.30
-1、 修复TimeJob时间计算的Bug，已提PR到最新代码，由于TimeJob不维护.NET Standard1.6版本的代码，暂时项目也不会升级到.NET Standard2.0,所以先引入TimeJob源码解决问题
+1.  修复TimeJob时间计算的Bug，已提PR到最新代码，由于TimeJob不维护.NET Standard1.6版本的代码，暂时项目也不会升级到.NET Standard2.0,所以先引入TimeJob源码解决问题
 
 ### 2017.06.24
-1、新增独立Web项目，把网站和爬虫分离
-2、更新分析数据逻辑
+1. 新增独立Web项目，把网站和爬虫分离
+2. 更新分析数据逻辑
 
 
 ### 2017.06.12
-1、引入分词库[jieba.NET](https://github.com/liguobao/jieba.NET) （没有nuget包，暂时以项目的形式引入）
-2、开始做豆瓣数据分析
+1. 引入分词库[jieba.NET](https://github.com/liguobao/jieba.NET) （没有nuget包，暂时以项目的形式引入）
+2. 开始做豆瓣数据分析
 
 ### 2017.06.06
-1、新增根据发布时间过滤数据、修改默认显示数量
-2、调整代码结构，新增log类
+1. 新增根据发布时间过滤数据、修改默认显示数量
+2. 调整代码结构，新增log类
 
 
 ### 2017.06.05
-1、修复了昨天的Bug，顺便删除了PV数据的统计
-2、引入友盟做站点统计（实在是懒得弄...）
-3、已更新到[地图搜房：http://codelover.link:8080/](http://codelover.link:8080/)、同时在[yibaobao.wang:8080](yibaobao.wang:8080)有一个备用站点
+1. 修复了昨天的Bug，顺便删除了PV数据的统计
+2. 引入友盟做站点统计（实在是懒得弄...）
+3. 已更新到[地图搜房：http://codelover.link:8080/](http://codelover.link:8080/)、同时在[yibaobao.wang:8080](yibaobao.wang:8080)有一个备用站点
 
 
 
 ### 2017.06.04
 
-1、初步完成HouseCrawler.Core中的数据固化，线上版本每小时拉取一次数据
-2、前端UI改版初步完成，基本可用
-3、已知bug：发布的时候缺少配置文件，稍后解决
+1. 初步完成HouseCrawler.Core中的数据固化，线上版本每小时拉取一次数据
+2. 前端UI改版初步完成，基本可用
+3. 已知bug：发布的时候缺少配置文件，稍后解决
 
 
 ### 2017.03.11
