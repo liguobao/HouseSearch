@@ -31,9 +31,9 @@ namespace HouseCrawler.Core.Controllers
         {
              DoubanHouseCrawler.CaptureHouseInfo();
             // PinPaiGongYuHouseCrawler.CapturPinPaiHouseInfo();
-            // PeopleRentingCrawler.CapturHouseInfo();
+             //PeopleRentingCrawler.CapturHouseInfo();
 
-            //CCBHouesCrawler.CaptureHouseInfo();
+             //CCBHouesCrawler.CaptureHouseInfo();
             return View();
         }
 
