@@ -10,6 +10,7 @@ namespace HouseCrawler.Core
             PinPaiGongYuHouseCrawler.CapturePinPaiHouseInfo();
             PeopleRentingCrawler.CaptureHouseInfo();
             DoubanHouseCrawler.CaptureHouseInfo();
+            CCBHouesCrawler.CaptureHouseInfo();
         }
     }
 }
