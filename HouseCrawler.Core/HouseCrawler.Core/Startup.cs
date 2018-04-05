@@ -76,14 +76,6 @@ namespace HouseCrawler.Core
              .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json").Build()["ConnectionStrings:MySQLConnectionString"];
 
-            AppSettings.DoubanAccount = new ConfigurationBuilder()
-             .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json").Build()["DoubanAccount"];
-            AppSettings.DoubanPassword = new ConfigurationBuilder()
-             .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json").Build()["DoubanPassword"];
-
-            DoubanHTTPHelper.InitCookieCollection();
           
         }
     }

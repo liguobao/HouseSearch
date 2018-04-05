@@ -1,25 +1,15 @@
-﻿using HouseCrawler.Core.Models;
-using Pomelo.AspNetCore.TimedJob;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Pomelo.AspNetCore.TimedJob;
 
 namespace HouseCrawler.Core
 {
     public class CrawlerJobs : Job
     {
-        [Invoke(Begin = "2018-01-12 00:00", Interval = 1000 * 3600, SkipWhileExecuting = true)]
+        [Invoke(Begin = "2018-04-05 00:00", Interval = 1000 * 3600, SkipWhileExecuting = true)]
         public void Run()
         {
-            //Job要执行的逻辑代码
             PinPaiGongYuHouseCrawler.CapturPinPaiHouseInfo();
-
             PeopleRentingCrawler.CapturHouseInfo();
-
-            DoubanHouseCrawler.CaptureHouseInfoFromConfig();
-
-            HouseSourceInfo.RefreshHouseSourceInfo();
+            DoubanHouseCrawler.CaptureHouseInfo();
         }
     }
 }

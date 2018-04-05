@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using AngleSharp.Parser.Html;
-using System.IO;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using HouseCrawler.Core.DBService.DAL;
 using HouseCrawler.Core.DataContent;
 using RestSharp;
 
@@ -18,31 +14,20 @@ namespace HouseCrawler.Core
 
         private static readonly CrawlerDataContent DataContent = new CrawlerDataContent();
 
-        private static CrawlerDAL crawlerDAL = new CrawlerDAL();
-
         public static void CapturPinPaiHouseInfo()
         {
             foreach (var crawlerConfiguration in DataContent.CrawlerConfigurations.Where(c => c.ConfigurationName
                == ConstConfigurationName.PinPaiGongYu && c.IsEnabled).ToList())
             {
-
-                LogHelper.RunActionNotThrowEx(() => 
+                LogHelper.RunActionNotThrowEx(() =>
                 {
                     var confInfo = JsonConvert.DeserializeObject<dynamic>(crawlerConfiguration.ConfigurationValue);
-
                     for (var index = 0; index < confInfo.pagecount.Value; index++)
                     {
                         var url = $"http://{confInfo.shortcutname.Value}.58.com/pinpaigongyu/pn/{index}";
-                        var htmlDoc = GetHouseHTML(url);
-                        if (string.IsNullOrEmpty(htmlDoc))
-                            continue;
-                        var page = new HtmlParser().Parse(htmlDoc);
-                        var lstLi = page.QuerySelectorAll("li").Where(element => element.HasAttribute("logr"));
-                        if (!lstLi.Any())
-                        {
-                            continue;
-                        }
-                        GetDataOnPageDoc(confInfo, page);
+                        var houseHTML = GetHouseHTML(url);
+                        var houseList = GetDataFromHMTL(confInfo.shortcutname.Value, confInfo.cityname.Value, houseHTML);
+                        DataContent.ApartmentHouseInfos.AddRange(houseList);
                         DataContent.SaveChanges();
                     }
 
@@ -51,16 +36,22 @@ namespace HouseCrawler.Core
             }
         }
 
-        private static void GetDataOnPageDoc(dynamic confInfo, 
-            AngleSharp.Dom.Html.IHtmlDocument page)
+        private static List<ApartmentHouseInfo> GetDataFromHMTL(string shortCutName, string cityName, string houseHTML)
         {
-            foreach (var element in page.QuerySelectorAll("li").Where(element => element.HasAttribute("logr")))
+            List<ApartmentHouseInfo> houseList = new List<ApartmentHouseInfo>();
+            if (string.IsNullOrEmpty(houseHTML))
+                return houseList;
+            var htmlDoc = htmlParser.Parse(houseHTML);
+            var logrList = htmlDoc.QuerySelectorAll("li").Where(element => element.HasAttribute("logr"));
+            if (!logrList.Any())
+                return houseList;
+            foreach (var element in logrList)
             {
                 var houseTitle = element.QuerySelector("h2").TextContent;
                 var houseInfoList = houseTitle.Split(' ');
                 int.TryParse(element.QuerySelector("b").TextContent, out var housePrice);
-                var onlineUrl = $"http://{confInfo.shortcutname.Value}.58.com" + element.QuerySelector("a").GetAttribute("href");
-                if (DataContent.ApartmentHouseInfos.Find(onlineUrl)!=null)
+                var onlineUrl = $"http://{shortCutName}.58.com" + element.QuerySelector("a").GetAttribute("href");
+                if (DataContent.ApartmentHouseInfos.Any(h => h.HouseOnlineURL == onlineUrl))
                     continue;
                 var houseInfo = new ApartmentHouseInfo
                 {
@@ -72,11 +63,12 @@ namespace HouseCrawler.Core
                     Source = ConstConfigurationName.PinPaiGongYu,
                     HousePrice = housePrice,
                     HouseText = houseTitle,
-                    LocationCityName = confInfo.cityname.Value,
+                    LocationCityName = cityName,
                     PubTime = DateTime.Now
                 };
-                DataContent.ApartmentHouseInfos.Add(houseInfo);
+                houseList.Add(houseInfo);
             }
+            return houseList;
         }
 
 
@@ -85,7 +77,6 @@ namespace HouseCrawler.Core
         {
             var client = new RestClient(houseURL);
             var request = new RestRequest(Method.GET);
-            request.AddHeader("postman-token", "0732d31f-5cd8-a621-561d-4a35825beb3f");
             request.AddHeader("connection", "keep-alive");
             request.AddHeader("cookie", "f=n; f=n; f=n; id58=c5/njVqyV8E3W36xBFjjAg==; 58tj_uuid=c94df52b-df72-4d50-bddd-1afda5827d63; new_uv=1; utm_source=; spm=; init_refer=https%253A%252F%252Fwww.bing.com%252F; als=0; new_session=0; commontopbar_new_city_info=2%7C%E4%B8%8A%E6%B5%B7%7Csh; Hm_lvt_dcee4f66df28844222ef0479976aabf1=1521637318; f=n; ppStore_fingerprint=C57B6AC37AFB7EDD553E5DB2C335F4FC3E03018F34D46D58%EF%BC%BF1521637343698; Hm_lpvt_dcee4f66df28844222ef0479976aabf1=1521637344");
             request.AddHeader("cache-control", "no-cache");
@@ -109,7 +100,7 @@ namespace HouseCrawler.Core
             {
                 var confInfo = JsonConvert.DeserializeObject<dynamic>(doubanConf.ConfigurationValue);
                 var url = $"http://{confInfo.shortcutname.Value}.58.com/pinpaigongyu/pn/0";
-                var htmlResult = HTTPHelper.GetHTMLByURL(url);
+                var htmlResult = "";// HTTPHelper.GetHTMLByURL(url);
                 var page = new HtmlParser().Parse(htmlResult);
                 var lstLi = page.QuerySelectorAll("li").Where(element => element.HasAttribute("logr"));
                 if (!lstLi.Any())
@@ -1852,7 +1843,7 @@ namespace HouseCrawler.Core
                 var lst = new List<BizCrawlerConfiguration>();
                 foreach (var cityInfo in lstCity)
                 {
-                    if (cityInfo?.cityName?.Value != null &&cityInfo.shortCut?.Value != null)
+                    if (cityInfo?.cityName?.Value != null && cityInfo.shortCut?.Value != null)
                     {
                         lst.Add(new BizCrawlerConfiguration()
                         {

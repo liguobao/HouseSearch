@@ -7,8 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HouseCrawler.Core", "HouseC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQLScript", "SQLScript", "{91B77EF8-0DF3-478A-9C72-C6A15ACC7FA8}"
 	ProjectSection(SolutionItems) = preProject
-		..\..\..\..\Users\LGB83\Desktop\CrawlerConfigurations.sql = ..\..\..\..\Users\LGB83\Desktop\CrawlerConfigurations.sql
-		..\..\..\..\Users\LGB83\Desktop\HouseInfos.sql = ..\..\..\..\Users\LGB83\Desktop\HouseInfos.sql
+		C:\Users\LGB83\Documents\dumps\Dump20180405-Configurations.sql = C:\Users\LGB83\Documents\dumps\Dump20180405-Configurations.sql
+		C:\Users\LGB83\Documents\dumps\Dump20180405-Sructure.sql = C:\Users\LGB83\Documents\dumps\Dump20180405-Sructure.sql
+		readme.md = readme.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HouseCrawler.Web", "HouseCrawler.Web\HouseCrawler.Web.csproj", "{72958ADC-4E47-4550-928D-3CBD1BE6C741}"

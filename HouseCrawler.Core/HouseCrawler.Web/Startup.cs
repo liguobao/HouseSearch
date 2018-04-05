@@ -38,9 +38,6 @@ namespace HouseCrawler.Web
             //add NLog to .NET Core
             loggerFactory.AddNLog();
 
-            //Enable ASP.NET Core features (NLog.web) - only needed for ASP.NET Core users
-            app.AddNLogWeb();
-
             //needed for non-NETSTANDARD platforms: configure nlog.config in your project root. NB: you need NLog.Web.AspNetCore package for this. 
 
             env.ConfigureNLog("./wwwroot/nlog.config");

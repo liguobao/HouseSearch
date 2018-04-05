@@ -1,35 +1,65 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using HouseCrawler.Core.DBService.DAL;
 using HouseCrawler.Core.DataContent;
+using RestSharp;
 
 namespace HouseCrawler.Core
 {
     public class PeopleRentingCrawler
     {
         private static readonly CrawlerDataContent DataContent = new CrawlerDataContent();
-
         public static void CapturHouseInfo()
         {
-            var peopleRentingConf = DataContent.CrawlerConfigurations.FirstOrDefault(conf=>conf.ConfigurationName== ConstConfigurationName.HuZhuZuFang);
+            var peopleRentingConf = DataContent.CrawlerConfigurations.FirstOrDefault(conf => conf.ConfigurationName == ConstConfigurationName.HuZhuZuFang);
 
             var pageCount = peopleRentingConf != null ? JsonConvert.DeserializeObject<dynamic>(peopleRentingConf.ConfigurationValue).pagecount.Value : 10;
-            var hsHouseOnlineUrl = new CrawlerDAL().GetAllHuzhuzufangHouseOnlineURL();
-            for (var pageIndex = 1;pageIndex< pageCount; pageIndex++)
+            var hsHouseOnlineUrl = new HashSet<string>();
+            for (var pageNum = 1; pageNum < pageCount; pageNum++)
             {
-                var index = pageIndex;
-                LogHelper.RunActionNotThrowEx(() => 
+                LogHelper.RunActionNotThrowEx(() =>
                 {
-                    GetDataByWebAPI(index, hsHouseOnlineUrl);
-                }, "CapturHouseInfo", pageIndex);
+                    string result = getResultFromAPI(pageNum);
+                    List<MutualHouseInfo> houseList = GetHouseData(result);
+                    DataContent.MutualHouseInfos.AddRange(houseList);
+                    DataContent.SaveChanges();
+
+                }, "CapturHouseInfo", pageNum);
             }
 
         }
-        private static void GetDataByWebAPI(int pageNum, HashSet<string> hsHouseOnlineUrl)
+        private static List<MutualHouseInfo> GetHouseData(string result)
+        {
+            List<MutualHouseInfo> houseList = new List<MutualHouseInfo>();
+            var resultJObject = JsonConvert.DeserializeObject<JObject>(result);
+            if (resultJObject == null || resultJObject["head"] == null || !resultJObject["head"]["success"].ToObject<Boolean>())
+            {
+                return houseList;
+            }
+            foreach (var item in resultJObject["houseList"])
+            {
+                MutualHouseInfo houseInfo = new MutualHouseInfo();
+                var houseDesc = item["houseDescript"].ToObject<string>().Replace("😄", "");
+                var houseURL = $"http://www.huzhumaifang.com/Renting/house_detail/id/{item["houseId"]}.html";
+                if (DataContent.MutualHouseInfos.Any(h => h.HouseOnlineURL == houseURL))
+                    continue;
+                houseInfo.HouseOnlineURL = houseURL;
+                houseInfo.HouseLocation = houseDesc;
+                houseInfo.HouseText = houseDesc;
+                houseInfo.HousePrice = item["houseRentPrice"].ToObject<Int32>();
+                houseInfo.DisPlayPrice = item["houseRentPrice"].ToString();
+                houseInfo.DataCreateTime = DateTime.Now;
+                houseInfo.PubTime = item["houseCreateTime"].ToObject<DateTime>();
+                houseInfo.PicURLs = item["bigPicUrls"].ToString();
+                houseInfo.Source = ConstConfigurationName.HuZhuZuFang;
+                houseList.Add(houseInfo);
+            }
+            return houseList;
+
+        }
+        private static string getResultFromAPI(int pageNum)
         {
             var dicParameter = new JObject()
             {
@@ -39,46 +69,17 @@ namespace HouseCrawler.Core
                 {"sellRentType","2" },
                 {"searchCondition","{}" }
             };
-            var postHouseUrl = $"http://www.huzhumaifang.com:8080/hzmf-integration/getHouseList.action?content={JsonConvert.SerializeObject(dicParameter)}";
-            var resultJson = HTTPHelper.GetJsonResultByURL(postHouseUrl);
-            var resultJObject = JsonConvert.DeserializeObject<JObject>(resultJson);
-            var lstHouseInfo = from houseInfo in resultJObject["houseList"]
-                               select new
-                               {
-                                   houseCreateTime = houseInfo["houseCreateTime"],
-                                   houseRentPrice = houseInfo["houseRentPrice"],
-                                   houseDescript = houseInfo["houseDescript"],
-                                   houseId = houseInfo["houseId"]
-                               };
-
-            var tmp = new List<MutualHouseInfo>();
-
-          
-
-            foreach (var houseInfo in lstHouseInfo)
-            {
-                var houseUrl = $"http://www.huzhumaifang.com/Renting/house_detail/id/{houseInfo.houseId.ToObject<Int32>()}.html";
-                if (hsHouseOnlineUrl.Contains(houseUrl))
-                    continue;
-
-                var desc = houseInfo.houseDescript.ToObject<string>().Replace("😄", "");
-                DataContent.MutualHouseInfos.Add(new MutualHouseInfo()
-                {
-                    HouseOnlineURL = houseUrl,
-                    HouseLocation = desc,
-                    HousePrice = houseInfo.houseRentPrice.ToObject<Int32>(),
-                    HouseText = desc,
-                    DataCreateTime = DateTime.Now,
-                    HouseTitle = desc,
-                    DisPlayPrice = houseInfo.houseRentPrice.ToString(),
-                    LocationCityName = "上海",
-                    PubTime = houseInfo.houseCreateTime.ToObject<DateTime>(),
-                    Source = ConstConfigurationName.HuZhuZuFang,
-                });
-            }
-            DataContent.SaveChanges();
+            var client = new RestClient("http://www.huzhumaifang.com:8080/hzmf-integration/getHouseList.action");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("content-type", "application/x-www-form-urlencoded");
+            request.AddHeader("cache-control", "no-cache");
+            request.AddHeader("user-agent", "Apache-HttpClient/UNAVAILABLE (java 1.4)");
+            request.AddHeader("host", "www.huzhumaifang.com:8080");
+            request.AddParameter("application/x-www-form-urlencoded", $"content={JsonConvert.SerializeObject(dicParameter)}", ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            string result = response.Content;
+            return result;
         }
 
-       
     }
 }

@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace HouseCrawler.Core
 {
@@ -79,6 +76,12 @@ namespace HouseCrawler.Core
         /// 状态（0:未处理 1：有效 2:已作废）
         /// </summary>
         public int Status { get; set; }
+
+        /// <summary>
+        /// 图片地址
+        /// </summary>
+        [MaxLength(1024)]
+        public string PicURLs { get; set; }
 
     }
 }
