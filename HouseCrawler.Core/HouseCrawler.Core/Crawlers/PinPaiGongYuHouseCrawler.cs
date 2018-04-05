@@ -14,7 +14,7 @@ namespace HouseCrawler.Core
 
         private static readonly CrawlerDataContent DataContent = new CrawlerDataContent();
 
-        public static void CapturPinPaiHouseInfo()
+        public static void CapturePinPaiHouseInfo()
         {
             foreach (var crawlerConfiguration in DataContent.CrawlerConfigurations.Where(c => c.ConfigurationName
                == ConstConfigurationName.PinPaiGongYu && c.IsEnabled).ToList())

@@ -7,6 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HouseCrawler.Core", "HouseC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQLScript", "SQLScript", "{91B77EF8-0DF3-478A-9C72-C6A15ACC7FA8}"
 	ProjectSection(SolutionItems) = preProject
+		CCBHouse_City.txt = CCBHouse_City.txt
 		C:\Users\LGB83\Documents\dumps\Dump20180405-Configurations.sql = C:\Users\LGB83\Documents\dumps\Dump20180405-Configurations.sql
 		C:\Users\LGB83\Documents\dumps\Dump20180405-Sructure.sql = C:\Users\LGB83\Documents\dumps\Dump20180405-Sructure.sql
 		readme.md = readme.md

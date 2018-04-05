@@ -1,7 +1,0 @@
-2018-04-05 17:05:57.6582 Error Parsing configuration from D:\code\github\58HouseSearch\HouseCrawler.Core\HouseCrawler.Core\Resources/nlog.config failed. Exception: NLog.NLogConfigurationException: Exception when parsing D:\code\github\58HouseSearch\HouseCrawler.Core\HouseCrawler.Core\Resources/nlog.config.  ---> NLog.NLogConfigurationException: Target allfile not found.
-   at NLog.Config.XmlLoggingConfiguration.ParseLoggerElement(NLogXmlElement loggerElement, IList`1 rulesCollection)
-   at NLog.Config.XmlLoggingConfiguration.ParseRulesElement(NLogXmlElement rulesElement, IList`1 rulesCollection)
-   at NLog.Config.XmlLoggingConfiguration.ParseNLogElement(NLogXmlElement nlogElement, String filePath, Boolean autoReloadDefault)
-   at NLog.Config.XmlLoggingConfiguration.Initialize(XmlReader reader, String fileName, Boolean ignoreErrors)
-   --- End of inner exception stack trace ---
-2018-04-05 17:05:57.6582 Warn Failed loading config from D:\code\github\58HouseSearch\HouseCrawler.Core\HouseCrawler.Core\Resources/nlog.config. Invalid XML?

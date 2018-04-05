@@ -29,6 +29,8 @@ namespace HouseCrawler.Core
 
         public static string PinPaiGongYu = "pinpaigongyu";
 
+        public static string CCBHouse = "ccbhouse";
+
         public static string HuZhuZuFang = "huzhuzufang";
 
         public static string CityHouseInfo = "cityhouse";

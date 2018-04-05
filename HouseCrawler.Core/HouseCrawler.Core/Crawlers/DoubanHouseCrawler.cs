@@ -6,6 +6,8 @@ using HouseCrawler.Core.Models;
 using HouseCrawler.Core.Common;
 using HouseCrawler.Core.DataContent;
 using RestSharp;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace HouseCrawler.Core
 {
@@ -50,36 +52,35 @@ namespace HouseCrawler.Core
         {
             List<DoubanHouseInfo> lstHouseInfo = new List<DoubanHouseInfo>();
             var apiURL = $"https://api.douban.com/v2/group/{groupID}/topics?start={pageIndex * 50}";
-            var doubanTopic = GetAPIResult(apiURL);
-            if (doubanTopic != null && doubanTopic.topics != null)
+            var result = GetAPIResult(apiURL);
+            var resultJObject = JsonConvert.DeserializeObject<JObject>(result);
+            foreach (var topic in resultJObject["topics"])
             {
-                foreach (var topic in doubanTopic.topics)
+                if (DataContent.DoubanHouseInfos.Any(h => h.HouseOnlineURL == topic["share_url"].ToString()))
+                    continue;
+                var housePrice = JiebaTools.GetHousePrice(topic["content"].ToString());
+                var house = new DoubanHouseInfo()
                 {
-                    if (DataContent.DoubanHouseInfos.Any(h => h.HouseOnlineURL == topic.share_url))
-                        continue;
-                    var housePrice = JiebaTools.GetHousePrice(topic.content);
-                    var house = new DoubanHouseInfo()
-                    {
-                        HouseLocation = topic.title,
-                        HouseTitle = topic.title,
-                        HouseOnlineURL = topic.share_url,
-                        HouseText = topic.content,
-                        HousePrice = JiebaTools.GetHousePrice(topic.content),
-                        IsAnalyzed = true,
-                        DisPlayPrice = housePrice > 0 ? $"{housePrice}元" : "",
-                        Source = ConstConfigurationName.Douban,
-                        LocationCityName = cityName,
-                        Status = 1,
-                        PubTime = DateTime.Parse(topic.created),
-                        DataCreateTime = DateTime.Now,
-                    };
-                    lstHouseInfo.Add(house);
-                }
+                    HouseLocation = topic["title"].ToString(),
+                    HouseTitle = topic["title"].ToString(),
+                    HouseOnlineURL = topic["share_url"].ToString(),
+                    HouseText = topic.ToString(),
+                    HousePrice = housePrice,
+                    IsAnalyzed = true,
+                    DisPlayPrice = housePrice > 0 ? $"{housePrice}元" : "",
+                    Source = ConstConfigurationName.Douban,
+                    LocationCityName = cityName,
+                    Status = 1,
+                    PubTime = topic["created"].ToObject<DateTime>(),
+                    DataCreateTime = DateTime.Now,
+                };
+                lstHouseInfo.Add(house);
             }
+
             return lstHouseInfo;
         }
 
-        private static DoubanTopic GetAPIResult(string apiURL)
+        private static string GetAPIResult(string apiURL)
         {
 
             var client = new RestClient(apiURL);
@@ -96,9 +97,9 @@ namespace HouseCrawler.Core
             IRestResponse response = client.Execute(request);
             if (response.IsSuccessful)
             {
-                return Newtonsoft.Json.JsonConvert.DeserializeObject<DoubanTopic>(response.Content);
+                return response.Content;
             }
-            return null;
+            return "";
         }
 
     }

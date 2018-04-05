@@ -14,6 +14,7 @@ namespace HouseCrawler.Core
 
         public DbSet<BizCrawlerConfiguration> CrawlerConfigurations { get; set; }
 
+        public DbSet<CCBHouseInfo> CCBHouseInfos { get; set; }
 
         public DbSet<BizCrawlerLog> CrawlerLogs { get; set; }
         /// <inheritdoc />

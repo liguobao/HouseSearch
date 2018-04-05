@@ -11,7 +11,9 @@ namespace HouseCrawler.Core
     public class PeopleRentingCrawler
     {
         private static readonly CrawlerDataContent DataContent = new CrawlerDataContent();
-        public static void CapturHouseInfo()
+
+
+        public static void CaptureHouseInfo()
         {
             var peopleRentingConf = DataContent.CrawlerConfigurations.FirstOrDefault(conf => conf.ConfigurationName == ConstConfigurationName.HuZhuZuFang);
 
@@ -46,8 +48,9 @@ namespace HouseCrawler.Core
                 if (DataContent.MutualHouseInfos.Any(h => h.HouseOnlineURL == houseURL))
                     continue;
                 houseInfo.HouseOnlineURL = houseURL;
+                houseInfo.HouseTitle = houseDesc;
                 houseInfo.HouseLocation = houseDesc;
-                houseInfo.HouseText = houseDesc;
+                houseInfo.HouseText = item.ToString();
                 houseInfo.HousePrice = item["houseRentPrice"].ToObject<Int32>();
                 houseInfo.DisPlayPrice = item["houseRentPrice"].ToString();
                 houseInfo.DataCreateTime = DateTime.Now;
@@ -59,6 +62,8 @@ namespace HouseCrawler.Core
             return houseList;
 
         }
+
+
         private static string getResultFromAPI(int pageNum)
         {
             var dicParameter = new JObject()
