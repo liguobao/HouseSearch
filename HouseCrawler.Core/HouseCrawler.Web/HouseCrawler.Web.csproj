@@ -164,7 +164,7 @@
     <Content Update="wwwroot/IMG\Little\Red.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\css\common.css">
+    <Content Update="wwwroot\CSS\common.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
