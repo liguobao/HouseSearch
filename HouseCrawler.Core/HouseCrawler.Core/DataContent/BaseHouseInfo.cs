@@ -16,7 +16,7 @@ namespace HouseCrawler.Core
         [MaxLength(2048)]
         public string HouseTitle { get; set; }
 
-        [MaxLength(4096)]
+        [MaxLength(8000)]
         public string HouseText { get; set; }
 
         /// <summary>

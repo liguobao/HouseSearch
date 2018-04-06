@@ -36,7 +36,7 @@ namespace HouseCrawler.Core
                             captrueHouseCount = captrueHouseCount + lstHouseInfo.Count;
                         }
 
-                    }, "CaptureHouseInfoFromConfig", doubanConf);
+                    }, "DoubanHouseCrawler CaptureHouseInfo ", doubanConf);
                 }
                 HouseSourceInfo.RefreshHouseSourceInfo();
 
@@ -69,7 +69,7 @@ namespace HouseCrawler.Core
                     HouseLocation = topic["title"].ToString(),
                     HouseTitle = topic["title"].ToString(),
                     HouseOnlineURL = topic["share_url"].ToString(),
-                    HouseText = topic.ToString(),
+                    HouseText = topic["content"].ToString(),
                     HousePrice = housePrice,
                     IsAnalyzed = true,
                     DisPlayPrice = housePrice > 0 ? $"{housePrice}元" : "",
