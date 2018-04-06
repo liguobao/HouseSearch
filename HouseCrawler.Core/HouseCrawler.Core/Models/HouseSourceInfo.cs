@@ -1,4 +1,5 @@
 ﻿
+using HouseCrawler.Core.DataContent;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace HouseCrawler.Core.Models
 
         public static void RefreshHouseSourceInfo()
         {
-            var lstCityHouse = ""; //new DBHouseSourceInfoDAL().GetHouseSourceInfoList();
+            var lstCityHouse = HouseSourceRepository.GetHouseSourceInfoList();
             var config = DataContent.CrawlerConfigurations.FirstOrDefault(c => c.ConfigurationName == ConstConfigurationName.CityHouseInfo);
             if (config == null)
             {
