@@ -8,9 +8,6 @@ namespace HouseCrawler.Web
 {
     public class DoubanHouseCrawler
     {
-        private static readonly CrawlerDataContent DataContent = new CrawlerDataContent();
-
-       
 
         public static List<DoubanHouseInfo> GetHouseData(string groupID, string cityName, int pageIndex)
         {

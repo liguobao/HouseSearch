@@ -10,6 +10,12 @@ namespace HouseCrawler.Web
     {
         private static HtmlParser htmlParser = new HtmlParser();
 
+        public static List<ApartmentHouseInfo> GetHouseData(string shortCutName, string cityName, string houseURL)
+        {
+            var html = GetHouseHTML(houseURL);
+            return GetDataFromHMTL(shortCutName, cityName, html);
+        }
+
         private static List<ApartmentHouseInfo> GetDataFromHMTL(string shortCutName, string cityName, string houseHTML)
         {
             List<ApartmentHouseInfo> houseList = new List<ApartmentHouseInfo>();

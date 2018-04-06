@@ -65,7 +65,6 @@ namespace HouseCrawler.Web
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            AppSettings.CityJsonFilePath = Path.Combine(env.WebRootPath, "DomainJS//pv.json");
 
             ConnectionStrings.MySQLConnectionString = new ConfigurationBuilder()
              .SetBasePath(Directory.GetCurrentDirectory())

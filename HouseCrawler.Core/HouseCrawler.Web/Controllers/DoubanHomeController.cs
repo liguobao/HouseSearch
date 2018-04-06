@@ -24,14 +24,12 @@ namespace HouseCrawler.Web.Controllers
         {
             if (string.IsNullOrEmpty(groupID))
                 groupID = "shanghaizufang";
-            var url = $"https://www.douban.com/group/{groupID}/discussion?start={index*25}";
-            var htmlResult = HTTPHelper.GetHTML(url);
-            var page = new HtmlParser().Parse(htmlResult);
-            var lstRoomInfo = page.QuerySelectorAll("td.title").Select(item => new HouseInfo()
+             var houses = DoubanHouseCrawler.GetHouseData(groupID, "", index);
+            var lstRoomInfo = houses.Select(item => new HouseInfo()
             {
-                HouseTitle = item.QuerySelector("a").GetAttribute("title"),
-                HouseURL = item.QuerySelector("a").GetAttribute("href"),
-                HouseLocation = item.QuerySelector("a").GetAttribute("title"),
+                HouseTitle = item.HouseTitle,
+                HouseURL = item.HouseOnlineURL,
+                HouseLocation = item.HouseTitle,
                 Money ="暂无"
             });
             return Json(new { IsSuccess = true, HouseInfos = lstRoomInfo });

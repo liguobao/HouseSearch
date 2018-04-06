@@ -8,10 +8,10 @@ namespace HouseCrawler.Web
 {
     public class PeopleRentingCrawler
     {
-        private static readonly CrawlerDataContent DataContent = new CrawlerDataContent();
-
-        public static List<MutualHouseInfo> GetHouseData(string result)
+        public static List<MutualHouseInfo> GetHouseData(int pageNum)
         {
+            var result = getResultFromAPI(pageNum);
+
             List<MutualHouseInfo> houseList = new List<MutualHouseInfo>();
             var resultJObject = JsonConvert.DeserializeObject<JObject>(result);
             if (resultJObject == null || resultJObject["head"] == null || !resultJObject["head"]["success"].ToObject<Boolean>())
@@ -40,8 +40,7 @@ namespace HouseCrawler.Web
 
         }
 
-
-        public static string getResultFromAPI(int pageNum)
+        private static string getResultFromAPI(int pageNum)
         {
             var dicParameter = new JObject()
             {
