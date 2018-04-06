@@ -12,6 +12,7 @@
     <PackageReference Include="NLog.Extensions.Logging" Version="1.0.0" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.5.1" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.0.1" />
+    <PackageReference Include="RestSharp" Version="106.2.1" />
   </ItemGroup>
 
   <ItemGroup>

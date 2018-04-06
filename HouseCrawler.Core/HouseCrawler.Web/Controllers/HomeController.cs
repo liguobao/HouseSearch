@@ -66,6 +66,9 @@ namespace HouseCrawler.Core.Controllers
             {
                 return Json(new { IsSuccess = false , error="请输入豆瓣小组Group和城市名称。" });
             }
+
+
+
             var cityInfo = $"{{ 'groupid':'{doubanGroup}','cityname':'{cityName}','pagecount':5}}";
             var doubanConfig = dataContent.CrawlerConfigurations
                 .FirstOrDefault(c => c.ConfigurationName == ConstConfigurationName.Douban && c.ConfigurationValue == cityInfo);

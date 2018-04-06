@@ -1,38 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using HouseCrawler.Core.DataContent;
 using RestSharp;
 
-namespace HouseCrawler.Core
+namespace HouseCrawler.Web
 {
     public class PeopleRentingCrawler
     {
         private static readonly CrawlerDataContent DataContent = new CrawlerDataContent();
 
-
-        public static void CaptureHouseInfo()
-        {
-            var peopleRentingConf = DataContent.CrawlerConfigurations.FirstOrDefault(conf => conf.ConfigurationName == ConstConfigurationName.HuZhuZuFang);
-
-            var pageCount = peopleRentingConf != null ? JsonConvert.DeserializeObject<dynamic>(peopleRentingConf.ConfigurationValue).pagecount.Value : 10;
-            var hsHouseOnlineUrl = new HashSet<string>();
-            for (var pageNum = 1; pageNum < pageCount; pageNum++)
-            {
-                LogHelper.RunActionNotThrowEx(() =>
-                {
-                    string result = getResultFromAPI(pageNum);
-                    List<MutualHouseInfo> houseList = GetHouseData(result);
-                    DataContent.MutualHouseInfos.AddRange(houseList);
-                    DataContent.SaveChanges();
-
-                }, "CapturHouseInfo", pageNum);
-            }
-
-        }
-        private static List<MutualHouseInfo> GetHouseData(string result)
+        public static List<MutualHouseInfo> GetHouseData(string result)
         {
             List<MutualHouseInfo> houseList = new List<MutualHouseInfo>();
             var resultJObject = JsonConvert.DeserializeObject<JObject>(result);
@@ -45,8 +23,6 @@ namespace HouseCrawler.Core
                 MutualHouseInfo houseInfo = new MutualHouseInfo();
                 var houseDesc = item["houseDescript"].ToObject<string>().Replace("😄", "");
                 var houseURL = $"http://www.huzhumaifang.com/Renting/house_detail/id/{item["houseId"]}.html";
-                if (DataContent.MutualHouseInfos.Any(h => h.HouseOnlineURL == houseURL))
-                    continue;
                 houseInfo.HouseOnlineURL = houseURL;
                 houseInfo.HouseTitle = houseDesc;
                 houseInfo.HouseLocation = houseDesc;
@@ -56,7 +32,7 @@ namespace HouseCrawler.Core
                 houseInfo.DataCreateTime = DateTime.Now;
                 houseInfo.LocationCityName = "上海";
                 houseInfo.PubTime = item["houseCreateTime"].ToObject<DateTime>();
-                houseInfo.PicURLs = item["bigPicUrls"].ToString();
+              
                 houseInfo.Source = ConstConfigurationName.HuZhuZuFang;
                 houseList.Add(houseInfo);
             }
@@ -65,7 +41,7 @@ namespace HouseCrawler.Core
         }
 
 
-        private static string getResultFromAPI(int pageNum)
+        public static string getResultFromAPI(int pageNum)
         {
             var dicParameter = new JObject()
             {
