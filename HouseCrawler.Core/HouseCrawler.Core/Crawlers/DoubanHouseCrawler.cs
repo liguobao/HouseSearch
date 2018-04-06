@@ -38,8 +38,6 @@ namespace HouseCrawler.Core
 
                     }, "DoubanHouseCrawler CaptureHouseInfo ", doubanConf);
                 }
-                HouseSourceInfo.RefreshHouseSourceInfo();
-
                 BizCrawlerLog.SaveLog("爬取豆瓣租房数据", $"本次共爬取到{captrueHouseCount}条数据。", 1);
             }
             catch (Exception ex)
