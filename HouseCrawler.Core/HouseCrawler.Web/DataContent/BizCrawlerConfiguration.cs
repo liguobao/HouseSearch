@@ -33,6 +33,8 @@ namespace HouseCrawler.Web
 
         public static string CityHouseInfo = "cityhouse";
 
+        public static string CCBHouse = "ccbhouse";
+
 
         public static string ConvertToDisPlayName(string configurationName)
         {

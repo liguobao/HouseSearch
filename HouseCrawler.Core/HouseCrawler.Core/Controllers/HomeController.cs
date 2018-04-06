@@ -11,7 +11,7 @@ namespace HouseCrawler.Core.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            return View(HouseSourceInfo.LoadCityHouseInfo());
+            return View(HouseDashboard.LoadCityDashboards());
         }
 
         public IActionResult HouseList()

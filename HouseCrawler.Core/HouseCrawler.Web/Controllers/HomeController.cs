@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using HouseCrawler.Web.Models;
 using HouseCrawler.Web.Common;
 using HouseCrawler.Web;
-using HouseCrawler.Web.DAL;
+using HouseCrawler.Web.DataContent;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,7 +17,8 @@ namespace HouseCrawler.Core.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            return View(HouseSourceInfo.LoadCityHouseInfo());
+            HouseDashboard.RefreshDashboard();
+            return View(HouseDashboard.LoadDashboard());
         }
 
         public IActionResult HouseList()
@@ -32,8 +31,8 @@ namespace HouseCrawler.Core.Controllers
         {
             try
             {
-                var lstHouseInfo = new DBHouseInfoDAL().SearchHouseInfo(cityName, source, houseCount, withAnyDays, keyword);
-                var lstRoomInfo = lstHouseInfo.Select(house =>
+                var houseList = CrawlerDataDapper.SearchHouseInfo(cityName, source, houseCount, withAnyDays, keyword);
+                var rooms = houseList.Select(house =>
                 {
                     var markBGType = string.Empty;
                     int housePrice = (int)house.HousePrice;
@@ -53,7 +52,7 @@ namespace HouseCrawler.Core.Controllers
                         DisplaySource = ConstConfigurationName.ConvertToDisPlayName(house.Source)
                     };
                 });
-                 return Json(new { IsSuccess = true, HouseInfos = lstRoomInfo });
+                 return Json(new { IsSuccess = true, HouseInfos = rooms });
             }catch(Exception ex)
             {
                 return Json(new { IsSuccess = false, error=ex.ToString() });

@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace HouseCrawler.Web.DBService.Model
+namespace HouseCrawler.Web.DataContent
 {
-    public class DBHouseSourceInfo
+    public class DBHouseDashboard
     {
         public string CityName { get; set; }
 

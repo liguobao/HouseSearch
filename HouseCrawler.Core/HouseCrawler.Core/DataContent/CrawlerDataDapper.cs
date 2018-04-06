@@ -6,30 +6,30 @@ using MySql.Data.MySqlClient;
 
 namespace HouseCrawler.Core.DataContent
 {
-    public class HouseSourceRepository
+    public class CrawlerDataDapper
     {
         static internal IDbConnection Connection => new MySqlConnection(ConnectionStrings.MySQLConnectionString);
 
 
-        public static List<DBHouseSourceInfo> GetHouseSourceInfoList()
+        public static List<DBHouseDashboard> GetHouseSourceInfoList()
         {
             using (IDbConnection dbConnection = Connection)
             {
                 dbConnection.Open();
-                var apartment = dbConnection.Query<DBHouseSourceInfo>(@"SELECT 
+                var apartment = dbConnection.Query<DBHouseDashboard>(@"SELECT 
                                 LocationCityName AS CityName, Source, COUNT(id) AS HouseSum
                             FROM
                                 housecrawler.ApartmentHouseInfos
                             GROUP BY LocationCityName, Source;");
 
 
-                var douban = dbConnection.Query<DBHouseSourceInfo>(@"SELECT 
+                var douban = dbConnection.Query<DBHouseDashboard>(@"SELECT 
                                 LocationCityName AS CityName, Source, COUNT(id) AS HouseSum
                             FROM
                                 housecrawler.DoubanHouseInfos
                             GROUP BY LocationCityName, Source;");
 
-                var mutual = dbConnection.Query<DBHouseSourceInfo>(@"SELECT 
+                var mutual = dbConnection.Query<DBHouseDashboard>(@"SELECT 
                                 LocationCityName AS CityName, Source, COUNT(id) AS HouseSum
                             FROM
                                 housecrawler.MutualHouseInfos

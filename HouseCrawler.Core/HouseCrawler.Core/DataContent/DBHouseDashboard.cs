@@ -2,7 +2,7 @@
 
 namespace HouseCrawler.Core.DataContent
 {
-    public class DBHouseSourceInfo
+    public class DBHouseDashboard
     {
         public string CityName { get; set; }
 

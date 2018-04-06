@@ -1,13 +1,12 @@
-﻿
-using HouseCrawler.Core.DataContent;
+﻿using HouseCrawler.Web.DataContent;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
-namespace HouseCrawler.Core.Models
+
+namespace HouseCrawler.Web.Models
 {
-    public class HouseSourceInfo
+    public class HouseDashboard
     {
         public string CityName { get; set; }
 
@@ -17,12 +16,15 @@ namespace HouseCrawler.Core.Models
 
         public DateTime UpdateTime { get; set; }
 
-        private static readonly CrawlerDataContent DataContent = new CrawlerDataContent();
+        private static CrawlerDataContent DataContent = new CrawlerDataContent();
 
-
-        public static void RefreshHouseSourceInfo()
+        public static void RefreshDashboard()
         {
-            var lstCityHouse = HouseSourceRepository.GetHouseSourceInfoList();
+            var cityDashboards = CrawlerDataDapper.GetHouseDashboard();
+            if (cityDashboards == null || cityDashboards.Count() == 0)
+            {
+                return;
+            }
             var config = DataContent.CrawlerConfigurations.FirstOrDefault(c => c.ConfigurationName == ConstConfigurationName.CityHouseInfo);
             if (config == null)
             {
@@ -30,7 +32,7 @@ namespace HouseCrawler.Core.Models
                 {
                     ConfigurationKey = 0,
                     ConfigurationName = ConstConfigurationName.CityHouseInfo,
-                    ConfigurationValue = Newtonsoft.Json.JsonConvert.SerializeObject(lstCityHouse),
+                    ConfigurationValue = Newtonsoft.Json.JsonConvert.SerializeObject(cityDashboards),
                     IsEnabled = true
                 };
                 DataContent.Add(config);
@@ -40,7 +42,7 @@ namespace HouseCrawler.Core.Models
             {
                 config.ConfigurationKey = 0;
                 config.ConfigurationName = ConstConfigurationName.CityHouseInfo;
-                config.ConfigurationValue = Newtonsoft.Json.JsonConvert.SerializeObject(lstCityHouse);
+                config.ConfigurationValue = Newtonsoft.Json.JsonConvert.SerializeObject(cityDashboards);
                 config.IsEnabled = true;
                 DataContent.SaveChanges();
             }
@@ -48,13 +50,13 @@ namespace HouseCrawler.Core.Models
         }
 
 
-        public static List<HouseSourceInfo> LoadCityHouseInfo()
+        public static List<HouseDashboard> LoadDashboard()
         {
-            var lstCityHouseInfo = new List<HouseSourceInfo>();
-            var config = DataContent.CrawlerConfigurations.FirstOrDefault(c => c.ConfigurationName == ConstConfigurationName.CityHouseInfo);
+            var lstCityHouseInfo = new List<HouseDashboard>();
+            BizCrawlerConfiguration config = DataContent.CrawlerConfigurations.FirstOrDefault(c => c.ConfigurationName == ConstConfigurationName.CityHouseInfo);
             if (config != null)
             {
-                lstCityHouseInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<List<HouseSourceInfo>>(config.ConfigurationValue);
+                lstCityHouseInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<List<HouseDashboard>>(config.ConfigurationValue);
             }
             return lstCityHouseInfo;
         }
@@ -62,5 +64,5 @@ namespace HouseCrawler.Core.Models
     }
 
 
-   
+
 }
