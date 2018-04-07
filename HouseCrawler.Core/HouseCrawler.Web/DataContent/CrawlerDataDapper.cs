@@ -17,7 +17,7 @@ namespace HouseCrawler.Web.DataContent
             { ConstConfigurationName.CCBHouse, "CCBHouseInfos"}
         };
 
-        static internal IDbConnection Connection => new MySqlConnection(ConnectionStrings.MySQLConnectionString);
+       protected static internal IDbConnection Connection => new MySqlConnection(ConnectionStrings.MySQLConnectionString);
 
 
         public static IEnumerable<DBHouseInfo> SearchHouseInfo(string cityName, string source = "",
@@ -38,9 +38,6 @@ namespace HouseCrawler.Web.DataContent
             }
 
         }
-
-
-
 
         public static IEnumerable<DBHouseInfo> Search(string cityName, string source = "",
             int houseCount = 100, int withinAnyDays = 7, string keyword = "")
@@ -64,6 +61,30 @@ namespace HouseCrawler.Web.DataContent
                         KeyWord = $"%{keyword}%",
                         PubTime = DateTime.Now.Date.AddDays(-withinAnyDays)
                     });
+            }
+        }
+
+
+
+
+        public static DBHouseInfo GetHouseByOnlineURL(string onlineURL)
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                dbConnection.Open();
+                foreach (var key in dicHouseTableName.Keys)
+                {
+                    var house = dbConnection.Query<DBHouseInfo>($"SELECT * FROM {GetTableName(key)} where HouseOnlineURL = @HouseOnlineURL",
+                     new
+                     {
+                         HouseOnlineURL = onlineURL
+                     }).FirstOrDefault();
+                    if (house != null)
+                    {
+                        return house;
+                    }
+                }
+                return null;
             }
         }
 

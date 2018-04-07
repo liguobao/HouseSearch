@@ -29,7 +29,9 @@ define(['mapSignleton', 'city', 'transfer'], function(mapSignleton, city, transf
 
                 var displayMoney = money ? "  租金：" + money : "";
                 var sourceContent = displaySource ? " 来源：" + displaySource : "";
-                rentMarker.content = "<div><a target = '_blank' href='" + href + "'>房源：" + address + displayMoney + sourceContent +"</a><div>"
+                var onlineURL = "<a target='_blank' href='" + href + "'>房源：" + address + displayMoney + sourceContent + "  </a>";
+                var starURL = "<a class='am-icon-star am-icon-f'>收藏</a> ";
+                rentMarker.content = "<div>" + onlineURL + starURL + "<div>"
                 rentMarker.on('click', function(e) {
                     transfer.add(e, address);
                 });

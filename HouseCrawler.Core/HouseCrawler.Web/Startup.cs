@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -28,21 +29,29 @@ namespace HouseCrawler.Web
         {
             services.AddMvc();
             services.Configure<ConnectionStrings>(Configuration);
-            //services.AddTimedJob();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            // 添加 Cook 服务
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(options =>
+            {
+                options.LoginPath = "/Account/LogIn";
+                options.LogoutPath = "/Account/LogOff";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
-        { 
+        {
             //add NLog to .NET Core
             loggerFactory.AddNLog();
 
             //needed for non-NETSTANDARD platforms: configure nlog.config in your project root. NB: you need NLog.Web.AspNetCore package for this. 
-
             env.ConfigureNLog("./wwwroot/nlog.config");
 
             loggerFactory.AddConsole();
+
+            app.UseAuthentication();
 
             if (env.IsDevelopment())
             {
@@ -53,9 +62,7 @@ namespace HouseCrawler.Web
                 app.UseExceptionHandler("/Error");
             }
 
-            //使用TimedJob
-            // app.UseTimedJob();
-
+         
             app.UseStaticFiles();
 
             app.UseMvc(routes =>
