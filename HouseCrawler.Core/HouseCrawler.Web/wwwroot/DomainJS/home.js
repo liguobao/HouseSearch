@@ -38,16 +38,25 @@ require(['domready!', 'jquery', 'AMUI', 'mapController', 'city', 'commuteGo'], f
     if (!isMobile()) {
         $('#search-offcanvas').offCanvas({ effect: 'overlay' });
         $("#btnCloseTransfer").hide();
+        $("#divStatement").hide();
+        $("#divWorkTransfer").show();
+        $("#divGradientList").show();
     } else {
-        $("#btnWorkTransfer").hide();
+        $("#divWorkTransfer").hide();
         $("#divGradientList").hide();
         $("#btnCloseTransfer").show();
+        $("#mobileWorkLocation").show();
     }
 
 
     $("#btnCloseTransfer").on("click", function () {
         $("#transfer-panel").hide();
     });
+
+    $("body").on("click", ".amap-info-close", function () {
+        $("#transfer-panel").html("");
+    });
+
 
     $(".amap-sug-result").css("z-index", 9999);
 })

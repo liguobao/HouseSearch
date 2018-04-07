@@ -74,7 +74,12 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
         // require r.js uglify 方法暂时不支持箭头函数语法，使用 bind 实现
         AMap.event.addListener(new AMap.Autocomplete({
             input: "work-location"
-        }), "select", function(e) { workLocation.onSelected(e); }.bind(workLocation));
+        }), "select", function (e) { workLocation.onSelected(e); }.bind(workLocation));
+
+        AMap.event.addListener(new AMap.Autocomplete({
+            input: "mobile-work-location"
+        }), "select", function (e) { workLocation.onSelected(e); }.bind(workLocation));
+
 
         if (dataResource == "douban" || dataResource == "houselist") {
             _map.setCity(helper.getQueryString("cityname"));

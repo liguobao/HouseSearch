@@ -32,9 +32,10 @@ define(['mapSignleton', 'city', 'transfer'], function(mapSignleton, city, transf
                 rentMarker.content = "<div><a target = '_blank' href='" + href + "'>房源：" + address + displayMoney + sourceContent +"</a><div>"
                 rentMarker.on('click', function(e) {
                     transfer.add(e, address);
-                    $(".amap-info-close").on("click", function () {
-                        $("#transfer-panel").hide();
-                    });
+                });
+
+                rentMarker.on('click', function (e) {
+                    transfer.add(e, address);
                 });
             }
         })

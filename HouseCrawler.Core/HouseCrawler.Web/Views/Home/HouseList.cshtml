@@ -30,21 +30,27 @@
 <body>
     <div id="container"></div>
 
-    <div style="position:absolute;color:red;">
-        <p> 所有的房源信息均来自网络，本网站不对其真实性负责，特此声明。首次载入无数据可尝试【F5】强制刷新....问题反馈：codelover@qq.com</p>
+    <div style="position:absolute;color:red;" id="divStatement" hidden>
+        <p> 特此声明:房源信息均来自网络，本网站不对其真实性负责。首次载入无数据可尝试【F5】强制刷新.问题反馈：codelover@qq.com</p>
         <br />
     </div>
+    <div style="margin-top:0.5%;position: absolute;" id="mobileWorkLocation" hidden>
+        <div>
+            <span style="color:green;">工作地点: </span><input id="mobile-work-location" type="text">
+        </div>
+    </div>
 
-    <div class="button-panel-offcanvas">
+
+    <div class="button-panel-offcanvas" id="divWorkTransfer"  hidden >
         <!-- 按钮触发器， 需要指定 target -->
         <button class="am-btn am-btn-success" data-am-offcanvas="{target: '#search-offcanvas'}" id="btnWorkTransfer">上班导航</button>
     </div>
 
-    <div class="button-panel">
-        <button class="am-btn am-btn-warning  am-round" id="btnCloseTransfer" >关闭</button>
+    <div class="button-panel" hidden>
+        <button class="am-btn am-btn-warning  am-round" id="btnCloseTransfer">关闭</button>
     </div>
 
-    <div class="button-panel" style="margin-top:60px;" id="divGradientList">
+    <div class="button-panel" style="margin-top:60px;" id="divGradientList" hidden>
         <img src="~/IMG/Gradient/Blue.png" />0-1000
         <br />
         <img src="~/IMG/Gradient/PaleGreen.png" style="margin-left:3px;margin-top:10px;" />1000-2000
@@ -70,14 +76,6 @@
     <div id="search-offcanvas" class="am-offcanvas">
         <div class="am-offcanvas-bar am-offcanvas-bar-flip" style="width:330px;z-index:-999">
             <div class="am-offcanvas-content">
-
-                @*<div class="control-commonentry" id="divOffcanvas">
-                    <div>
-                        <label>当前访问量：</label>
-                        <label id="lblPVCount"></label>
-                    </div>
-                </div>*@
-
                 <div class="control-commonentry">
                     <div>
                         <a href="~/PeopleRenting">上海互助租房</a>
@@ -107,8 +105,6 @@
                     <div class="control-input">
                         <input id="work-location" type="text" style="width:60%;">
                     </div>
-
-
                 </div>
                 <div class="control-commonentry">
                     <label>选择通勤方式：</label>
@@ -141,7 +137,7 @@
             </div>
         </div>
     </div>
-        
+
     <div id="transfer-panel"></div>
 
 </body>
