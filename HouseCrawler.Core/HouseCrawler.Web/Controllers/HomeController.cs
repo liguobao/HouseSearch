@@ -27,11 +27,11 @@ namespace HouseCrawler.Web.Controllers
         }
 
         public IActionResult GetHouseInfo(string cityName, string source = "", int houseCount = 100,
-            int withAnyDays = 7, bool showDoubanInvalidData = true, string keyword = "")
+            int intervalDay = 7,string keyword = "")
         {
             try
             {
-                var houseList = CrawlerDataDapper.SearchHouseInfo(cityName, source, houseCount, withAnyDays, keyword);
+                var houseList = CrawlerDataDapper.SearchHouseInfo(cityName, source, houseCount, intervalDay, keyword);
                 var rooms = houseList.Select(house =>
                 {
                     var markBGType = string.Empty;

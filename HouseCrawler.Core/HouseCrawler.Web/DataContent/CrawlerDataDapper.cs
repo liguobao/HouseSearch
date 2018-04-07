@@ -30,7 +30,7 @@ namespace HouseCrawler.Web.DataContent
                 {
                     houseList.AddRange(Search(cityName, key, houseCount, withinAnyDays, keyword));
                 }
-                return houseList;
+                return houseList.OrderByDescending(h => h.PubTime).Take(houseCount);
             }
             else
             {

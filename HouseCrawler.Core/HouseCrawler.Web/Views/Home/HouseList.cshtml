@@ -28,6 +28,8 @@
 
 
 <body>
+
+
     <div id="container"></div>
 
     <div style="position:absolute;color:red;" id="divStatement" hidden>
@@ -36,18 +38,15 @@
     </div>
     <div style="margin-top:0.5%;position: absolute;" id="mobileWorkLocation" hidden>
         <div>
-            <span style="color:green;">工作地点: </span><input id="mobile-work-location" type="text">
+            <span style="color:green;">工作地点: </span>
+            <input id="mobile-work-location" type="text">
+            <button class="am-btn am-btn-secondary am-round am-btn-xs" id="btnCloseTransfer">关闭导航</button>
         </div>
     </div>
 
-
-    <div class="button-panel-offcanvas" id="divWorkTransfer"  hidden >
+    <div class="button-panel-offcanvas" id="divWorkTransfer" hidden>
         <!-- 按钮触发器， 需要指定 target -->
         <button class="am-btn am-btn-success" data-am-offcanvas="{target: '#search-offcanvas'}" id="btnWorkTransfer">上班导航</button>
-    </div>
-
-    <div class="button-panel" hidden>
-        <button class="am-btn am-btn-warning  am-round" id="btnCloseTransfer">关闭</button>
     </div>
 
     <div class="button-panel" style="margin-top:60px;" id="divGradientList" hidden>

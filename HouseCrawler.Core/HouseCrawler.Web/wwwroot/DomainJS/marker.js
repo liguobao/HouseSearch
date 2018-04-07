@@ -33,10 +33,6 @@ define(['mapSignleton', 'city', 'transfer'], function(mapSignleton, city, transf
                 rentMarker.on('click', function(e) {
                     transfer.add(e, address);
                 });
-
-                rentMarker.on('click', function (e) {
-                    transfer.add(e, address);
-                });
             }
         })
     };

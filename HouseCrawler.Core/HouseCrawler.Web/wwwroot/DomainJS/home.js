@@ -41,6 +41,7 @@ require(['domready!', 'jquery', 'AMUI', 'mapController', 'city', 'commuteGo'], f
         $("#divStatement").hide();
         $("#divWorkTransfer").show();
         $("#divGradientList").show();
+        $("#divStatement").show();
     } else {
         $("#divWorkTransfer").hide();
         $("#divGradientList").hide();
@@ -51,10 +52,6 @@ require(['domready!', 'jquery', 'AMUI', 'mapController', 'city', 'commuteGo'], f
 
     $("#btnCloseTransfer").on("click", function () {
         $("#transfer-panel").hide();
-    });
-
-    $("body").on("click", ".amap-info-close", function () {
-        $("#transfer-panel").html("");
     });
 
 

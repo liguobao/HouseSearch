@@ -19,18 +19,23 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
         }
     }
 
-    var GetDataByIndex = function (index, pagecount, dataResource) {
+    var GetDataByIndex = function (index, count, dataResource) {
 
         var dataInfo = [];
         if (dataResource=="douban" ) {
             dataInfo = { groupID: helper.getQueryString("groupID"), index: index };
         } else if (dataResource == "houselist") {
             var source = helper.getQueryString("source") ? helper.getQueryString("source") : "";
-            //默认出7天内的数据
-            var withAnyDays = helper.getQueryString("withAnyDays") ? helper.getQueryString("withAnyDays") : 7;
+             //默认出7天内的数据
+            var intervalDay = helper.getQueryString("intervalDay") ? helper.getQueryString("intervalDay") : 7;
             var keyword = helper.getQueryString("keyword") ? helper.getQueryString("keyword") : "";
-            var invalidData = helper.getQueryString("invalidData") ? helper.getQueryString("invalidData") : "true";
-            dataInfo = { cityName: helper.getQueryString("cityname"), source: source, houseCount: pagecount, withAnyDays: withAnyDays, keyword: keyword, showDoubanInvalidData: invalidData };
+            dataInfo = {
+                cityName: helper.getQueryString("cityname"),
+                source: source,
+                houseCount: count,
+                intervalDay: intervalDay,
+                keyword: keyword
+            };
         }
         else {
             dataInfo = { cnName: city.shortName, index: index };
@@ -53,7 +58,7 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
                 } else {
                     console.log(result.error);
                 }
-                if (index == pagecount) {
+                if (index == count) {
                     $.AMUI.progress.done();
                 }
 
@@ -88,15 +93,20 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
         showCityInfo(function() {
             $.AMUI.progress.start();
             
-            var pageCount = helper.getQueryString("PageCount");
-           
-            if (!pageCount) {
-                pageCount = dataResource == "douban" ? 5 : dataResource == "houselist"?200:15;
-            }
-            console.log(pageCount);
             if (dataResource == "houselist") {
-                GetDataByIndex(pageCount, pageCount, dataResource);
+                var houseCount = 300;
+                //为了避免数据太多在手机上无法查看，移动平台只出70条数据
+                if (helper.isMobile()) {
+                    houseCount = 70;
+                } else {
+                    houseCount = helper.getQueryString("houseCount") ? helper.getQueryString("houseCount") : 300;
+                }
+                GetDataByIndex(houseCount, houseCount, dataResource);
             } else {
+                var pageCount = helper.getQueryString("PageCount");
+                if (!pageCount) {
+                    pageCount = dataResource == "douban" ? 5 : 15;
+                }
                 for (var i = 1; i <= pageCount; i++) {
                     GetDataByIndex(i, pageCount, dataResource);
                 }
