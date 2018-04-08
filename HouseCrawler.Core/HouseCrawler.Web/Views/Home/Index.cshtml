@@ -399,6 +399,16 @@
             });
 
 
+            if (document.getElementById("bdmark") != null) {
+                $('body').removeClass('is-mobile');
+            }
+            var urlhash = window.location.hash;
+            if (!urlhash.match("fromapp")) {
+                if ((navigator.userAgent.match(/(iPhone|iPod|Android|ios|iPad|Mobile)/i))) {
+                    $('body').addClass('is-mobile');
+                }
+            }
+
         })
         // 二维码生成
         //返回顶部
@@ -441,6 +451,9 @@
 
         }
         var imj2 = new imj2();
+
+
+       
 //end返回顶部
     </script>
     

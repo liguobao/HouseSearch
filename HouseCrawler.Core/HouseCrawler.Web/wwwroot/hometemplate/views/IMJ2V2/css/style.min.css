@@ -1048,3 +1048,15 @@ figure.effect-lily:hover p {
   color: #555d6d;
 }
 
+.is-mobile .am-modal .am-modal-no-btn .am-modal-active {
+    width: 100% !important;
+    left: 0;
+    top: 0;
+    margin: 0 !important;
+}
+
+.is-mobile .am-modal-dialog {
+    width: 100% !important;
+    -webkit-overflow-scrolling: touch;
+}
+
