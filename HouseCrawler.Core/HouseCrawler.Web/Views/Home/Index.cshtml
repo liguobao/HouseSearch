@@ -87,7 +87,13 @@
                     <a href="/" rel="nofollow"><span class="logo"></span></a>
                     <p><i class="am-icon-home"></i> <a href="/" rel="nofollow">网站首页</a></p>
 
-                    <p><i class="am-icon-credit-card"></i> <a href="#" rel="nofollow">最新动态</a></p>
+                    <p><i class="am-icon-credit-card"></i> <a href="#" rel="nofollow">城市列表</a></p>
+
+                    @foreach (var cityGroup in Model.GroupBy(c => c.CityName))
+                    {
+                        var cityName = cityGroup.First().CityName;
+                        <p><a href="~/Home/HouseList?cityname=@cityName" target="_blank">@cityName</a></p>
+                    }
                 </nav>
             </div>
         </div>
