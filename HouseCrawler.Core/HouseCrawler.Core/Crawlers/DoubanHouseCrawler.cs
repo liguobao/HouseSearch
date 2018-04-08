@@ -21,6 +21,7 @@ namespace HouseCrawler.Core
             try
             {
                 int captrueHouseCount = 0;
+                DateTime startTime = DateTime.Now;
                 foreach (var doubanConf in DataContent.CrawlerConfigurations
                     .Where(c => c.ConfigurationName == ConstConfigurationName.Douban).ToList())
                 {
@@ -38,7 +39,8 @@ namespace HouseCrawler.Core
 
                     }, "DoubanHouseCrawler CaptureHouseInfo ", doubanConf);
                 }
-                BizCrawlerLog.SaveLog("爬取豆瓣租房数据", $"本次共爬取到{captrueHouseCount}条数据。", 1);
+                BizCrawlerLog.SaveLog($"爬取豆瓣租房小组数据", 
+                    $"本次共爬取到{captrueHouseCount}条数据，耗时{ (DateTime.Now - startTime).TotalSeconds}秒。", 1);
             }
             catch (Exception ex)
             {
@@ -50,7 +52,7 @@ namespace HouseCrawler.Core
         {
             List<DoubanHouseInfo> lstHouseInfo = new List<DoubanHouseInfo>();
             var apiURL = $"https://api.douban.com/v2/group/{groupID}/topics?start={pageIndex * 50}";
-            LogHelper.Info($"url:{apiURL},groupID:{groupID}, city:{cityName}");
+            LogHelper.Debug($"url:{apiURL},groupID:{groupID}, city:{cityName}");
             var result = GetAPIResult(apiURL);
             if (string.IsNullOrEmpty(result))
             {
@@ -74,8 +76,7 @@ namespace HouseCrawler.Core
                     Source = ConstConfigurationName.Douban,
                     LocationCityName = cityName,
                     Status = 1,
-                    PubTime = topic["created"].ToObject<DateTime>(),
-                    DataCreateTime = DateTime.Now,
+                    PubTime = topic["created"].ToObject<DateTime>()
                 };
                 lstHouseInfo.Add(house);
             }

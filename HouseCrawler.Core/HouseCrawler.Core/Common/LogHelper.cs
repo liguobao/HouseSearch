@@ -8,6 +8,11 @@ namespace HouseCrawler.Core
         private static Logger Logger = LogManager.GetCurrentClassLogger();
 
 
+        public static void Debug(string message)
+        {
+            Logger.Debug(message);
+        }
+
         public static void Info(string message)
         {
             Logger.Info(message);

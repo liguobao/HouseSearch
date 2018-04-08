@@ -15,9 +15,15 @@ namespace HouseCrawler.Core
 
         public static void CaptureHouseInfo()
         {
-            var peopleRentingConf = DataContent.CrawlerConfigurations.FirstOrDefault(conf => conf.ConfigurationName == ConstConfigurationName.HuZhuZuFang);
+            int captrueHouseCount = 0;
+            DateTime startTime = DateTime.Now;
 
-            var pageCount = peopleRentingConf != null ? JsonConvert.DeserializeObject<dynamic>(peopleRentingConf.ConfigurationValue).pagecount.Value : 10;
+            var peopleRentingConf = DataContent.CrawlerConfigurations
+                .FirstOrDefault(conf => conf.ConfigurationName == ConstConfigurationName.HuZhuZuFang);
+
+            var pageCount = peopleRentingConf != null 
+                ? JsonConvert.DeserializeObject<dynamic>(peopleRentingConf.ConfigurationValue).pagecount.Value 
+                : 10;
             var hsHouseOnlineUrl = new HashSet<string>();
             for (var pageNum = 1; pageNum < pageCount; pageNum++)
             {
@@ -27,9 +33,11 @@ namespace HouseCrawler.Core
                     List<MutualHouseInfo> houseList = GetHouseData(result);
                     DataContent.MutualHouseInfos.AddRange(houseList);
                     DataContent.SaveChanges();
-
+                    captrueHouseCount = captrueHouseCount + houseList.Count;
                 }, "CapturHouseInfo", pageNum);
             }
+            BizCrawlerLog.SaveLog($"爬取上海互助租房数据",
+            $"本次共爬取到{captrueHouseCount}条数据，耗时{ (DateTime.Now - startTime).TotalSeconds}秒。", 1);
 
         }
         private static List<MutualHouseInfo> GetHouseData(string result)
@@ -53,7 +61,6 @@ namespace HouseCrawler.Core
                 houseInfo.HouseText = item.ToString();
                 houseInfo.HousePrice = item["houseRentPrice"].ToObject<Int32>();
                 houseInfo.DisPlayPrice = item["houseRentPrice"].ToString();
-                houseInfo.DataCreateTime = DateTime.Now;
                 houseInfo.LocationCityName = "上海";
                 houseInfo.PubTime = item["houseCreateTime"].ToObject<DateTime>();
                 houseInfo.PicURLs = item["bigPicUrls"].ToString();

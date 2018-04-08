@@ -17,28 +17,28 @@ namespace HouseCrawler.Core
 
         public static void CaptureHouseInfo()
         {
-
+            int captrueHouseCount = 0;
+            DateTime startTime = DateTime.Now;
             foreach (var crawlerConfiguration in DataContent.CrawlerConfigurations.Where(c => c.ConfigurationName
             == ConstConfigurationName.CCBHouse).ToList())
             {
-
-                CaptureHouse(crawlerConfiguration);
-
                 LogHelper.RunActionNotThrowEx(() =>
                 {
+                    captrueHouseCount = captrueHouseCount + CaptureHouse(crawlerConfiguration);
                 }, "CapturPinPaiHouseInfo", crawlerConfiguration);
-
             }
-
+            BizCrawlerLog.SaveLog($"爬取CBBHouse数据",
+                   $"本次共爬取到{captrueHouseCount}条数据，耗时{ (DateTime.Now - startTime).TotalSeconds}秒。", 1);
         }
 
-        private static void CaptureHouse(BizCrawlerConfiguration crawlerConfiguration)
+        private static int CaptureHouse(BizCrawlerConfiguration crawlerConfiguration)
         {
             var confInfo = JsonConvert.DeserializeObject<dynamic>(crawlerConfiguration.ConfigurationValue);
             if (confInfo.shortcutname==null || string.IsNullOrEmpty(confInfo.shortcutname.Value))
             {
-                return;
+                return 0;
             }
+            int captrueHouseCount = 0;
             string cityShortCutName = confInfo.shortcutname.Value;
             for (var pageNum = 1; pageNum < confInfo.pagecount.Value; pageNum++)
             {
@@ -46,7 +46,9 @@ namespace HouseCrawler.Core
                 List<CCBHouseInfo> houseList = GetHouseData(cityShortCutName, result);
                 DataContent.CCBHouseInfos.AddRange(houseList);
                 DataContent.SaveChanges();
+                captrueHouseCount = captrueHouseCount + houseList.Count;
             }
+            return captrueHouseCount;
         }
 
         private static List<CCBHouseInfo> GetHouseData(string cityShortCutName, string result)
@@ -71,7 +73,6 @@ namespace HouseCrawler.Core
                 houseInfo.HouseText = item.ToString();
                 houseInfo.HousePrice = item["totalPrice"].ToObject<Int32>();
                 houseInfo.DisPlayPrice = item["totalPrice"].ToString();
-                houseInfo.DataCreateTime = DateTime.Now;
                 houseInfo.PubTime = item["publishTime"].ToObject<DateTime>();
                 houseInfo.Source = ConstConfigurationName.CCBHouse;
                 houseList.Add(houseInfo);

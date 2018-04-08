@@ -42,7 +42,7 @@ namespace HouseCrawler.Core
         /// 发布时间
         /// </summary>
         [MaxLength(2048)]
-        public DateTime PubTime { get; set; }
+        public DateTime ?PubTime { get; set; }
 
         /// <summary>
         /// 价格（纯数字）
@@ -55,11 +55,6 @@ namespace HouseCrawler.Core
         [MaxLength(64)]
   
         public string LocationCityName { get; set; }
-
-        /// <summary>
-        /// 创建时间
-        /// </summary>
-        public DateTime DataCreateTime { get; set; }
 
         /// <summary>
         /// 来源网站

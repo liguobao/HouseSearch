@@ -16,6 +16,9 @@ namespace HouseCrawler.Core
 
         public static void CapturePinPaiHouseInfo()
         {
+            int captrueHouseCount = 0;
+            DateTime startTime = DateTime.Now;
+
             foreach (var crawlerConfiguration in DataContent.CrawlerConfigurations.Where(c => c.ConfigurationName
                == ConstConfigurationName.PinPaiGongYu && c.IsEnabled).ToList())
             {
@@ -26,14 +29,16 @@ namespace HouseCrawler.Core
                     {
                         var url = $"http://{confInfo.shortcutname.Value}.58.com/pinpaigongyu/pn/{index}";
                         var houseHTML = GetHouseHTML(url);
-                        var houseList = GetDataFromHMTL(confInfo.shortcutname.Value, confInfo.cityname.Value, houseHTML);
+                        List<ApartmentHouseInfo> houseList = GetDataFromHMTL(confInfo.shortcutname.Value, confInfo.cityname.Value, houseHTML);
                         DataContent.ApartmentHouseInfos.AddRange(houseList);
                         DataContent.SaveChanges();
+                        captrueHouseCount = captrueHouseCount + houseList.Count;
                     }
-
                 }, "CapturPinPaiHouseInfo", crawlerConfiguration);
-
             }
+
+            BizCrawlerLog.SaveLog($"爬取58品牌公寓租房数据",
+                  $"本次共爬取到{captrueHouseCount}条数据，耗时{ (DateTime.Now - startTime).TotalSeconds}秒。", 1);
         }
 
         private static List<ApartmentHouseInfo> GetDataFromHMTL(string shortCutName, string cityName, string houseHTML)
@@ -59,7 +64,6 @@ namespace HouseCrawler.Core
                     HouseOnlineURL = onlineUrl,
                     DisPlayPrice = element.QuerySelector("b").TextContent,
                     HouseLocation = new[] { "公寓", "青年社区" }.All(s => houseInfoList.Contains(s)) ? houseInfoList[0] : houseInfoList[1],
-                    DataCreateTime = DateTime.Now,
                     Source = ConstConfigurationName.PinPaiGongYu,
                     HousePrice = housePrice,
                     HouseText = houseTitle,
@@ -1850,7 +1854,6 @@ namespace HouseCrawler.Core
                             ConfigurationKey = 0,
                             ConfigurationValue = $"{{'cityname':'{Convert.ToString(cityInfo.cityName.Value)}','shortcutname':'{Convert.ToString(cityInfo.shortCut.Value)}','pagecount':10}}",
                             ConfigurationName = ConstConfigurationName.PinPaiGongYu,
-                            DataCreateTime = DateTime.Now,
                             IsEnabled = true,
                         });
                     }
