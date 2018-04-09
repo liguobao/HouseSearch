@@ -47,6 +47,7 @@
     <PackageReference Include="Pomelo.AspNetCore.TimedJob" Version="2.0.0-rtm-10044" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.0.1" />
     <PackageReference Include="RestSharp" Version="106.3.0-alpha0002" />
+    <PackageReference Include="StackExchange.Redis.StrongName" Version="1.2.6" />
     <PackageReference Include="System.Diagnostics.Tools" Version="4.3.0" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="4.4.0" />
   </ItemGroup>
@@ -210,9 +211,6 @@
     </Reference>
     <Reference Include="JiebaNet.Segmenter">
       <HintPath>Jieba.NET\JiebaNet.Segmenter.dll</HintPath>
-    </Reference>
-    <Reference Include="StackExchange.Redis.StrongName">
-      <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\stackexchange.redis.strongname\1.2.4\lib\netstandard1.5\StackExchange.Redis.StrongName.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
