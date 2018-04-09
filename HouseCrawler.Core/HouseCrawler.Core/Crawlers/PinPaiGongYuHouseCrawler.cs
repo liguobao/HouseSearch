@@ -5,6 +5,7 @@ using AngleSharp.Parser.Html;
 using Newtonsoft.Json;
 using HouseCrawler.Core.DataContent;
 using RestSharp;
+using HouseCrawler.Core.Common;
 
 namespace HouseCrawler.Core
 {
@@ -56,14 +57,17 @@ namespace HouseCrawler.Core
                 var houseInfoList = houseTitle.Split(' ');
                 int.TryParse(element.QuerySelector("b").TextContent, out var housePrice);
                 var onlineUrl = $"http://{shortCutName}.58.com" + element.QuerySelector("a").GetAttribute("href");
-                if (DataContent.ApartmentHouseInfos.Any(h => h.HouseOnlineURL == onlineUrl))
+                var houseLocation = new[] { "公寓", "青年社区" }.All(s => houseInfoList.Contains(s)) ? houseInfoList[0] : houseInfoList[1];
+                if (RedisService.ContainsHouse(onlineUrl, houseLocation))
+                {
                     continue;
+                }
                 var houseInfo = new ApartmentHouseInfo
                 {
                     HouseTitle = houseTitle,
                     HouseOnlineURL = onlineUrl,
                     DisPlayPrice = element.QuerySelector("b").TextContent,
-                    HouseLocation = new[] { "公寓", "青年社区" }.All(s => houseInfoList.Contains(s)) ? houseInfoList[0] : houseInfoList[1],
+                    HouseLocation = houseLocation,
                     Source = ConstConfigurationName.PinPaiGongYu,
                     HousePrice = housePrice,
                     HouseText = houseTitle,

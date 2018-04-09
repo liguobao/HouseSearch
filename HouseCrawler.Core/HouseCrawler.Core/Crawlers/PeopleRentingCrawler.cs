@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using HouseCrawler.Core.DataContent;
 using RestSharp;
+using HouseCrawler.Core.Common;
 
 namespace HouseCrawler.Core
 {
@@ -53,8 +54,10 @@ namespace HouseCrawler.Core
                 MutualHouseInfo houseInfo = new MutualHouseInfo();
                 var houseDesc = item["houseDescript"].ToObject<string>().Replace("😄", "");
                 var houseURL = $"http://www.huzhumaifang.com/Renting/house_detail/id/{item["houseId"]}.html";
-                if (DataContent.MutualHouseInfos.Any(h => h.HouseOnlineURL == houseURL))
+                if (RedisService.ContainsHouse(houseURL, houseDesc))
+                {
                     continue;
+                }
                 houseInfo.HouseOnlineURL = houseURL;
                 houseInfo.HouseTitle = houseDesc;
                 houseInfo.HouseLocation = houseDesc;

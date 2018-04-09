@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using HouseCrawler.Core.Models;
 using HouseCrawler.Core.Jobs;
+using StackExchange.Redis;
+using HouseCrawler.Core.DataContent;
+using System;
 
 namespace HouseCrawler.Core.Controllers
 {
@@ -28,10 +31,10 @@ namespace HouseCrawler.Core.Controllers
 
         public IActionResult RunJobs()
         {
-             DoubanHouseCrawler.CaptureHouseInfo();
-             PinPaiGongYuHouseCrawler.CapturePinPaiHouseInfo();
-             PeopleRentingCrawler.CaptureHouseInfo();
-             CCBHouesCrawler.CaptureHouseInfo();
+            DoubanHouseCrawler.CaptureHouseInfo();
+            //PinPaiGongYuHouseCrawler.CapturePinPaiHouseInfo();
+           // PeopleRentingCrawler.CaptureHouseInfo();
+            CCBHouesCrawler.CaptureHouseInfo();
             return View();
         }
 

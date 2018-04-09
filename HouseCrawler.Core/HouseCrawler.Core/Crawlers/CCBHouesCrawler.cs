@@ -1,4 +1,5 @@
-﻿using HouseCrawler.Core.DataContent;
+﻿using HouseCrawler.Core.Common;
+using HouseCrawler.Core.DataContent;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
@@ -64,8 +65,10 @@ namespace HouseCrawler.Core
             {
                 CCBHouseInfo houseInfo = new CCBHouseInfo();
                 string houseURL = GetHouseOnlineURL(cityShortCutName, item);
-                if (DataContent.CCBHouseInfos.Any(h => h.HouseOnlineURL == houseURL))
+                if (RedisService.ContainsHouse(houseURL, item["headline"].ToObject<string>()))
+                {
                     continue;
+                }
                 houseInfo.HouseOnlineURL = houseURL;
                 houseInfo.HouseLocation = item["headline"].ToObject<string>();
                 houseInfo.HouseTitle = item["headline"].ToObject<string>();

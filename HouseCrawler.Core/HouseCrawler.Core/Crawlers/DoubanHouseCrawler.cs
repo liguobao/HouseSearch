@@ -39,7 +39,7 @@ namespace HouseCrawler.Core
 
                     }, "DoubanHouseCrawler CaptureHouseInfo ", doubanConf);
                 }
-                BizCrawlerLog.SaveLog($"爬取豆瓣租房小组数据", 
+                BizCrawlerLog.SaveLog($"爬取豆瓣租房小组数据",
                     $"本次共爬取到{captrueHouseCount}条数据，耗时{ (DateTime.Now - startTime).TotalSeconds}秒。", 1);
             }
             catch (Exception ex)
@@ -61,8 +61,10 @@ namespace HouseCrawler.Core
             var resultJObject = JsonConvert.DeserializeObject<JObject>(result);
             foreach (var topic in resultJObject["topics"])
             {
-                if (DataContent.DoubanHouseInfos.Any(h => h.HouseOnlineURL == topic["share_url"].ToString()))
+                if (RedisService.ContainsHouse(topic["share_url"].ToString(), topic["title"].ToString()))
+                {
                     continue;
+                }
                 var housePrice = JiebaTools.GetHousePrice(topic["content"].ToString());
                 var house = new DoubanHouseInfo()
                 {

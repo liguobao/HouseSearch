@@ -76,6 +76,10 @@ namespace HouseCrawler.Core
              .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json").Build()["ConnectionStrings:MySQLConnectionString"];
 
+            ConnectionStrings.RedisConnectionString = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+           .AddJsonFile("appsettings.json").Build()["ConnectionStrings:RedisConnectionString"];
+
             ConnectionStrings.CCBHomeAPIKey = new ConfigurationBuilder()
              .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json").Build()["CCBHomeAPIKey"];
