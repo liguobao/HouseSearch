@@ -19,7 +19,7 @@ namespace HouseCrawler.Core.Common
             }
             else
             {
-                db.StringSet(key, value);
+                db.StringSet(key,"");
                 return false;
             }
         }

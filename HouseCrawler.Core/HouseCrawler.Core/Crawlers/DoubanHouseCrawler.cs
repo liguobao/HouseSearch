@@ -27,16 +27,16 @@ namespace HouseCrawler.Core
                 {
                     LogHelper.RunActionNotThrowEx(() =>
                     {
+                        List<BaseHouseInfo> houses = new List<BaseHouseInfo>();
                         var confInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(doubanConf.ConfigurationValue);
                         for (var pageIndex = 0; pageIndex < confInfo.pagecount.Value; pageIndex++)
                         {
                             var lstHouseInfo = GetHouseData(confInfo.groupid.Value,
                                 confInfo.cityname.Value, pageIndex);
-                            DataContent.DoubanHouseInfos.AddRange(lstHouseInfo);
-                            DataContent.SaveChanges();
-                            captrueHouseCount = captrueHouseCount + lstHouseInfo.Count;
+                            houses.AddRange(lstHouseInfo);
                         }
-
+                        captrueHouseCount = captrueHouseCount + houses.Count;
+                        CrawlerDataDapper.BulkInsertHouses(houses);
                     }, "DoubanHouseCrawler CaptureHouseInfo ", doubanConf);
                 }
                 BizCrawlerLog.SaveLog($"爬取豆瓣租房小组数据",
@@ -48,10 +48,10 @@ namespace HouseCrawler.Core
             }
         }
 
-        public static List<DoubanHouseInfo> GetHouseData(string groupID, string cityName, int pageIndex)
+        public static List<BaseHouseInfo> GetHouseData(string groupID, string cityName, int pageIndex)
         {
-            List<DoubanHouseInfo> lstHouseInfo = new List<DoubanHouseInfo>();
-            var apiURL = $"https://api.douban.com/v2/group/{groupID}/topics?start={pageIndex * 50}";
+            List<BaseHouseInfo> lstHouseInfo = new List<BaseHouseInfo>();
+            var apiURL = $"https://api.douban.com/v2/group/{groupID}/topics?start={pageIndex * 50}&count=50";
             LogHelper.Debug($"url:{apiURL},groupID:{groupID}, city:{cityName}");
             var result = GetAPIResult(apiURL);
             if (string.IsNullOrEmpty(result))
@@ -61,12 +61,8 @@ namespace HouseCrawler.Core
             var resultJObject = JsonConvert.DeserializeObject<JObject>(result);
             foreach (var topic in resultJObject["topics"])
             {
-                if (RedisService.ContainsHouse(topic["share_url"].ToString(), topic["title"].ToString()))
-                {
-                    continue;
-                }
                 var housePrice = JiebaTools.GetHousePrice(topic["content"].ToString());
-                var house = new DoubanHouseInfo()
+                var house = new BaseHouseInfo()
                 {
                     HouseLocation = topic["title"].ToString(),
                     HouseTitle = topic["title"].ToString(),

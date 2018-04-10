@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
 using MySql.Data.MySqlClient;
@@ -9,8 +10,44 @@ namespace HouseCrawler.Core.DataContent
 {
     public class CrawlerDataDapper
     {
+        private static Dictionary<String, String> dicHouseTableName = new Dictionary<string, string>() {
+            { ConstConfigurationName.Douban, "DoubanHouseInfos"},
+            { ConstConfigurationName.HuZhuZuFang, "MutualHouseInfos"},
+            { ConstConfigurationName.PinPaiGongYu, "ApartmentHouseInfos"},
+            { ConstConfigurationName.CCBHouse, "CCBHouseInfos"}
+        };
+
         static internal IDbConnection Connection => new MySqlConnection(ConnectionStrings.MySQLConnectionString);
 
+        public static bool BulkInsertHouses(List<BaseHouseInfo> list)
+        {
+            var tableName = GetTableName(list.FirstOrDefault().Source);
+            using (IDbConnection dbConnection = Connection)
+            {
+                dbConnection.Open();
+                IDbTransaction transaction =  dbConnection.BeginTransaction();
+                var result = dbConnection.Execute("INSERT INTO "+ tableName  + @" (`HouseTitle`, `HouseOnlineURL`, 
+                                    `HouseLocation`, `DisPlayPrice`, 
+                                    `PubTime`, `HousePrice`, 
+                                    `LocationCityName`,
+                                    `Source`,
+                                    `HouseText`, 
+                                    `IsAnalyzed`, 
+                                    `Status`,`PicURLs`) 
+                                     VALUES (@HouseTitle, @HouseOnlineURL,
+                                            @HouseLocation, @DisPlayPrice,
+                                            @PubTime, @HousePrice,
+                                            @LocationCityName,
+                                            @Source,
+                                            @HouseText,
+                                            @IsAnalyzed,
+                                            @Status,@PicURLs)  ON DUPLICATE KEY UPDATE DataChange_LastTime=now();",
+                                     list, transaction: transaction);
+                transaction.Commit();
+            }
+            return true;
+          
+        }
 
         public static List<DBHouseDashboard> GetHouseSourceInfoList()
         {
@@ -75,6 +112,17 @@ namespace HouseCrawler.Core.DataContent
                 return list;
 
             }
+        }
+
+
+        private static string GetTableName(string source)
+        {
+            if (dicHouseTableName.ContainsKey(source))
+            {
+                return dicHouseTableName[source];
+            }
+
+            return "HouseInfos";
         }
     }
 }

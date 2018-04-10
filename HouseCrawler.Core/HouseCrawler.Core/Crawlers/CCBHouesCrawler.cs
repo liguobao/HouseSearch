@@ -41,20 +41,20 @@ namespace HouseCrawler.Core
             }
             int captrueHouseCount = 0;
             string cityShortCutName = confInfo.shortcutname.Value;
+            List<BaseHouseInfo> houses = new List<BaseHouseInfo>();
             for (var pageNum = 1; pageNum < confInfo.pagecount.Value; pageNum++)
             {
                 var result = GetResultByAPI(cityShortCutName, pageNum);
-                List<CCBHouseInfo> houseList = GetHouseData(cityShortCutName, result);
-                DataContent.CCBHouseInfos.AddRange(houseList);
-                DataContent.SaveChanges();
-                captrueHouseCount = captrueHouseCount + houseList.Count;
+                houses.AddRange(GetHouseData(cityShortCutName, result));
             }
+            captrueHouseCount = captrueHouseCount + houses.Count;
+            CrawlerDataDapper.BulkInsertHouses(houses);
             return captrueHouseCount;
         }
 
-        private static List<CCBHouseInfo> GetHouseData(string cityShortCutName, string result)
+        private static List<BaseHouseInfo> GetHouseData(string cityShortCutName, string result)
         {
-            var houseList = new List<CCBHouseInfo>();
+            var houseList = new List<BaseHouseInfo>();
             if (string.IsNullOrEmpty(result))
             {
                 return houseList;
@@ -63,12 +63,8 @@ namespace HouseCrawler.Core
             var resultJObject = JsonConvert.DeserializeObject<JObject>(result);
             foreach (var item in resultJObject["items"])
             {
-                CCBHouseInfo houseInfo = new CCBHouseInfo();
+                BaseHouseInfo houseInfo = new BaseHouseInfo();
                 string houseURL = GetHouseOnlineURL(cityShortCutName, item);
-                if (RedisService.ContainsHouse(houseURL, item["headline"].ToObject<string>()))
-                {
-                    continue;
-                }
                 houseInfo.HouseOnlineURL = houseURL;
                 houseInfo.HouseLocation = item["headline"].ToObject<string>();
                 houseInfo.HouseTitle = item["headline"].ToObject<string>();

@@ -4,6 +4,7 @@ using HouseCrawler.Core.Jobs;
 using StackExchange.Redis;
 using HouseCrawler.Core.DataContent;
 using System;
+using HouseCrawler.Core.Common;
 
 namespace HouseCrawler.Core.Controllers
 {
@@ -32,8 +33,8 @@ namespace HouseCrawler.Core.Controllers
         public IActionResult RunJobs()
         {
             DoubanHouseCrawler.CaptureHouseInfo();
-            //PinPaiGongYuHouseCrawler.CapturePinPaiHouseInfo();
-           // PeopleRentingCrawler.CaptureHouseInfo();
+            PinPaiGongYuHouseCrawler.CapturePinPaiHouseInfo();
+            PeopleRentingCrawler.CaptureHouseInfo();
             CCBHouesCrawler.CaptureHouseInfo();
             return View();
         }

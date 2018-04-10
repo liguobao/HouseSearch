@@ -26,24 +26,22 @@ namespace HouseCrawler.Core
                 ? JsonConvert.DeserializeObject<dynamic>(peopleRentingConf.ConfigurationValue).pagecount.Value 
                 : 10;
             var hsHouseOnlineUrl = new HashSet<string>();
+            List<BaseHouseInfo> houses = new List<BaseHouseInfo>();
             for (var pageNum = 1; pageNum < pageCount; pageNum++)
             {
-                LogHelper.RunActionNotThrowEx(() =>
-                {
-                    string result = getResultFromAPI(pageNum);
-                    List<MutualHouseInfo> houseList = GetHouseData(result);
-                    DataContent.MutualHouseInfos.AddRange(houseList);
-                    DataContent.SaveChanges();
-                    captrueHouseCount = captrueHouseCount + houseList.Count;
-                }, "CapturHouseInfo", pageNum);
+                string result = getResultFromAPI(pageNum);
+                houses.AddRange(GetHouseData(result));
             }
+            CrawlerDataDapper.BulkInsertHouses(houses);
+            captrueHouseCount = captrueHouseCount + houses.Count;
+
             BizCrawlerLog.SaveLog($"爬取上海互助租房数据",
             $"本次共爬取到{captrueHouseCount}条数据，耗时{ (DateTime.Now - startTime).TotalSeconds}秒。", 1);
 
         }
-        private static List<MutualHouseInfo> GetHouseData(string result)
+        private static List<BaseHouseInfo> GetHouseData(string result)
         {
-            List<MutualHouseInfo> houseList = new List<MutualHouseInfo>();
+            List<BaseHouseInfo> houseList = new List<BaseHouseInfo>();
             var resultJObject = JsonConvert.DeserializeObject<JObject>(result);
             if (resultJObject == null || resultJObject["head"] == null || !resultJObject["head"]["success"].ToObject<Boolean>())
             {
@@ -51,13 +49,9 @@ namespace HouseCrawler.Core
             }
             foreach (var item in resultJObject["houseList"])
             {
-                MutualHouseInfo houseInfo = new MutualHouseInfo();
+                BaseHouseInfo houseInfo = new BaseHouseInfo();
                 var houseDesc = item["houseDescript"].ToObject<string>().Replace("😄", "");
                 var houseURL = $"http://www.huzhumaifang.com/Renting/house_detail/id/{item["houseId"]}.html";
-                if (RedisService.ContainsHouse(houseURL, houseDesc))
-                {
-                    continue;
-                }
                 houseInfo.HouseOnlineURL = houseURL;
                 houseInfo.HouseTitle = houseDesc;
                 houseInfo.HouseLocation = houseDesc;

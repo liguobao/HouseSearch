@@ -25,16 +25,16 @@ namespace HouseCrawler.Core
             {
                 LogHelper.RunActionNotThrowEx(() =>
                 {
+                    List<BaseHouseInfo> houses = new List<BaseHouseInfo>();
                     var confInfo = JsonConvert.DeserializeObject<dynamic>(crawlerConfiguration.ConfigurationValue);
                     for (var index = 0; index < confInfo.pagecount.Value; index++)
                     {
                         var url = $"http://{confInfo.shortcutname.Value}.58.com/pinpaigongyu/pn/{index}";
                         var houseHTML = GetHouseHTML(url);
-                        List<ApartmentHouseInfo> houseList = GetDataFromHMTL(confInfo.shortcutname.Value, confInfo.cityname.Value, houseHTML);
-                        DataContent.ApartmentHouseInfos.AddRange(houseList);
-                        DataContent.SaveChanges();
-                        captrueHouseCount = captrueHouseCount + houseList.Count;
+                        houses.AddRange(GetDataFromHMTL(confInfo.shortcutname.Value, confInfo.cityname.Value, houseHTML));
                     }
+                    CrawlerDataDapper.BulkInsertHouses(houses);
+                    captrueHouseCount = captrueHouseCount + houses.Count;
                 }, "CapturPinPaiHouseInfo", crawlerConfiguration);
             }
 
@@ -42,9 +42,9 @@ namespace HouseCrawler.Core
                   $"本次共爬取到{captrueHouseCount}条数据，耗时{ (DateTime.Now - startTime).TotalSeconds}秒。", 1);
         }
 
-        private static List<ApartmentHouseInfo> GetDataFromHMTL(string shortCutName, string cityName, string houseHTML)
+        private static List<BaseHouseInfo> GetDataFromHMTL(string shortCutName, string cityName, string houseHTML)
         {
-            List<ApartmentHouseInfo> houseList = new List<ApartmentHouseInfo>();
+            List<BaseHouseInfo> houseList = new List<BaseHouseInfo>();
             if (string.IsNullOrEmpty(houseHTML))
                 return houseList;
             var htmlDoc = htmlParser.Parse(houseHTML);
@@ -58,11 +58,7 @@ namespace HouseCrawler.Core
                 int.TryParse(element.QuerySelector("b").TextContent, out var housePrice);
                 var onlineUrl = $"http://{shortCutName}.58.com" + element.QuerySelector("a").GetAttribute("href");
                 var houseLocation = new[] { "公寓", "青年社区" }.All(s => houseInfoList.Contains(s)) ? houseInfoList[0] : houseInfoList[1];
-                if (RedisService.ContainsHouse(onlineUrl, houseLocation))
-                {
-                    continue;
-                }
-                var houseInfo = new ApartmentHouseInfo
+                var houseInfo = new BaseHouseInfo
                 {
                     HouseTitle = houseTitle,
                     HouseOnlineURL = onlineUrl,
