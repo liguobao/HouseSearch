@@ -76,6 +76,10 @@ namespace HouseCrawler.Web
             ConnectionStrings.MySQLConnectionString = new ConfigurationBuilder()
              .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json").Build()["ConnectionStrings:MySQLConnectionString"];
+
+            ConnectionStrings.RedisConnectionString = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+           .AddJsonFile("appsettings.json").Build()["ConnectionStrings:RedisConnectionString"];
         }
     }
 }

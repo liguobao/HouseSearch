@@ -42,11 +42,15 @@ namespace HouseCrawler.Web.DataContent
         public static IEnumerable<DBHouseInfo> Search(string cityName, string source = "",
             int houseCount = 100, int withinAnyDays = 7, string keyword = "")
         {
-
+            string redisKey = cityName + source + houseCount + withinAnyDays + keyword;
+            var houses = RedisService.ReadSearchCache(redisKey);
+            if (houses != null)
+            {
+                return houses;
+            }
             using (IDbConnection dbConnection = Connection)
             {
                 dbConnection.Open();
-                List<DBHouseInfo> houses = new List<DBHouseInfo>();
                 string search_SQL = $"SELECT * from { GetTableName(source)} where 1=1 " +
                     $"and LocationCityName = @LocationCityName and  PubTime >= @PubTime";
                 if (!string.IsNullOrEmpty(keyword))
@@ -54,13 +58,15 @@ namespace HouseCrawler.Web.DataContent
                     search_SQL = search_SQL + " and (HouseText like @KeyWord or HouseLocation like @KeyWord or HouseTitle like @KeyWord) ";
                 }
                 search_SQL = search_SQL + $" order by PubTime desc limit {houseCount} ";
-                return dbConnection.Query<DBHouseInfo>(search_SQL,
+                houses = dbConnection.Query<DBHouseInfo>(search_SQL,
                     new
                     {
                         LocationCityName = cityName,
                         KeyWord = $"%{keyword}%",
                         PubTime = DateTime.Now.Date.AddDays(-withinAnyDays)
-                    });
+                    }).ToList();
+                RedisService.WriteSearchCache(redisKey,houses);
+                return houses;
             }
         }
 
