@@ -19,14 +19,18 @@ namespace HouseCrawler.Core.DataContent
 
         static internal IDbConnection Connection => new MySqlConnection(ConnectionStrings.MySQLConnectionString);
 
-        public static bool BulkInsertHouses(List<BaseHouseInfo> list)
+        public static void BulkInsertHouses(List<BaseHouseInfo> list)
         {
+            if (list == null || list.Count == 0)
+            {
+                return;
+            }
             var tableName = GetTableName(list.FirstOrDefault().Source);
             using (IDbConnection dbConnection = Connection)
             {
                 dbConnection.Open();
-                IDbTransaction transaction =  dbConnection.BeginTransaction();
-                var result = dbConnection.Execute("INSERT INTO "+ tableName  + @" (`HouseTitle`, `HouseOnlineURL`, 
+                IDbTransaction transaction = dbConnection.BeginTransaction();
+                var result = dbConnection.Execute("INSERT INTO " + tableName + @" (`HouseTitle`, `HouseOnlineURL`, 
                                     `HouseLocation`, `DisPlayPrice`, 
                                     `PubTime`, `HousePrice`, 
                                     `LocationCityName`,
@@ -45,8 +49,8 @@ namespace HouseCrawler.Core.DataContent
                                      list, transaction: transaction);
                 transaction.Commit();
             }
-            return true;
-          
+
+
         }
 
         public static List<DBHouseDashboard> GetHouseSourceInfoList()
