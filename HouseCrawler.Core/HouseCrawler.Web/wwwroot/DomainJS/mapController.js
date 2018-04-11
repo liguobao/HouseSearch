@@ -28,13 +28,15 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
             var source = helper.getQueryString("source") ? helper.getQueryString("source") : "";
              //默认出7天内的数据
             var intervalDay = helper.getQueryString("intervalDay") ? helper.getQueryString("intervalDay") : 7;
+            var refresh = helper.getQueryString("refresh") ? helper.getQueryString("refresh") : false;
             var keyword = helper.getQueryString("keyword") ? helper.getQueryString("keyword") : "";
             dataInfo = {
                 cityName: helper.getQueryString("cityname"),
                 source: source,
                 houseCount: count,
                 intervalDay: intervalDay,
-                keyword: keyword
+                keyword: keyword,
+                refresh: refresh
             };
         }
         else {

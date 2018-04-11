@@ -17,36 +17,40 @@ namespace HouseCrawler.Web.DataContent
             { ConstConfigurationName.CCBHouse, "CCBHouseInfos"}
         };
 
-       protected static internal IDbConnection Connection => new MySqlConnection(ConnectionStrings.MySQLConnectionString);
+        protected static internal IDbConnection Connection => new MySqlConnection(ConnectionStrings.MySQLConnectionString);
 
 
         public static IEnumerable<DBHouseInfo> SearchHouseInfo(string cityName, string source = "",
-          int houseCount = 100, int withinAnyDays = 7, string keyword = "")
+          int houseCount = 100, int intervalDay = 7, string keyword = "", bool refresh = false)
         {
             if (string.IsNullOrEmpty(source))
             {
                 var houseList = new List<DBHouseInfo>();
                 foreach (var key in dicHouseTableName.Keys)
                 {
-                    houseList.AddRange(Search(cityName, key, houseCount, withinAnyDays, keyword));
+                    houseList.AddRange(Search(cityName, key, houseCount, intervalDay, keyword, refresh));
                 }
                 return houseList.OrderByDescending(h => h.PubTime).Take(houseCount);
             }
             else
             {
-                return Search(cityName, source, houseCount, withinAnyDays, keyword);
+                return Search(cityName, source, houseCount, intervalDay, keyword, refresh);
             }
 
         }
 
         public static IEnumerable<DBHouseInfo> Search(string cityName, string source = "",
-            int houseCount = 100, int withinAnyDays = 7, string keyword = "")
+            int houseCount = 100, int intervalDay = 7, string keyword = "", bool refresh = false)
         {
-            string redisKey = cityName + source + houseCount + withinAnyDays + keyword;
-            var houses = RedisService.ReadSearchCache(redisKey);
-            if (houses != null)
+            string redisKey = $"{cityName}-{source}-{intervalDay}-{houseCount}-{keyword}";
+            var houses = new List<DBHouseInfo>();
+            if (!refresh)
             {
-                return houses;
+                houses = RedisService.ReadSearchCache(redisKey);
+                if (houses != null)
+                {
+                    return houses;
+                }
             }
             using (IDbConnection dbConnection = Connection)
             {
@@ -63,9 +67,9 @@ namespace HouseCrawler.Web.DataContent
                     {
                         LocationCityName = cityName,
                         KeyWord = $"%{keyword}%",
-                        PubTime = DateTime.Now.Date.AddDays(-withinAnyDays)
+                        PubTime = DateTime.Now.Date.AddDays(-intervalDay)
                     }).ToList();
-                RedisService.WriteSearchCache(redisKey,houses);
+                RedisService.WriteSearchCache(redisKey, houses);
                 return houses;
             }
         }
