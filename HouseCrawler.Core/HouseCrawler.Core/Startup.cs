@@ -14,6 +14,7 @@ using NLog.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using NLog.Web;
 using HouseCrawler.Core.Common;
+using HouseCrawler.Core.Crawlers;
 
 namespace HouseCrawler.Core
 {
@@ -69,6 +70,9 @@ namespace HouseCrawler.Core
                     name: "default",
                     template: "{controller=House}/{action=Index}/{id?}"); 
             });
+            ZuberHouseCrawler.Crawler();
+
+
 
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
