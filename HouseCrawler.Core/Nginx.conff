@@ -1,0 +1,25 @@
+events {
+	worker_connections 1024;
+}
+
+http {
+    upstream webservers {
+        #weigth参数表示权值，权值越高被分配到的几率越大
+        #本机上的Squid开启3128端口
+        server 10.31.160.197:8080 weight=2;
+        server 192.168.0.1:8080  weight=1;
+    }
+    
+	server {
+        listen       9090;
+        server_name  woyaozufang.live;
+        location / {
+            proxy_pass   http://webservers;
+        }
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   html;
+        }
+    }
+}
+
