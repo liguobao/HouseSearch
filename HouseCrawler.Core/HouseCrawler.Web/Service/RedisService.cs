@@ -30,5 +30,33 @@ namespace HouseCrawler.Web
             IDatabase db = redis.GetDatabase();
             db.StringSet(key, Newtonsoft.Json.JsonConvert.SerializeObject(house), new System.TimeSpan(1,0,0));
         }
+
+
+
+        public static string ReadCache(string key)
+        {
+            ConfigurationOptions options = ConfigurationOptions.Parse(ConnectionStrings.RedisConnectionString);
+            options.SyncTimeout = 10 * 1000;
+            ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(options);
+            IDatabase db = redis.GetDatabase();
+            if (db.KeyExists(key))
+            {
+                return db.StringGet(key);
+
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+
+        public static void WriteCache(string key, string value)
+        {
+            ConnectionMultiplexer redis = ConnectionMultiplexer
+                .Connect(ConnectionStrings.RedisConnectionString);
+            IDatabase db = redis.GetDatabase();
+            db.StringSet(key, value, new System.TimeSpan(1, 0, 0));
+        }
     }
 }

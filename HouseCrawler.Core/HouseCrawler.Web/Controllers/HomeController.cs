@@ -5,6 +5,7 @@ using HouseCrawler.Web.Models;
 using HouseCrawler.Web.Common;
 using HouseCrawler.Web;
 using HouseCrawler.Web.DataContent;
+using HouseCrawler.Web.Service;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,8 +18,7 @@ namespace HouseCrawler.Web.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            HouseDashboard.RefreshDashboard();
-            return View(HouseDashboard.LoadDashboard());
+            return View(HouseDashboardService.LoadDashboard());
         }
 
         public IActionResult HouseList()

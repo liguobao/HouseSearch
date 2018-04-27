@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using HouseCrawler.Web.Models;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -111,25 +112,25 @@ namespace HouseCrawler.Web.DataContent
 
 
 
-        public static List<DBHouseDashboard> GetHouseDashboard()
+        public static List<Models.HouseDashboard> GetHouseDashboard()
         {
             using (IDbConnection dbConnection = Connection)
             {
                 dbConnection.Open();
-                var apartment = dbConnection.Query<DBHouseDashboard>(@"SELECT 
+                var apartment = dbConnection.Query<HouseDashboard>(@"SELECT 
                                 LocationCityName AS CityName, Source, COUNT(id) AS HouseSum
                             FROM
                                 housecrawler.ApartmentHouseInfos
                             GROUP BY LocationCityName, Source;");
 
 
-                var douban = dbConnection.Query<DBHouseDashboard>(@"SELECT 
+                var douban = dbConnection.Query<HouseDashboard>(@"SELECT 
                                 LocationCityName AS CityName, Source, COUNT(id) AS HouseSum
                             FROM
                                 housecrawler.DoubanHouseInfos
                             GROUP BY LocationCityName, Source;");
 
-                var mutual = dbConnection.Query<DBHouseDashboard>(@"SELECT 
+                var mutual = dbConnection.Query<HouseDashboard>(@"SELECT 
                                 LocationCityName AS CityName, Source, COUNT(id) AS HouseSum
                             FROM
                                 housecrawler.MutualHouseInfos
