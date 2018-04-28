@@ -8,27 +8,80 @@ using HouseCrawler.Core.DataContent;
 using RestSharp;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace HouseCrawler.Core.Crawlers
 {
     public class ZuberHouseCrawler
     {
+        static string API_VERSION = "v3/";
+        static string SCENE = "2567a5ec9705eb7ac2c984033e06189d";
+
         public static void Crawler()
         {
-            var client = new RestClient("https://api.zuber.im/v3/search/room?city=%E4%B8%8A%E6%B5%B7&has_short_rent=0&has_video=&subway_line=&sex=&type=&room_type_affirm=&sequence=1523771866&longitude=&latitude=");
+            var cityName = "上海";
+            var sequence = "";
+            var referer = "http://www.zuber.im/app/?house=1";
+            string url = $"https://api.zuber.im/v3/rooms/search?city={cityName}&house=1&sex=&cost1=&cost2=&address=&start_time=&end_time=&longitude=&latitude=&subway_line=&subway_station=&short_rent=&type=&bed=true&room_type_affirm=&coords_type=gaode&sequence={sequence}";
+            var client = new RestClient(url);
             var request = new RestRequest(Method.GET);
-            request.AddHeader("postman-token", "5b3f498e-11b2-1286-1ed8-03a713e79af0");
-            request.AddHeader("cache-control", "no-cache");
+
             request.AddHeader("connection", "keep-alive");
-            request.AddHeader("referer", "https://mobile.zuber.im/search/rent?city=%E4%B8%8A%E6%B5%B7&has_short_rent=0&has_video=&subway_line=&sex=&type=&room_type_affirm=&sequence=&longitude=&latitude=");
+            request.AddHeader("referer", referer);
             request.AddHeader("accept", "application/json, text/plain, */*");
             request.AddHeader("user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36");
             request.AddHeader("accept-language", "zh-CN,zh;q=0.9,en;q=0.8,da;q=0.7");
             request.AddHeader("accept-encoding", "gzip, deflate, br");
-            request.AddHeader("origin", "https://mobile.zuber.im");
-            request.AddHeader("authorization", "timestamp=1523773613;oauth2=dceb50a2e47c7f83cf63bdc609250d33;signature=f086fd4ca8842315f343a0f0c9169dfa;scene=2567a5ec9705eb7ac2c984033e06189d;deploykey=d626ca3232d521d65f234512");
+            request.AddHeader("origin", "http://www.zuber.im");
+            var _stamp = GetTimestamp().ToString();
+            var _secret = "";
+            var _token = md5(_stamp);
+            var _scene = SCENE;
+            var _method = "get";
+            var _param = "{}";//(_method === 'get' || _method === 'delete') ? '{}' : JSON.stringify(param)
+            var api = "rooms/search";
+            var _source = "request_url=" + API_VERSION + api + "&" +
+                "content=" + _param + "&" +
+                "request_method=" + _method + '&' +
+                "timestamp=" + _stamp + '&' +
+                "secret=" + _secret;
+
+            var _signature = md5(_source);
+
+
+            var _auth = "timestamp=" + _stamp + ";" +
+                "oauth2=" + _token + ";"
+                + "signature=" + _signature + ";"
+                + "scene=" + _scene;
+
+            request.AddHeader("authorization", _auth);
             IRestResponse response = client.Execute(request);
-            Console.WriteLine(response.Content);
+        }
+
+
+
+        public static string md5(string observedText)
+        {
+            string result;
+            using (MD5 hash = MD5.Create())
+            {
+                result = String.Join
+                (
+                    "",
+                    from ba in hash.ComputeHash
+                    (
+                        Encoding.UTF8.GetBytes(observedText)
+                    )
+                    select ba.ToString("x2")
+                );
+            }
+            return result;
+        }
+
+        public static int GetTimestamp()
+        {
+            return (int)(DateTime.Now.ToLocalTime() - new DateTime(1970, 1, 1).ToLocalTime()).TotalSeconds;
         }
     }
 }

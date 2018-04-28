@@ -14,6 +14,7 @@
     <EmbeddedResource Remove="wwwroot\NLogFile\**" />
     <None Remove="wwwroot\hometemplate\uploadfiles\**" />
     <None Remove="wwwroot\NLogFile\**" />
+    <Compile Remove="Crawlers\ZuberCrawler.cs" />
   </ItemGroup>
 
   <ItemGroup>
