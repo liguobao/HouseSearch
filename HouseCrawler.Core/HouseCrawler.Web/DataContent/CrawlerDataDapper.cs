@@ -15,7 +15,8 @@ namespace HouseCrawler.Web.DataContent
             { ConstConfigurationName.Douban, "DoubanHouseInfos"},
             { ConstConfigurationName.HuZhuZuFang, "MutualHouseInfos"},
             { ConstConfigurationName.PinPaiGongYu, "ApartmentHouseInfos"},
-            { ConstConfigurationName.CCBHouse, "CCBHouseInfos"}
+            { ConstConfigurationName.CCBHouse, "CCBHouseInfos"},
+            { ConstConfigurationName.Zuber, "ZuberHouseInfos"}
         };
 
         protected static internal IDbConnection Connection => new MySqlConnection(ConnectionStrings.MySQLConnectionString);
@@ -135,7 +136,21 @@ namespace HouseCrawler.Web.DataContent
                             FROM
                                 housecrawler.MutualHouseInfos
                             GROUP BY LocationCityName, Source;");
+
+                var ccb = dbConnection.Query<HouseDashboard>(@"SELECT 
+                                LocationCityName AS CityName, Source, COUNT(id) AS HouseSum
+                            FROM
+                                housecrawler.CCBHouseInfos
+                            GROUP BY LocationCityName, Source;");
+
+                var zuber = dbConnection.Query<HouseDashboard>(@"SELECT 
+                                LocationCityName AS CityName, Source, COUNT(id) AS HouseSum
+                            FROM
+                                housecrawler.ZuberHouseInfos
+                            GROUP BY LocationCityName, Source;");
                 var list = apartment.ToList();
+                list.AddRange(ccb.ToList());
+                list.AddRange(zuber.ToList());
                 list.AddRange(douban.ToList());
                 list.AddRange(mutual.ToList());
                 return list;

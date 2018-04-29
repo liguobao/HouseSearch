@@ -35,15 +35,19 @@ namespace HouseCrawler.Web
 
         public static string CCBHouse = "ccbhouse";
 
+        public static string Zuber = "zuber";
+
 
         public static string ConvertToDisPlayName(string configurationName)
         {
-            Dictionary<string, string> dicNameToDisplayName = new Dictionary<string, string>()
+            var dicNameToDisplayName = new Dictionary<string, string>()
             {
-                { ConstConfigurationName.Douban,"豆瓣小組"},
-                { ConstConfigurationName.PinPaiGongYu,"品牌公寓"},
-                { ConstConfigurationName.HuZhuZuFang,"互助租房"},
-                { ConstConfigurationName.CityHouseInfo,"城市租房信息"},
+                { Douban,"豆瓣小組"},
+                { PinPaiGongYu,"品牌公寓"},
+                { HuZhuZuFang,"互助租房"},
+                { Zuber,"Zuber平台"},
+                { CCBHouse,"CCB建融家园"},
+                { CityHouseInfo,"城市租房信息"},
             };
 
             return (dicNameToDisplayName.ContainsKey(configurationName))? dicNameToDisplayName[configurationName]:"";
