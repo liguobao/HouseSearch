@@ -250,7 +250,7 @@
                                 {
                                    
                                     <a href="~/Home/HouseList?cityname=@cityName&source=@cityHouseInfo.Source&intervalDay=7&houseCount=500" target="_blank">
-                                      @ConstConfigurationName.ConvertToDisPlayName(cityHouseInfo.Source) (@cityHouseInfo.HouseSum)
+                                      @ConstConfigurationName.ConvertToDisPlayName(cityHouseInfo.Source) (@cityHouseInfo.HouseSum>9999 ? "9999+":cityHouseInfo.HouseSum.ToString())
                                     </a>
                                     <br />
                                     
