@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace HouseCrawler.Web.DataContent
 {
@@ -90,6 +91,7 @@ namespace HouseCrawler.Web.DataContent
         /// <summary>
         /// 
         /// </summary>
+        [JsonIgnore]
         public DateTime? DataCreateTime
         {
             get;
@@ -108,6 +110,7 @@ namespace HouseCrawler.Web.DataContent
         /// <summary>
         /// 
         /// </summary>
+        [JsonIgnore]
         public string HouseText
         {
             get;
@@ -117,6 +120,7 @@ namespace HouseCrawler.Web.DataContent
         /// <summary>
         /// 
         /// </summary>
+        [JsonIgnore]
         public DateTime? DataChange_LastTime
         {
             get;
@@ -126,6 +130,7 @@ namespace HouseCrawler.Web.DataContent
         /// <summary>
         /// 
         /// </summary>
+        [JsonIgnore]
         public bool? IsAnalyzed
         {
             get;
