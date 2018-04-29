@@ -36,6 +36,13 @@ namespace HouseCrawler.Core.Controllers
             PinPaiGongYuHouseCrawler.Run();
             PeopleRentingCrawler.Run();
             CCBHouesCrawler.Run();
+            ZuberHouseCrawler.Run();
+            return View();
+        }
+
+         public IActionResult RunZuber()
+        {
+            ZuberHouseCrawler.Run();
             return View();
         }
 
