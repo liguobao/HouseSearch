@@ -16,12 +16,11 @@ namespace HouseCrawler.Core
         private static readonly CrawlerDataContent DataContent = new CrawlerDataContent();
 
 
-        public static void CaptureHouseInfo()
+        public static void Run()
         {
             int captrueHouseCount = 0;
             DateTime startTime = DateTime.Now;
-            foreach (var crawlerConfiguration in DataContent.CrawlerConfigurations.Where(c => c.ConfigurationName
-            == ConstConfigurationName.CCBHouse).ToList())
+            foreach (var crawlerConfiguration in CrawlerDataDapper.GetConfigurationList(ConstConfigurationName.CCBHouse).ToList())
             {
                 LogHelper.RunActionNotThrowEx(() =>
                 {

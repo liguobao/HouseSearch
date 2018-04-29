@@ -16,14 +16,13 @@ namespace HouseCrawler.Core
 
         private static readonly CrawlerDataContent DataContent = new CrawlerDataContent();
 
-        public static void CaptureHouseInfo()
+        public static void Run()
         {
             try
             {
                 int captrueHouseCount = 0;
                 DateTime startTime = DateTime.Now;
-                foreach (var doubanConf in DataContent.CrawlerConfigurations
-                    .Where(c => c.ConfigurationName == ConstConfigurationName.Douban).ToList())
+                foreach (var doubanConf in CrawlerDataDapper.GetConfigurationList(ConstConfigurationName.Douban))
                 {
                     LogHelper.RunActionNotThrowEx(() =>
                     {

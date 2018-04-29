@@ -51,6 +51,7 @@
     <PackageReference Include="StackExchange.Redis.StrongName" Version="1.2.6" />
     <PackageReference Include="System.Diagnostics.Tools" Version="4.3.0" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="4.4.0" />
+    <PackageReference Include="System.ValueTuple" Version="*"/>
   </ItemGroup>
   <ItemGroup>
     <Content Update="wwwroot/CSS\common.css">

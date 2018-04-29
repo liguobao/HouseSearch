@@ -22,7 +22,7 @@ namespace HouseCrawler.Core.Models
 
         public static void RefreshDashboard()
         {
-            var lstCityHouse = CrawlerDataDapper.GetHouseSourceInfoList();
+            var lstCityHouse = CrawlerDataDapper.GetHouseDashboardList();
             var config = DataContent.CrawlerConfigurations.FirstOrDefault(c => c.ConfigurationName == ConstConfigurationName.CityHouseInfo);
             if (config == null)
             {

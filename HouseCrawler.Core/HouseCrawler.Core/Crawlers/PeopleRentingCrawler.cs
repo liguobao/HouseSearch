@@ -14,16 +14,16 @@ namespace HouseCrawler.Core
         private static readonly CrawlerDataContent DataContent = new CrawlerDataContent();
 
 
-        public static void CaptureHouseInfo()
+        public static void Run()
         {
             int captrueHouseCount = 0;
             DateTime startTime = DateTime.Now;
 
-            var peopleRentingConf = DataContent.CrawlerConfigurations
-                .FirstOrDefault(conf => conf.ConfigurationName == ConstConfigurationName.HuZhuZuFang);
+            var peopleRentingConf = CrawlerDataDapper.GetConfigurationList(ConstConfigurationName.HuZhuZuFang)
+            .FirstOrDefault();
 
-            var pageCount = peopleRentingConf != null 
-                ? JsonConvert.DeserializeObject<dynamic>(peopleRentingConf.ConfigurationValue).pagecount.Value 
+            var pageCount = peopleRentingConf != null
+                ? JsonConvert.DeserializeObject<dynamic>(peopleRentingConf.ConfigurationValue).pagecount.Value
                 : 10;
             var hsHouseOnlineUrl = new HashSet<string>();
             List<BaseHouseInfo> houses = new List<BaseHouseInfo>();

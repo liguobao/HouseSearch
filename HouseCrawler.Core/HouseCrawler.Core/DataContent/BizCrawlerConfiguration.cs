@@ -33,6 +33,8 @@ namespace HouseCrawler.Core
 
         public static string HuZhuZuFang = "huzhuzufang";
 
+         public static string Zuber = "zuber";
+
         public static string CityHouseInfo = "cityhouse";
 
 

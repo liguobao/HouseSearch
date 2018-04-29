@@ -32,10 +32,10 @@ namespace HouseCrawler.Core.Controllers
 
         public IActionResult RunJobs()
         {
-            DoubanHouseCrawler.CaptureHouseInfo();
-            PinPaiGongYuHouseCrawler.CapturePinPaiHouseInfo();
-            PeopleRentingCrawler.CaptureHouseInfo();
-            CCBHouesCrawler.CaptureHouseInfo();
+            DoubanHouseCrawler.Run();
+            PinPaiGongYuHouseCrawler.Run();
+            PeopleRentingCrawler.Run();
+            CCBHouesCrawler.Run();
             return View();
         }
 

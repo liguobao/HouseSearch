@@ -7,10 +7,11 @@ namespace HouseCrawler.Core
         [Invoke(Begin = "2018-04-05 00:00", Interval = 1000 * 3600, SkipWhileExecuting = true)]
         public void Run()
         {
-            PinPaiGongYuHouseCrawler.CapturePinPaiHouseInfo();
-            PeopleRentingCrawler.CaptureHouseInfo();
-            DoubanHouseCrawler.CaptureHouseInfo();
-            CCBHouesCrawler.CaptureHouseInfo();
+            PinPaiGongYuHouseCrawler.Run();
+            PeopleRentingCrawler.Run();
+            DoubanHouseCrawler.Run();
+            CCBHouesCrawler.Run();
+            ZuberHouseCrawler.Run();
         }
     }
 }

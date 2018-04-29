@@ -14,7 +14,8 @@ namespace HouseCrawler.Core.DataContent
             { ConstConfigurationName.Douban, "DoubanHouseInfos"},
             { ConstConfigurationName.HuZhuZuFang, "MutualHouseInfos"},
             { ConstConfigurationName.PinPaiGongYu, "ApartmentHouseInfos"},
-            { ConstConfigurationName.CCBHouse, "CCBHouseInfos"}
+            { ConstConfigurationName.CCBHouse, "CCBHouseInfos"},
+            { ConstConfigurationName.Zuber, "ZuberHouseInfos"}
         };
 
         static internal IDbConnection Connection => new MySqlConnection(ConnectionStrings.MySQLConnectionString);
@@ -53,7 +54,7 @@ namespace HouseCrawler.Core.DataContent
 
         }
 
-        public static List<DBHouseDashboard> GetHouseSourceInfoList()
+        public static List<DBHouseDashboard> GetHouseDashboardList()
         {
             using (IDbConnection dbConnection = Connection)
             {
@@ -63,8 +64,6 @@ namespace HouseCrawler.Core.DataContent
                             FROM
                                 housecrawler.ApartmentHouseInfos
                             GROUP BY LocationCityName, Source;");
-
-
                 var douban = dbConnection.Query<DBHouseDashboard>(@"SELECT 
                                 LocationCityName AS CityName, Source, COUNT(id) AS HouseSum
                             FROM
@@ -81,6 +80,21 @@ namespace HouseCrawler.Core.DataContent
                 list.AddRange(mutual.ToList());
                 return list;
 
+            }
+        }
+
+
+
+        public static List<BizCrawlerConfiguration> GetConfigurationList(string configurationName)
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                dbConnection.Open();
+                return dbConnection.Query<BizCrawlerConfiguration>(@"SELECT * FROM housecrawler.CrawlerConfigurations 
+                where ConfigurationName=@ConfigurationName;", new 
+                {
+                     ConfigurationName = configurationName
+                }).ToList();
             }
         }
 

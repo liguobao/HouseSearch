@@ -15,13 +15,12 @@ namespace HouseCrawler.Core
 
         private static readonly CrawlerDataContent DataContent = new CrawlerDataContent();
 
-        public static void CapturePinPaiHouseInfo()
+        public static void Run()
         {
             int captrueHouseCount = 0;
             DateTime startTime = DateTime.Now;
 
-            foreach (var crawlerConfiguration in DataContent.CrawlerConfigurations.Where(c => c.ConfigurationName
-               == ConstConfigurationName.PinPaiGongYu && c.IsEnabled).ToList())
+            foreach (var crawlerConfiguration in CrawlerDataDapper.GetConfigurationList(ConstConfigurationName.PinPaiGongYu).Where(c => c.IsEnabled).ToList())
             {
                 LogHelper.RunActionNotThrowEx(() =>
                 {
