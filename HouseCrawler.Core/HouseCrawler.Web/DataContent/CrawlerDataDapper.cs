@@ -131,7 +131,7 @@ namespace HouseCrawler.Web.DataContent
                     list.AddRange(dashboards);
                 }
                 return list.Where(dash => dash.HouseSum > 100
-                && dash.LastRecordPubTime.CompareTo(DateTime.Now.AddDays(30)) > 0).ToList();
+                && dash.LastRecordPubTime.CompareTo(DateTime.Now.AddDays(-30)) > 0).ToList();
             }
         }
 
