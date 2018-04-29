@@ -11,12 +11,12 @@ define(['mapSignleton', 'city', 'transfer'], function(mapSignleton, city, transf
         });
     }
 
-    var add = function (address, money, href, markBG,displaySource) {
+    var add = function(address, money, href, markBG, displaySource, houseTitle) {
         new AMap.Geocoder({
             city: city.name,
             radius: 1000
-        }).getLocation(address, function (status, result) {
-     
+        }).getLocation(address, function(status, result) {
+
             if (status === "complete" && result.info === 'OK') {
                 var geocode = result.geocodes[0];
                 var rentMarker = new AMap.Marker({
@@ -29,7 +29,10 @@ define(['mapSignleton', 'city', 'transfer'], function(mapSignleton, city, transf
 
                 var displayMoney = money ? "  租金：" + money : "";
                 var sourceContent = displaySource ? " 来源：" + displaySource : "";
-                var onlineURL = "<a target='_blank' href='" + href + "'>房源：" + address + displayMoney + sourceContent + "  </a>";
+                if(!houseTitle){
+                    houseTitle = address;
+                }
+                var onlineURL = "<a target='_blank' href='" + href + "'>房源：" + houseTitle + displayMoney + sourceContent + "  </a>";
                 var starURL = "<a class='am-icon-star am-icon-f'>收藏</a> ";
                 rentMarker.content = "<div>" + onlineURL + starURL + "<div>"
                 rentMarker.on('click', function(e) {

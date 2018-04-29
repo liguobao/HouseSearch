@@ -47,6 +47,7 @@ namespace HouseCrawler.Web.Controllers
                         HouseURL = house.HouseOnlineURL,
                         HouseLocation = house.HouseLocation,
                         HouseTime = house.PubTime.ToString(),
+                        HouseTitle = house.HouseTitle,
                         HousePrice = housePrice,
                         LocationMarkBG = markBGType,
                         DisplaySource = ConstConfigurationName.ConvertToDisPlayName(house.Source)
