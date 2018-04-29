@@ -118,43 +118,20 @@ namespace HouseCrawler.Web.DataContent
             using (IDbConnection dbConnection = Connection)
             {
                 dbConnection.Open();
-                var apartment = dbConnection.Query<HouseDashboard>(@"SELECT 
-                                LocationCityName AS CityName, Source, COUNT(id) AS HouseSum
-                            FROM
-                                housecrawler.ApartmentHouseInfos
-                            GROUP BY LocationCityName, Source;");
-
-
-                var douban = dbConnection.Query<HouseDashboard>(@"SELECT 
-                                LocationCityName AS CityName, Source, COUNT(id) AS HouseSum
-                            FROM
-                                housecrawler.DoubanHouseInfos
-                            GROUP BY LocationCityName, Source;");
-
-                var mutual = dbConnection.Query<HouseDashboard>(@"SELECT 
-                                LocationCityName AS CityName, Source, COUNT(id) AS HouseSum
-                            FROM
-                                housecrawler.MutualHouseInfos
-                            GROUP BY LocationCityName, Source;");
-
-                var ccb = dbConnection.Query<HouseDashboard>(@"SELECT 
-                                LocationCityName AS CityName, Source, COUNT(id) AS HouseSum
-                            FROM
-                                housecrawler.CCBHouseInfos
-                            GROUP BY LocationCityName, Source;");
-
-                var zuber = dbConnection.Query<HouseDashboard>(@"SELECT 
-                                LocationCityName AS CityName, Source, COUNT(id) AS HouseSum
-                            FROM
-                                housecrawler.ZuberHouseInfos
-                            GROUP BY LocationCityName, Source;");
-                var list = apartment.ToList();
-                list.AddRange(ccb.ToList());
-                list.AddRange(zuber.ToList());
-                list.AddRange(douban.ToList());
-                list.AddRange(mutual.ToList());
-                return list;
-
+                var list = new List<Models.HouseDashboard>();
+                foreach (var key in dicHouseTableName.Keys)
+                {
+                    var tableName = GetTableName(key);
+                    var dashboards = dbConnection.Query<HouseDashboard>(@"SELECT 
+                                LocationCityName AS CityName,
+                                Source, COUNT(id) AS HouseSum, 
+                                MAX(PubTime) AS LastRecordPubTime
+                            FROM 
+                                " + tableName + $" GROUP BY LocationCityName, Source;");
+                    list.AddRange(dashboards);
+                }
+                return list.Where(dash => dash.HouseSum > 100
+                && dash.LastRecordPubTime.CompareTo(DateTime.Now.AddDays(30)) > 0).ToList();
             }
         }
 

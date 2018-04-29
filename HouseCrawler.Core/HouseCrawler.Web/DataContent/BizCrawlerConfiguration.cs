@@ -45,8 +45,8 @@ namespace HouseCrawler.Web
                 { Douban,"豆瓣小組"},
                 { PinPaiGongYu,"品牌公寓"},
                 { HuZhuZuFang,"互助租房"},
-                { Zuber,"Zuber平台"},
-                { CCBHouse,"CCB建融家园"},
+                { Zuber,"Zuber"},
+                { CCBHouse,"CCB建融"},
                 { CityHouseInfo,"城市租房信息"},
             };
 

@@ -13,6 +13,8 @@ namespace HouseCrawler.Web.Models
         public int HouseSum { get; set; }
 
         public string Source { get; set; }
+
+        public DateTime LastRecordPubTime {get;set;}
        
     }
 
