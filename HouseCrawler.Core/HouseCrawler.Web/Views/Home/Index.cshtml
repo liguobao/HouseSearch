@@ -248,9 +248,9 @@
                             <p>
                                 @foreach (var cityHouseInfo in cityGroup)
                                 {
-                                   
+                                    var sum = cityHouseInfo.HouseSum >9999 ? "9999+":cityHouseInfo.HouseSum.ToString();
                                     <a href="~/Home/HouseList?cityname=@cityName&source=@cityHouseInfo.Source&intervalDay=7&houseCount=500" target="_blank">
-                                      @ConstConfigurationName.ConvertToDisPlayName(cityHouseInfo.Source) (@cityHouseInfo.HouseSum>9999 ? "9999+":cityHouseInfo.HouseSum.ToString())
+                                      @ConstConfigurationName.ConvertToDisPlayName(cityHouseInfo.Source) (@sum)
                                     </a>
                                     <br />
                                     
