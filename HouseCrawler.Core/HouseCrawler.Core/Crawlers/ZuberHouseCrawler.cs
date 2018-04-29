@@ -66,7 +66,7 @@ namespace HouseCrawler.Core
                     var house = new BaseHouseInfo()
                     {
                         HouseLocation = room["address"].ToString(),
-                        HouseTitle = room["title"].ToString(),
+                        HouseTitle = room["summary"].ToString(),
                         HouseOnlineURL = room["share_url"].ToString(),
                         HouseText = item.ToString(),
                         HousePrice = housePrice,
