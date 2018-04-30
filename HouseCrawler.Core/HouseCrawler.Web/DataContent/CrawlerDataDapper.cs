@@ -130,8 +130,8 @@ namespace HouseCrawler.Web.DataContent
                                 " + tableName + $" GROUP BY LocationCityName, Source ORDER BY HouseSum desc;");
                     list.AddRange(dashboards);
                 }
-                return list.Where(dash => dash.HouseSum > 100
-                && dash.LastRecordPubTime.CompareTo(DateTime.Now.AddDays(-30)) > 0).ToList();
+                return list.Where(dash => dash.LastRecordPubTime.CompareTo(DateTime.Now.AddDays(-30)) > 0)
+                .ToList();
             }
         }
 
