@@ -127,7 +127,7 @@ namespace HouseCrawler.Web.DataContent
                                 Source, COUNT(id) AS HouseSum, 
                                 MAX(PubTime) AS LastRecordPubTime
                             FROM 
-                                " + tableName + $" GROUP BY LocationCityName, Source;");
+                                " + tableName + $" GROUP BY LocationCityName, Source ORDER BY HouseSum desc;");
                     list.AddRange(dashboards);
                 }
                 return list.Where(dash => dash.HouseSum > 100

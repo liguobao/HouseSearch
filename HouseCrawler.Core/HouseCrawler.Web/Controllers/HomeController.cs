@@ -18,7 +18,8 @@ namespace HouseCrawler.Web.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            return View(HouseDashboardService.LoadDashboard());
+            var dashboards = HouseDashboardService.LoadDashboard();
+            return View(dashboards);
         }
 
         public IActionResult HouseList()
