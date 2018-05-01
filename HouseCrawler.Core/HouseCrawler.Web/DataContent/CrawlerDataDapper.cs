@@ -31,6 +31,7 @@ namespace HouseCrawler.Web.DataContent
                 var houseList = new List<DBHouseInfo>();
                 foreach (var key in dicHouseTableName.Keys)
                 {
+                    // 因为会走几个表,默认每个表取100条
                     houseList.AddRange(Search(cityName, key, 100, intervalDay, keyword, refresh));
                 }
                 return houseList.OrderByDescending(h => h.PubTime).Take(houseCount);
