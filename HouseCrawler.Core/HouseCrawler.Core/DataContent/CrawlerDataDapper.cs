@@ -15,7 +15,8 @@ namespace HouseCrawler.Core.DataContent
             { ConstConfigurationName.HuZhuZuFang, "MutualHouseInfos"},
             { ConstConfigurationName.PinPaiGongYu, "ApartmentHouseInfos"},
             { ConstConfigurationName.CCBHouse, "CCBHouseInfos"},
-            { ConstConfigurationName.Zuber, "ZuberHouseInfos"}
+            { ConstConfigurationName.Zuber, "ZuberHouseInfos"},
+            { ConstConfigurationName.MoguHouse, "MoguHouseInfos"}
         };
 
         static internal IDbConnection Connection => new MySqlConnection(ConnectionStrings.MySQLConnectionString);

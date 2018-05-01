@@ -70,6 +70,7 @@ namespace HouseCrawler.Core
                     template: "{controller=House}/{action=Index}/{id?}"); 
             });
 
+
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
             ConnectionStrings.MySQLConnectionString = new ConfigurationBuilder()

@@ -33,7 +33,10 @@ namespace HouseCrawler.Core
 
         public static string HuZhuZuFang = "huzhuzufang";
 
-         public static string Zuber = "zuber";
+        public static string Zuber = "zuber";
+
+
+        public static string MoguHouse = "mogu";
 
         public static string CityHouseInfo = "cityhouse";
 
@@ -47,15 +50,11 @@ namespace HouseCrawler.Core
                 { HuZhuZuFang,"互助租房"},
                 { Zuber,"Zuber平台"},
                 { CCBHouse,"CCB建融家园"},
+                { MoguHouse, "蘑菇租房" },
                 { CityHouseInfo,"城市租房信息"},
             };
 
-            return (dicNameToDisplayName.ContainsKey(configurationName))? dicNameToDisplayName[configurationName]:"";
+            return (dicNameToDisplayName.ContainsKey(configurationName)) ? dicNameToDisplayName[configurationName] : "";
         }
     }
-
-
-
-
-
 }
