@@ -86,7 +86,7 @@ namespace HouseCrawler.Core
             return lstHouse;
         }
 
-        public static string GetAPIResult(string cityID, int currentPage, int rentTypes = 2)
+        public static string GetAPIResult(int cityID, int currentPage, int rentTypes = 2)
         {
             try
             {
