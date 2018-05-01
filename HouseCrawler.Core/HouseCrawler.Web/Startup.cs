@@ -77,6 +77,14 @@ namespace HouseCrawler.Web
              .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json").Build()["ConnectionStrings:MySQLConnectionString"];
 
+            EncryptionConfig.CIV = new ConfigurationBuilder()
+             .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json").Build()["EncryptionConfig:CIV"];
+
+            EncryptionConfig.CKEY = new ConfigurationBuilder()
+             .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json").Build()["EncryptionConfig:CKEY"];
+
             ConnectionStrings.RedisConnectionString = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
            .AddJsonFile("appsettings.json").Build()["ConnectionStrings:RedisConnectionString"];

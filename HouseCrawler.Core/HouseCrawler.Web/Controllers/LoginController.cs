@@ -19,7 +19,7 @@ namespace HouseCrawler.Web.Controllers
 
         public ActionResult GetToken(string userName, string userEmail)
         {
-            
+            string token =  EncryptionTools.DecryptString(userName+userEmail);
             // creat token
             //send email
             return View();
