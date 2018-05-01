@@ -37,12 +37,14 @@ namespace HouseCrawler.Core.Controllers
             PeopleRentingCrawler.Run();
             CCBHouesCrawler.Run();
             ZuberHouseCrawler.Run();
+            MoGuHouseCrawler.Run();
             return View();
         }
 
-         public IActionResult RunZuber()
+        public IActionResult RunZuber()
         {
             ZuberHouseCrawler.Run();
+            MoGuHouseCrawler.Run();
             return View();
         }
 
