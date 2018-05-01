@@ -14,6 +14,8 @@ namespace HouseCrawler.Web
 
          #region "定义加密字串变量"
         private static SymmetricAlgorithm mCSP = new DESCryptoServiceProvider();  //声明对称算法变量
+        private const string CIV = "Mi9l/+7Zujhy12se6Yjy111A";  //初始化向量
+        private const string CKEY = "jkHuIy9D/9i="; //密钥（常量）
         #endregion
 
 
@@ -29,8 +31,8 @@ namespace HouseCrawler.Web
             CryptoStream cs; //定义将内存流链接到加密转换的流
             byte[] byt;
             //CreateEncryptor创建(对称数据)加密对象
-            ct = mCSP.CreateEncryptor(Convert.FromBase64String(EncryptionConfig.CKEY),
-             Convert.FromBase64String(EncryptionConfig.CIV)); //用指定的密钥和初始化向量创建对称数据加密标准
+            ct = mCSP.CreateEncryptor(Convert.FromBase64String(CKEY),
+             Convert.FromBase64String(CIV)); //用指定的密钥和初始化向量创建对称数据加密标准
             byt = Encoding.UTF8.GetBytes(Value); //将Value字符转换为UTF-8编码的字节序列
             ms = new MemoryStream(); //创建内存流
             cs = new CryptoStream(ms, ct, CryptoStreamMode.Write); //将内存流链接到加密转换的流
@@ -53,8 +55,8 @@ namespace HouseCrawler.Web
             MemoryStream ms; //定义内存流
             CryptoStream cs; //定义将数据流链接到加密转换的流
             byte[] byt;
-            ct = mCSP.CreateDecryptor(Convert.FromBase64String(EncryptionConfig.CKEY), 
-            Convert.FromBase64String(EncryptionConfig.CIV)); //用指定的密钥和初始化向量创建对称数据解密标准
+            ct = mCSP.CreateDecryptor(Convert.FromBase64String(CKEY),
+             Convert.FromBase64String(CIV)); //用指定的密钥和初始化向量创建对称数据解密标准
 
             var bytes = StringToBytes(Value);
             Value = Convert.ToBase64String(bytes);

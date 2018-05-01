@@ -19,10 +19,16 @@ namespace HouseCrawler.Web.Controllers
 
         public ActionResult GetToken(string userName, string userEmail)
         {
-            string token =  EncryptionTools.DecryptString(userName+userEmail);
+            string token ="liguobao";  //EncryptionTools.EncryptString(userName+userEmail);
+            EmailInfo email = new EmailInfo();
+            email.Body = token;
+            email.Receiver = userEmail;
+            email.Subject = "我要租房-Toekn";
+            email.ReceiverName = userName;
+            email.Send();
             // creat token
             //send email
-            return View();
+            return Json(new { IsSuccess = true, messgae= "发送成功!" });
         }
 
         public ActionResult Login(string token)

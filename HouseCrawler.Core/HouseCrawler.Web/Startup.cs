@@ -62,7 +62,7 @@ namespace HouseCrawler.Web
                 app.UseExceptionHandler("/Error");
             }
 
-         
+
             app.UseStaticFiles();
 
             app.UseMvc(routes =>
@@ -72,22 +72,16 @@ namespace HouseCrawler.Web
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-
-            ConnectionStrings.MySQLConnectionString = new ConfigurationBuilder()
+           var config = new ConfigurationBuilder()
              .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json").Build()["ConnectionStrings:MySQLConnectionString"];
+            .AddJsonFile("appsettings.json").Build();
+            ConnectionStrings.MySQLConnectionString = config["ConnectionStrings:MySQLConnectionString"];
+            ConnectionStrings.RedisConnectionString = config["ConnectionStrings:RedisConnectionString"];
+            EncryptionConfig.CIV = config["EncryptionConfig:CIV"];
+            EncryptionConfig.CKEY = config["EncryptionConfig:CKEY"];
+            EmailConfig.Account = config["EmailConfig:Account"];
+            EmailConfig.Password = config["EmailConfig:Password"];
 
-            EncryptionConfig.CIV = new ConfigurationBuilder()
-             .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json").Build()["EncryptionConfig:CIV"];
-
-            EncryptionConfig.CKEY = new ConfigurationBuilder()
-             .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json").Build()["EncryptionConfig:CKEY"];
-
-            ConnectionStrings.RedisConnectionString = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-           .AddJsonFile("appsettings.json").Build()["ConnectionStrings:RedisConnectionString"];
         }
     }
 }
