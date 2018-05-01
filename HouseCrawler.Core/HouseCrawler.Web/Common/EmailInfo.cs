@@ -41,7 +41,7 @@ namespace HouseCrawler.Web
                 MailMessage mail = new MailMessage();
 
                 mail.From = new MailAddress(EmailConfig.Account);
-                mail.To.Add(new MailAddress(Receiver));
+                mail.To.Add(new MailAddress(Receiver, ReceiverName));
 
                 mail.Subject = Subject;
                 mail.SubjectEncoding = Encoding.UTF8;
