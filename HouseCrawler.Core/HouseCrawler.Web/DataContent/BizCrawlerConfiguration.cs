@@ -37,6 +37,8 @@ namespace HouseCrawler.Web
 
         public static string Zuber = "zuber";
 
+        public static string MoguHouse = "mogu";
+
 
         public static string ConvertToDisPlayName(string configurationName)
         {
@@ -46,11 +48,12 @@ namespace HouseCrawler.Web
                 { PinPaiGongYu,"品牌公寓"},
                 { HuZhuZuFang,"互助租房"},
                 { Zuber,"Zuber"},
+                { MoguHouse,"蘑菇租房"},
                 { CCBHouse,"CCB建融"},
                 { CityHouseInfo,"城市租房信息"},
             };
 
-            return (dicNameToDisplayName.ContainsKey(configurationName))? dicNameToDisplayName[configurationName]:"";
+            return (dicNameToDisplayName.ContainsKey(configurationName)) ? dicNameToDisplayName[configurationName] : "";
         }
     }
 
