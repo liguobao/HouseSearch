@@ -31,7 +31,7 @@ namespace HouseCrawler.Web.DataContent
                 var houseList = new List<DBHouseInfo>();
                 foreach (var key in dicHouseTableName.Keys)
                 {
-                    houseList.AddRange(Search(cityName, key, houseCount, intervalDay, keyword, refresh));
+                    houseList.AddRange(Search(cityName, key, 100, intervalDay, keyword, refresh));
                 }
                 return houseList.OrderByDescending(h => h.PubTime).Take(houseCount);
             }
