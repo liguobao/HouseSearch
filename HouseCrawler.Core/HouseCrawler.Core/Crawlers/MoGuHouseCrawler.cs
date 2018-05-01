@@ -25,7 +25,7 @@ namespace HouseCrawler.Core
                     List<BaseHouseInfo> houses = new List<BaseHouseInfo>();
                     var confInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(doubanConf.ConfigurationValue);
                     var cityName = confInfo.cityname.Value;
-                    var cityId = confInfo.cityid.Value;
+                    var cityId = (int)confInfo.cityid.Value;
                     // 2:合租 3:整租 5:业主房源
                     var rentTypes = new List<int>() { 2, 3, 5 };
                     foreach (var rentType in rentTypes)
