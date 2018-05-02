@@ -1,0 +1,65 @@
+/* 用户个人信息 */
+.aw-user-detail-box .mod-head{position: relative;min-height:140px;padding:20px 20px 20px 135px;border-bottom: 1px solid #e6e6e6;}
+.aw-user-detail-box .mod-head img{position: absolute;left:20px;top:20px;border-radius: 5px;}
+.aw-user-detail-box .mod-head .aw-user-flag span{margin-right: 10px;}
+.aw-user-detail-box .mod-head .operate a{margin-left:10px;}
+.aw-user-detail-box .mod-body .meta{height:45px;line-height:45px;padding:0 20px;font-size: 13px;}
+.aw-user-detail-box .mod-body .meta span{margin-right:10px;}
+.aw-user-detail-box .mod-body .meta span i{position: relative;top: 2px;}
+.aw-user-detail-box .mod-body .meta .aw-icon{margin-right:5px;}
+.aw-user-detail-box .mod-body .meta .aw-text-color-green, .meta .aw-text-color-orange{font-size:13px;font-weight: bold;}
+.aw-user-detail-box .mod-body .good-at-topics{padding:20px;border-top: 1px solid #e6e6e6;}
+.aw-user-detail-box .mod-body .good-at-topics ul li{float:left;width:205px;margin:0 10px 15px 0;}
+.aw-user-detail-box .mod-body .good-at-topics ul li .topic-tag{margin-right: 10px;}
+.aw-user-detail-box .mod-body .good-at-topics ul li .topic-tag a{max-width: 65px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;}
+.aw-user-detail-box .mod-footer{border-top: 1px solid #e3e3e3;}
+.aw-user-detail-box .mod-footer .aw-nav-tabs{padding-top: 20px;min-height: 52px;}
+
+/* 用户页面公共模块 */
+.aw-user-center-tab .tab-pane > .aw-mod > .mod-head{padding:0 20px;}
+.aw-user-center-tab .tab-pane > .aw-mod > .mod-head h3{margin:20px 0;font-size: 20px;line-height: 20px;}
+.aw-user-center-tab .tab-pane > .aw-mod > .mod-head h3 a{font-size: 12px;}
+.aw-user-center-tab .tab-pane > .aw-mod > .mod-body{padding:0 20px;}
+.aw-user-center-tab .tab-pane > .aw-mod a.aw-hide-txt{display:block;max-width:410px;}
+.aw-user-center-tab .aw-mod .aw-item{padding-top:14px;border-bottom:1px solid #f5f5f5;}
+.aw-user-center-tab .aw-mod .aw-item:first-child{padding-top:0;border-top: none;}
+.aw-user-center-tab .aw-mod .aw-item .mod-head h4.aw-hide-txt{max-width: 645px;}
+.aw-user-center-tab .aw-mod .aw-item .mod-body{position:relative;min-height: 30px;}
+.aw-user-center-tab .aw-mod .aw-item .mod-body p.aw-hide-txt{max-width: 610px;}
+.aw-user-center-tab .count{width: 58px;height:30px;margin:0 10px 0 0;padding:0 10px;background-color: #fff;border:1px solid #f5f5f5;border-radius: 4px;line-height: 30px;}
+.aw-user-center-tab .count i{margin-right: 10px;}
+
+/* tab切换 */
+/* 发问 */
+.aw-profile-publish-list .mod-body{padding:0 !important;}
+.aw-profile-publish-list p, .aw-profile-answer-list p{margin-bottom:14px;line-height: 30px;}
+/* 关注 */
+.aw-user-center-follow-mod > .mod-footer{margin-top: 20px;}
+.aw-user-center-follow-mod ul li{position:relative;float: left;min-height:100px;width: 50%;padding:10px 0 10px 60px;border-bottom: 1px solid #f5f5f5;}
+.aw-user-center-follow-mod .aw-user-img, .aw-user-center-follow-mod .aw-topic-img{position: absolute;left: 0;top:10px;}
+.aw-user-center-follow-mod li .mod-body{min-height:24px;overflow: hidden;}
+.aw-user-center-follow-mod li p{margin:0 0 5px;}
+.aw-user-center-follow-mod li .meta span{margin-right: 10px;}
+.aw-user-center-follow-mod .aw-load-more-content{margin:20px 0 0;}
+.aw-user-center-follow-mod #contents_user_topics li{min-height: 75px;}
+
+/* 动态 */
+.tab-pane #contents_user_actions li, #overview ul li{padding-top:10px;border-top: 1px solid #f5f5f5;}
+.tab-pane #contents_user_actions li:first-child, #overview ul li:first-child{padding-top:0;border-top: none;}
+.aw-user-center-tab .tab-pane p .aw-user-name, .aw-user-center-tab .tab-pane p .aw-topic-name {font-size: 14px;}
+/* 详细资料 */
+.aw-user-center-details{padding:0 60px;}
+.aw-user-center-details dl{height: auto;overflow: hidden;line-height: 22px;margin:0;padding:15px 0 15px 10px;border-top:1px dotted #c1cad4;}
+.aw-user-center-details dl:first-child{border-top: none;}
+.aw-user-center-details dl dt, .aw-user-center-details dl dd{float:left;}
+.aw-user-center-details dl dt{margin-right:20px;font-weight: normal;color: #333;}
+.aw-user-center-details dl dd{color:#666;}
+.aw-user-center-details dl dd a{margin-right: 10px;}
+.aw-user-center-details .aw-user-center-details-good-topic > div{min-height:20px;margin-bottom:15px;}
+.aw-user-center-details .meta{margin:0;}
+.aw-user-center-details .meta span{margin-right:10px;}
+
+/* 侧边栏 */
+.aw-mod.people-following p{margin-top: 10px;}
+.aw-mod.people-following .aw-user-name img{width: 24px;height: 24px;}
+.aw-mod.people-following .aw-topic-bar{margin:10px 0 0 0;}

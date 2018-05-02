@@ -1,0 +1,69 @@
+﻿@{
+    ViewBag.Title = "Retrieve Password";
+}
+
+@model WebBookmarkBo.Model.BizResultInfo
+<!DOCTYPE html>
+<!-- saved from url=(0042)http://ask.amazeui.org/?/account/register/ -->
+<html class="js cssanimations">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <meta name="renderer" content="webkit">
+    <title>激活账号 - WebBookmark</title>
+    <meta name="keywords" content="WebBookmark">
+    <meta name="description" content="WebBookmark Activate Account">
+    <!--<base href="http://ask.amazeui.org/?/">-->
+    <base href="."><!--[if IE]></base><![endif]-->
+    <link href="http://ask.amazeui.org/static/css/new/img/favicon.png?v=20150409" rel="shortcut icon" type="image/png">
+    <link href="~/assets/css/amazeui.min.css" rel="stylesheet" />
+    <link href="~/assets/login/common.css" rel="stylesheet" />
+    <link href="~/assets/login/icon.css" rel="stylesheet" />
+    <link href="~/assets/login/link.css" rel="stylesheet" />
+    <link href="~/assets/login/new.css" rel="stylesheet" />
+    <link href="~/assets/login/style.css" rel="stylesheet" />
+    <link href="~/assets/login/register.css" rel="stylesheet" />
+    <script src="~/assets/js/jquery.min.js"></script>
+    <style type="text/css">
+        .fancybox-margin {
+            margin-right: 17px;
+        }
+    </style>
+</head>
+<body>
+    <noscript unselectable="on" id="noscript">
+        &lt;div class="aw-404 aw-404-wrap container"&gt;
+        &lt;img src="http://ask.amazeui.org/static/common/no-js.jpg"&gt;
+        &lt;p&gt;你的浏览器禁用了JavaScript, 请开启后刷新浏览器获得更好的体验!&lt;/p&gt;
+        &lt;/div&gt;
+    </noscript>
+    <div class="aw-register-box">
+        <div class="mod-head">
+            <h1>WebBookmark Activate Account</h1>
+            <p>激活账号</p>
+
+            <p>
+                @if (Model.IsSuccess)
+                {
+                    <span class="am-icon-check am-text-success">&nbsp; @Model.SuccessMessage</span>
+                }
+                else
+                {
+                    <span class="am-icon-close am-text-danger">&nbsp; @Model.ErrorMessage</span>
+                }
+            </p>
+            <p><a href="~/Login">返回登录</a></p>
+
+        </div>
+
+    </div>
+    <div class="aw-footer-wrap">
+        <div class="aw-footer">
+            Copyright © 2016, All Rights Reserved
+            <span class="am-hide-sm-only">UI Powered By Amaze UI</span>
+        </div>
+    </div>
+</body>
+</html>

@@ -9,11 +9,16 @@ public class UserInfo
 
     public string UserEmail { get; set; }
 
-    public string Token { get; set; }
 
-    public DateTime TokenTimestamp { get; set; }
+    public string ActivatedCode {get;set;}
 
-    public DateTime TokenLimitTime { get; set; }
+
+    public string ActivatedTime{get;set;}
+
+
+    public string Email{get;set;}
+
+    public string Password { get; set; }
 
     public DateTime DataCreateTime { get; set; }
 

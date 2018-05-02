@@ -9,7 +9,7 @@ using HouseCrawler.Web.Service;
 
 namespace HouseCrawler.Web.Controllers
 {
-    public class LoginController : Controller
+    public class AccountController : Controller
     {
         // GET: Register
         public ActionResult Index()
@@ -19,9 +19,7 @@ namespace HouseCrawler.Web.Controllers
 
         public ActionResult GetToken(string userName, string userEmail)
         {
-    
             string token = EncryptionTools.Crypt(userName+userEmail);
-
             EmailInfo email = new EmailInfo();
             email.Body = token;
             email.Receiver = userEmail;
@@ -31,14 +29,10 @@ namespace HouseCrawler.Web.Controllers
             return Json(new { IsSuccess = true, messgae= "发送成功!" });
         }
 
-        public ActionResult Login(string token)
+
+        public ActionResult Login(string userName, string password)
         {
-            // check token
-            //login
-            return View();
+            return Json(new { success = true, messgae= "发送成功!" });
         }
-
-        
-
     }
 }
