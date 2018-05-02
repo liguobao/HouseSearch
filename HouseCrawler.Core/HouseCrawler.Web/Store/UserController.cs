@@ -34,6 +34,7 @@ namespace HouseCrawler.Web.Controllers
         }
 
 
+
         public async Task<IActionResult> Logout()
         {
             var result = HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme).Result;

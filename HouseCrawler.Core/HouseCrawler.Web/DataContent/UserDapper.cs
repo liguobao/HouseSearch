@@ -17,9 +17,9 @@ namespace HouseCrawler.Web.DataContent
             using (IDbConnection dbConnection = Connection)
             {
                 insertUser.Password = Tools.GetMD5(insertUser.Password);
-                var user = dbConnection.Query<UserInfo>(@"INSERT INTO `housecrawler`.`UserInfos` 
-                (`UserName`,'Email', `Password`, `ActivatedCode`,`ActiveTime`)
-                  VALUES (@UserName, @Email, @Password, @ActivatedCode,now());",
+                var user = dbConnection.Query<UserInfo>(@"INSERT INTO `UserInfos` 
+                (`UserName`,`Email`, `Password`, `ActivatedCode`,`ActivatedTime`)
+                  VALUES (@UserName, @Email, @Password, @ActivatedCode, now());",
                 insertUser).FirstOrDefault();
                 return user;
             }
@@ -32,8 +32,7 @@ namespace HouseCrawler.Web.DataContent
             {
                 dbConnection.Open();
                 return dbConnection.Query<UserInfo>(@"SELECT * FROM housecrawler.UserInfos 
-                where (UserName = @UserName or Email=@UserName) 
-                and Password = @Password;",new { UserName = userName }).FirstOrDefault();
+                where (UserName = @UserName or Email=@UserName) ;",new { UserName = userName }).FirstOrDefault();
             }
         }
 

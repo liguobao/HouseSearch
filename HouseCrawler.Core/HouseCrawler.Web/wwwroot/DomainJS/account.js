@@ -38,7 +38,7 @@ function login()
                 window.location.href = '../'
             }else
             {
-                alert(rsp.ErrorMessage);
+                alert(rsp.error);
             }
         }
         });

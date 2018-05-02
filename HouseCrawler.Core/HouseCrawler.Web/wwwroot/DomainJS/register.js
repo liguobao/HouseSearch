@@ -73,11 +73,11 @@ function verify_register_form(element) {
                             $.ajax(
                                  {
                                      type: "post",
-                                     url: "./Register/CheckUserEmail",
+                                     url: "./CheckUserEmail",
                                      data: { email},
                                      success:
                                          function (rsp) {
-                                             if (!rsp.IsSuccess) {
+                                             if (!rsp.success) {
                                                  _this.parent().find('.aw-reg-tips').detach();
                                                  _this.parent().append('<span class="aw-reg-tips aw-reg-err"><i class="aw-icon i-err"></i>' + rsp.ErrorMessage + '</span>');
                                              }
@@ -128,11 +128,11 @@ function RegisterUser() {
         $.ajax(
                 {
                     type: "post",
-                    url: "./Register/CheckUserEmail",
+                    url: "./CheckUserEmail",
                     data: { email},
                     success:
                         function (result) {
-                            if (password != "" && username != "" && result.IsSuccess)
+                            if (password != "" && username != "" && result.success)
                             {
                                 AddUser();
                             }
@@ -155,16 +155,16 @@ function AddUser() {
 
     $.ajax({
         type: "post",
-        url: "./Register/RegisterUser",
-        data: uiUserInfo,
+        url: "./RegisterUser",
+        data: { userName: $("#UserName").val(), userEmail: $("#UserEmail").val(), password: $("#UserPassword").val() },
         success:
             function (rsp) {
-                if (rsp.IsSuccess) {
-                    alert(rsp.SuccessMessage);
-                    window.location.href = '../login?uid=' + rsp.ResultID; // 跳转到B目录
+                if (rsp.success) {
+                    alert(rsp.message);
+                    window.location.href = '../Account'; // 跳转到B目录
                 }
                 else
-                    alert(rsp.ErrorMessage);
+                    alert(rsp.error);
             }
     });
 }

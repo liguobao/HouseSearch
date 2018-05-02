@@ -14,7 +14,6 @@ namespace HouseCrawler.Web.Controllers
 {
     public class AccountController : Controller
     {
-        // GET: Register
         public ActionResult Index()
         {
             return View();
@@ -26,16 +25,44 @@ namespace HouseCrawler.Web.Controllers
             return View();
         }
 
+        public ActionResult CheckUserEmail(string email)
+        {
+            var checkUser = UserDataDapper.FindUser(email);
+            if (checkUser != null)
+            {
+                return Json(new { success = false, error = "用户已存在!" });
+            }
+            else
+            {
+                return Json(new { success = true });
+            }
+        }
+
         public ActionResult RegisterUser(string userName, string userEmail, string password)
         {
-            string token = EncryptionTools.Crypt(userName + userEmail);
-            EmailInfo email = new EmailInfo();
-            email.Body = token;
-            email.Receiver = userEmail;
-            email.Subject = "woyaozufang.live Get Toekn";
-            email.ReceiverName = userName;
-            email.Send();
-            return Json(new { IsSuccess = true, messgae = "发送成功!" });
+            var checkUser = UserDataDapper.FindUser(userName);
+            if (checkUser != null)
+            {
+                return Json(new { success = false, error = "用户已存在!" });
+            }
+            else
+            {
+                string token =Tools.GetMD5(EncryptionTools.Crypt(userName + userEmail));
+                EmailInfo email = new EmailInfo();
+                email.Body = token;
+                email.Receiver = userEmail;
+                email.Subject = "woyaozufang.live Get Toekn";
+                email.ReceiverName = userName;
+                email.Send();
+                var user = new UserInfo();
+                user.UserName = userName;
+                user.Password = password;
+                user.Email = userEmail;
+                user.ActivatedCode = token;
+                UserDataDapper.InsertUser(user);
+                return Json(new { success = true, messgae = "注册成功!" });
+
+            }
         }
 
 
@@ -54,14 +81,16 @@ namespace HouseCrawler.Web.Controllers
                 }, CookieAuthenticationDefaults.AuthenticationScheme));
 
                     HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, user,
-                        new Microsoft.AspNetCore.Authentication.AuthenticationProperties
+                        new AuthenticationProperties
                         {
                             IsPersistent = true,
                             ExpiresUtc = DateTimeOffset.Now.Add(TimeSpan.FromDays(7)) // 有效时间
-                    }).Wait();
+                        }).Wait();
                     string token = EncryptionTools.Crypt($"{loginUser.ID}|{loginUser.UserName}");
                     return Json(new { success = true, token = token, messgae = "登录成功!" });
-                }else{
+                }
+                else
+                {
                     return Json(new { success = false, error = "密码错误!" });
                 }
             }
