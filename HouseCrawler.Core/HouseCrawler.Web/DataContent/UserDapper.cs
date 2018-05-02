@@ -26,12 +26,17 @@ namespace HouseCrawler.Web.DataContent
         }
 
         
-        public static UserInfo FindUser(UserInfo user)
+        public static UserInfo FindUser(string userName, string  password)
         {
             using (IDbConnection dbConnection = Connection)
             {
-                user.Password = Tools.GetMD5(user.Password);
-                return dbConnection.Query<UserInfo>(@"SELECT * FROM housecrawler.UserInfos where (UserName = @UserName or Email=@Email) and Password = @Password;",
+                dbConnection.Open();
+                UserInfo user = new UserInfo();
+                user.UserName = userName;
+                user.Password = Tools.GetMD5(password);
+                return dbConnection.Query<UserInfo>(@"SELECT * FROM housecrawler.UserInfos 
+                where (UserName = @UserName or Email=@UserName) 
+                and Password = @Password;",
                 user).FirstOrDefault();
             }
         }

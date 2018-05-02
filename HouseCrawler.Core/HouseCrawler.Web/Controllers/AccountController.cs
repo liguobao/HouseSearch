@@ -32,7 +32,8 @@ namespace HouseCrawler.Web.Controllers
 
         public ActionResult Login(string userName, string password)
         {
-            return Json(new { success = true, messgae= "发送成功!" });
+            var user = UserDataDapper.FindUser(userName, password);
+            return Json(new { success = true, messgae= "登录成功!" });
         }
     }
 }
