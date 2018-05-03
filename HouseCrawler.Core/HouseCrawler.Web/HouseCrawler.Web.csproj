@@ -8,6 +8,7 @@
     <PackageReference Include="AngleSharp" Version="0.9.9.2" />
     <PackageReference Include="Dapper" Version="1.50.4" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection.Redis" Version="0.4.0-preview2-30571-final" />
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.0.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3" />
     <PackageReference Include="MySqlConnector" Version="0.39.0" />

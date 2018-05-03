@@ -7,6 +7,9 @@ namespace HouseCrawler.Web
 {
     public class RedisService
     {
+        public static IDatabase database = ConnectionMultiplexer
+                .Connect(ConnectionStrings.RedisConnectionString).GetDatabase();
+
         public static List<DBHouseInfo> ReadSearchCache(string key)
         {
             try
