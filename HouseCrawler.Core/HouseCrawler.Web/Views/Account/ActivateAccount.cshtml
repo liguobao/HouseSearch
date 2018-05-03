@@ -45,13 +45,13 @@
             <p>激活账号</p>
 
             <p>
-                @if (Model.IsSuccess)
+                @if (Model.success)
                 {
-                    <span class="am-icon-check am-text-success">&nbsp; @Model.SuccessMessage</span>
+                    <span class="am-icon-check am-text-success">&nbsp; @Model.message</span>
                 }
                 else
                 {
-                    <span class="am-icon-close am-text-danger">&nbsp; @Model.ErrorMessage</span>
+                    <span class="am-icon-close am-text-danger">&nbsp; @Model.error</span>
                 }
             </p>
             <p><a href="~/Login">返回登录</a></p>
