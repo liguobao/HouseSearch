@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using HouseCrawler.Web.DataContent;
 using HouseCrawler.Web.Models;
 using MySql.Data.MySqlClient;
 using System;
@@ -6,9 +7,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
-namespace HouseCrawler.Web.DataContent
+namespace HouseCrawler.Web
 {
-    public class CrawlerDataDapper
+    public class HouseDapper
     {
 
         private static Dictionary<String, String> dicHouseTableName = new Dictionary<string, string>() {
@@ -102,6 +103,20 @@ namespace HouseCrawler.Web.DataContent
             }
         }
 
+
+        public static DBHouseInfo GetHouseID(long houseID, string source)
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                dbConnection.Open();
+
+                return dbConnection.Query<DBHouseInfo>($"SELECT * FROM {GetTableName(source)} where ID = @ID",
+                  new
+                  {
+                      ID = houseID
+                  }).FirstOrDefault();
+            }
+        }
 
         private static string GetTableName(string source)
         {

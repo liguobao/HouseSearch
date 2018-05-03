@@ -36,7 +36,7 @@ namespace HouseCrawler.Web.Controllers
         {
             try
             {
-                var houseList = CrawlerDataDapper.SearchHouseInfo(cityName, source, houseCount, intervalDay, keyword, refresh);
+                var houseList = HouseDapper.SearchHouseInfo(cityName, source, houseCount, intervalDay, keyword, refresh);
                 var rooms = houseList.Select(house =>
                 {
                     var markBGType = string.Empty;
@@ -107,9 +107,22 @@ namespace HouseCrawler.Web.Controllers
         }
 
 
-        public IActionResult AddUserCollection(string houseId, string source)
+        public IActionResult AddUserCollection(long houseId, string source)
         {
-            var user =  HttpContext.User;
+            var userId = ((ClaimsIdentity)HttpContext.User.Identity).FindFirst(ClaimTypes.NameIdentifier).ToString();
+            if(string.IsNullOrEmpty(userId) || userId =="0")
+            {
+                return Json(new { successs = false, error = "请登录后再收藏房源." });
+            }
+            var house =  HouseDapper.GetHouseID(houseId, source);
+            if(house == null)
+            {
+                 return Json(new { successs = false, error = "房源信息不存在,请刷新页面后重试." });
+            }
+
+            
+
+
             return null;
         }
 

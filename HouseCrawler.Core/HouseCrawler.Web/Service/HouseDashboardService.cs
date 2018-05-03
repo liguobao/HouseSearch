@@ -16,7 +16,7 @@ namespace HouseCrawler.Web.Service
             string houseDashboardJson = RedisService.ReadCache("HouseDashboard");
             if (string.IsNullOrEmpty(houseDashboardJson))
             {
-                List<HouseDashboard> dashboards = CrawlerDataDapper.GetHouseDashboard();
+                List<HouseDashboard> dashboards = HouseDapper.GetHouseDashboard();
                 RedisService.WriteCache("HouseDashboard", Newtonsoft.Json.JsonConvert.SerializeObject(dashboards));
                 return dashboards;
             }

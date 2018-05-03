@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
-namespace HouseCrawler.Web.DataContent
+namespace HouseCrawler.Web
 {
     public class UserDataDapper
     {
@@ -46,7 +46,6 @@ namespace HouseCrawler.Web.DataContent
                 where (ActivatedCode = @ActivatedCode) ;",new { ActivatedCode = activatedCode }).FirstOrDefault();
             }
         }
-
 
         public static UserInfo SaveUserStatus(long userID,int  status)
         {
