@@ -49,9 +49,12 @@ namespace HouseCrawler.Web.Controllers
             {
                 string token = Tools.GetMD5(EncryptionTools.Crypt(userName + userEmail));
                 EmailInfo email = new EmailInfo();
-                email.Body =  $"Hi,{userName}. <br>欢迎您注册地图搜租房(woyaozufang.live),你的账号已经注册成功.<br/>为了保证您能正常体验woyaozufang.live的服务，请点击下面的链接完成邮箱验证."
-                +$"<a href='http://woyaozufang.live:8080/Account/Activate?activatedCode={token}'>http://woyaozufang.live:8080/Account/Activate?activatedCode={token}</a> "
-                +"如果您以上链接无法点击，您可以将以上链接复制并粘贴到浏览器地址栏打开.<br>此信由系统自动发出，系统不接收回信，因此请勿直接回复。<br>如果有其他问题咨询请发邮件到codelover@qq.com.";;
+                email.Body =  $"Hi,{userName}. <br>欢迎您注册地图搜租房(woyaozufang.live),你的账号已经注册成功."+
+                "<br/>为了保证您能正常体验网站服务，请点击下面的链接完成邮箱验证以激活账号."
+                +$"<br><a href='http://woyaozufang.live:8080/Account/Activated?activatedCode={token}'>http://woyaozufang.live:8080/Account/Activate?activatedCode={token}</a> "
+                +"<br>如果您以上链接无法点击，您可以将以上链接复制并粘贴到浏览器地址栏打开."
+                +"<br>此信由系统自动发出，系统不接收回信，因此请勿直接回复。"+
+                "<br>如果有其他问题咨询请发邮件到codelover@qq.com.";
                 email.Receiver = userEmail;
                 email.Subject = "地图找租房-激活账号";
                 email.ReceiverName = userName;
@@ -62,7 +65,7 @@ namespace HouseCrawler.Web.Controllers
                 user.Email = userEmail;
                 user.ActivatedCode = token;
                 UserDataDapper.InsertUser(user);
-                return Json(new { success = true, messgae = "注册成功!" });
+                return Json(new { success = true, message = "注册成功!" });
             }
             catch (Exception ex)
             {
