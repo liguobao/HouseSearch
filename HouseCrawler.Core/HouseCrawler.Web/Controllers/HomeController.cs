@@ -6,6 +6,9 @@ using HouseCrawler.Web.Common;
 using HouseCrawler.Web;
 using HouseCrawler.Web.DataContent;
 using HouseCrawler.Web.Service;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,6 +21,7 @@ namespace HouseCrawler.Web.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
+            //var userId = ((ClaimsIdentity)HttpContext.User.Identity).FindFirst(ClaimTypes.NameIdentifier);
             var dashboards = HouseDashboardService.LoadDashboard();
             return View(dashboards);
         }
@@ -100,6 +104,13 @@ namespace HouseCrawler.Web.Controllers
 
             
           
+        }
+
+
+        public IActionResult AddUserCollection(string houseId, string source)
+        {
+            var user =  HttpContext.User;
+            return null;
         }
 
 
