@@ -37,5 +37,26 @@ namespace HouseCrawler.Web.DataContent
         }
 
 
+        public static UserInfo FindUserByActivatedCode(string activatedCode)
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                dbConnection.Open();
+                return dbConnection.Query<UserInfo>(@"SELECT * FROM housecrawler.UserInfos 
+                where (ActivatedCode = @ActivatedCode) ;",new { ActivatedCode = activatedCode }).FirstOrDefault();
+            }
+        }
+
+
+        public static UserInfo SaveUserStatus(long userID,int  status)
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                dbConnection.Open();
+                return dbConnection.Query<UserInfo>(@"UPDATE `housecrawler`.`UserInfos` SET `Status`=@Status WHERE `ID`=@ID ;",
+                new { ID = userID, Status=status }).FirstOrDefault();
+            }
+        }
+
     }
 }

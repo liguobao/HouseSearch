@@ -19,5 +19,7 @@ public class UserInfo
     public DateTime DataCreateTime { get; set; }
 
     public DateTime DataChange_LastTime { get; set; }
+    ///0:未激活 1:已激活 2:已禁用
+    public int Status;
 
 }
