@@ -133,7 +133,11 @@ namespace HouseCrawler.Web.Controllers
         }
 
 
-        public IActionResult GetUserCollections()
+
+
+
+
+        public IActionResult GetUserCollectionHouses()
         {
             try
             {
@@ -173,8 +177,8 @@ namespace HouseCrawler.Web.Controllers
             }
         }
 
-
-        public IActionResult MessageList()
+        
+        public IActionResult UserCollection()
         {
             return View();
         }

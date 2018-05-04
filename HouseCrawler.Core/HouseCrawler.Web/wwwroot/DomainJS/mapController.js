@@ -39,7 +39,10 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
                 refresh: refresh
             };
         }
-        else {
+        else if(dataResource=== 'userCollection'){
+            console.log("userCollection");
+        }
+        else{
             dataInfo = { cnName: city.shortName, index: index };
         }
 
