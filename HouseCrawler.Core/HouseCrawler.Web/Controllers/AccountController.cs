@@ -78,9 +78,8 @@ namespace HouseCrawler.Web.Controllers
 
         public ActionResult Login(string userName, string password)
         {
-            var loginUser = new UserInfo(){ Email="test@qq.com", Password = "e10adc3949ba59abbe56e057f20f883e", Status =1};
-
-            //var loginUser = UserDataDapper.FindUser(userName);
+            //var loginUser = new UserInfo(){ Email="test@qq.com", Password = "e10adc3949ba59abbe56e057f20f883e", Status =1};
+            var loginUser = UserDataDapper.FindUser(userName);
             if (loginUser != null)
             {
                 if (loginUser.Status != 1)
