@@ -133,6 +133,47 @@ namespace HouseCrawler.Web.Controllers
         }
 
 
+        public IActionResult GetUserCollections()
+        {
+            try
+            {
+                var userId = ((ClaimsIdentity)HttpContext.User.Identity).FindFirst(ClaimTypes.NameIdentifier).Value;
+                if (string.IsNullOrEmpty(userId) || userId == "0")
+                {
+                    return Json(new { successs = false, error = "请登录后查看个人收藏房源." });
+                }
+                var houseList = UserCollectionDapper.FindUserCollections(long.Parse(userId));
+                var rooms = houseList.Select(house =>
+                {
+                    var markBGType = string.Empty;
+                    int housePrice = (int)house.HousePrice;
+                    if (housePrice > 0)
+                    {
+                        markBGType = LocationMarkBGType.SelectColor(housePrice / 1000);
+                    }
+                    return new HouseInfo
+                    {
+                        ID = house.Id,
+                        Source = house.Source,
+                        Money = house.DisPlayPrice,
+                        HouseURL = house.HouseOnlineURL,
+                        HouseLocation = house.HouseLocation,
+                        HouseTime = house.PubTime.ToString(),
+                        HouseTitle = house.HouseTitle,
+                        HousePrice = housePrice,
+                        LocationMarkBG = markBGType,
+                        DisplaySource = ConstConfigurationName.ConvertToDisPlayName(house.Source)
+                    };
+                });
+                return Json(new { IsSuccess = true, HouseInfos = rooms });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { IsSuccess = false, error = ex.ToString() });
+            }
+        }
+
+
         public IActionResult MessageList()
         {
             return View();
