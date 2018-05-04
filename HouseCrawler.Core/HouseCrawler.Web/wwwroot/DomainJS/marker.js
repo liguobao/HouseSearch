@@ -18,7 +18,7 @@ define(['mapSignleton', 'city', 'transfer'], function(mapSignleton, city, transf
         }).getLocation(house.houseLocation, function(status, result) {
 
             if (status === "complete" && result.info === 'OK') {
-                var img_url = "https://raw.githubusercontent.com/liguobao/58HouseSearch/master/HouseCrawler.Core/HouseCrawler.Web/wwwroot/IMG/Little/";
+                var img_url = "~/IMG/Little/";
                 var geocode = result.geocodes[0];
                 var rentMarker = new AMap.Marker({
                     map: _map,
