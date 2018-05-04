@@ -18,8 +18,8 @@ namespace HouseCrawler.Web
             using (IDbConnection dbConnection = Connection)
             {
                 var collection = dbConnection.Query<UserCollection>(@"INSERT INTO `UserCollections` 
-                (`UserID`,`HouseID`, `HouseSource`, `City`)
-                  VALUES (@UserID, @HouseID, @HouseSource, @City);",
+                (`UserID`,`HouseID`, `Source`, `HouseCity`)
+                  VALUES (@UserID, @HouseID, @Source, @HouseCity);",
                 insertCollection).FirstOrDefault();
                 return collection;
             }

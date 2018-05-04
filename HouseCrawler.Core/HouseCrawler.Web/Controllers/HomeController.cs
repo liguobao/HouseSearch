@@ -127,6 +127,7 @@ namespace HouseCrawler.Web.Controllers
             userCollection.UserID = long.Parse(userId);
             userCollection.HouseID = houseId;
             userCollection.Source = house.Source;
+            userCollection.HouseCity = house.LocationCityName;
             UserCollectionDapper.InsertUser(userCollection);
             return Json(new { successs = true, message = "收藏成功." }); ;
         }

@@ -10,7 +10,7 @@ public class UserCollection
 
     public string Source{get;set;}
 
-    public string City {get;set;}
+    public string HouseCity {get;set;}
 
     public DateTime DataCreateTime { get; set; }
 
