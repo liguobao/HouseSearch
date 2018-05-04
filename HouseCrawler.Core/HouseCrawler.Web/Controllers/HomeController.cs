@@ -129,7 +129,7 @@ namespace HouseCrawler.Web.Controllers
             userCollection.Source = house.Source;
             userCollection.HouseCity = house.LocationCityName;
             UserCollectionDapper.InsertUser(userCollection);
-            return Json(new { successs = true, message = "收藏成功." }); ;
+            return Json(new { success = true, message = "收藏成功." }); ;
         }
 
 
