@@ -18,11 +18,12 @@ define(['mapSignleton', 'city', 'transfer'], function(mapSignleton, city, transf
         }).getLocation(house.houseLocation, function(status, result) {
 
             if (status === "complete" && result.info === 'OK') {
+                var img_url = "https://raw.githubusercontent.com/liguobao/58HouseSearch/master/HouseCrawler.Core/HouseCrawler.Web/wwwroot/IMG/Little/";
                 var geocode = result.geocodes[0];
                 var rentMarker = new AMap.Marker({
                     map: _map,
                     title: house.houseLocation,
-                    icon: house.locationMarkBG ? 'http://7xrayk.com1.z0.glb.clouddn.com/' + house.locationMarkBG : 'http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png',
+                    icon: house.locationMarkBG ? img_url + house.locationMarkBG : 'https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png',
                     position: [geocode.location.getLng(), geocode.location.getLat()]
                 });
                 _markerArray.push(rentMarker);
