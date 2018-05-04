@@ -1,4 +1,5 @@
 using Dapper;
+using HouseCrawler.Web.DataContent;
 using HouseCrawler.Web.Models;
 using MySql.Data.MySqlClient;
 using System;
@@ -24,13 +25,28 @@ namespace HouseCrawler.Web
             }
         }
 
-        public static UserInfo FindUserByActivatedCode(string activatedCode)
+        public static List<DBHouseInfo> FindUserCollections(long userID)
         {
             using (IDbConnection dbConnection = Connection)
             {
+
+                var  houses = new List<DBHouseInfo>();
                 dbConnection.Open();
-                return dbConnection.Query<UserInfo>(@"SELECT * FROM housecrawler.UserInfos 
-                where (ActivatedCode = @ActivatedCode) ;",new { ActivatedCode = activatedCode }).FirstOrDefault();
+                foreach (var tableName in ConstConfigurationName.HouseTableNameDic.Values)
+                {
+                    var list = dbConnection.Query<DBHouseInfo>(@"SELECT 
+                                    house.*
+                                FROM
+                                    UserCollections uc
+                                        JOIN
+                                    "+ tableName+ @" house ON uc.HouseID = house.ID
+                                        AND uc.Source = house.Source
+                                WHERE
+                                    uc.UserID = @UserID;", new { UserID = userID});
+                   houses.AddRange(list);
+                }
+
+                return houses;
             }
         }
 

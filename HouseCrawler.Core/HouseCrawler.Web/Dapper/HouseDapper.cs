@@ -12,15 +12,6 @@ namespace HouseCrawler.Web
     public class HouseDapper
     {
 
-        private static Dictionary<String, String> dicHouseTableName = new Dictionary<string, string>() {
-            { ConstConfigurationName.Douban, "DoubanHouseInfos"},
-            { ConstConfigurationName.HuZhuZuFang, "MutualHouseInfos"},
-            { ConstConfigurationName.PinPaiGongYu, "ApartmentHouseInfos"},
-            { ConstConfigurationName.CCBHouse, "CCBHouseInfos"},
-            { ConstConfigurationName.Zuber, "ZuberHouseInfos"},
-            { ConstConfigurationName.MoguHouse, "MoguHouseInfos"}
-        };
-
         protected static internal IDbConnection Connection => new MySqlConnection(ConnectionStrings.MySQLConnectionString);
 
 
@@ -30,7 +21,7 @@ namespace HouseCrawler.Web
             if (string.IsNullOrEmpty(source))
             {
                 var houseList = new List<DBHouseInfo>();
-                foreach (var key in dicHouseTableName.Keys)
+                foreach (var key in ConstConfigurationName.HouseTableNameDic.Keys)
                 {
                     // 因为会走几个表,默认每个表取100条
                     houseList.AddRange(Search(cityName, key, 100, intervalDay, keyword, refresh));
@@ -81,29 +72,6 @@ namespace HouseCrawler.Web
 
 
 
-
-        public static DBHouseInfo GetHouseByOnlineURL(string onlineURL)
-        {
-            using (IDbConnection dbConnection = Connection)
-            {
-                dbConnection.Open();
-                foreach (var key in dicHouseTableName.Keys)
-                {
-                    var house = dbConnection.Query<DBHouseInfo>($"SELECT * FROM {GetTableName(key)} where HouseOnlineURL = @HouseOnlineURL",
-                     new
-                     {
-                         HouseOnlineURL = onlineURL
-                     }).FirstOrDefault();
-                    if (house != null)
-                    {
-                        return house;
-                    }
-                }
-                return null;
-            }
-        }
-
-
         public static DBHouseInfo GetHouseID(long houseID, string source)
         {
             using (IDbConnection dbConnection = Connection)
@@ -120,9 +88,9 @@ namespace HouseCrawler.Web
 
         private static string GetTableName(string source)
         {
-            if (dicHouseTableName.ContainsKey(source))
+            if (ConstConfigurationName.HouseTableNameDic.ContainsKey(source))
             {
-                return dicHouseTableName[source];
+                return ConstConfigurationName.HouseTableNameDic[source];
             }
 
             return "HouseInfos";
@@ -136,7 +104,7 @@ namespace HouseCrawler.Web
             {
                 dbConnection.Open();
                 var list = new List<Models.HouseDashboard>();
-                foreach (var key in dicHouseTableName.Keys)
+                foreach (var key in ConstConfigurationName.HouseTableNameDic.Keys)
                 {
                     var tableName = GetTableName(key);
                     var dashboards = dbConnection.Query<HouseDashboard>(@"SELECT 

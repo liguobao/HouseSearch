@@ -32,7 +32,7 @@ namespace HouseCrawler.Web.Controllers
         }
 
         public IActionResult GetHouseInfo(string cityName, string source = "", int houseCount = 100,
-            int intervalDay = 7,string keyword = "", bool refresh = false)
+            int intervalDay = 7, string keyword = "", bool refresh = false)
         {
             try
             {
@@ -95,35 +95,38 @@ namespace HouseCrawler.Web.Controllers
                 dataContent.SaveChanges();
                 return Json(new { IsSuccess = true });
             }
-            else {
-                return Json(new {
-                    IsSuccess = false ,
-                    error  = "保存失败!请检查豆瓣小组ID（如：XMhouse）/城市名称（如：厦门）是否正确..."
+            else
+            {
+                return Json(new
+                {
+                    IsSuccess = false,
+                    error = "保存失败!请检查豆瓣小组ID（如：XMhouse）/城市名称（如：厦门）是否正确..."
                 });
             }
 
-            
-          
+
+
         }
 
 
         public IActionResult AddUserCollection(long houseId, string source)
         {
             var userId = ((ClaimsIdentity)HttpContext.User.Identity).FindFirst(ClaimTypes.NameIdentifier).ToString();
-            if(string.IsNullOrEmpty(userId) || userId =="0")
+            if (string.IsNullOrEmpty(userId) || userId == "0")
             {
                 return Json(new { successs = false, error = "请登录后再收藏房源." });
             }
-            var house =  HouseDapper.GetHouseID(houseId, source);
-            if(house == null)
+            var house = HouseDapper.GetHouseID(houseId, source);
+            if (house == null)
             {
-                 return Json(new { successs = false, error = "房源信息不存在,请刷新页面后重试." });
+                return Json(new { successs = false, error = "房源信息不存在,请刷新页面后重试." });
             }
-
-            
-
-
-            return null;
+            var userCollection = new UserCollection();
+            userCollection.UserID = long.Parse(userId);
+            userCollection.HouseID = houseId;
+            userCollection.Source = house.Source;
+            UserCollectionDapper.InsertUser(userCollection);
+            return Json(new { successs = true, message = "收藏成功." }); ;
         }
 
 

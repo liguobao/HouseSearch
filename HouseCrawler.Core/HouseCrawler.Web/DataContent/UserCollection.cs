@@ -8,7 +8,7 @@ public class UserCollection
 
     public long  HouseID {get;set;}
 
-    public string HouseSource{get;set;}
+    public string Source{get;set;}
 
     public string City {get;set;}
 
