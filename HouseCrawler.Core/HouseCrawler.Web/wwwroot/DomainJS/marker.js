@@ -11,32 +11,32 @@ define(['mapSignleton', 'city', 'transfer'], function(mapSignleton, city, transf
         });
     }
 
-    var add = function(address, money, href, markBG, displaySource, houseTitle) {
+    var add = function(house) {
         new AMap.Geocoder({
             city: city.name,
             radius: 1000
-        }).getLocation(address, function(status, result) {
+        }).getLocation(house.houseLocation, function(status, result) {
 
             if (status === "complete" && result.info === 'OK') {
                 var geocode = result.geocodes[0];
                 var rentMarker = new AMap.Marker({
                     map: _map,
-                    title: address,
-                    icon: markBG ? 'http://7xrayk.com1.z0.glb.clouddn.com/' + markBG : 'http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png',
+                    title: house.houseLocation,
+                    icon: house.locationMarkBG ? 'http://7xrayk.com1.z0.glb.clouddn.com/' + house.locationMarkBG : 'http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png',
                     position: [geocode.location.getLng(), geocode.location.getLat()]
                 });
                 _markerArray.push(rentMarker);
 
-                var displayMoney = money ? "  租金：" + money : "";
-                var sourceContent = displaySource ? " 来源：" + displaySource : "";
-                if(!houseTitle){
-                    houseTitle = address;
+                var displayMoney =house.money ? "  租金：" + house.money : "";
+                var sourceContent = house.displaySource ? " 来源：" + house.displaySource : "";
+                if(!house.houseTitle){
+                    house.houseTitle = house.houseLocation;
                 }
-                var onlineURL = "<a target='_blank' href='" + href + "'>房源：" + houseTitle + displayMoney + sourceContent + "  </a>";
-                var starURL = "<a class='am-icon-star am-icon-f'>收藏</a> ";
+                var onlineURL = "<a target='_blank' href='" + house.houseURL + "'>房源：" + house.houseTitle + displayMoney + sourceContent + "  </a>";
+                var starURL = "<a name='house-star' class='am-icon-star am-icon-f' house-id='"+house.id +"'  source='"+house.source+"'>            收藏</a> ";
                 rentMarker.content = "<div>" + onlineURL + starURL + "<div>"
                 rentMarker.on('click', function(e) {
-                    transfer.add(e, address);
+                    transfer.add(e, house.houseLocation);
                 });
             }
         })

@@ -54,6 +54,26 @@ require(['domready!', 'jquery', 'AMUI', 'mapController', 'city', 'commuteGo'], f
         $("#transfer-panel").hide();
     });
 
+    $('body').on('click', "[name='house-star']", function () {
+        alert("点击了收藏!");
+        var $this = $(this);
+        var houseId = $this.attr("house-id");
+        var source = $this.attr("source");
+        $.ajax({
+            type: "post",
+            url: './AddUserCollection',
+            data: { houseId: houseId, source: source },
+            success: function (result) {
+                if (result.success) {
+                    alert(result.message);
+                } else {
+                    alert(result.error);
+                }
+            }
+        });
+    });
+
+
 
     $(".amap-sug-result").css("z-index", 9999);
 })

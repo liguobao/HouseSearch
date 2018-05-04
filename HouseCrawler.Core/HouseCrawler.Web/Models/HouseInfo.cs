@@ -54,7 +54,10 @@ namespace HouseCrawler.Web.Models
         /// </summary>
         public string Source { get; set; }
 
-        
+
         public string DisplaySource { get; set; }
+
+
+        public long ID { get; set; }
     }
 }

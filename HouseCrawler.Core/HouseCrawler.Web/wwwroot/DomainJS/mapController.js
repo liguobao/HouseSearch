@@ -54,8 +54,7 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
                         rent_locations.add(item);
                     });
                     rent_locations.forEach(function(element, index) {
-                        marker.add(element.houseLocation, element.money, element.houseURL,
-                            element.locationMarkBG, element.displaySource, element.houseTitle);
+                        marker.add(element);
                     });
                 } else {
                     console.log(result.error);

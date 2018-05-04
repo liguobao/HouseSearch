@@ -48,6 +48,8 @@ namespace HouseCrawler.Web.Controllers
 
                     return new HouseInfo
                     {
+                        ID = house.Id,
+                        Source = house.Source,
                         Money = house.DisPlayPrice,
                         HouseURL = house.HouseOnlineURL,
                         HouseLocation = house.HouseLocation,
@@ -111,7 +113,7 @@ namespace HouseCrawler.Web.Controllers
 
         public IActionResult AddUserCollection(long houseId, string source)
         {
-            var userId = ((ClaimsIdentity)HttpContext.User.Identity).FindFirst(ClaimTypes.NameIdentifier).ToString();
+            var userId = ((ClaimsIdentity)HttpContext.User.Identity).FindFirst(ClaimTypes.NameIdentifier).Value;
             if (string.IsNullOrEmpty(userId) || userId == "0")
             {
                 return Json(new { successs = false, error = "请登录后再收藏房源." });
