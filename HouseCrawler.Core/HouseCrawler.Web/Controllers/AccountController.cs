@@ -51,7 +51,7 @@ namespace HouseCrawler.Web.Controllers
                 EmailInfo email = new EmailInfo();
                 email.Body = $"Hi,{userName}. <br>欢迎您注册地图搜租房(woyaozufang.live),你的账号已经注册成功." +
                 "<br/>为了保证您能正常体验网站服务，请点击下面的链接完成邮箱验证以激活账号."
-                + $"<br><a href='https://woyaozufang.live/Account/Activated?activatedCode={token}'>http://woyaozufang.live/Account/Activate?activatedCode={token}</a> "
+                + $"<br><a href='https://woyaozufang.live/Account/Activated?activatedCode={token}'>https://woyaozufang.live/Account/Activate?activatedCode={token}</a> "
                 + "<br>如果您以上链接无法点击，您可以将以上链接复制并粘贴到浏览器地址栏打开."
                 + "<br>此信由系统自动发出，系统不接收回信，因此请勿直接回复。" +
                 "<br>如果有其他问题咨询请发邮件到codelover@qq.com.";
@@ -162,7 +162,7 @@ namespace HouseCrawler.Web.Controllers
                 EmailInfo email = new EmailInfo();
                 email.Body = $"Hi,{user.UserName}. <br>您正在通过注册邮箱找回密码,如果非本人操作,请勿继续."
                 + "<br>请在24小时内点击以下链接重置密码:"
-                + $"<br><a href='https://woyaozufang.live/Account/ModifyPassword?token={token}'>http://woyaozufang.live/Account/ModifyPassword?token={token}</a> "
+                + $"<br><a href='https://woyaozufang.live/Account/ModifyPassword?token={token}'>https://woyaozufang.live/Account/ModifyPassword?token={token}</a> "
                 + "<br>如果您以上链接无法点击，您可以将以上链接复制并粘贴到浏览器地址栏打开."
                 + "<br>此信由系统自动发出，系统不接收回信，因此请勿直接回复。" +
                 "<br>如果有其他问题咨询请发邮件到codelover@qq.com.";
