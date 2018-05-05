@@ -33,7 +33,7 @@ $(document).ready(function () {// DOM的onload事件处理函数
               function (result) {
                   if (result.success) {
                       alert("重置成功!");
-                      window.location.href = '~/Login';
+                      window.location.href = '../Account';
                   } else {
                       $("#lblMessage").text(result.error);
                       return;
