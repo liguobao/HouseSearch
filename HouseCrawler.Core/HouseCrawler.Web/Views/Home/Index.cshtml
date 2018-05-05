@@ -57,7 +57,14 @@
                                 <li><a href="~/Home/HouseList?cityname=成都" target="_blank" rel="nofollow">成都</a></li>
                             </ul>
                         </li>
-                        <li><a href="~/Home/MessageList" rel="nofollow">最新动态</a></li>
+                        <li class="am-dropdown" data-am-dropdown>
+                            <a href="#" rel="nofollow" class="am-dropdown-toggle" data-am-dropdown-toggle>个人中心 <span class="am-icon-caret-down"></span></a>
+                            <ul class="am-dropdown-content">
+                                <li><a href="~/Home/UserCollection?cityname=上海" target="_blank" rel="nofollow">个人收藏</a></li>
+                                <li><a href="~/Account" target="_blank" rel="nofollow">登录</a></li>
+                                <li><a href="~/Account/Register" target="_blank" rel="nofollow">注册</a></li>
+                            </ul>
+                        </li>
                         <li><a href="#divContactLiguobao" rel="nofollow">联系我？</a></li>
                     </ul>
                 </nav>
@@ -86,7 +93,7 @@
                 <nav class="am-offcanvas-content">
                     <a href="/" rel="nofollow"><span class="logo"></span></a>
                     <p><i class="am-icon-home"></i> <a href="/" rel="nofollow">网站首页</a></p>
-
+                    <p><i class="am-icon-home"></i> <a href="/Account" rel="nofollow">注册/登录</a></p>
                     <p><i class="am-icon-credit-card"></i> <a href="#" rel="nofollow">城市列表</a></p>
 
                     @foreach (var cityGroup in Model.GroupBy(c => c.CityName))

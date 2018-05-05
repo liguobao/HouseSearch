@@ -55,7 +55,6 @@ require(['domready!', 'jquery', 'AMUI', 'mapController', 'city', 'commuteGo'], f
     });
 
     $('body').on('click', "[name='house-star']", function () {
-        alert("点击了收藏!");
         var $this = $(this);
         var houseId = $this.attr("house-id");
         var source = $this.attr("source");
