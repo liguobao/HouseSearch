@@ -1,5 +1,7 @@
 ## Dump20180405-Sructure.sql
-���ݿ�ṹ��ֱ�ӵ������ݿ⼴��
+数据库结构，直接导入数据库即可
 
 ## Dump20180405-Configurations.sql
-���ñ����ݣ�ͬ��
+配置表数据，同上
+
+# Dockerfile为打包文件
