@@ -57,5 +57,39 @@ namespace HouseCrawler.Web
             }
         }
 
+
+        public static UserInfo SaveRetrievePasswordToken(long userID,string  token)
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                dbConnection.Open();
+                return dbConnection.Query<UserInfo>(@"UPDATE `UserInfos` SET `RetrievePasswordToken`=@RetrievePasswordToken, TokenTime=now()
+                  WHERE `ID`=@ID ;",
+                new { ID = userID, RetrievePasswordToken=token }).FirstOrDefault();
+            }
+        }
+
+        public static UserInfo FindUserByToken(string token)
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                dbConnection.Open();
+                return dbConnection.Query<UserInfo>(@"SELECT * FROM UserInfos 
+                where (RetrievePasswordToken = @RetrievePasswordToken) ;",new { RetrievePasswordToken = token }).FirstOrDefault();
+            }
+        }
+
+
+        public static UserInfo SavePassword(long userID,string  password)
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                dbConnection.Open();
+                return dbConnection.Query<UserInfo>(@"UPDATE `UserInfos` SET Password=@Password  
+                WHERE `ID`=@ID ;",
+                new { ID = userID, Password=password }).FirstOrDefault();
+            }
+        }
+
     }
 }

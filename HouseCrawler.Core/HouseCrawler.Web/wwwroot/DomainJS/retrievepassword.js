@@ -18,7 +18,7 @@ function SendEmail()
              data: { email: email },
              success:
                  function (rsp) {
-                     if (rsp.IsSuccess) {
+                     if (rsp.success) {
                          $("#btnSend").text("用户不存在！");
                          return;
                      }else
@@ -38,12 +38,12 @@ function Send(email)
            data: { emailAccount: email },
            success:
                function (result) {
-                   if (result.IsSuccess) {
+                   if (result.success) {
                        $("#btnSend").text("发送成功");
                        return;
                    } else {
 
-                       $("#btnSend").text(result.ErrorMessage);
+                       $("#btnSend").text(result.error);
                    }
                }
        });
