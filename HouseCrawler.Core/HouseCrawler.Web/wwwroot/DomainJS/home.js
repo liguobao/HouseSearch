@@ -35,6 +35,7 @@ require(['domready!', 'jquery', 'AMUI', 'mapController', 'city', 'commuteGo'], f
         e.stopPropagation();
     });
 
+
     if (!isMobile()) {
         $('#search-offcanvas').offCanvas({ effect: 'overlay' });
         $("#btnCloseTransfer").hide();

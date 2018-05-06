@@ -39,8 +39,13 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
                 refresh: refresh
             };
         }
-        else if(dataResource=== 'userCollection'){
-            console.log("userCollection");
+        else if (dataResource === 'userCollection') {
+            var source = helper.getQueryString("source") ? helper.getQueryString("source") : "";
+            dataInfo = {
+                cityName: helper.getQueryString("cityname"),
+                source: source
+            };
+            index = count;
         }
         else{
             dataInfo = { cnName: city.shortName, index: index };
@@ -97,7 +102,7 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
         showCityInfo(function() {
             $.AMUI.progress.start();
             
-            if (dataResource == "houselist") {
+            if (dataResource == "houselist" || dataResource =="userCollection") {
                 var houseCount = 300;
                 //为了避免数据太多在手机上无法查看，移动平台只出70条数据
                 if (helper.isMobile()) {

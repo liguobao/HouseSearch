@@ -9,6 +9,7 @@ using HouseCrawler.Web.Service;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
+using System.Collections.Generic;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -133,20 +134,16 @@ namespace HouseCrawler.Web.Controllers
         }
 
 
-
-
-
-
-        public IActionResult GetUserCollectionHouses()
+        public IActionResult GetUserCollectionHouses(string cityName, string source = "")
         {
             try
             {
-                var userId = ((ClaimsIdentity)HttpContext.User.Identity).FindFirst(ClaimTypes.NameIdentifier).Value;
-                if (string.IsNullOrEmpty(userId) || userId == "0")
+                var userID = GetUserID();
+                if (userID == 0)
                 {
-                    return Json(new { successs = false, error = "请登录后查看个人收藏房源." });
+                    return Json(new { IsSuccess = false, error = "用户未登陆，无法查看房源收藏。" });
                 }
-                var houseList = UserCollectionDapper.FindUserCollections(long.Parse(userId));
+                var houseList = UserCollectionDapper.FindUserCollections(userID, cityName,source);
                 var rooms = houseList.Select(house =>
                 {
                     var markBGType = string.Empty;
@@ -177,11 +174,37 @@ namespace HouseCrawler.Web.Controllers
             }
         }
 
-        
+        private long GetUserID()
+        {
+            var identity = ((ClaimsIdentity)HttpContext.User.Identity);
+            if (identity == null || identity.FindFirst(ClaimTypes.NameIdentifier) == null)
+            {
+                return 0;
+            }
+            var userID = identity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            if (string.IsNullOrEmpty(userID) || userID == "0")
+            {
+                return 0;
+            }
+
+            return long.Parse(userID);
+        }
+
         public IActionResult UserCollection()
         {
             return View();
         }
 
+        public IActionResult UserHouseDashboard()
+        {
+            var houseDashboards = new List<HouseDashboard>();
+            var userID = GetUserID();
+            if (userID == 0)
+            {
+                return PartialView("UserHouseDashboard", houseDashboards);
+            }
+            houseDashboards = UserCollectionDapper.LoadUserHouseDashboard(userID);
+            return PartialView("UserHouseDashboard", houseDashboards);
+        }
     }
 }

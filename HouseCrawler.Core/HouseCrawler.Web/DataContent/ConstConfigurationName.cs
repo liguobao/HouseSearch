@@ -49,7 +49,17 @@ namespace HouseCrawler.Web
             { ConstConfigurationName.MoguHouse, "MoguHouseInfos"}
         };
 
-        
+        public static string GetTableName(string source)
+        {
+            if (ConstConfigurationName.HouseTableNameDic.ContainsKey(source))
+            {
+                return ConstConfigurationName.HouseTableNameDic[source];
+            }
+
+            return "HouseInfos";
+        }
+
+
     }
 
 

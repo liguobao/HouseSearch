@@ -51,7 +51,7 @@ namespace HouseCrawler.Web
             using (IDbConnection dbConnection = Connection)
             {
                 dbConnection.Open();
-                string search_SQL = $"SELECT * from { GetTableName(source)} where 1=1 " +
+                string search_SQL = $"SELECT * from { ConstConfigurationName.GetTableName(source)} where 1=1 " +
                     $"and LocationCityName = @LocationCityName and  PubTime >= @PubTime";
                 if (!string.IsNullOrEmpty(keyword))
                 {
@@ -78,7 +78,7 @@ namespace HouseCrawler.Web
             {
                 dbConnection.Open();
 
-                return dbConnection.Query<DBHouseInfo>($"SELECT * FROM {GetTableName(source)} where ID = @ID",
+                return dbConnection.Query<DBHouseInfo>($"SELECT * FROM {ConstConfigurationName.GetTableName(source)} where ID = @ID",
                   new
                   {
                       ID = houseID
@@ -86,15 +86,7 @@ namespace HouseCrawler.Web
             }
         }
 
-        private static string GetTableName(string source)
-        {
-            if (ConstConfigurationName.HouseTableNameDic.ContainsKey(source))
-            {
-                return ConstConfigurationName.HouseTableNameDic[source];
-            }
 
-            return "HouseInfos";
-        }
 
 
 
@@ -106,7 +98,7 @@ namespace HouseCrawler.Web
                 var list = new List<Models.HouseDashboard>();
                 foreach (var key in ConstConfigurationName.HouseTableNameDic.Keys)
                 {
-                    var tableName = GetTableName(key);
+                    var tableName = ConstConfigurationName.GetTableName(key);
                     var dashboards = dbConnection.Query<HouseDashboard>(@"SELECT 
                                 LocationCityName AS CityName,
                                 Source, COUNT(id) AS HouseSum, 
