@@ -56,5 +56,25 @@ namespace HouseCrawler.Core
 
             return (dicNameToDisplayName.ContainsKey(configurationName)) ? dicNameToDisplayName[configurationName] : "";
         }
+
+
+        public static Dictionary<String, String> HouseTableNameDic = new Dictionary<string, string>() {
+            { ConstConfigurationName.Douban, "DoubanHouseInfos"},
+            { ConstConfigurationName.HuZhuZuFang, "MutualHouseInfos"},
+            { ConstConfigurationName.PinPaiGongYu, "ApartmentHouseInfos"},
+            { ConstConfigurationName.CCBHouse, "CCBHouseInfos"},
+            { ConstConfigurationName.Zuber, "ZuberHouseInfos"},
+            { ConstConfigurationName.MoguHouse, "MoguHouseInfos"}
+        };
+
+        public static string GetTableName(string source)
+        {
+            if (ConstConfigurationName.HouseTableNameDic.ContainsKey(source))
+            {
+                return ConstConfigurationName.HouseTableNameDic[source];
+            }
+
+            return "HouseInfos";
+        }
     }
 }

@@ -5,6 +5,8 @@ using StackExchange.Redis;
 using HouseCrawler.Core.DataContent;
 using System;
 using HouseCrawler.Core.Common;
+using HouseCrawler.Core.Service;
+using System.Linq;
 
 namespace HouseCrawler.Core.Controllers
 {
@@ -15,7 +17,7 @@ namespace HouseCrawler.Core.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            return View(HouseDashboard.LoadCityDashboards());
+            return View(HouseDashboardService.LoadDashboard());
         }
 
         public IActionResult HouseList()
@@ -23,10 +25,35 @@ namespace HouseCrawler.Core.Controllers
             return View();
         }
 
-        public IActionResult GetHouseInfo(string cityName, string source = "", int houseCount = 400, 
-            int withAnyDays = 3,string keyword ="")
+        public IActionResult GetHouseInfo(string cityName, string source = "", int houseCount = 500,
+            int withAnyDays = 7, string keyword = "")
         {
-            return Json(new { IsSuccess = true});
+
+            var houses = CrawlerDataDapper.SearchHouseInfo(cityName, source, houseCount, withAnyDays, keyword);
+            var rooms = houses.Select(house =>
+                {
+                    var markBGType = string.Empty;
+                    int housePrice = (int)house.HousePrice;
+                    if (housePrice > 0)
+                    {
+                        markBGType = LocationMarkBGType.SelectColor(housePrice / 1000);
+                    }
+
+                    return new HouseInfo
+                    {
+                        Source = house.Source,
+                        Money = house.DisPlayPrice,
+                        HouseURL = house.HouseOnlineURL,
+                        HouseLocation = house.HouseLocation,
+                        HouseTime = house.PubTime.ToString(),
+                        HouseTitle = house.HouseTitle,
+                        HousePrice = housePrice,
+                        LocationMarkBG = markBGType,
+                        DisplaySource = ConstConfigurationName.ConvertToDisPlayName(house.Source)
+                    };
+                });
+            return Json(new { IsSuccess = true, HouseInfos = rooms });
+
         }
 
 
