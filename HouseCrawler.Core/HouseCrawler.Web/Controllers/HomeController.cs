@@ -114,7 +114,12 @@ namespace HouseCrawler.Web.Controllers
 
         public IActionResult AddUserCollection(long houseId, string source)
         {
-            var userId = ((ClaimsIdentity)HttpContext.User.Identity).FindFirst(ClaimTypes.NameIdentifier).Value;
+            var user = ((ClaimsIdentity)HttpContext.User.Identity);
+            if (user == null || user.FindFirst(ClaimTypes.NameIdentifier) == null)
+            {
+                return Json(new { successs = false, error = "请登录后再收藏房源." });
+            }
+            var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
             if (string.IsNullOrEmpty(userId) || userId == "0")
             {
                 return Json(new { successs = false, error = "请登录后再收藏房源." });
@@ -143,7 +148,7 @@ namespace HouseCrawler.Web.Controllers
                 {
                     return Json(new { IsSuccess = false, error = "用户未登陆，无法查看房源收藏。" });
                 }
-                var houseList = UserCollectionDapper.FindUserCollections(userID, cityName,source);
+                var houseList = UserCollectionDapper.FindUserCollections(userID, cityName, source);
                 var rooms = houseList.Select(house =>
                 {
                     var markBGType = string.Empty;

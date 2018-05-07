@@ -19,7 +19,8 @@ namespace HouseCrawler.Web
             {
                 var collection = dbConnection.Query<UserCollection>(@"INSERT INTO `UserCollections` 
                 (`UserID`,`HouseID`, `Source`, `HouseCity`)
-                  VALUES (@UserID, @HouseID, @Source, @HouseCity);",
+                  VALUES (@UserID, @HouseID, @Source, @HouseCity) 
+                  ON DUPLICATE KEY UPDATE DataChange_LastTime=now();",
                 insertCollection).FirstOrDefault();
                 return collection;
             }
