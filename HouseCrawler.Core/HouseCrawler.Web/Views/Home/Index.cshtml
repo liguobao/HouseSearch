@@ -66,8 +66,15 @@
                         <li class="am-dropdown">
                             <a href="~/Account" rel="nofollow">登陆/注册</a>
                         </li>
-
-                        <li><a href="#divContactLiguobao" rel="nofollow">联系我？</a></li>
+                    
+                        <li class="am-dropdown" data-am-dropdown>
+                            <a href="#" rel="nofollow" class="am-dropdown-toggle" data-am-dropdown-toggle>使用说明<span class="am-icon-caret-down"></span></a>
+                            <ul class="am-dropdown-content" style="min-width:105px;">
+                                 <li><a href="https://github.com/liguobao/58HouseSearch/blob/master/%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B.md" rel="nofollow" target="_blank">使用教程</a></li>
+                                 <li><a href="https://github.com/liguobao/58HouseSearch/blob/master/%E6%97%A5%E5%B8%B8%E6%9B%B4%E6%96%B0.md" rel="nofollow" target="_blank">更新日志</a></li>
+                                 <li><a href="#divContactLiguobao" rel="nofollow">联系我？</a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </nav>
             </div>
@@ -98,14 +105,15 @@
                 <nav class="am-offcanvas-content">
                     <a href="/" rel="nofollow"><span class="logo"></span></a>
                     <p><i class="am-icon-home"></i> <a href="/" rel="nofollow">网站首页</a></p>
-                    <p><i class="am-icon-home"></i> <a href="/Account" rel="nofollow">注册/登录</a></p>
-                    <p><i class="am-icon-credit-card"></i> <a href="#" rel="nofollow">城市列表</a></p>
+                    <p><i class="am-icon-user"></i><a  href="javascript: void(0)" rel="nofollow" id="userCenter">个人中心</a></p>
+                    <p><i class="am-icon-sign-in"></i> <a href="/Account" rel="nofollow">注册/登录</a></p>
+                    <p><i class="am-icon-list"></i> <a href="#" rel="nofollow">城市列表</a></p>
 
                     @foreach (var cityGroup in Model.GroupBy(c => c.CityName))
-                {
-                    var cityName = cityGroup.First().CityName;
-                    <p><a href="~/Home/HouseList?cityname=@cityName" target="_blank">@cityName</a></p>
-            }
+                    {
+                        var cityName = cityGroup.First().CityName;
+                        <p><a href="~/Home/HouseList?cityname=@cityName" target="_blank">@cityName</a></p>
+                   }
                 </nav>
             </div>
         </div>
@@ -115,9 +123,9 @@
             <li class="am-slider-images" style="background-image: url(/hometemplate/views/IMJ2V2/images/banner1.jpg)">
                 <div class="am-container am-slider-desc">
                     <div class="am-slider-content">
-                        <h2 class="am-slider-title am-animation-slide-left" data-am-scrollspy="{animation: 'slide-left', delay: 100}">找租房心力交瘁？试试换个方式直接在地图上搜租房吧。</h2>
-                        <p data-am-scrollspy="{animation:'slide-right', delay: 600}" class="am-animation-slide-right">爬虫 + 高德地图强力驱动...</p>
-                        <a href="#read-more" class="am-btn-xs am-btn am-btn-danger am-radius am-animation-slide-bottom am-animation-delay-1" rel="nofollow" data-am-scrollspy="{animation:'slide-bottom', delay: 100}">READ MORE</a>
+                        <h2 class="am-slider-title am-animation-slide-left" data-am-scrollspy="{animation: 'slide-left', delay: 100}">满大街找租房心力交瘁？试试换个方式直接在地图上搜租房吧。</h2>
+                        <p data-am-scrollspy="{animation:'slide-right', delay: 600}" class="am-animation-slide-right">房源爬虫 + 高德地图强力驱动,帮助你迅速找到合适房源.</p>
+                        <a href="#read-more" class="am-btn-xs am-btn am-btn-danger am-radius am-animation-slide-bottom am-animation-delay-1" rel="nofollow" data-am-scrollspy="{animation:'slide-bottom', delay: 100}">马上开始!</a>
                     </div>
                 </div>
             </li>
@@ -130,24 +138,24 @@
         <section class="am-container">
             <hgroup class="am-animation-slide-top" data-am-scrollspy="{animation:'slide-bottom', delay: 0}">
                 <h2>这是什么？</h2>
-                <p>通过实时爬虫获取公开租房信息，直接在高德地图上直观展示租房信息，同时提供住址到公司的路线计算（公交+地图 or 步行导航），已实现【豆瓣租房小组】、【Zuber合租平台】、【蘑菇租房】、【CCB建融家园】、【58同城品牌公寓】、【58同城诚信租房】、【上海互助租房】数据展示，部分房源价格支持筛选功能。</p>
+                <p>通过实时爬虫获取公开租房信息，直接在高德地图上直观展示房源位置+基础信息，同时提供住址到公司的路线计算（公交+地图 or 步行导航），已实现【豆瓣租房小组】、【Zuber合租平台】、【蘑菇租房】、【CCB建融家园】、【58同城品牌公寓】、【58同城诚信租房】、【上海互助租房】数据展示，部分房源价格支持筛选功能。</p>
             </hgroup>
             <ul class="am-avg-sm-2 am-avg-md-3 am-avg-lg-6 am-thumbnails">
-                <li class="am-animation-slide-bottom am-animation-delay-1" data-am-scrollspy="{animation:'slide-top', delay: 50}">
+                <li class="am-animation-slide-bottom am-animation-delay-1" data-am-scrollspy="{animation:'slide-top', delay: 20}">
                     <h2><a href="~/Home/HouseList?cityname=上海" target="_blank">上海地区</a></h2>
-                    <p>上海互助租房、豆瓣租房小组、Zuber合租</p>
+                    <p>互助租房、豆瓣、Zuber</p>
                 </li>
                 <li class="am-animation-slide-top" data-am-scrollspy="{animation:'slide-top', delay: 0}">
                     <h2><a href="~/Home/HouseList?cityname=北京" target="_blank">北京地区</a></h2>
-                    <p>豆瓣租房小组、Zuber合租</p>
+                    <p>豆瓣、Zuber、蘑菇</p>
                 </li>
                 <li class="am-animation-slide-top" data-am-scrollspy="{animation:'slide-top', delay: 0}">
                     <h2><a href="~/Home/HouseList?cityname=广州" target="_blank">广州地区</a></h2>
-                    <p>豆瓣租房小组、Zuber合租</p>
+                    <p>豆瓣、Zuber、蘑菇</p>
                 </li>
                 <li class="am-animation-slide-top" data-am-scrollspy="{animation:'slide-top', delay: 0}">
                     <h2><a href="~/Home/HouseList?cityname=深圳" target="_blank">深圳地区</a></h2>
-                    <p>豆瓣租房小组、Zuber合租</p>
+                    <p>豆瓣、Zuber</p>
                 </li>
                 <li class="am-animation-slide-top" data-am-scrollspy="{animation:'slide-top', delay: 100}">
                     <h2><a href="#" data-am-modal="{target: '#more-cityHouseInfo', closeViaDimmer: 0 ,width: 900,height:600}">更多城市</a></h2>
@@ -155,7 +163,7 @@
                 </li>
                 <li class="am-animation-slide-top" data-am-scrollspy="{animation:'slide-top', delay: 100}">
                     <h2><a href="#" data-am-modal="{target: '#divHouseSearch', closeViaDimmer: 0 ,width: 400, height : 300}">高级搜索</a></h2>
-                    <p>很高级...</p>
+                    <p>支持关键字 + 信息来源 + 发布日期组合搜索.</p>
                 </li>
             </ul>
 
@@ -292,12 +300,11 @@
                 </p>
             </hgroup>
             <ul class="am-avg-lg-8 am-avg-md-8 am-avg-sm-2  am-thumbnails" data-am-scrollspy="{animation:'slide-bottom', delay: 100}">
-                <li data-am-scrollspy="{animation:'slide-bottom', delay: 44}">
-                    <img src="~/hometemplate/views/IMJ2V2/images/tencent.png" alt="腾讯" class="am-img-responsive">
-                </li>
-
                 <li data-am-scrollspy="{animation:'slide-bottom', delay: 72}">
                     <img src="~/hometemplate/views/IMJ2V2/images/microsoft.png" alt="微软" class="am-img-responsive">
+                </li>
+                <li data-am-scrollspy="{animation:'slide-bottom', delay: 44}">
+                    <img src="~/hometemplate/views/IMJ2V2/images/tencent.png" alt="腾讯" class="am-img-responsive">
                 </li>
                 <li data-am-scrollspy="{animation:'slide-bottom', delay: 399}">
                     <img src="~/hometemplate/views/IMJ2V2/images/aliyun.png" alt="阿里云" class="am-img-responsive">
@@ -320,9 +327,8 @@
                         知乎：<a href="https://www.zhihu.com/people/codelover" target="_blank">李国宝</a>
                     </li>
                     <li data-am-scrollspy="{animation:'slide-bottom', delay: 50}">
-                        GitHub: <a href=" https://github.com/liguobao/58HouseSearch" target="_blank">58HouseSearch（求Star）</a>
+                        GitHub: <a href=" https://github.com/liguobao/58HouseSearch" target="_blank">58HouseSearch</a>
                     </li>
-
                     <li data-am-scrollspy="{animation:'slide-bottom', delay: 50}">
                         邮件：codelover@qq.com
                     </li>
