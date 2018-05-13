@@ -12,6 +12,16 @@ body {
   color: #dd514c;
 }*/
 
+.house-list {
+  margin: auto !important;
+  transform: translate(-50%,-45%);
+  width: 80%;
+  height: 100%;
+  overflow: auto;
+}
+
+
+
 .am-alert {
   margin-bottom: 0;
 }
