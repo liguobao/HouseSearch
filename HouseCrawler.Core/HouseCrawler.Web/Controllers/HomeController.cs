@@ -211,5 +211,24 @@ namespace HouseCrawler.Web.Controllers
             houseDashboards = UserCollectionDapper.LoadUserHouseDashboard(userID);
             return PartialView("UserHouseDashboard", houseDashboards);
         }
+
+
+         public IActionResult UserHouseList()
+        {
+            var userHouses = new List<DBHouseInfo>();
+            var userID = GetUserID();
+            if (userID == 0)
+            {
+                // userHouses.Add(new DBHouseInfo(){ 
+                //     Id =-1,
+                //     LocationCityName = "上海",
+                //     HouseTitle ="测试房源",
+                //     HouseText = "测试内容"
+                //     });
+                return PartialView("UserHouseList", userHouses);
+            }
+            userHouses = UserCollectionDapper.FindUserCollections(userID);
+            return PartialView("UserHouseList", userHouses);
+        }
     }
 }

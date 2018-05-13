@@ -60,8 +60,17 @@
                                 <li><a href="~/Home/HouseList?cityname=苏州" target="_blank" rel="nofollow">苏州</a></li>
                             </ul>
                         </li>
-                        <li class="am-dropdown" data-am-dropdown>
-                            <a  href="javascript: void(0)" rel="nofollow" id="userCenter">个人中心</a>
+
+                       <li class="am-dropdown" data-am-dropdown>
+                            <a href="#" rel="nofollow" class="am-dropdown-toggle" data-am-dropdown-toggle>个人中心<span class="am-icon-caret-down"></span></a>
+                            <ul class="am-dropdown-content" style="min-width:105px;">
+                                <li class="am-dropdown" data-am-dropdown>
+                                    <a  href="javascript: void(0)" rel="nofollow" id="userCenter">房源看板</a>
+                                </li>
+                                <li class="am-dropdown" data-am-dropdown>
+                                    <a  href="javascript: void(0)" rel="nofollow" id="userHouseList">收藏列表</a>
+                                </li>
+                            </ul>
                         </li>
                         <li class="am-dropdown">
                             <a href="~/Account" rel="nofollow">登陆/注册</a>
@@ -439,6 +448,21 @@
                     e.stopPropagation();
                 });
 
+                $('#userHouseList').bind('click', function (e) {
+                    e.preventDefault();
+                    $.ajax({
+                        type: "post",
+                        url: '/Home/UserHouseList',
+                        data: {},
+                        success: function (data) {
+                            if (data) {
+                                $('#userHouseDashboards').html(data);
+                            }
+                            $('#userHouseDashboards').modal('open');
+                        }
+                    });
+                    e.stopPropagation();
+                });
 
                 if (document.getElementById("bdmark") != null) {
                     $('body').removeClass('is-mobile');
