@@ -13,11 +13,11 @@ body {
 }*/
 
 .house-list {
-  margin: auto !important;
-  transform: translate(-50%,-45%);
-  width: 80%;
-  height: 100%;
+  transform: translate(-50%,-50%) !important;
   overflow: auto;
+  width: 80%;
+  margin: auto !important;
+  height: 80%;
 }
 
 
