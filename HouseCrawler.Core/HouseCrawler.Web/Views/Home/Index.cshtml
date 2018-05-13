@@ -263,6 +263,9 @@
 
        <div class="am-modal am-modal-no-btn" tabindex="-1" id="userHouseDashboards"></div>
 
+       <div class="am-modal am-modal-no-btn" tabindex="-1" id="userHouseList-modal"
+       style="margin: auto !important;transform: translate(-50%,-45%);width: 80%;height: 100%;overflow: auto;"></div>
+
         <div class="am-modal am-modal-no-btn" tabindex="-1" id="more-cityHouseInfo">
             <div class="am-modal-dialog" style="width:900px;height:600px;overflow-y:scroll;">
                 <div class="am-modal-hd">
@@ -456,13 +459,14 @@
                         data: {},
                         success: function (data) {
                             if (data) {
-                                $('#userHouseDashboards').html(data);
+                                $('#userHouseList-modal').html(data);
                             }
-                            $('#userHouseDashboards').modal('open');
+                            $('#userHouseList-modal').modal('open');
                         }
                     });
                     e.stopPropagation();
                 });
+
 
                 if (document.getElementById("bdmark") != null) {
                     $('body').removeClass('is-mobile');
