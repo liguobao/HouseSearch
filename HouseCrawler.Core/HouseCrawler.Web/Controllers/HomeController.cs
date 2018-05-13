@@ -22,7 +22,9 @@ namespace HouseCrawler.Web.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            //var userId = ((ClaimsIdentity)HttpContext.User.Identity).FindFirst(ClaimTypes.NameIdentifier);
+            var idAndName = GetUserIDAndName();
+            ViewBag.UserId = idAndName.Item1;
+            ViewBag.UserName = idAndName.Item2;
             var dashboards = HouseDashboardService.LoadDashboard();
             return View(dashboards);
         }
@@ -195,6 +197,23 @@ namespace HouseCrawler.Web.Controllers
             return long.Parse(userID);
         }
 
+        public Tuple<long, string> GetUserIDAndName()
+        {
+            var identity = ((ClaimsIdentity)HttpContext.User.Identity);
+            if (identity == null || identity.FindFirst(ClaimTypes.NameIdentifier) == null)
+            {
+                return Tuple.Create<long, string>(0, string.Empty);
+            }
+            var userID = identity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var userName = identity.FindFirst(ClaimTypes.Name).Value;
+            if (string.IsNullOrEmpty(userID) || userID == "0")
+            {
+                return Tuple.Create<long, string>(0, string.Empty);
+            }
+
+            return Tuple.Create<long, string>(long.Parse(userID), userName);
+        }
+
         public IActionResult UserCollection()
         {
             return View();
@@ -213,7 +232,7 @@ namespace HouseCrawler.Web.Controllers
         }
 
 
-         public IActionResult UserHouseList()
+        public IActionResult UserHouseList()
         {
             var userHouses = new List<DBHouseInfo>();
             var userID = GetUserID();

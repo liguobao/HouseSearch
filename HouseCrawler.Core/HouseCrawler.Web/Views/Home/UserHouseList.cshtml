@@ -39,8 +39,12 @@
                         <td class="ellipsis">@house.HouseLocation</td>
                         <td>@house.DisPlayPrice</td>
                         <td>@house.PubTime</td>
-                        <td>@house.Source</td>
-                        <td>暂无</td>
+                        <td>@ConstConfigurationName.ConvertToDisPlayName(house.Source)</td>
+                        <td>
+                            <div class="am-text-success">
+                                 <a id="removeHouse" data-id='' href="javascript: void(0)" ><span class="am-icon-remove">移除</span></a>
+                            </div>
+                        </td>
                      </tr>
                 }
              </tbody>
