@@ -71,6 +71,9 @@
                                     <li class="am-dropdown" data-am-dropdown>
                                         <a  href="javascript: void(0)" rel="nofollow" id="userHouseList">收藏列表</a>
                                     </li>
+                                    <li class="am-dropdown" data-am-dropdown>
+                                        <a  href="javascript: void(0)" rel="nofollow" id="userSignOut">退出登录</a>
+                                    </li>
                                 </ul>
                             </li>
 
@@ -449,6 +452,25 @@
                                 $('#userHouseDashboards').html(data);
                             }
                             $('#userHouseDashboards').modal('open');
+                        }
+                    });
+                    e.stopPropagation();
+                });
+
+                $('#userSignOut').bind('click', function (e) {
+                    e.preventDefault();
+                    $.ajax({
+                        type: "post",
+                        url: '/Account/SignOut',
+                        data: {},
+                        success: function (result) {
+                            if(result.success)
+                            {
+                                window.location.href = './'
+                            }else
+                            {
+                                alert(rsp.error);
+                            }
                         }
                     });
                     e.stopPropagation();

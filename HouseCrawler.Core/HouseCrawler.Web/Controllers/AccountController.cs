@@ -117,6 +117,12 @@ namespace HouseCrawler.Web.Controllers
         }
 
 
+        public ActionResult SignOut(string userName, string password)
+        {
+             HttpContext.SignOutAsync().Wait();
+             return Json(new { success = true, message = "退出成功!"});
+        }
+
 
         public ActionResult Activated(string activatedCode)
         {
