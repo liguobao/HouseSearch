@@ -210,7 +210,6 @@ namespace HouseCrawler.Web.Controllers
             {
                 return Tuple.Create<long, string>(0, string.Empty);
             }
-
             return Tuple.Create<long, string>(long.Parse(userID), userName);
         }
 
