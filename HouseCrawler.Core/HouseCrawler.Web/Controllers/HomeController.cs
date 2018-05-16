@@ -141,6 +141,33 @@ namespace HouseCrawler.Web.Controllers
         }
 
 
+         public IActionResult RemoveUserCollection(long houseId, string source)
+        {
+            var user = ((ClaimsIdentity)HttpContext.User.Identity);
+            if (user == null || user.FindFirst(ClaimTypes.NameIdentifier) == null)
+            {
+                return Json(new { successs = false, error = "请登录后再收藏房源." });
+            }
+            var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
+            if (string.IsNullOrEmpty(userId) || userId == "0")
+            {
+                return Json(new { successs = false, error = "请登录后再收藏房源." });
+            }
+            var house = HouseDapper.GetHouseID(houseId, source);
+            if (house == null)
+            {
+                return Json(new { successs = false, error = "房源信息不存在,请刷新页面后重试." });
+            }
+            var userCollection = new UserCollection();
+            userCollection.UserID = long.Parse(userId);
+            userCollection.HouseID = houseId;
+            userCollection.Source = house.Source;
+            userCollection.HouseCity = house.LocationCityName;
+            UserCollectionDapper.InsertUser(userCollection);
+            return Json(new { success = true, message = "收藏成功." }); ;
+        }
+
+
         public IActionResult GetUserCollectionHouses(string cityName, string source = "")
         {
             try
@@ -237,12 +264,6 @@ namespace HouseCrawler.Web.Controllers
             var userID = GetUserID();
             if (userID == 0)
             {
-                // userHouses.Add(new DBHouseInfo(){ 
-                //     Id =-1,
-                //     LocationCityName = "上海",
-                //     HouseTitle ="测试房源",
-                //     HouseText = "测试内容"
-                //     });
                 return PartialView("UserHouseList", userHouses);
             }
             userHouses = UserCollectionDapper.FindUserCollections(userID);

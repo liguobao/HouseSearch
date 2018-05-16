@@ -26,6 +26,20 @@ namespace HouseCrawler.Web
             }
         }
 
+
+        public static UserCollection FindByHouseIdAndSource(long houseId, string source, long userID)
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                var collection = dbConnection.Query<UserCollection>(@"INSERT INTO `UserCollections` 
+                (`UserID`,`HouseID`, `Source`, `HouseCity`)
+                  VALUES (@UserID, @HouseID, @Source, @HouseCity) 
+                  ON DUPLICATE KEY UPDATE DataChange_LastTime=now();",
+                new {}).FirstOrDefault();
+                return collection;
+            }
+        }
+
         public static List<DBHouseInfo> FindUserCollections(long userID, string city = "", string source="")
         {
 
