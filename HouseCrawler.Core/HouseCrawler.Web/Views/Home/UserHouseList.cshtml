@@ -42,7 +42,7 @@
                         <td>@ConstConfigurationName.ConvertToDisPlayName(house.Source)</td>
                         <td>
                             <div class="am-text-success">
-                                 <a id="removeHouse" data-id='' href="javascript: void(0)" ><span class="am-icon-remove">移除</span></a>
+                                 <a name="removeHouse" data-id='@house.Id' href="javascript: void(0)" ><span class="am-icon-remove">移除</span></a>
                             </div>
                         </td>
                      </tr>
@@ -52,3 +52,27 @@
         </div>
     }
 </div>
+
+        <script type="text/javascript">
+            $(function () {
+                $('body').on('click', "[name='removeHouse']", function () {
+                    var $this = $(this);
+                    var id = $this.attr("data-id");
+                    $.ajax({
+                        type: "post",
+                        url: './Home/RemoveUserCollection',
+                        data: { id: id },
+                        success: function (result) {
+                            if (result.success) {
+                                alert(result.message);
+                                //隐藏被删除的行
+                                $this.parent().parent().parent().hide()
+                            } else {
+                                alert(result.error);
+                            }
+                        }
+                    });
+                });
+            })
+        </script>
+

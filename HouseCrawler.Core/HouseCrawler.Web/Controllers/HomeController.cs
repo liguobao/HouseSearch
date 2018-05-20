@@ -116,15 +116,10 @@ namespace HouseCrawler.Web.Controllers
 
         public IActionResult AddUserCollection(long houseId, string source)
         {
-            var user = ((ClaimsIdentity)HttpContext.User.Identity);
-            if (user == null || user.FindFirst(ClaimTypes.NameIdentifier) == null)
+            var userID = GetUserID();
+            if (userID == 0)
             {
-                return Json(new { successs = false, error = "请登录后再收藏房源." });
-            }
-            var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
-            if (string.IsNullOrEmpty(userId) || userId == "0")
-            {
-                return Json(new { successs = false, error = "请登录后再收藏房源." });
+                return Json(new { IsSuccess = false, error = "用户未登陆，无法进行操作。" });
             }
             var house = HouseDapper.GetHouseID(houseId, source);
             if (house == null)
@@ -132,7 +127,7 @@ namespace HouseCrawler.Web.Controllers
                 return Json(new { successs = false, error = "房源信息不存在,请刷新页面后重试." });
             }
             var userCollection = new UserCollection();
-            userCollection.UserID = long.Parse(userId);
+            userCollection.UserID = userID;
             userCollection.HouseID = houseId;
             userCollection.Source = house.Source;
             userCollection.HouseCity = house.LocationCityName;
@@ -141,30 +136,29 @@ namespace HouseCrawler.Web.Controllers
         }
 
 
-         public IActionResult RemoveUserCollection(long houseId, string source)
+        public IActionResult RemoveUserCollection(long id)
         {
-            var user = ((ClaimsIdentity)HttpContext.User.Identity);
-            if (user == null || user.FindFirst(ClaimTypes.NameIdentifier) == null)
+            var userID = GetUserID();
+            if (userID == 0)
             {
-                return Json(new { successs = false, error = "请登录后再收藏房源." });
+                return Json(new { IsSuccess = false, error = "用户未登陆，无法进行操作。" });
             }
-            var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
-            if (string.IsNullOrEmpty(userId) || userId == "0")
-            {
-                return Json(new { successs = false, error = "请登录后再收藏房源." });
-            }
-            var house = HouseDapper.GetHouseID(houseId, source);
-            if (house == null)
+            var userCollection = UserCollectionDapper.FindByIDAndUserID(id, userID);
+            if (userCollection == null)
             {
                 return Json(new { successs = false, error = "房源信息不存在,请刷新页面后重试." });
             }
-            var userCollection = new UserCollection();
-            userCollection.UserID = long.Parse(userId);
-            userCollection.HouseID = houseId;
-            userCollection.Source = house.Source;
-            userCollection.HouseCity = house.LocationCityName;
-            UserCollectionDapper.InsertUser(userCollection);
-            return Json(new { success = true, message = "收藏成功." }); ;
+            try
+            {
+                UserCollectionDapper.RemoveByIDAndUserID(id, userID);
+
+            }
+            catch
+            {
+
+            }
+
+            return Json(new { success = true, message = "删除成功." }); ;
         }
 
 

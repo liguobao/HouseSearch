@@ -27,20 +27,36 @@ namespace HouseCrawler.Web
         }
 
 
-        public static UserCollection FindByHouseIdAndSource(long houseId, string source, long userID)
+        public static UserCollection FindByIDAndUserID(long id, long userID)
         {
             using (IDbConnection dbConnection = Connection)
             {
-                var collection = dbConnection.Query<UserCollection>(@"INSERT INTO `UserCollections` 
-                (`UserID`,`HouseID`, `Source`, `HouseCity`)
-                  VALUES (@UserID, @HouseID, @Source, @HouseCity) 
-                  ON DUPLICATE KEY UPDATE DataChange_LastTime=now();",
-                new {}).FirstOrDefault();
+                var collection = dbConnection.Query<UserCollection>(@"
+                SELECT 
+                    *
+                FROM
+                    housecrawler.UserCollections
+                WHERE
+                    ID = @ID AND UserID = @UserID;",
+                new { ID = id, UserID = userID }).FirstOrDefault();
                 return collection;
             }
         }
 
-        public static List<DBHouseInfo> FindUserCollections(long userID, string city = "", string source="")
+
+        public static void RemoveByIDAndUserID(long id, long userID)
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                dbConnection.Query<UserCollection>(@"
+                DELETE FROM `housecrawler`.`UserCollections` 
+                WHERE 
+                    ID = @ID AND UserID = @UserID;",
+                new { ID = id, UserID = userID }).FirstOrDefault();
+            }
+        }
+
+        public static List<DBHouseInfo> FindUserCollections(long userID, string city = "", string source = "")
         {
 
             if (string.IsNullOrEmpty(source))
@@ -75,14 +91,23 @@ namespace HouseCrawler.Web
                 return list;
             }
 
-              
+
         }
 
         private static string GetSQLText(string city, string tableName)
         {
-          
+
             string sqlText = @"SELECT 
-                                    house.*
+                                house.HouseTitle,
+                                house.HouseOnlineURL,
+                                house.HouseLocation,
+                                house.DisPlayPrice,
+                                house.PubTime,
+                                house.HousePrice,
+                                house.LocationCityName,
+                                house.Source,
+                                house.DataCreateTime,
+                                uc.ID
                                 FROM
                                     UserCollections uc
                                         JOIN
