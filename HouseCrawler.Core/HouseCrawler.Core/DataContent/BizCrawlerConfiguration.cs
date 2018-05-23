@@ -33,6 +33,8 @@ namespace HouseCrawler.Core
 
         public static string HuZhuZuFang = "huzhuzufang";
 
+        public static string HKSpacious = "hkspacious";
+
         public static string Zuber = "zuber";
 
 
@@ -64,7 +66,8 @@ namespace HouseCrawler.Core
             { ConstConfigurationName.PinPaiGongYu, "ApartmentHouseInfos"},
             { ConstConfigurationName.CCBHouse, "CCBHouseInfos"},
             { ConstConfigurationName.Zuber, "ZuberHouseInfos"},
-            { ConstConfigurationName.MoguHouse, "MoguHouseInfos"}
+            { ConstConfigurationName.MoguHouse, "MoguHouseInfos"},
+            { ConstConfigurationName.HKSpacious, "HKHouseInfos"}
         };
 
         public static string GetTableName(string source)

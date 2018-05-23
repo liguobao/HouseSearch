@@ -13,6 +13,7 @@ namespace HouseCrawler.Core
             CCBHouesCrawler.Run();
             ZuberHouseCrawler.Run();
             MoGuHouseCrawler.Run();
+            HKSpaciousCrawler.Run();
         }
     }
 }
