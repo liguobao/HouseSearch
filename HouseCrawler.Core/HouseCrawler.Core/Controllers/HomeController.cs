@@ -81,6 +81,12 @@ namespace HouseCrawler.Core.Controllers
             return View();
         }
 
+        public IActionResult RunHK()
+        {
+            HKSpaciousCrawler.Run();
+            return Json(new { success = true });
+        }
+
 
         public IActionResult RunStatJob()
         {
