@@ -14,6 +14,12 @@ namespace HouseCrawler.Core.Controllers
     {
         private readonly CrawlerDataContent _dataContent = new CrawlerDataContent();
 
+        private HouseDashboardJob _HouseDashboardJob;
+
+        public HomeController(HouseDashboardJob houseDashboardJob)
+        {
+            _HouseDashboardJob = houseDashboardJob;
+        }
         // GET: /<controller>/
         public IActionResult Index()
         {
@@ -73,6 +79,13 @@ namespace HouseCrawler.Core.Controllers
             ZuberHouseCrawler.Run();
             MoGuHouseCrawler.Run();
             return View();
+        }
+
+
+        public IActionResult RunStatJob()
+        {
+            _HouseDashboardJob.Run();
+            return Json(new { success = true });
         }
 
 

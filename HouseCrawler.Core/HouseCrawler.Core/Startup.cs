@@ -14,6 +14,7 @@ using NLog.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using NLog.Web;
 using HouseCrawler.Core.Common;
+using HouseCrawler.Core.Service;
 
 namespace HouseCrawler.Core
 {
@@ -37,7 +38,10 @@ namespace HouseCrawler.Core
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.Configure<ConnectionStrings>(Configuration);
+            services.AddOptions()        //注入IOptions<T>
+            .Configure<APPConfiguration>(Configuration);
+            services.AddSingleton<EmailService,EmailService>();
+            services.AddSingleton<HouseDashboardJob,HouseDashboardJob>();
             services.AddTimedJob();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
