@@ -31,7 +31,7 @@ namespace HouseCrawler.Core
         {
             int captrueHouseCount = 0;
             List<BaseHouseInfo> houses = new List<BaseHouseInfo>();
-            for (var pageNum = 1; pageNum < 10; pageNum++)
+            for (var pageNum = 1; pageNum < 20; pageNum++)
             {
                 var result = GetHTML(pageNum);
                 houses.AddRange(GetHouseDataFromHTML(result));
