@@ -13,7 +13,6 @@ namespace HouseCrawler.Core
             LogHelper.RunActionNotThrowEx(CCBHouesCrawler.Run);
             LogHelper.RunActionNotThrowEx(ZuberHouseCrawler.Run);
             LogHelper.RunActionNotThrowEx(MoGuHouseCrawler.Run);
-            LogHelper.RunActionNotThrowEx(HKSpaciousCrawler.Run);
         }
     }
 }

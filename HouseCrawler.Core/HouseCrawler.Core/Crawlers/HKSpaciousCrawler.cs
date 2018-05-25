@@ -17,14 +17,11 @@ namespace HouseCrawler.Core
 
         public static void Run()
         {
-
-            int captrueHouseCount = 0;
+            LogHelper.Info("HKSpaciousCrawler start.");
             DateTime startTime = DateTime.Now;
-            LogHelper.RunActionNotThrowEx(() =>
-                {
-                    captrueHouseCount = captrueHouseCount + CaptureHouse();
-                }, "CapturPinPaiHouseInfo", "香港");
+            var captrueHouseCount = CaptureHouse();
             BizCrawlerLog.SaveLog($"爬取HKSpacious数据", $"本次共爬取到{captrueHouseCount}条数据，耗时{ (DateTime.Now - startTime).TotalSeconds}秒。", 1);
+            LogHelper.Info("HKSpaciousCrawler finish.");
         }
 
         private static int CaptureHouse()
