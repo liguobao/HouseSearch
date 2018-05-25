@@ -7,13 +7,13 @@ namespace HouseCrawler.Core
         [Invoke(Begin = "2018-05-20 00:00", Interval = 1000 * 3600, SkipWhileExecuting = true)]
         public void Run()
         {
-            PinPaiGongYuHouseCrawler.Run();
-            PeopleRentingCrawler.Run();
-            DoubanHouseCrawler.Run();
-            CCBHouesCrawler.Run();
-            ZuberHouseCrawler.Run();
-            MoGuHouseCrawler.Run();
-            HKSpaciousCrawler.Run();
+            LogHelper.RunActionNotThrowEx(PinPaiGongYuHouseCrawler.Run);
+            LogHelper.RunActionNotThrowEx(PeopleRentingCrawler.Run);
+            LogHelper.RunActionNotThrowEx(DoubanHouseCrawler.Run);
+            LogHelper.RunActionNotThrowEx(CCBHouesCrawler.Run);
+            LogHelper.RunActionNotThrowEx(ZuberHouseCrawler.Run);
+            LogHelper.RunActionNotThrowEx(MoGuHouseCrawler.Run);
+            LogHelper.RunActionNotThrowEx(HKSpaciousCrawler.Run);
         }
     }
 }
