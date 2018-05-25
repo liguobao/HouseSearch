@@ -21,7 +21,7 @@ namespace HouseCrawler.Web
         public static string Zuber = "zuber";
 
         public static string MoguHouse = "mogu";
-
+        public static string HKSpacious = "hkspacious";
 
         public static string ConvertToDisPlayName(string configurationName)
         {
@@ -46,8 +46,11 @@ namespace HouseCrawler.Web
             { ConstConfigurationName.PinPaiGongYu, "ApartmentHouseInfos"},
             { ConstConfigurationName.CCBHouse, "CCBHouseInfos"},
             { ConstConfigurationName.Zuber, "ZuberHouseInfos"},
-            { ConstConfigurationName.MoguHouse, "MoguHouseInfos"}
+            { ConstConfigurationName.MoguHouse, "MoguHouseInfos"},
+            { ConstConfigurationName.HKSpacious, "HKHouseInfos"}
         };
+
+
 
         public static string GetTableName(string source)
         {
