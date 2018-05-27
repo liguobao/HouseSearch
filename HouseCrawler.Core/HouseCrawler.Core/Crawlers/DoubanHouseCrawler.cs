@@ -13,16 +13,19 @@ namespace HouseCrawler.Core
 {
     public class DoubanHouseCrawler
     {
+        private HouseDapper houseDapper;
+        public DoubanHouseCrawler(HouseDapper houseDapper)
+        {
+            this.houseDapper = houseDapper;
+        }
 
-        private static readonly CrawlerDataContent DataContent = new CrawlerDataContent();
-
-        public static void Run()
+        public void Run()
         {
             try
             {
                 int captrueHouseCount = 0;
                 DateTime startTime = DateTime.Now;
-                foreach (var doubanConf in HouseDataDapper.GetConfigurationList(ConstConfigurationName.Douban))
+                foreach (var doubanConf in houseDapper.GetConfigurationList(ConstConfigurationName.Douban))
                 {
                     LogHelper.RunActionNotThrowEx(() =>
                     {
@@ -35,7 +38,7 @@ namespace HouseCrawler.Core
                             houses.AddRange(lstHouseInfo);
                         }
                         captrueHouseCount = captrueHouseCount + houses.Count;
-                        HouseDataDapper.BulkInsertHouses(houses);
+                        houseDapper.BulkInsertHouses(houses);
                     }, "DoubanHouseCrawler CaptureHouseInfo ", doubanConf);
                 }
                 BizCrawlerLog.SaveLog($"爬取豆瓣租房小组数据",

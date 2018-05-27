@@ -15,10 +15,15 @@ namespace HouseCrawler.Core
 {
     public class MoGuHouseCrawler
     {
-
-        public static void Run()
+        private HouseDapper houseDapper;
+        public MoGuHouseCrawler(HouseDapper houseDapper)
         {
-            foreach (var doubanConf in HouseDataDapper.GetConfigurationList(ConstConfigurationName.MoguHouse))
+            this.houseDapper = houseDapper;
+        }
+
+        public void Run()
+        {
+            foreach (var doubanConf in houseDapper.GetConfigurationList(ConstConfigurationName.MoguHouse))
             {
                 LogHelper.RunActionNotThrowEx(() =>
                 {
@@ -36,7 +41,7 @@ namespace HouseCrawler.Core
                             houses.AddRange(list);
                         }
                     }
-                    HouseDataDapper.BulkInsertHouses(houses);
+                    houseDapper.BulkInsertHouses(houses);
                 }, "MoGuHouseCrawler Run ", doubanConf);
             }
         }

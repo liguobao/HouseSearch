@@ -38,12 +38,40 @@ namespace HouseCrawler.Core
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.AddOptions()        //注入IOptions<T>
-            .Configure<APPConfiguration>(Configuration);
-            services.AddSingleton<EmailService,EmailService>();
-            services.AddSingleton<HouseDashboardJob,HouseDashboardJob>();
+            services.AddOptions().Configure<APPConfiguration>(Configuration);
+            InitDI(services);
             services.AddTimedJob();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+        }
+
+        public void InitDI(IServiceCollection services)
+        {
+            services.AddSingleton<HouseDapper, HouseDapper>();
+
+            #region Service
+            services.AddSingleton<EmailService, EmailService>();
+            services.AddSingleton<RedisService, RedisService>();
+            services.AddSingleton<HouseDashboardService, HouseDashboardService>();
+            #endregion
+
+            #region Jobs
+            services.AddSingleton<CrawlerJobs, CrawlerJobs>();
+            services.AddSingleton<HKSpaciousCrawlerJob, HKSpaciousCrawlerJob>();
+            services.AddSingleton<HouseDashboardJob, HouseDashboardJob>();
+            services.AddSingleton<HouseDashboardJob, HouseDashboardJob>();
+            services.AddSingleton<RefreshDashboardJob, RefreshDashboardJob>();
+            #endregion
+
+            #region Crawler
+            services.AddSingleton<CCBHouesCrawler, CCBHouesCrawler>();
+            services.AddSingleton<DoubanHouseCrawler, DoubanHouseCrawler>();
+            services.AddSingleton<DoubanHouseCrawler, DoubanHouseCrawler>();
+            services.AddSingleton<HKSpaciousCrawler, HKSpaciousCrawler>();
+            services.AddSingleton<MoGuHouseCrawler, MoGuHouseCrawler>();
+            services.AddSingleton<PeopleRentingCrawler, PeopleRentingCrawler>();
+            services.AddSingleton<PinPaiGongYuHouseCrawler, PinPaiGongYuHouseCrawler>();
+            services.AddSingleton<ZuberHouseCrawler, ZuberHouseCrawler>();
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,14 +92,14 @@ namespace HouseCrawler.Core
             app.UseTimedJob();
 
             app.UseStaticFiles();
-           
+
 
             app.UseMvcWithDefaultRoute();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=House}/{action=Index}/{id?}"); 
+                    template: "{controller=House}/{action=Index}/{id?}");
             });
 
 

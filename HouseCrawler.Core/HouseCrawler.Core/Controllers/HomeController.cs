@@ -12,18 +12,48 @@ namespace HouseCrawler.Core.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly CrawlerDataContent _dataContent = new CrawlerDataContent();
 
-        private HouseDashboardJob _HouseDashboardJob;
+        private HouseDapper houseDapper;
 
-        public HomeController(HouseDashboardJob houseDashboardJob)
+        private HouseDashboardJob houseDashboardJob;
+
+        private HouseDashboardService houseDashboardService;
+
+
+        private PinPaiGongYuHouseCrawler pinpai;
+        private PeopleRentingCrawler people;
+        private DoubanHouseCrawler douban;
+        private CCBHouesCrawler ccbHouse;
+        private ZuberHouseCrawler zuber;
+        private MoGuHouseCrawler mogu;
+        private HKSpaciousCrawler hkSpacious;
+
+        public HomeController(HouseDashboardJob houseDashboardJob,
+                              HouseDapper houseDapper,
+                              HouseDashboardService houseDashboardService,
+                              PinPaiGongYuHouseCrawler pinpai,
+                              PeopleRentingCrawler people,
+                              DoubanHouseCrawler douban,
+                              CCBHouesCrawler ccbHouse,
+                              ZuberHouseCrawler zuber,
+                              MoGuHouseCrawler mogu,
+                              HKSpaciousCrawler hkSpacious)
         {
-            _HouseDashboardJob = houseDashboardJob;
+            this.houseDashboardJob = houseDashboardJob;
+            this.houseDapper = houseDapper;
+            this.houseDashboardService = houseDashboardService;
+            this.pinpai = pinpai;
+            this.people = people;
+            this.douban = douban;
+            this.ccbHouse = ccbHouse;
+            this.zuber = zuber;
+            this.mogu = mogu;
+            this.hkSpacious = hkSpacious;
         }
         // GET: /<controller>/
         public IActionResult Index()
         {
-            return View(HouseDashboardService.LoadDashboard());
+            return View(houseDashboardService.LoadDashboard());
         }
 
         public IActionResult HouseList()
@@ -35,7 +65,7 @@ namespace HouseCrawler.Core.Controllers
             int withAnyDays = 7, string keyword = "")
         {
 
-            var houses = HouseDataDapper.SearchHouseInfo(cityName, source, houseCount, withAnyDays, keyword);
+            var houses = houseDapper.SearchHouseInfo(cityName, source, houseCount, withAnyDays, keyword);
             var rooms = houses.Select(house =>
                 {
                     var markBGType = string.Empty;
@@ -65,32 +95,29 @@ namespace HouseCrawler.Core.Controllers
 
         public IActionResult RunJobs()
         {
-            DoubanHouseCrawler.Run();
-            PinPaiGongYuHouseCrawler.Run();
-            PeopleRentingCrawler.Run();
-            CCBHouesCrawler.Run();
-            ZuberHouseCrawler.Run();
-            MoGuHouseCrawler.Run();
+            douban.Run();
+            pinpai.Run();
+            ccbHouse.Run();
+            mogu.Run();
             return View();
         }
 
         public IActionResult RunZuber()
         {
-            ZuberHouseCrawler.Run();
-            MoGuHouseCrawler.Run();
+            zuber.Run();
             return View();
         }
 
         public IActionResult RunHK()
         {
-            HKSpaciousCrawler.Run();
+            hkSpacious.Run();
             return Json(new { success = true });
         }
 
 
         public IActionResult RunStatJob()
         {
-            _HouseDashboardJob.Run();
+            houseDashboardJob.Run();
             return Json(new { success = true });
         }
 

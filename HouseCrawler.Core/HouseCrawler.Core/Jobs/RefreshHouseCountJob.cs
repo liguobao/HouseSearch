@@ -6,15 +6,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HouseCrawler.Core.Jobs
+namespace HouseCrawler.Core
 {
-    public class RefreshHouseCountJob : Job
+    public class RefreshDashboardJob : Job
     {
+        HouseDashboardService houseDashboardService;
+        public RefreshDashboardJob(HouseDashboardService houseDashboardService)
+        {
+            this.houseDashboardService = houseDashboardService;
+        }
         //半个小时刷一次
         [Invoke(Begin = "2018-05-05 00:00", Interval = 60 * 30 , SkipWhileExecuting = true)]
         public void Run()
         {
-            HouseDashboardService.LoadDashboard();
+            houseDashboardService.LoadDashboard();
         }
     }
 }

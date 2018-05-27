@@ -13,14 +13,18 @@ namespace HouseCrawler.Core
     public class CCBHouesCrawler
     {
 
-        private static readonly CrawlerDataContent DataContent = new CrawlerDataContent();
+        private HouseDapper houseDapper;
 
+       public CCBHouesCrawler(HouseDapper houseDapper)
+       {
+           this.houseDapper = houseDapper;
+       }
 
-        public static void Run()
+        public void Run()
         {
             int captrueHouseCount = 0;
             DateTime startTime = DateTime.Now;
-            foreach (var crawlerConfiguration in HouseDataDapper
+            foreach (var crawlerConfiguration in houseDapper
             .GetConfigurationList(ConstConfigurationName.CCBHouse).ToList())
             {
                 LogHelper.RunActionNotThrowEx(() =>
@@ -32,7 +36,7 @@ namespace HouseCrawler.Core
                    $"本次共爬取到{captrueHouseCount}条数据，耗时{ (DateTime.Now - startTime).TotalSeconds}秒。", 1);
         }
 
-        private static int CaptureHouse(BizCrawlerConfiguration crawlerConfiguration)
+        private int CaptureHouse(BizCrawlerConfiguration crawlerConfiguration)
         {
             var confInfo = JsonConvert.DeserializeObject<dynamic>(crawlerConfiguration.ConfigurationValue);
             if (confInfo.shortcutname==null || string.IsNullOrEmpty(confInfo.shortcutname.Value))
@@ -48,7 +52,7 @@ namespace HouseCrawler.Core
                 houses.AddRange(GetHouseData(cityShortCutName, result));
             }
             captrueHouseCount = captrueHouseCount + houses.Count;
-            HouseDataDapper.BulkInsertHouses(houses);
+            houseDapper.BulkInsertHouses(houses);
             return captrueHouseCount;
         }
 

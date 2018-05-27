@@ -14,16 +14,13 @@ namespace HouseCrawler.Core
         /// </summary>
         public int LogType { get; set; }
 
-        public string LogContent { get; set; } 
+        public string LogContent { get; set; }
 
-      
+
 
         public string LogTitle { get; set; }
 
-
-        private static readonly CrawlerDataContent DataContent = new CrawlerDataContent();
-
-        public static void SaveLog(string logTitle, string logContent,int logType)
+        public static void SaveLog(string logTitle, string logContent, int logType)
         {
             var log = new BizCrawlerLog
             {
@@ -32,18 +29,10 @@ namespace HouseCrawler.Core
                 LogType = logType
             };
 
-            DataContent.Add(log);
-            DataContent.SaveChanges();
         }
 
 
-        public static List<BizCrawlerLog> LoadLogByType(int logType)
-        {
-            return DataContent.CrawlerLogs.Where(l => l.LogType ==logType).ToList();
 
-        }
-
-        
 
     }
 }

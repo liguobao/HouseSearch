@@ -13,9 +13,16 @@ namespace HouseCrawler.Core
 {
     public class HKSpaciousCrawler
     {
+        private HouseDapper houseDapper;
+        public HKSpaciousCrawler(HouseDapper houseDapper)
+        {
+            this.houseDapper = houseDapper;
+        }
+
+
         private static HtmlParser htmlParser = new HtmlParser();
 
-        public static void Run()
+        public void Run()
         {
             LogHelper.Info("HKSpaciousCrawler start.");
             DateTime startTime = DateTime.Now;
@@ -24,7 +31,7 @@ namespace HouseCrawler.Core
             LogHelper.Info("HKSpaciousCrawler finish.");
         }
 
-        private static int CaptureHouse()
+        private int CaptureHouse()
         {
             int captrueHouseCount = 0;
             List<BaseHouseInfo> houses = new List<BaseHouseInfo>();
@@ -34,7 +41,7 @@ namespace HouseCrawler.Core
                 houses.AddRange(GetHouseDataFromHTML(result));
             }
             captrueHouseCount = captrueHouseCount + houses.Count;
-            HouseDataDapper.BulkInsertHouses(houses);
+            houseDapper.BulkInsertHouses(houses);
             return captrueHouseCount;
         }
 

@@ -13,10 +13,14 @@ namespace HouseCrawler.Core
 
         APPConfiguration configuration;
 
-        public HouseDashboardJob(EmailService emailService, IOptions<APPConfiguration> configuration)
+        HouseDapper houseDapper;
+
+        public HouseDashboardJob(EmailService emailService, IOptions<APPConfiguration> configuration,
+         HouseDapper houseDapper)
         {
             this.emailService = emailService;
             this.configuration = configuration.Value;
+            this.houseDapper = houseDapper;
         }
 
         [Invoke(Begin = "2018-05-24 23:00", Interval = 1000 * 3600 *24, SkipWhileExecuting = true)]
@@ -27,7 +31,7 @@ namespace HouseCrawler.Core
             email.Receiver = configuration.ReceiverAddress;
             email.ReceiverName = configuration.ReceiverName;
             email.Subject = $"地图搜租房每日数据汇总({today.ToString("yyyy-MM-dd")})";
-            var statList = HouseDataDapper.GetHouseStatList();
+            var statList = houseDapper.GetHouseStatList();
             string bodyHTML = @"<table border='1' cellpadding='0' cellspacing='0' width='100%'> 
              <tr> 
              <td>来源</td>

@@ -17,10 +17,17 @@ namespace HouseCrawler.Core
     {
         static string API_VERSION = "v3/";
         static string SCENE = "2567a5ec9705eb7ac2c984033e06189d";
-        
-        public static void Run()
+
+
+        private HouseDapper houseDapper;
+        public ZuberHouseCrawler(HouseDapper houseDapper)
         {
-            foreach (var doubanConf in HouseDataDapper.GetConfigurationList(ConstConfigurationName.Zuber))
+            this.houseDapper = houseDapper;
+        }
+
+        public void Run()
+        {
+            foreach (var doubanConf in houseDapper.GetConfigurationList(ConstConfigurationName.Zuber))
             {
                 LogHelper.RunActionNotThrowEx(() =>
                 {
@@ -34,7 +41,7 @@ namespace HouseCrawler.Core
                         sequence = tupleResult.Item2;
                         houses.AddRange(tupleResult.Item1);
                     }
-                    HouseDataDapper.BulkInsertHouses(houses);
+                    houseDapper.BulkInsertHouses(houses);
                 }, "DoubanHouseCrawler CaptureHouseInfo ", doubanConf);
             }
         }

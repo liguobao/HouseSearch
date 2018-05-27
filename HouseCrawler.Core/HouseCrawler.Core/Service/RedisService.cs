@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Options;
 using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
@@ -6,14 +7,20 @@ namespace HouseCrawler.Core
 {
     public class RedisService
     {
+        private APPConfiguration _configuration;
 
-        public static ConfigurationOptions GetRedisOptions()
+        public RedisService(IOptions<APPConfiguration> configuration)
         {
-            ConfigurationOptions options = ConfigurationOptions.Parse(ConnectionStrings.RedisConnectionString);
+           _configuration = configuration.Value;
+        }
+
+        private ConfigurationOptions GetRedisOptions()
+        {
+            ConfigurationOptions options = ConfigurationOptions.Parse(_configuration.RedisConnectionString);
             options.SyncTimeout = 10 * 1000;
             return options;
         }
-        public static List<BaseHouseInfo> ReadSearchCache(string key)
+        public List<BaseHouseInfo> ReadSearchCache(string key)
         {
             try
             {
@@ -40,7 +47,7 @@ namespace HouseCrawler.Core
 
         }
 
-        public static void WriteSearchCache(string key, List<BaseHouseInfo> house)
+        public void WriteSearchCache(string key, List<BaseHouseInfo> house)
         {
             try
             {
@@ -60,7 +67,7 @@ namespace HouseCrawler.Core
 
 
 
-        public static string ReadCache(string key)
+        public string ReadCache(string key)
         {
             try
             {
@@ -81,7 +88,7 @@ namespace HouseCrawler.Core
         }
 
 
-        public static void WriteCache(string key, string value)
+        public void WriteCache(string key, string value)
         {
 
             try

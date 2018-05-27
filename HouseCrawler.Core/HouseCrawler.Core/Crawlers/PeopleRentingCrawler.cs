@@ -11,15 +11,19 @@ namespace HouseCrawler.Core
 {
     public class PeopleRentingCrawler
     {
-        private static readonly CrawlerDataContent DataContent = new CrawlerDataContent();
+        private HouseDapper houseDapper;
+        public PeopleRentingCrawler(HouseDapper houseDapper)
+        {
+            this.houseDapper = houseDapper;
+        }
 
 
-        public static void Run()
+        public  void Run()
         {
             int captrueHouseCount = 0;
             DateTime startTime = DateTime.Now;
 
-            var peopleRentingConf = HouseDataDapper.GetConfigurationList(ConstConfigurationName.HuZhuZuFang)
+            var peopleRentingConf = houseDapper.GetConfigurationList(ConstConfigurationName.HuZhuZuFang)
             .FirstOrDefault();
 
             var pageCount = peopleRentingConf != null
@@ -32,7 +36,7 @@ namespace HouseCrawler.Core
                 string result = getResultFromAPI(pageNum);
                 houses.AddRange(GetHouseData(result));
             }
-            HouseDataDapper.BulkInsertHouses(houses);
+            houseDapper.BulkInsertHouses(houses);
             captrueHouseCount = captrueHouseCount + houses.Count;
 
             BizCrawlerLog.SaveLog($"爬取上海互助租房数据",

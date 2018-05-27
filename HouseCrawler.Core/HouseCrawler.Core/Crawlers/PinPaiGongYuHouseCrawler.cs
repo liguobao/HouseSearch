@@ -13,14 +13,20 @@ namespace HouseCrawler.Core
     {
         private static HtmlParser htmlParser = new HtmlParser();
 
-        private static readonly CrawlerDataContent DataContent = new CrawlerDataContent();
+        private HouseDapper houseDapper;
+        public PinPaiGongYuHouseCrawler(HouseDapper houseDapper)
+        {
+            this.houseDapper = houseDapper;
+        }
 
-        public static void Run()
+
+        public void Run()
         {
             int captrueHouseCount = 0;
             DateTime startTime = DateTime.Now;
 
-            foreach (var crawlerConfiguration in HouseDataDapper.GetConfigurationList(ConstConfigurationName.PinPaiGongYu).Where(c => c.IsEnabled).ToList())
+            foreach (var crawlerConfiguration in houseDapper.GetConfigurationList(ConstConfigurationName.PinPaiGongYu)
+            .Where(c => c.IsEnabled).ToList())
             {
                 LogHelper.RunActionNotThrowEx(() =>
                 {
@@ -32,7 +38,7 @@ namespace HouseCrawler.Core
                         var houseHTML = GetHouseHTML(url);
                         houses.AddRange(GetDataFromHMTL(confInfo.shortcutname.Value, confInfo.cityname.Value, houseHTML));
                     }
-                    HouseDataDapper.BulkInsertHouses(houses);
+                    houseDapper.BulkInsertHouses(houses);
                     captrueHouseCount = captrueHouseCount + houses.Count;
                 }, "CapturPinPaiHouseInfo", crawlerConfiguration);
             }
@@ -93,27 +99,7 @@ namespace HouseCrawler.Core
         }
 
 
-        /// <summary>
-        /// 过滤无效的城市配置
-        /// </summary>
-        public static void FilterInvalidCityConfig()
-        {
-            foreach (var doubanConf in DataContent.CrawlerConfigurations.Where(c => c.ConfigurationName
-               == ConstConfigurationName.PinPaiGongYu).ToList())
-            {
-                var confInfo = JsonConvert.DeserializeObject<dynamic>(doubanConf.ConfigurationValue);
-                var url = $"http://{confInfo.shortcutname.Value}.58.com/pinpaigongyu/pn/0";
-                var htmlResult = "";// HTTPHelper.GetHTMLByURL(url);
-                var page = new HtmlParser().Parse(htmlResult);
-                var lstLi = page.QuerySelectorAll("li").Where(element => element.HasAttribute("logr"));
-                if (!lstLi.Any())
-                {
-                    doubanConf.IsEnabled = false;
-                }
-            }
-            DataContent.SaveChanges();
-        }
-
+       
 
         /// <summary>
         /// 初始化配置数据，首次运行项目才需要
@@ -1857,8 +1843,8 @@ namespace HouseCrawler.Core
                         });
                     }
                 }
-                DataContent.AddRange(lst);
-                DataContent.SaveChanges();
+                //DataContent.AddRange(lst);
+                //DataContent.SaveChanges();
 
 
             }
