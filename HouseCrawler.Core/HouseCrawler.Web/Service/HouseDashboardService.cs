@@ -8,16 +8,24 @@ namespace HouseCrawler.Web.Service
 {
     public class HouseDashboardService
     {
+        private RedisService redisService;
 
-        private static CrawlerDataContent DataContent = new CrawlerDataContent();
+        private HouseDapper houseDapper;
 
-        public static List<HouseDashboard> LoadDashboard()
+        public HouseDashboardService(RedisService redisService, HouseDapper houseDapper)
         {
-            string houseDashboardJson = RedisService.ReadCache("HouseDashboard");
+            this.redisService =redisService;
+            this.houseDapper = houseDapper;
+
+        }
+
+        public List<HouseDashboard> LoadDashboard()
+        {
+            string houseDashboardJson = redisService.ReadCache("HouseDashboard");
             if (string.IsNullOrEmpty(houseDashboardJson))
             {
-                List<HouseDashboard> dashboards = HouseDapper.GetHouseDashboard();
-                RedisService.WriteCache("HouseDashboard", Newtonsoft.Json.JsonConvert.SerializeObject(dashboards));
+                List<HouseDashboard> dashboards = houseDapper.GetHouseDashboard();
+                redisService.WriteCache("HouseDashboard", Newtonsoft.Json.JsonConvert.SerializeObject(dashboards));
                 return dashboards;
             }
             else

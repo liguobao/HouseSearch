@@ -9,9 +9,9 @@ namespace HouseCrawler.Web
     public class DoubanHouseCrawler
     {
 
-        public static List<DoubanHouseInfo> GetHouseData(string groupID, string cityName, int pageIndex)
+        public static List<BaseHouseInfo> GetHouseData(string groupID, string cityName, int pageIndex)
         {
-            List<DoubanHouseInfo> lstHouseInfo = new List<DoubanHouseInfo>();
+            List<BaseHouseInfo> lstHouseInfo = new List<BaseHouseInfo>();
             var apiURL = $"https://api.douban.com/v2/group/{groupID}/topics?start={pageIndex * 50}";
             //LogHelper.Info($"url:{apiURL},groupID:{groupID}, city:{cityName}");
             var result = GetAPIResult(apiURL);
@@ -22,7 +22,7 @@ namespace HouseCrawler.Web
             var resultJObject = JsonConvert.DeserializeObject<JObject>(result);
             foreach (var topic in resultJObject["topics"])
             {
-                var house = new DoubanHouseInfo()
+                var house = new BaseHouseInfo()
                 {
                     HouseLocation = topic["title"].ToString(),
                     HouseTitle = topic["title"].ToString(),

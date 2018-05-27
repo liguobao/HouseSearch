@@ -17,7 +17,25 @@ namespace HouseCrawler.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private CrawlerDataContent dataContent = new CrawlerDataContent();
+        private HouseDapper houseDapper;
+
+        private HouseDashboardService houseDashboardService;
+
+        private ConfigurationDapper configurationDapper;
+
+        private UserCollectionDapper userCollectionDapper;
+
+
+        public HomeController(HouseDapper houseDapper,
+                              HouseDashboardService houseDashboardService,
+                              ConfigurationDapper configurationDapper,
+                              UserCollectionDapper userCollectionDapper)
+        {
+            this.houseDapper = houseDapper;
+            this.houseDashboardService = houseDashboardService;
+            this.configurationDapper = configurationDapper;
+            this.userCollectionDapper= userCollectionDapper;
+        }
 
         // GET: /<controller>/
         public IActionResult Index()
@@ -25,7 +43,7 @@ namespace HouseCrawler.Web.Controllers
             var idAndName = GetUserIDAndName();
             ViewBag.UserId = idAndName.Item1;
             ViewBag.UserName = idAndName.Item2;
-            var dashboards = HouseDashboardService.LoadDashboard();
+            var dashboards = houseDashboardService.LoadDashboard();
             return View(dashboards);
         }
 
@@ -39,7 +57,7 @@ namespace HouseCrawler.Web.Controllers
         {
             try
             {
-                var houseList = HouseDapper.SearchHouseInfo(cityName, source, houseCount, intervalDay, keyword, refresh);
+                var houseList = houseDapper.SearchHouseInfo(cityName, source, houseCount, intervalDay, keyword, refresh);
                 var rooms = houseList.Select(house =>
                 {
                     var markBGType = string.Empty;
@@ -82,8 +100,7 @@ namespace HouseCrawler.Web.Controllers
             if (topics != null && topics.Count() > 0)
             {
                 var cityInfo = $"{{ 'groupid':'{doubanGroup}','cityname':'{cityName}','pagecount':5}}";
-                var doubanConfig = dataContent.CrawlerConfigurations
-                    .FirstOrDefault(c => c.ConfigurationName == ConstConfigurationName.Douban && c.ConfigurationValue == cityInfo);
+                var doubanConfig = new BizCrawlerConfiguration(); //(c => c.ConfigurationName == ConstConfigurationName.Douban && c.ConfigurationValue == cityInfo);
                 if (doubanConfig != null)
                 {
                     return Json(new { IsSuccess = true });
@@ -96,8 +113,7 @@ namespace HouseCrawler.Web.Controllers
                     DataCreateTime = DateTime.Now,
                     IsEnabled = true,
                 };
-                dataContent.Add(config);
-                dataContent.SaveChanges();
+                configurationDapper.Insert(config);
                 return Json(new { IsSuccess = true });
             }
             else
@@ -121,7 +137,7 @@ namespace HouseCrawler.Web.Controllers
             {
                 return Json(new { IsSuccess = false, error = "用户未登陆，无法进行操作。" });
             }
-            var house = HouseDapper.GetHouseID(houseId, source);
+            var house = houseDapper.GetHouseID(houseId, source);
             if (house == null)
             {
                 return Json(new { successs = false, error = "房源信息不存在,请刷新页面后重试." });
@@ -131,7 +147,7 @@ namespace HouseCrawler.Web.Controllers
             userCollection.HouseID = houseId;
             userCollection.Source = house.Source;
             userCollection.HouseCity = house.LocationCityName;
-            UserCollectionDapper.InsertUser(userCollection);
+            userCollectionDapper.InsertUser(userCollection);
             return Json(new { success = true, message = "收藏成功." }); ;
         }
 
@@ -143,15 +159,14 @@ namespace HouseCrawler.Web.Controllers
             {
                 return Json(new { IsSuccess = false, error = "用户未登陆，无法进行操作。" });
             }
-            var userCollection = UserCollectionDapper.FindByIDAndUserID(id, userID);
+            var userCollection = userCollectionDapper.FindByIDAndUserID(id, userID);
             if (userCollection == null)
             {
                 return Json(new { successs = false, error = "房源信息不存在,请刷新页面后重试." });
             }
             try
             {
-                UserCollectionDapper.RemoveByIDAndUserID(id, userID);
-
+                userCollectionDapper.RemoveByIDAndUserID(id, userID);
             }
             catch
             {
@@ -171,7 +186,7 @@ namespace HouseCrawler.Web.Controllers
                 {
                     return Json(new { IsSuccess = false, error = "用户未登陆，无法查看房源收藏。" });
                 }
-                var houseList = UserCollectionDapper.FindUserCollections(userID, cityName, source);
+                var houseList = userCollectionDapper.FindUserCollections(userID, cityName, source);
                 var rooms = houseList.Select(house =>
                 {
                     var markBGType = string.Empty;
@@ -247,7 +262,7 @@ namespace HouseCrawler.Web.Controllers
             {
                 return PartialView("UserHouseDashboard", houseDashboards);
             }
-            houseDashboards = UserCollectionDapper.LoadUserHouseDashboard(userID);
+            houseDashboards = userCollectionDapper.LoadUserHouseDashboard(userID);
             return PartialView("UserHouseDashboard", houseDashboards);
         }
 
@@ -260,7 +275,7 @@ namespace HouseCrawler.Web.Controllers
             {
                 return PartialView("UserHouseList", userHouses);
             }
-            userHouses = UserCollectionDapper.FindUserCollections(userID);
+            userHouses = userCollectionDapper.FindUserCollections(userID);
             return PartialView("UserHouseList", userHouses);
         }
     }

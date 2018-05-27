@@ -10,15 +10,15 @@ namespace HouseCrawler.Web
     {
         private static HtmlParser htmlParser = new HtmlParser();
 
-        public static List<ApartmentHouseInfo> GetHouseData(string shortCutName, string cityName, string houseURL)
+        public static List<BaseHouseInfo> GetHouseData(string shortCutName, string cityName, string houseURL)
         {
             var html = GetHouseHTML(houseURL);
             return GetDataFromHMTL(shortCutName, cityName, html);
         }
 
-        private static List<ApartmentHouseInfo> GetDataFromHMTL(string shortCutName, string cityName, string houseHTML)
+        private static List<BaseHouseInfo> GetDataFromHMTL(string shortCutName, string cityName, string houseHTML)
         {
-            List<ApartmentHouseInfo> houseList = new List<ApartmentHouseInfo>();
+            List<BaseHouseInfo> houseList = new List<BaseHouseInfo>();
             if (string.IsNullOrEmpty(houseHTML))
                 return houseList;
             var htmlDoc = htmlParser.Parse(houseHTML);
@@ -31,7 +31,7 @@ namespace HouseCrawler.Web
                 var houseInfoList = houseTitle.Split(' ');
                 int.TryParse(element.QuerySelector("b").TextContent, out var housePrice);
                 var onlineUrl = $"http://{shortCutName}.58.com" + element.QuerySelector("a").GetAttribute("href");
-                var houseInfo = new ApartmentHouseInfo
+                var houseInfo = new BaseHouseInfo
                 {
                     HouseTitle = houseTitle,
                     HouseOnlineURL = onlineUrl,

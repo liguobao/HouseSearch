@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using HouseCrawler.Web.Service;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
@@ -20,9 +21,12 @@ namespace HouseCrawler.Web
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IHostingEnvironment env)
         {
-            Configuration = configuration;
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            Configuration = builder.Build();
         }
 
         public IConfiguration Configuration { get; }
@@ -30,16 +34,16 @@ namespace HouseCrawler.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            InitConfig();
             services.AddMvc();
-            services.Configure<ConnectionStrings>(Configuration);
+            services.AddOptions().Configure<APPConfiguration>(Configuration);
+            InitDI(services);
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            
-            ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(ConnectionStrings.RedisConnectionString);
+
+            ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(Configuration["RedisConnectionString"]);
             services.AddDataProtection();
             services.Configure<KeyManagementOptions>(o =>
             {
-                o.XmlRepository = new RedisXmlRepository(() => redis.GetDatabase(),"ShareCookie");
+                o.XmlRepository = new RedisXmlRepository(() => redis.GetDatabase(), "ShareCookie");
             });
             // 添加 Cook 服务
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -49,7 +53,40 @@ namespace HouseCrawler.Web
                 options.LogoutPath = "/Account/LogOff";
                 options.Cookie.SameSite = SameSiteMode.Lax;
             });
-        
+
+        }
+
+
+
+        public void InitDI(IServiceCollection services)
+        {
+            services.AddSingleton<HouseDapper, HouseDapper>();
+            services.AddSingleton<ConfigurationDapper, ConfigurationDapper>();
+            services.AddSingleton<UserCollectionDapper, UserCollectionDapper>();
+            services.AddSingleton<UserDataDapper, UserDataDapper>();
+
+            services.AddSingleton<EncryptionTools, EncryptionTools>();
+
+            
+
+
+            #region Service
+            services.AddSingleton<EmailService, EmailService>();
+            services.AddSingleton<RedisService, RedisService>();
+            services.AddSingleton<HouseDashboardService, HouseDashboardService>();
+            #endregion
+
+            #region Jobs
+
+            #endregion
+
+            #region Crawler
+
+            services.AddSingleton<DoubanHouseCrawler, DoubanHouseCrawler>();
+            services.AddSingleton<DoubanHouseCrawler, DoubanHouseCrawler>();
+            services.AddSingleton<PeopleRentingCrawler, PeopleRentingCrawler>();
+            services.AddSingleton<PinPaiGongYuHouseCrawler, PinPaiGongYuHouseCrawler>();
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -87,18 +124,5 @@ namespace HouseCrawler.Web
 
         }
 
-
-        public void InitConfig()
-        {
-            var config = new ConfigurationBuilder()
-             .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json").Build();
-            ConnectionStrings.MySQLConnectionString = config["ConnectionStrings:MySQLConnectionString"];
-            ConnectionStrings.RedisConnectionString = config["ConnectionStrings:RedisConnectionString"];
-            EncryptionConfig.CIV = config["EncryptionConfig:CIV"];
-            EncryptionConfig.CKEY = config["EncryptionConfig:CKEY"];
-            EmailConfig.Account = config["EmailConfig:Account"];
-            EmailConfig.Password = config["EmailConfig:Password"];
-        }
     }
 }

@@ -1,6 +1,7 @@
 using Dapper;
 using HouseCrawler.Web.DataContent;
 using HouseCrawler.Web.Models;
+using Microsoft.Extensions.Options;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -11,11 +12,24 @@ namespace HouseCrawler.Web
 {
     public class UserCollectionDapper
     {
-        protected static internal IDbConnection Connection => new MySqlConnection(ConnectionStrings.MySQLConnectionString);
+        private APPConfiguration configuration;
 
-        public static UserCollection InsertUser(UserCollection insertCollection)
+        private RedisService redisService;
+        public UserCollectionDapper(IOptions<APPConfiguration> configuration, RedisService redisService)
         {
-            using (IDbConnection dbConnection = Connection)
+            this.configuration = configuration.Value;
+            this.redisService = redisService;
+        }
+
+        private IDbConnection GetConnection()
+        {
+            return new MySqlConnection(configuration.MySQLConnectionString);
+        }
+    
+
+        public UserCollection InsertUser(UserCollection insertCollection)
+        {
+            using (IDbConnection dbConnection = GetConnection())
             {
                 var collection = dbConnection.Query<UserCollection>(@"INSERT INTO `UserCollections` 
                 (`UserID`,`HouseID`, `Source`, `HouseCity`)
@@ -27,9 +41,9 @@ namespace HouseCrawler.Web
         }
 
 
-        public static UserCollection FindByIDAndUserID(long id, long userID)
+        public  UserCollection FindByIDAndUserID(long id, long userID)
         {
-            using (IDbConnection dbConnection = Connection)
+            using (IDbConnection dbConnection = GetConnection())
             {
                 var collection = dbConnection.Query<UserCollection>(@"
                 SELECT 
@@ -44,9 +58,9 @@ namespace HouseCrawler.Web
         }
 
 
-        public static void RemoveByIDAndUserID(long id, long userID)
+        public void RemoveByIDAndUserID(long id, long userID)
         {
-            using (IDbConnection dbConnection = Connection)
+            using (IDbConnection dbConnection = GetConnection())
             {
                 dbConnection.Query<UserCollection>(@"
                 DELETE FROM `housecrawler`.`UserCollections` 
@@ -56,7 +70,7 @@ namespace HouseCrawler.Web
             }
         }
 
-        public static List<DBHouseInfo> FindUserCollections(long userID, string city = "", string source = "")
+        public List<DBHouseInfo> FindUserCollections(long userID, string city = "", string source = "")
         {
 
             if (string.IsNullOrEmpty(source))
@@ -75,9 +89,9 @@ namespace HouseCrawler.Web
             }
         }
 
-        private static List<DBHouseInfo> SearchUserCollections(long userID, string city, string source)
+        private List<DBHouseInfo> SearchUserCollections(long userID, string city, string source)
         {
-            using (IDbConnection dbConnection = Connection)
+            using (IDbConnection dbConnection = GetConnection())
             {
                 var tableName = ConstConfigurationName.GetTableName(source);
                 string sqlText = GetSQLText(city, tableName);
@@ -122,9 +136,9 @@ namespace HouseCrawler.Web
             return sqlText;
         }
 
-        public static List<HouseDashboard> LoadUserHouseDashboard(long userID)
+        public List<HouseDashboard> LoadUserHouseDashboard(long userID)
         {
-            using (IDbConnection dbConnection = Connection)
+            using (IDbConnection dbConnection = GetConnection())
             {
                 dbConnection.Open();
                 return dbConnection.Query<HouseDashboard>(@"

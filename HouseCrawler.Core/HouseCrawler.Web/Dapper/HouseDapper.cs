@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using HouseCrawler.Web.DataContent;
 using HouseCrawler.Web.Models;
+using Microsoft.Extensions.Options;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -12,10 +13,23 @@ namespace HouseCrawler.Web
     public class HouseDapper
     {
 
-        protected static internal IDbConnection Connection => new MySqlConnection(ConnectionStrings.MySQLConnectionString);
+        private APPConfiguration configuration;
+
+        private RedisService redisService;
+        public HouseDapper(IOptions<APPConfiguration> configuration, RedisService redisService)
+        {
+            this.configuration = configuration.Value;
+            this.redisService = redisService;
+        }
+
+        private IDbConnection GetConnection()
+        {
+            return new MySqlConnection(configuration.MySQLConnectionString);
+        }
+    
 
 
-        public static IEnumerable<DBHouseInfo> SearchHouseInfo(string cityName, string source = "",
+        public  IEnumerable<DBHouseInfo> SearchHouseInfo(string cityName, string source = "",
           int houseCount = 100, int intervalDay = 7, string keyword = "", bool refresh = false)
         {
             if (string.IsNullOrEmpty(source))
@@ -35,20 +49,20 @@ namespace HouseCrawler.Web
 
         }
 
-        public static IEnumerable<DBHouseInfo> Search(string cityName, string source = "",
+        public IEnumerable<DBHouseInfo> Search(string cityName, string source = "",
             int houseCount = 100, int intervalDay = 7, string keyword = "", bool refresh = false)
         {
             string redisKey = $"{cityName}-{source}-{intervalDay}-{houseCount}-{keyword}";
             var houses = new List<DBHouseInfo>();
             if (!refresh)
             {
-                houses = RedisService.ReadSearchCache(redisKey);
+                houses = redisService.ReadSearchCache(redisKey);
                 if (houses != null)
                 {
                     return houses;
                 }
             }
-            using (IDbConnection dbConnection = Connection)
+            using (IDbConnection dbConnection = GetConnection())
             {
                 dbConnection.Open();
                 string search_SQL = $"SELECT * from { ConstConfigurationName.GetTableName(source)} where 1=1 " +
@@ -65,16 +79,16 @@ namespace HouseCrawler.Web
                         KeyWord = $"%{keyword}%",
                         PubTime = DateTime.Now.Date.AddDays(-intervalDay)
                     }).ToList();
-                RedisService.WriteSearchCache(redisKey, houses);
+                redisService.WriteSearchCache(redisKey, houses);
                 return houses;
             }
         }
 
 
 
-        public static DBHouseInfo GetHouseID(long houseID, string source)
+        public DBHouseInfo GetHouseID(long houseID, string source)
         {
-            using (IDbConnection dbConnection = Connection)
+            using (IDbConnection dbConnection = GetConnection())
             {
                 dbConnection.Open();
 
@@ -90,9 +104,9 @@ namespace HouseCrawler.Web
 
 
 
-        public static List<Models.HouseDashboard> GetHouseDashboard()
+        public List<Models.HouseDashboard> GetHouseDashboard()
         {
-            using (IDbConnection dbConnection = Connection)
+            using (IDbConnection dbConnection = GetConnection())
             {
                 dbConnection.Open();
                 var list = new List<Models.HouseDashboard>();

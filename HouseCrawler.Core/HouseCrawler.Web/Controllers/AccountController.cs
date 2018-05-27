@@ -14,6 +14,20 @@ namespace HouseCrawler.Web.Controllers
 {
     public class AccountController : Controller
     {
+        private UserDataDapper userDataDapper;
+
+        private EmailService emailService;
+
+        private EncryptionTools encryptionTools;
+
+        AccountController(UserDataDapper userDataDapper, EmailService emailService, 
+        EncryptionTools encryptionTools)
+        {
+            this.userDataDapper = userDataDapper;
+            this.emailService = emailService;
+            this.encryptionTools = encryptionTools;
+        }
+
         public ActionResult Index()
         {
             return View();
@@ -27,7 +41,7 @@ namespace HouseCrawler.Web.Controllers
 
         public ActionResult CheckUserEmail(string email)
         {
-            var checkUser = UserDataDapper.FindUser(email);
+            var checkUser = userDataDapper.FindUser(email);
             if (checkUser != null)
             {
                 return Json(new { success = false, error = "用户已存在!" });
@@ -40,14 +54,14 @@ namespace HouseCrawler.Web.Controllers
 
         public ActionResult RegisterUser(string userName, string userEmail, string password)
         {
-            var checkUser = UserDataDapper.FindUser(userName);
+            var checkUser = userDataDapper.FindUser(userName);
             if (checkUser != null)
             {
                 return Json(new { success = false, error = "用户已存在!" });
             }
             try
             {
-                string token = Tools.GetMD5(EncryptionTools.Crypt(userName + userEmail));
+                string token = Tools.GetMD5(encryptionTools.Crypt(userName + userEmail));
                 EmailInfo email = new EmailInfo();
                 email.Body = $"Hi,{userName}. <br>欢迎您注册地图搜租房(woyaozufang.live),你的账号已经注册成功." +
                 "<br/>为了保证您能正常体验网站服务，请点击下面的链接完成邮箱验证以激活账号."
@@ -58,13 +72,13 @@ namespace HouseCrawler.Web.Controllers
                 email.Receiver = userEmail;
                 email.Subject = "地图找租房-激活账号";
                 email.ReceiverName = userName;
-                email.Send();
+                emailService.Send(email);
                 var user = new UserInfo();
                 user.UserName = userName;
                 user.Password = password;
                 user.Email = userEmail;
                 user.ActivatedCode = token;
-                UserDataDapper.InsertUser(user);
+                userDataDapper.InsertUser(user);
                 return Json(new { success = true, message = "注册成功!" });
             }
             catch (Exception ex)
@@ -79,7 +93,7 @@ namespace HouseCrawler.Web.Controllers
         public ActionResult Login(string userName, string password)
         {
             //var loginUser = new UserInfo(){ Email="test@qq.com", Password = "e10adc3949ba59abbe56e057f20f883e", Status =1};
-            var loginUser = UserDataDapper.FindUser(userName);
+            var loginUser = userDataDapper.FindUser(userName);
             if (loginUser != null)
             {
                 if (loginUser.Status != 1)
@@ -101,7 +115,7 @@ namespace HouseCrawler.Web.Controllers
                         IsPersistent = true,
                         ExpiresUtc = DateTimeOffset.Now.Add(TimeSpan.FromDays(7)) // 有效时间
                     }).Wait();
-                    string token = EncryptionTools.Crypt($"{loginUser.ID}|{loginUser.UserName}");
+                    string token = encryptionTools.Crypt($"{loginUser.ID}|{loginUser.UserName}");
                     return Json(new { success = true, token = token, messgae = "登录成功!" });
                 }
                 else
@@ -119,15 +133,15 @@ namespace HouseCrawler.Web.Controllers
 
         public ActionResult SignOut(string userName, string password)
         {
-             HttpContext.SignOutAsync().Wait();
-             return Json(new { success = true, message = "退出成功!"});
+            HttpContext.SignOutAsync().Wait();
+            return Json(new { success = true, message = "退出成功!" });
         }
 
 
         public ActionResult Activated(string activatedCode)
         {
             ViewResult result = new ViewResult();
-            var userInfo = UserDataDapper.FindUserByActivatedCode(activatedCode);
+            var userInfo = userDataDapper.FindUserByActivatedCode(activatedCode);
             if (userInfo != null)
             {
                 if (userInfo.Status == 1)
@@ -138,7 +152,7 @@ namespace HouseCrawler.Web.Controllers
                 else
                 {
                     userInfo.Status = 1;
-                    UserDataDapper.SaveUserStatus(userInfo.ID, 1);
+                    userDataDapper.SaveUserStatus(userInfo.ID, 1);
                     result.success = true;
                     result.message = "激活账号成功！";
                 }
@@ -163,8 +177,8 @@ namespace HouseCrawler.Web.Controllers
         {
             try
             {
-                var user = UserDataDapper.FindUser(emailAccount);
-                var token = Tools.GetMD5(EncryptionTools.Crypt(user.UserName + user.Email + DateTime.Now.ToString()));
+                var user = userDataDapper.FindUser(emailAccount);
+                var token = Tools.GetMD5(encryptionTools.Crypt(user.UserName + user.Email + DateTime.Now.ToString()));
                 EmailInfo email = new EmailInfo();
                 email.Body = $"Hi,{user.UserName}. <br>您正在通过注册邮箱找回密码,如果非本人操作,请勿继续."
                 + "<br>请在24小时内点击以下链接重置密码:"
@@ -175,15 +189,15 @@ namespace HouseCrawler.Web.Controllers
                 email.Receiver = user.Email;
                 email.Subject = "地图找租房-找回密码";
                 email.ReceiverName = user.UserName;
-                email.Send();
-                UserDataDapper.SaveRetrievePasswordToken(user.ID, token);
+                emailService.Send(email);
+                userDataDapper.SaveRetrievePasswordToken(user.ID, token);
                 return Json(new { success = true });
             }
             catch (Exception ex)
             {
                 return Json(new { success = false, error = ex.ToString() });
             }
-        
+
         }
 
         public ActionResult ModifyPassword()
@@ -193,12 +207,12 @@ namespace HouseCrawler.Web.Controllers
 
         public ActionResult ResetPassword(string token, string password)
         {
-            var user = UserDataDapper.FindUserByToken(token);
-            if(user !=null && (DateTime.Now.ToLocalTime()- user.TokenTime).TotalHours >24)
+            var user = userDataDapper.FindUserByToken(token);
+            if (user != null && (DateTime.Now.ToLocalTime() - user.TokenTime).TotalHours > 24)
             {
                 return Json(new { success = false, error = "Token无效或者重置密码链接已超过24小时,请重新操作." });
             }
-            UserDataDapper.SavePassword(user.ID, Tools.GetMD5(password));
+            userDataDapper.SavePassword(user.ID, Tools.GetMD5(password));
             return Json(new { success = true });
         }
 
