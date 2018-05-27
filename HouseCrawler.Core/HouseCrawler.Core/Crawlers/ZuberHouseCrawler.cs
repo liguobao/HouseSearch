@@ -20,7 +20,7 @@ namespace HouseCrawler.Core
         
         public static void Run()
         {
-            foreach (var doubanConf in CrawlerDataDapper.GetConfigurationList(ConstConfigurationName.Zuber))
+            foreach (var doubanConf in HouseDataDapper.GetConfigurationList(ConstConfigurationName.Zuber))
             {
                 LogHelper.RunActionNotThrowEx(() =>
                 {
@@ -34,7 +34,7 @@ namespace HouseCrawler.Core
                         sequence = tupleResult.Item2;
                         houses.AddRange(tupleResult.Item1);
                     }
-                    CrawlerDataDapper.BulkInsertHouses(houses);
+                    HouseDataDapper.BulkInsertHouses(houses);
                 }, "DoubanHouseCrawler CaptureHouseInfo ", doubanConf);
             }
         }

@@ -19,7 +19,7 @@ namespace HouseCrawler.Core
             int captrueHouseCount = 0;
             DateTime startTime = DateTime.Now;
 
-            var peopleRentingConf = CrawlerDataDapper.GetConfigurationList(ConstConfigurationName.HuZhuZuFang)
+            var peopleRentingConf = HouseDataDapper.GetConfigurationList(ConstConfigurationName.HuZhuZuFang)
             .FirstOrDefault();
 
             var pageCount = peopleRentingConf != null
@@ -32,7 +32,7 @@ namespace HouseCrawler.Core
                 string result = getResultFromAPI(pageNum);
                 houses.AddRange(GetHouseData(result));
             }
-            CrawlerDataDapper.BulkInsertHouses(houses);
+            HouseDataDapper.BulkInsertHouses(houses);
             captrueHouseCount = captrueHouseCount + houses.Count;
 
             BizCrawlerLog.SaveLog($"爬取上海互助租房数据",

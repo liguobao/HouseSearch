@@ -20,7 +20,8 @@ namespace HouseCrawler.Core
         {
             int captrueHouseCount = 0;
             DateTime startTime = DateTime.Now;
-            foreach (var crawlerConfiguration in CrawlerDataDapper.GetConfigurationList(ConstConfigurationName.CCBHouse).ToList())
+            foreach (var crawlerConfiguration in HouseDataDapper
+            .GetConfigurationList(ConstConfigurationName.CCBHouse).ToList())
             {
                 LogHelper.RunActionNotThrowEx(() =>
                 {
@@ -47,7 +48,7 @@ namespace HouseCrawler.Core
                 houses.AddRange(GetHouseData(cityShortCutName, result));
             }
             captrueHouseCount = captrueHouseCount + houses.Count;
-            CrawlerDataDapper.BulkInsertHouses(houses);
+            HouseDataDapper.BulkInsertHouses(houses);
             return captrueHouseCount;
         }
 

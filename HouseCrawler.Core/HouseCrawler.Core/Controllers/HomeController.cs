@@ -35,7 +35,7 @@ namespace HouseCrawler.Core.Controllers
             int withAnyDays = 7, string keyword = "")
         {
 
-            var houses = CrawlerDataDapper.SearchHouseInfo(cityName, source, houseCount, withAnyDays, keyword);
+            var houses = HouseDataDapper.SearchHouseInfo(cityName, source, houseCount, withAnyDays, keyword);
             var rooms = houses.Select(house =>
                 {
                     var markBGType = string.Empty;

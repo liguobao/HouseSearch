@@ -18,7 +18,7 @@ namespace HouseCrawler.Core
 
         public static void Run()
         {
-            foreach (var doubanConf in CrawlerDataDapper.GetConfigurationList(ConstConfigurationName.MoguHouse))
+            foreach (var doubanConf in HouseDataDapper.GetConfigurationList(ConstConfigurationName.MoguHouse))
             {
                 LogHelper.RunActionNotThrowEx(() =>
                 {
@@ -36,7 +36,7 @@ namespace HouseCrawler.Core
                             houses.AddRange(list);
                         }
                     }
-                    CrawlerDataDapper.BulkInsertHouses(houses);
+                    HouseDataDapper.BulkInsertHouses(houses);
                 }, "MoGuHouseCrawler Run ", doubanConf);
             }
         }

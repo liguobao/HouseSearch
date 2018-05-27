@@ -27,7 +27,7 @@ namespace HouseCrawler.Core
             email.Receiver = configuration.ReceiverAddress;
             email.ReceiverName = configuration.ReceiverName;
             email.Subject = $"地图搜租房每日数据汇总({today.ToString("yyyy-MM-dd")})";
-            var statList = CrawlerDataDapper.GetHouseStatList();
+            var statList = HouseDataDapper.GetHouseStatList();
             string bodyHTML = @"<table border='1' cellpadding='0' cellspacing='0' width='100%'> 
              <tr> 
              <td>来源</td>

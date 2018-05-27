@@ -7,9 +7,9 @@ using Dapper;
 using HouseCrawler.Core.Models;
 using MySql.Data.MySqlClient;
 
-namespace HouseCrawler.Core.DataContent
+namespace HouseCrawler.Core
 {
-    public class CrawlerDataDapper
+    public class HouseDataDapper
     {
 
 
@@ -49,16 +49,16 @@ namespace HouseCrawler.Core.DataContent
 
         }
 
-        public static List<Models.HouseDashboard> GetHouseDashboard()
+        public static List<HouseDashboard> GetHouseDashboard()
         {
             using (IDbConnection dbConnection = Connection)
             {
                 dbConnection.Open();
-                var list = new List<Models.HouseDashboard>();
+                var list = new List<HouseDashboard>();
                 foreach (var key in ConstConfigurationName.HouseTableNameDic.Keys)
                 {
                     var tableName = ConstConfigurationName.GetTableName(key);
-                    var dashboards = dbConnection.Query<Models.HouseDashboard>(@"SELECT 
+                    var dashboards = dbConnection.Query<HouseDashboard>(@"SELECT 
                                 LocationCityName AS CityName,
                                 Source, COUNT(id) AS HouseSum, 
                                 MAX(PubTime) AS LastRecordPubTime

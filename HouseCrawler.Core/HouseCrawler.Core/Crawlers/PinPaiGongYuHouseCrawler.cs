@@ -20,7 +20,7 @@ namespace HouseCrawler.Core
             int captrueHouseCount = 0;
             DateTime startTime = DateTime.Now;
 
-            foreach (var crawlerConfiguration in CrawlerDataDapper.GetConfigurationList(ConstConfigurationName.PinPaiGongYu).Where(c => c.IsEnabled).ToList())
+            foreach (var crawlerConfiguration in HouseDataDapper.GetConfigurationList(ConstConfigurationName.PinPaiGongYu).Where(c => c.IsEnabled).ToList())
             {
                 LogHelper.RunActionNotThrowEx(() =>
                 {
@@ -32,7 +32,7 @@ namespace HouseCrawler.Core
                         var houseHTML = GetHouseHTML(url);
                         houses.AddRange(GetDataFromHMTL(confInfo.shortcutname.Value, confInfo.cityname.Value, houseHTML));
                     }
-                    CrawlerDataDapper.BulkInsertHouses(houses);
+                    HouseDataDapper.BulkInsertHouses(houses);
                     captrueHouseCount = captrueHouseCount + houses.Count;
                 }, "CapturPinPaiHouseInfo", crawlerConfiguration);
             }

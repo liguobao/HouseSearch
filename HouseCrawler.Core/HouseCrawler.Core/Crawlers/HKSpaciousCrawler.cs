@@ -34,7 +34,7 @@ namespace HouseCrawler.Core
                 houses.AddRange(GetHouseDataFromHTML(result));
             }
             captrueHouseCount = captrueHouseCount + houses.Count;
-            CrawlerDataDapper.BulkInsertHouses(houses);
+            HouseDataDapper.BulkInsertHouses(houses);
             return captrueHouseCount;
         }
 
