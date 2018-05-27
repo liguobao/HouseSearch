@@ -20,8 +20,9 @@ namespace HouseCrawler.Web.Controllers
 
         private EncryptionTools encryptionTools;
 
-        AccountController(UserDataDapper userDataDapper, EmailService emailService, 
-        EncryptionTools encryptionTools)
+        public AccountController(UserDataDapper userDataDapper,
+                          EmailService emailService,
+                          EncryptionTools encryptionTools)
         {
             this.userDataDapper = userDataDapper;
             this.emailService = emailService;
@@ -131,7 +132,7 @@ namespace HouseCrawler.Web.Controllers
         }
 
 
-        public ActionResult SignOut(string userName, string password)
+        public ActionResult SignOut()
         {
             HttpContext.SignOutAsync().Wait();
             return Json(new { success = true, message = "退出成功!" });
