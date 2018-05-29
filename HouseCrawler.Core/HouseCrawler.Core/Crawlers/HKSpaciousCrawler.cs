@@ -27,8 +27,7 @@ namespace HouseCrawler.Core
             LogHelper.Info("HKSpaciousCrawler start.");
             DateTime startTime = DateTime.Now;
             var captrueHouseCount = CaptureHouse();
-            BizCrawlerLog.SaveLog($"爬取HKSpacious数据", $"本次共爬取到{captrueHouseCount}条数据，耗时{ (DateTime.Now - startTime).TotalSeconds}秒。", 1);
-            LogHelper.Info("HKSpaciousCrawler finish.");
+            LogHelper.Info($"HKSpaciousCrawler finish.本次共爬取到{captrueHouseCount}条数据，耗时{ (DateTime.Now - startTime).TotalSeconds}秒。");
         }
 
         private int CaptureHouse()

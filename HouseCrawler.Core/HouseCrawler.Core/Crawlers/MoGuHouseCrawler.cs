@@ -67,7 +67,7 @@ namespace HouseCrawler.Core
                 var housePrice = room["maxShowPrice"].ToObject<decimal>();
                 var picURLs = new List<string>();
                 picURLs.Add(room["imageNew"].ToString());
-                var lastPublishTime = !string.IsNullOrEmpty(room["lastPublishTime"].ToString())
+                var lastPublishTime = room["lastPublishTime"]!=null && !string.IsNullOrEmpty(room["lastPublishTime"].ToString())
                 ? room["lastPublishTime"].ToObject<DateTime>()
                 : DateTime.Now.ToLocalTime();
                 var house = new BaseHouseInfo()

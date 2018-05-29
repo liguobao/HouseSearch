@@ -39,8 +39,7 @@ namespace HouseCrawler.Core
             houseDapper.BulkInsertHouses(houses);
             captrueHouseCount = captrueHouseCount + houses.Count;
 
-            BizCrawlerLog.SaveLog($"爬取上海互助租房数据",
-            $"本次共爬取到{captrueHouseCount}条数据，耗时{ (DateTime.Now - startTime).TotalSeconds}秒。", 1);
+            LogHelper.Info($"PeopleRentingCrawler finish.本次共爬取到{captrueHouseCount}条数据，耗时{ (DateTime.Now - startTime).TotalSeconds}秒。");
 
         }
         private static List<BaseHouseInfo> GetHouseData(string result)

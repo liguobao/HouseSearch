@@ -43,8 +43,7 @@ namespace HouseCrawler.Core
                 }, "CapturPinPaiHouseInfo", crawlerConfiguration);
             }
 
-            BizCrawlerLog.SaveLog($"爬取58品牌公寓租房数据",
-                  $"本次共爬取到{captrueHouseCount}条数据，耗时{ (DateTime.Now - startTime).TotalSeconds}秒。", 1);
+           LogHelper.Info($"PinPaiGongYuHouseCrawler finish.本次共爬取到{captrueHouseCount}条数据，耗时{ (DateTime.Now - startTime).TotalSeconds}秒。");
         }
 
         private static List<BaseHouseInfo> GetDataFromHMTL(string shortCutName, string cityName, string houseHTML)

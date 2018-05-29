@@ -41,8 +41,7 @@ namespace HouseCrawler.Core
                         houseDapper.BulkInsertHouses(houses);
                     }, "DoubanHouseCrawler CaptureHouseInfo ", doubanConf);
                 }
-                BizCrawlerLog.SaveLog($"爬取豆瓣租房小组数据",
-                    $"本次共爬取到{captrueHouseCount}条数据，耗时{ (DateTime.Now - startTime).TotalSeconds}秒。", 1);
+                LogHelper.Info($"DoubanHouseCrawler finish.本次共爬取到{captrueHouseCount}条数据，耗时{ (DateTime.Now - startTime).TotalSeconds}秒。");
             }
             catch (Exception ex)
             {
