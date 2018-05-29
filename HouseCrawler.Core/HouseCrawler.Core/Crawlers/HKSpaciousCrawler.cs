@@ -76,7 +76,8 @@ namespace HouseCrawler.Core
                     disPlayPrice = titleItem.FirstElementChild.TextContent;
                     var textPrice = titleItem.FirstElementChild.TextContent.Replace("HKD$", "").Replace("萬", "");
                     decimal.TryParse(textPrice, out housePrice);
-                    housePrice = housePrice * 10000;
+                    //为了显示效果,此处乘以1000即可,本意应该是10000的
+                    housePrice = housePrice * 1000;
                 }
                 var timeText = element.QuerySelectorAll("div")
                  .Where(div => div.ClassList.Contains("cell--listings--row--card__info-contact-response_posted_time"))
