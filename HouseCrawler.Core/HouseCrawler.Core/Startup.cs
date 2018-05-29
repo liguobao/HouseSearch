@@ -58,7 +58,6 @@ namespace HouseCrawler.Core
             services.AddSingleton<CrawlerJobs, CrawlerJobs>();
             services.AddSingleton<HKSpaciousCrawlerJob, HKSpaciousCrawlerJob>();
             services.AddSingleton<HouseDashboardJob, HouseDashboardJob>();
-            services.AddSingleton<HouseDashboardJob, HouseDashboardJob>();
             services.AddSingleton<RefreshDashboardJob, RefreshDashboardJob>();
             #endregion
 

@@ -31,15 +31,18 @@ namespace HouseCrawler.Core
 
         }
 
-        [Invoke(Begin = "2018-05-20 00:00", Interval = 1000 * 3600, SkipWhileExecuting = true)]
+        [Invoke(Begin = "2018-05-29 00:00", Interval = 1000 * 3600, SkipWhileExecuting = true)]
         public void Run()
         {
+            LogHelper.Info("CrawlerJobs start");
             LogHelper.RunActionNotThrowEx(pinpai.Run);
             LogHelper.RunActionNotThrowEx(people.Run);
             LogHelper.RunActionNotThrowEx(douban.Run);
             LogHelper.RunActionNotThrowEx(ccbHouse.Run);
             LogHelper.RunActionNotThrowEx(zuber.Run);
             LogHelper.RunActionNotThrowEx(mogu.Run);
+
+            LogHelper.Info("CrawlerJobs finish");
         }
     }
 }
