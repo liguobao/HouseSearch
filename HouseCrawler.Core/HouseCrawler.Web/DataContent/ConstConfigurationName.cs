@@ -23,6 +23,8 @@ namespace HouseCrawler.Web
         public static string MoguHouse = "mogu";
         public static string HKSpacious = "hkspacious";
 
+        public static string BaiXing = "baixing";
+
         public static string ConvertToDisPlayName(string configurationName)
         {
             var dicNameToDisplayName = new Dictionary<string, string>()
@@ -33,6 +35,7 @@ namespace HouseCrawler.Web
                 { Zuber,"Zuber"},
                 { MoguHouse,"蘑菇租房"},
                 { CCBHouse,"CCB建融"},
+                { BaiXing,"百姓租房"},
                 { CityHouseInfo,"城市租房信息"},
             };
 
@@ -47,7 +50,8 @@ namespace HouseCrawler.Web
             { ConstConfigurationName.CCBHouse, "CCBHouseInfos"},
             { ConstConfigurationName.Zuber, "ZuberHouseInfos"},
             { ConstConfigurationName.MoguHouse, "MoguHouseInfos"},
-            { ConstConfigurationName.HKSpacious, "HKHouseInfos"}
+            { ConstConfigurationName.HKSpacious, "HKHouseInfos"},
+            { ConstConfigurationName.BaiXing, "BaiXingHouseInfos"}
         };
 
 

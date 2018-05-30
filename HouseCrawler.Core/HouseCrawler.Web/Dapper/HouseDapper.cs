@@ -26,10 +26,10 @@ namespace HouseCrawler.Web
         {
             return new MySqlConnection(configuration.MySQLConnectionString);
         }
-    
 
 
-        public  IEnumerable<DBHouseInfo> SearchHouseInfo(string cityName, string source = "",
+
+        public IEnumerable<DBHouseInfo> SearchHouseInfo(string cityName, string source = "",
           int houseCount = 100, int intervalDay = 7, string keyword = "", bool refresh = false)
         {
             if (string.IsNullOrEmpty(source))
@@ -37,6 +37,11 @@ namespace HouseCrawler.Web
                 var houseList = new List<DBHouseInfo>();
                 foreach (var key in ConstConfigurationName.HouseTableNameDic.Keys)
                 {
+                    //默认数据中暂时不出百姓网数据
+                    if (key == ConstConfigurationName.BaiXing)
+                    {
+                        continue;
+                    }
                     // 因为会走几个表,默认每个表取100条
                     houseList.AddRange(Search(cityName, key, 100, intervalDay, keyword, refresh));
                 }
