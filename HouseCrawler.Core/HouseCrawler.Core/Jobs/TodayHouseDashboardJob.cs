@@ -7,7 +7,7 @@ using Pomelo.AspNetCore.TimedJob;
 
 namespace HouseCrawler.Core
 {
-    public class HouseDashboardJob : Job
+    public class TodayHouseDashboardJob : Job
     {
         EmailService emailService;
 
@@ -15,7 +15,7 @@ namespace HouseCrawler.Core
 
         HouseDapper houseDapper;
 
-        public HouseDashboardJob(EmailService emailService, IOptions<APPConfiguration> configuration,
+        public TodayHouseDashboardJob(EmailService emailService, IOptions<APPConfiguration> configuration,
          HouseDapper houseDapper)
         {
             this.emailService = emailService;

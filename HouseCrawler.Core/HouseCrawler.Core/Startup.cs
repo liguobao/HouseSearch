@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using NLog.Web;
 using HouseCrawler.Core.Common;
 using HouseCrawler.Core.Service;
+using HouseCrawler.Core.Jobs;
 
 namespace HouseCrawler.Core
 {
@@ -55,11 +56,14 @@ namespace HouseCrawler.Core
             #endregion
 
             #region Jobs
-            services.AddSingleton<CrawlerJobs, CrawlerJobs>();
-            services.AddSingleton<HKSpaciousCrawlerJob, HKSpaciousCrawlerJob>();
-            services.AddSingleton<HouseDashboardJob, HouseDashboardJob>();
+            services.AddSingleton<BaiXingJob, BaiXingJob>();
+            services.AddSingleton<DoubanCCBJob, DoubanCCBJob>();
+            services.AddSingleton<GCJob, GCJob>();
+            services.AddSingleton<HKSpaciousJob, HKSpaciousJob>();
+            services.AddSingleton<PingPaiPeopleJob, PingPaiPeopleJob>();
             services.AddSingleton<RefreshDashboardJob, RefreshDashboardJob>();
-            services.AddSingleton<BaiXingCrawlerJob, BaiXingCrawlerJob>();
+            services.AddSingleton<TodayHouseDashboardJob, TodayHouseDashboardJob>();
+            services.AddSingleton<ZuberMoguJob, ZuberMoguJob>();
             #endregion
 
             #region Crawler

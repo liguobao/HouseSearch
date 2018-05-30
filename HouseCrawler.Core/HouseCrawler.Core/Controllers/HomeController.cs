@@ -15,7 +15,7 @@ namespace HouseCrawler.Core.Controllers
 
         private HouseDapper houseDapper;
 
-        private HouseDashboardJob houseDashboardJob;
+        private TodayHouseDashboardJob houseDashboardJob;
 
         private HouseDashboardService houseDashboardService;
 
@@ -30,7 +30,7 @@ namespace HouseCrawler.Core.Controllers
 
         private BaiXingHouseCrawler baixing;
 
-        public HomeController(HouseDashboardJob houseDashboardJob,
+        public HomeController(TodayHouseDashboardJob houseDashboardJob,
                               HouseDapper houseDapper,
                               HouseDashboardService houseDashboardService,
                               PinPaiGongYuHouseCrawler pinpai,
