@@ -127,6 +127,7 @@ namespace HouseCrawler.Core.Controllers
 
         public IActionResult RunBaiXing()
         {
+            baixing.Run();
             baixing.InitConfiguration();
             var list = baixing.test();
 
