@@ -28,6 +28,8 @@ namespace HouseCrawler.Core.Controllers
         private MoGuHouseCrawler mogu;
         private HKSpaciousCrawler hkSpacious;
 
+        private BaiXingHouseCrawler baixing;
+
         public HomeController(HouseDashboardJob houseDashboardJob,
                               HouseDapper houseDapper,
                               HouseDashboardService houseDashboardService,
@@ -37,7 +39,8 @@ namespace HouseCrawler.Core.Controllers
                               CCBHouesCrawler ccbHouse,
                               ZuberHouseCrawler zuber,
                               MoGuHouseCrawler mogu,
-                              HKSpaciousCrawler hkSpacious)
+                              HKSpaciousCrawler hkSpacious,
+                              BaiXingHouseCrawler baixing)
         {
             this.houseDashboardJob = houseDashboardJob;
             this.houseDapper = houseDapper;
@@ -49,6 +52,7 @@ namespace HouseCrawler.Core.Controllers
             this.zuber = zuber;
             this.mogu = mogu;
             this.hkSpacious = hkSpacious;
+            this.baixing = baixing;
         }
         // GET: /<controller>/
         public IActionResult Index()
@@ -119,6 +123,14 @@ namespace HouseCrawler.Core.Controllers
         {
             houseDashboardJob.Run();
             return Json(new { success = true });
+        }
+
+        public IActionResult RunBaiXing()
+        {
+            baixing.InitConfiguration();
+            var list = baixing.test();
+
+            return Json(new { success = true, houses = list });
         }
 
 

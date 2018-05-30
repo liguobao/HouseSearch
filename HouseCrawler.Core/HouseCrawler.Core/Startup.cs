@@ -70,6 +70,7 @@ namespace HouseCrawler.Core
             services.AddSingleton<PeopleRentingCrawler, PeopleRentingCrawler>();
             services.AddSingleton<PinPaiGongYuHouseCrawler, PinPaiGongYuHouseCrawler>();
             services.AddSingleton<ZuberHouseCrawler, ZuberHouseCrawler>();
+            services.AddSingleton<BaiXingHouseCrawler, BaiXingHouseCrawler>();
             #endregion
         }
 
