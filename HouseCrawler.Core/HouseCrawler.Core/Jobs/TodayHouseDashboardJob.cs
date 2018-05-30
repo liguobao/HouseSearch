@@ -23,7 +23,7 @@ namespace HouseCrawler.Core
             this.houseDapper = houseDapper;
         }
 
-        [Invoke(Begin = "2018-05-28 10:00", Interval = 1000 * 3600 *24, SkipWhileExecuting = true)]
+        [Invoke(Begin = "2018-05-28 21:45", Interval = 1000 * 3600 *1, SkipWhileExecuting = true)]
         public void Run()
         {
             var today = DateTime.Now.ToLocalTime();

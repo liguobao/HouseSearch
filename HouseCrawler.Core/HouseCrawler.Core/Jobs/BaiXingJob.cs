@@ -2,10 +2,10 @@
 
 namespace HouseCrawler.Core
 {
-    public class HKSpaciousCrawlerJob : Job
+    public class BaiXingJob : Job
     {
-        private HKSpaciousCrawler crawler;
-        public HKSpaciousCrawlerJob(HKSpaciousCrawler crawler)
+        private BaiXingHouseCrawler crawler;
+        public BaiXingJob(BaiXingHouseCrawler crawler)
         {
             this.crawler = crawler;
         }

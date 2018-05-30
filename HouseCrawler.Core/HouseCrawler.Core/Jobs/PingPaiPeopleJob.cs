@@ -2,7 +2,7 @@
 
 namespace HouseCrawler.Core
 {
-    public class CrawlerJobs : Job
+    public class PingPaiPeopleJob : Job
     {
         PinPaiGongYuHouseCrawler pinpai;
         PeopleRentingCrawler people;
@@ -15,7 +15,7 @@ namespace HouseCrawler.Core
 
         MoGuHouseCrawler mogu;
 
-        public CrawlerJobs(PinPaiGongYuHouseCrawler pinpai,
+        public PingPaiPeopleJob(PinPaiGongYuHouseCrawler pinpai,
         PeopleRentingCrawler people,
         DoubanHouseCrawler douban,
         CCBHouesCrawler ccbHouse,
@@ -31,18 +31,14 @@ namespace HouseCrawler.Core
 
         }
 
-        [Invoke(Begin = "2018-05-29 00:00", Interval = 1000 * 3600, SkipWhileExecuting = true)]
+        [Invoke(Begin = "2018-05-29 00:25", Interval = 1000 * 3600, SkipWhileExecuting = true)]
         public void Run()
         {
-            LogHelper.Info("CrawlerJobs start");
+            LogHelper.Info("PingPaiPeopleJob start");
             LogHelper.RunActionNotThrowEx(pinpai.Run);
             LogHelper.RunActionNotThrowEx(people.Run);
-            LogHelper.RunActionNotThrowEx(douban.Run);
-            LogHelper.RunActionNotThrowEx(ccbHouse.Run);
-            LogHelper.RunActionNotThrowEx(zuber.Run);
-            LogHelper.RunActionNotThrowEx(mogu.Run);
 
-            LogHelper.Info("CrawlerJobs finish");
+            LogHelper.Info("PingPaiPeopleJob finish");
         }
     }
 }
