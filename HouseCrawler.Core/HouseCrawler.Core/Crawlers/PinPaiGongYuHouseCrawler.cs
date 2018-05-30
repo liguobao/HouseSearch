@@ -43,7 +43,7 @@ namespace HouseCrawler.Core
                 }, "CapturPinPaiHouseInfo", crawlerConfiguration);
             }
 
-           LogHelper.Info($"PinPaiGongYuHouseCrawler finish.本次共爬取到{captrueHouseCount}条数据，耗时{ (DateTime.Now - startTime).TotalSeconds}秒。");
+            LogHelper.Info($"PinPaiGongYuHouseCrawler finish.本次共爬取到{captrueHouseCount}条数据，耗时{ (DateTime.Now - startTime).TotalSeconds}秒。");
         }
 
         private static List<BaseHouseInfo> GetDataFromHMTL(string shortCutName, string cityName, string houseHTML)
@@ -60,6 +60,11 @@ namespace HouseCrawler.Core
                 var houseTitle = element.QuerySelector("h2").TextContent;
                 var houseInfoList = houseTitle.Split(' ');
                 int.TryParse(element.QuerySelector("b").TextContent, out var housePrice);
+                //推广房源,感觉存在py交易,直接跳过
+                if (element.QuerySelector("a").GetAttribute("href").Contains("legoclick.58.com"))
+                {
+                    continue;
+                }
                 var onlineUrl = $"http://{shortCutName}.58.com" + element.QuerySelector("a").GetAttribute("href");
                 var houseLocation = new[] { "公寓", "青年社区" }.All(s => houseInfoList.Contains(s)) ? houseInfoList[0] : houseInfoList[1];
                 var houseInfo = new BaseHouseInfo
@@ -98,7 +103,14 @@ namespace HouseCrawler.Core
         }
 
 
-       
+
+        public static void Test()
+        {
+            var url = $"http://xa.58.com/pinpaigongyu/pn/1";
+            var houseHTML = GetHouseHTML(url);
+            var houses = GetDataFromHMTL("xa", "西安市", houseHTML);
+        }
+
 
         /// <summary>
         /// 初始化配置数据，首次运行项目才需要
