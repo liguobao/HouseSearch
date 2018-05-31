@@ -46,7 +46,7 @@ namespace HouseCrawler.Core
             }
         }
 
-        private static List<BaseHouseInfo> GetHouseData(string cityName, int cityID, int currentPage, int rentTypes = 2)
+        public static List<BaseHouseInfo> GetHouseData(string cityName, int cityID, int currentPage, int rentTypes = 2)
         {
             List<BaseHouseInfo> lstHouse = new List<BaseHouseInfo>();
             var result = GetAPIResult(cityID, currentPage, rentTypes);
@@ -67,9 +67,7 @@ namespace HouseCrawler.Core
                 var housePrice = room["maxShowPrice"].ToObject<decimal>();
                 var picURLs = new List<string>();
                 picURLs.Add(room["imageNew"].ToString());
-                var lastPublishTime = room["lastPublishTime"]!=null && !string.IsNullOrEmpty(room["lastPublishTime"].ToString())
-                ? room["lastPublishTime"].ToObject<DateTime>()
-                : DateTime.Now.ToLocalTime();
+                var lastPublishTime = GetPublishTime(room);
                 var house = new BaseHouseInfo()
                 {
                     HouseLocation = room["address"].ToString(),
@@ -89,6 +87,28 @@ namespace HouseCrawler.Core
             }
 
             return lstHouse;
+        }
+
+
+        public static DateTime GetPublishTime(JToken room)
+        {
+            try
+            {
+                if (room["lastPublishTime"] != null && !string.IsNullOrEmpty(room["lastPublishTime"].ToString()))
+                {
+                    return room["lastPublishTime"].ToObject<DateTime>();
+                }
+                else
+                {
+                    return DateTime.Now;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error("GetPublishTime", ex, room);
+                return DateTime.Now;
+            }
+
         }
 
         public static string GetAPIResult(int cityID, int currentPage, int rentTypes = 2)
