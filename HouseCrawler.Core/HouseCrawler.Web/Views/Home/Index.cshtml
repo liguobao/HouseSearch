@@ -159,23 +159,42 @@
             <ul class="am-avg-sm-2 am-avg-md-3 am-avg-lg-6 am-thumbnails">
                 <li class="am-animation-slide-bottom am-animation-delay-1" data-am-scrollspy="{animation:'slide-top', delay: 20}">
                     <h2><a href="~/Home/HouseList?cityname=上海" target="_blank">上海地区</a></h2>
-                    <p>互助租房、豆瓣、Zuber</p>
+                    <p>
+                        <a href="~/Home/HouseList?cityname=上海&source=huzhuzufang" target="_blank">互助租房、</a>
+                        <a href="~/Home/HouseList?cityname=上海&source=douban" target="_blank">豆瓣、</a>
+                        <a href="~/Home/HouseList?cityname=上海&source=zuber" target="_blank">Zuber</a>
+                    </p>
                 </li>
                 <li class="am-animation-slide-top" data-am-scrollspy="{animation:'slide-top', delay: 0}">
                     <h2><a href="~/Home/HouseList?cityname=北京" target="_blank">北京地区</a></h2>
-                    <p>豆瓣、Zuber、蘑菇</p>
+                    <p>
+                        <a href="~/Home/HouseList?cityname=北京&source=douban" target="_blank">豆瓣、</a>
+                        <a href="~/Home/HouseList?cityname=北京&source=zuber" target="_blank">Zuber、</a>
+                        <a href="~/Home/HouseList?cityname=北京&source=mogu" target="_blank">蘑菇</a>
+                    </p>
                 </li>
                 <li class="am-animation-slide-top" data-am-scrollspy="{animation:'slide-top', delay: 0}">
                     <h2><a href="~/Home/HouseList?cityname=广州" target="_blank">广州地区</a></h2>
-                    <p>豆瓣、Zuber、蘑菇</p>
+                    <p>
+                        <a href="~/Home/HouseList?cityname=广州&source=douban" target="_blank">豆瓣、</a>
+                        <a href="~/Home/HouseList?cityname=广州&source=zuber" target="_blank">Zuber、</a>
+                        <a href="~/Home/HouseList?cityname=广州&source=mogu" target="_blank">蘑菇</a>
+                    </p>
                 </li>
                 <li class="am-animation-slide-top" data-am-scrollspy="{animation:'slide-top', delay: 0}">
                     <h2><a href="~/Home/HouseList?cityname=深圳" target="_blank">深圳地区</a></h2>
-                    <p>豆瓣、Zuber</p>
+                    <p>
+                        <a href="~/Home/HouseList?cityname=深圳&source=douban" target="_blank">豆瓣、</a>
+                        <a href="~/Home/HouseList?cityname=深圳&source=zuber" target="_blank">Zuber</a>
+                    </p>
                 </li>
                 <li class="am-animation-slide-top" data-am-scrollspy="{animation:'slide-top', delay: 100}">
                     <h2><a href="#" data-am-modal="{target: '#more-cityHouseInfo', closeViaDimmer: 0 ,width: 900,height:600}">更多城市</a></h2>
-                    <p>成都、杭州、厦门...</p>
+                    <p>
+                        <a href="~/Home/HouseList?cityname=成都" target="_blank">成都、</a>
+                        <a href="~/Home/HouseList?cityname=杭州" target="_blank">杭州、</a>
+                        <a href="~/Home/HouseList?cityname=厦门" target="_blank">厦门...</a>
+                    </p>
                 </li>
                 <li class="am-animation-slide-top" data-am-scrollspy="{animation:'slide-top', delay: 100}">
                     <h2><a href="#" data-am-modal="{target: '#divHouseSearch', closeViaDimmer: 0 ,width: 400, height : 300}">高级搜索</a></h2>
@@ -289,11 +308,10 @@
                                     @foreach (var cityHouseInfo in cityGroup)
                                     {
                                         var sum = cityHouseInfo.HouseSum > 9999 ? "9999+" : cityHouseInfo.HouseSum.ToString();
-                                        <a href="~/Home/HouseList?cityname=@cityName&source=@cityHouseInfo.Source&intervalDay=7&houseCount=500" target="_blank">
+                                        <a href="~/Home/HouseList?cityname=@cityName&source=@cityHouseInfo.Source&intervalDay=7&houseCount=300" target="_blank">
                                             @ConstConfigurationName.ConvertToDisPlayName(cityHouseInfo.Source) (@sum)
                                         </a>
                                         <br />
-
                                     }
                                 </p>
                             </li>
@@ -302,10 +320,6 @@
                 </div>
             </div>
         </div>
-
-
-
-
 
         <hr>
         <section class="am-container m-home-box m-partner">

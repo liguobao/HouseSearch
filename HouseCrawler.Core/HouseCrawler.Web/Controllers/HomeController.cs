@@ -52,7 +52,7 @@ namespace HouseCrawler.Web.Controllers
             return View();
         }
 
-        public IActionResult GetHouseInfo(string cityName, string source = "", int houseCount = 100,
+        public IActionResult GetHouseInfo(string cityName, string source = "", int houseCount = 300,
             int intervalDay = 7, string keyword = "", bool refresh = false)
         {
             try

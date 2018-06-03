@@ -5,7 +5,7 @@ define(function() {
         resizeEnable: true,
         zoomEnable: true,
         center: [121.297428, 31.1345],
-        zoom: 11
+        zoom: 13
     });
     var _workAddress = null;
 

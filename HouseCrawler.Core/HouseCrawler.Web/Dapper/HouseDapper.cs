@@ -30,7 +30,7 @@ namespace HouseCrawler.Web
 
 
         public IEnumerable<DBHouseInfo> SearchHouseInfo(string cityName, string source = "",
-          int houseCount = 100, int intervalDay = 7, string keyword = "", bool refresh = false)
+          int houseCount = 300, int intervalDay = 7, string keyword = "", bool refresh = false)
         {
             if (string.IsNullOrEmpty(source))
             {
@@ -55,7 +55,7 @@ namespace HouseCrawler.Web
         }
 
         public IEnumerable<DBHouseInfo> Search(string cityName, string source = "",
-            int houseCount = 100, int intervalDay = 7, string keyword = "", bool refresh = false)
+            int houseCount = 300, int intervalDay = 7, string keyword = "", bool refresh = false)
         {
             string redisKey = $"{cityName}-{source}-{intervalDay}-{houseCount}-{keyword}";
             var houses = new List<DBHouseInfo>();
