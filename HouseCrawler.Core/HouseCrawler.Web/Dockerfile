@@ -1,4 +1,4 @@
-FROM microsoft/aspnetcore-build:2.0 AS build-env
+FROM registry.cn-hangzhou.aliyuncs.com/liguobao/dotnet-code-build-env AS build-env
 WORKDIR /app
 
 # copy csproj and restore as distinct layers
