@@ -38,7 +38,10 @@ namespace HouseCrawler.Web
                 { BaiXing,"百姓租房"},
                 { CityHouseInfo,"城市租房信息"},
             };
-
+            if (string.IsNullOrEmpty(configurationName))
+            {
+                return "";
+            }
             return (dicNameToDisplayName.ContainsKey(configurationName)) ? dicNameToDisplayName[configurationName] : "";
         }
 

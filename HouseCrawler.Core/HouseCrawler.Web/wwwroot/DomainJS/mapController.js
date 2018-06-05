@@ -202,8 +202,7 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
                                             rent_locations.add(item);
                                         });
                                         rent_locations.forEach(function (element, index) {
-                                            marker.add(element.houseLocation, element.money, element.houseURL,
-                                                element.locationMarkBG);
+                                            marker.add(element);
                                         });
                                         //console.log("第" + result.PageIndex + "页加载完成。");
                                     } else {

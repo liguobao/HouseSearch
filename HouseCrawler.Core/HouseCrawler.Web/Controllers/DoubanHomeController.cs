@@ -25,12 +25,12 @@ namespace HouseCrawler.Web.Controllers
             if (string.IsNullOrEmpty(groupID))
                 groupID = "shanghaizufang";
              var houses = DoubanHouseCrawler.GetHouseData(groupID, "", index);
-            var lstRoomInfo = houses.Select(item => new
+            var lstRoomInfo = houses.Select(item => new HouseInfo()
             {
                 HouseTitle = item.HouseTitle,
-                HouseURL = item.HouseOnlineURL,
+                HouseOnlineURL = item.HouseOnlineURL,
                 HouseLocation = item.HouseTitle,
-                Money ="暂无"
+                DisPlayPrice ="暂无"
             });
             return Json(new { IsSuccess = true, HouseInfos = lstRoomInfo });
 

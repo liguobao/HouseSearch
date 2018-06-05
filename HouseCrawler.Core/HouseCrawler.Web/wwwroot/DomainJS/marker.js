@@ -28,12 +28,12 @@ define(['mapSignleton', 'city', 'transfer'], function(mapSignleton, city, transf
                 });
                 _markerArray.push(rentMarker);
 
-                var displayMoney =house.money ? "  租金：" + house.money : "";
+                var displayMoney =house.DisPlayPrice ? "  租金：" + house.DisPlayPrice : "";
                 var sourceContent = house.displaySource ? " 来源：" + house.displaySource : "";
                 if(!house.houseTitle){
                     house.houseTitle = house.houseLocation;
                 }
-                var onlineURL = "<a target='_blank' href='" + house.houseURL + "'>房源：" + house.houseTitle + displayMoney + sourceContent + "  </a>";
+                var onlineURL = "<a target='_blank' href='" + house.HouseOnlineURL + "'>房源：" + house.houseTitle + displayMoney + sourceContent + "  </a>";
                 var starURL = "<a name='house-star' class='am-icon-star am-icon-f' house-id='"+house.id +"'  source='"+house.source+"'>            收藏</a> ";
                 rentMarker.content = "<div>" + onlineURL + starURL + "<div>"
                 rentMarker.on('click', function(e) {
