@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using HouseCrawler.Web.DataContent;
 using HouseCrawler.Web.Models;
 
 namespace HouseCrawler.Web.Service

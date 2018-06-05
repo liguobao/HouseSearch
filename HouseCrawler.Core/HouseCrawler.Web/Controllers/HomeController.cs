@@ -4,12 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 using HouseCrawler.Web.Models;
 using HouseCrawler.Web.Common;
 using HouseCrawler.Web;
-using HouseCrawler.Web.DataContent;
 using HouseCrawler.Web.Service;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Cors;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -60,12 +60,36 @@ namespace HouseCrawler.Web.Controllers
                 var houseList = houseDapper.SearchHouses(cityName, source, houseCount, intervalDay, keyword, refresh, page);
                 var rooms = houseList.Select(house =>
                 {
-                    var markBGType = string.Empty;
-                    int housePrice = (int)house.HousePrice;
-                    if (housePrice > 0)
+                    return new HouseInfo
                     {
-                        markBGType = LocationMarkBGType.SelectColor(housePrice / 1000);
-                    }
+                        ID = house.Id,
+                        Source = house.Source,
+                        Money = house.DisPlayPrice,
+                        HouseURL = house.HouseOnlineURL,
+                        HouseLocation = house.HouseLocation,
+                        HouseTime = house.PubTime.ToString(),
+                        HouseTitle = house.HouseTitle,
+                        HousePrice = (int)house.HousePrice
+                    };
+                });
+                return Json(new { IsSuccess = true, HouseInfos = rooms });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { IsSuccess = false, error = ex.ToString() });
+            }
+        }
+
+
+        [EnableCors("HomeCors")]
+        public IActionResult Houses(string cityName, string source = "", int houseCount = 300,
+                    int intervalDay = 7, string keyword = "", bool refresh = false, int page = 0)
+        {
+            try
+            {
+                var houseList = houseDapper.SearchHouses(cityName, source, houseCount, intervalDay, keyword, refresh, page);
+                var rooms = houseList.Select(house =>
+                {
 
                     return new HouseInfo
                     {
@@ -76,17 +100,22 @@ namespace HouseCrawler.Web.Controllers
                         HouseLocation = house.HouseLocation,
                         HouseTime = house.PubTime.ToString(),
                         HouseTitle = house.HouseTitle,
-                        HousePrice = housePrice,
-                        LocationMarkBG = markBGType,
-                        DisplaySource = ConstConfigurationName.ConvertToDisPlayName(house.Source)
+                        HousePrice = (int)house.HousePrice
                     };
                 });
-                return Json(new { IsSuccess = true, HouseInfos = rooms });
+                return Json(new { success = true, houses = rooms });
             }
             catch (Exception ex)
             {
-                return Json(new { IsSuccess = false, error = ex.ToString() });
+                return Json(new { success = false, error = ex.ToString() });
             }
+        }
+
+        [EnableCors("HomeCors")]
+        public IActionResult Dashboards()
+        {
+            var dashboards = houseDashboardService.LoadDashboard();
+            return Json(new { success = true, dashboards = dashboards });
         }
 
 
@@ -188,27 +217,20 @@ namespace HouseCrawler.Web.Controllers
                 }
                 var houseList = userCollectionDapper.FindUserCollections(userID, cityName, source);
                 var rooms = houseList.Select(house =>
-                {
-                    var markBGType = string.Empty;
-                    int housePrice = (int)house.HousePrice;
-                    if (housePrice > 0)
-                    {
-                        markBGType = LocationMarkBGType.SelectColor(housePrice / 1000);
-                    }
-                    return new HouseInfo
-                    {
-                        ID = house.Id,
-                        Source = house.Source,
-                        Money = house.DisPlayPrice,
-                        HouseURL = house.HouseOnlineURL,
-                        HouseLocation = house.HouseLocation,
-                        HouseTime = house.PubTime.ToString(),
-                        HouseTitle = house.HouseTitle,
-                        HousePrice = housePrice,
-                        LocationMarkBG = markBGType,
-                        DisplaySource = ConstConfigurationName.ConvertToDisPlayName(house.Source)
-                    };
-                });
+               {
+
+                   return new HouseInfo
+                   {
+                       ID = house.Id,
+                       Source = house.Source,
+                       Money = house.DisPlayPrice,
+                       HouseURL = house.HouseOnlineURL,
+                       HouseLocation = house.HouseLocation,
+                       HouseTime = house.PubTime.ToString(),
+                       HouseTitle = house.HouseTitle,
+                       HousePrice = (int)house.HousePrice
+                   };
+               });
                 return Json(new { IsSuccess = true, HouseInfos = rooms });
             }
             catch (Exception ex)

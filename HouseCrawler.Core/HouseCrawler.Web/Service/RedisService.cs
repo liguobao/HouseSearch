@@ -1,4 +1,4 @@
-﻿using HouseCrawler.Web.DataContent;
+﻿
 using Microsoft.Extensions.Options;
 using StackExchange.Redis;
 using System;

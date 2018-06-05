@@ -269,10 +269,11 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
                 });
     
                 positionPicker.on('success', function (positionResult) {
-                    console.log(positionResult);
+                    //console.log(positionResult);
                     mapSignleton.workAddress = positionResult.address;
                     $("#work-location").val(positionResult.address);
-                    $("#mobile-work-location").val(positionResult.address);
+                    //$("#mobile-work-location").val(positionResult.address);
+                    $("#mobile-position-text").text(positionResult.address);
                 });
                 positionPicker.on('fail', function (positionResult) {
     

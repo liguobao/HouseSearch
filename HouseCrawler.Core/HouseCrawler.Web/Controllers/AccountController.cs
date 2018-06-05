@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using HouseCrawler.Web.Models;
 using HouseCrawler.Web.Common;
 using HouseCrawler.Web;
-using HouseCrawler.Web.DataContent;
 using HouseCrawler.Web.Service;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;

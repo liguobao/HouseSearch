@@ -1,5 +1,4 @@
 using Dapper;
-using HouseCrawler.Web.DataContent;
 using HouseCrawler.Web.Models;
 using Microsoft.Extensions.Options;
 using MySql.Data.MySqlClient;

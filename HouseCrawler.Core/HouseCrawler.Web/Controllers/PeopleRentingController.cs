@@ -63,8 +63,7 @@ namespace HouseCrawler.Web.Controllers
                     HouseURL = house.HouseOnlineURL,
                     HouseLocation = house.HouseLocation,
                     HouseTime = house.PubTime.ToShortDateString(),
-                    HousePrice = house.HousePrice,
-                    LocationMarkBG = markBGType,
+                    HousePrice = house.HousePrice
                 };
             });
         }

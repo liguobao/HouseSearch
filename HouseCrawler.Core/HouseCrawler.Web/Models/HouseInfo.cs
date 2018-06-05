@@ -1,4 +1,5 @@
 ﻿using System;
+using HouseCrawler.Web.Common;
 
 namespace HouseCrawler.Web.Models
 {
@@ -37,7 +38,17 @@ namespace HouseCrawler.Web.Models
         /// <summary>
         /// 定位图标
         /// </summary>
-        public string LocationMarkBG { get; set; }
+        public string LocationMarkBG
+        {
+            get
+            {
+                if (this.HousePrice > 0)
+                {
+                    return LocationMarkBGType.SelectColor((int)this.HousePrice / 1000);
+                }
+                return "";
+            }
+        }
 
         /// <summary>
         /// 所在城市
@@ -55,7 +66,13 @@ namespace HouseCrawler.Web.Models
         public string Source { get; set; }
 
 
-        public string DisplaySource { get; set; }
+        public string DisplaySource
+        {
+            get
+            {
+                return ConstConfigurationName.ConvertToDisPlayName(this.Source);
+            }
+        }
 
 
         public long ID { get; set; }

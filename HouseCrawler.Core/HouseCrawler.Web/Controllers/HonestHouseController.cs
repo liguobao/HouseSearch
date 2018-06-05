@@ -128,8 +128,7 @@ namespace HouseCrawler.Web.Controllers
                     HouseLocation = room.QuerySelector("p.add").QuerySelectorAll("a").Last().TextContent.Replace("租房", ""),
                     HouseTitle = a.TextContent,
                     Money = housePrice.ToString(),
-                    HouseURL = a.GetAttribute("href"),
-                    LocationMarkBG = markBGType,
+                    HouseURL = a.GetAttribute("href")
                 };
             });
         }

@@ -54,6 +54,12 @@ namespace HouseCrawler.Web
                 options.Cookie.SameSite = SameSiteMode.Lax;
             });
 
+            //添加cors 服务
+            services.AddCors(o => o.AddPolicy("HomeCors", builder =>
+           builder.AllowAnyOrigin()
+           .AllowAnyMethod()
+           .AllowAnyHeader()));
+
         }
 
 
@@ -67,7 +73,7 @@ namespace HouseCrawler.Web
 
             services.AddSingleton<EncryptionTools, EncryptionTools>();
 
-            
+
 
 
             #region Service
@@ -98,6 +104,7 @@ namespace HouseCrawler.Web
             //needed for non-NETSTANDARD platforms: configure nlog.config in your project root. NB: you need NLog.Web.AspNetCore package for this. 
             env.ConfigureNLog("./wwwroot/nlog.config");
 
+
             loggerFactory.AddConsole();
 
             app.UseAuthentication();
@@ -121,6 +128,8 @@ namespace HouseCrawler.Web
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            app.UseCors("HomeCors");
 
         }
 
