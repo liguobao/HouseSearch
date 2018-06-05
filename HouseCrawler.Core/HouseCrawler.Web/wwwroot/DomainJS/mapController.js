@@ -22,7 +22,7 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
             }
         }
 
-        var GetDataByIndex = function (index, count, dataResource) {
+        var GetDataByIndex = function (index, count, dataResource, page) {
 
             var dataInfo = [];
             if (dataResource == "douban") {
@@ -42,7 +42,8 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
                     houseCount: count,
                     intervalDay: intervalDay,
                     keyword: keyword,
-                    refresh: refresh
+                    refresh: refresh,
+                    page: page
                 };
             } else if (dataResource === 'userCollection') {
                 var source = helper.getQueryString("source") ? helper.getQueryString("source") : "";
@@ -271,6 +272,7 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
                     console.log(positionResult);
                     mapSignleton.workAddress = positionResult.address;
                     $("#work-location").val(positionResult.address);
+                    $("#mobile-work-location").val(positionResult.address);
                 });
                 positionPicker.on('fail', function (positionResult) {
     
@@ -283,7 +285,7 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
             });
         }
 
-        var getHouses = function () {
+        var getHouses = function (page) {
             $.AMUI.progress.start();
             if (dataResource == "houselist" || dataResource == "userCollection") {
                 var houseCount = 300;
@@ -293,7 +295,8 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
                 } else {
                     houseCount = helper.getQueryString("houseCount") ? helper.getQueryString("houseCount") : 300;
                 }
-                GetDataByIndex(houseCount, houseCount, dataResource);
+                marker.clearArray();
+                GetDataByIndex(houseCount, houseCount, dataResource,page);
             } else {
                 var pageCount = helper.getQueryString("PageCount");
                 if (!pageCount) {
@@ -312,6 +315,7 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
             showCityInfo: showCityInfo,
             marker: marker,
             locationMethodOnChange: locationMethodOnChange,
-            workLocation: workLocation
+            workLocation: workLocation,
+            getHouses: getHouses
         }
     });

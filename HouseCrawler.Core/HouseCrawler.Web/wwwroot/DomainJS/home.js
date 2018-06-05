@@ -55,6 +55,14 @@ require(['domready!', 'jquery', 'AMUI', 'mapController', 'city', 'commuteGo'], f
         $("#transfer-panel").hide();
     });
 
+    var page = 1;
+    $('#btnNext').bind('click', function(e) {
+        e.preventDefault();
+        mapController.getHouses(page++);
+        e.stopPropagation();
+    });
+
+
     $('body').on('click', "[name='house-star']", function () {
         var $this = $(this);
         var houseId = $this.attr("house-id");

@@ -29,8 +29,9 @@ namespace HouseCrawler.Web
 
 
 
-        public IEnumerable<DBHouseInfo> SearchHouseInfo(string cityName, string source = "",
-          int houseCount = 300, int intervalDay = 7, string keyword = "", bool refresh = false)
+        public IEnumerable<DBHouseInfo> SearchHouses(string cityName, string source = "",
+          int houseCount = 300, int intervalDay = 7, string keyword = "",
+           bool refresh = false, int page = 0)
         {
             if (string.IsNullOrEmpty(source))
             {
@@ -43,21 +44,22 @@ namespace HouseCrawler.Web
                         continue;
                     }
                     // 因为会走几个表,默认每个表取100条
-                    houseList.AddRange(Search(cityName, key, 100, intervalDay, keyword, refresh));
+                    houseList.AddRange(Search(cityName, key, 100, intervalDay, keyword, refresh, page));
                 }
                 return houseList.OrderByDescending(h => h.PubTime).Take(houseCount);
             }
             else
             {
-                return Search(cityName, source, houseCount, intervalDay, keyword, refresh);
+                return Search(cityName, source, houseCount, intervalDay, keyword, refresh, page);
             }
 
         }
 
         public IEnumerable<DBHouseInfo> Search(string cityName, string source = "",
-            int houseCount = 300, int intervalDay = 7, string keyword = "", bool refresh = false)
+            int houseCount = 300, int intervalDay = 7, string keyword = "",
+            bool refresh = false, int page = 0)
         {
-            string redisKey = $"{cityName}-{source}-{intervalDay}-{houseCount}-{keyword}";
+            string redisKey = $"{cityName}-{source}-{intervalDay}-{houseCount}-{keyword}-{page}";
             var houses = new List<DBHouseInfo>();
             if (!refresh)
             {
@@ -74,9 +76,9 @@ namespace HouseCrawler.Web
                     $"and LocationCityName = @LocationCityName and  PubTime >= @PubTime";
                 if (!string.IsNullOrEmpty(keyword))
                 {
-                    search_SQL = search_SQL + " and (HouseText like @KeyWord or HouseLocation like @KeyWord or HouseTitle like @KeyWord) ";
+                    search_SQL = search_SQL + " and (HouseText like @KeyWord or HouseLocation like @KeyWord) ";
                 }
-                search_SQL = search_SQL + $" order by PubTime desc limit {houseCount} ";
+                search_SQL = search_SQL + $" order by PubTime desc limit {houseCount * page}, {houseCount} ";
                 houses = dbConnection.Query<DBHouseInfo>(search_SQL,
                     new
                     {

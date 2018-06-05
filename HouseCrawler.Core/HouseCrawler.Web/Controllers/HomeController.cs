@@ -34,7 +34,7 @@ namespace HouseCrawler.Web.Controllers
             this.houseDapper = houseDapper;
             this.houseDashboardService = houseDashboardService;
             this.configurationDapper = configurationDapper;
-            this.userCollectionDapper= userCollectionDapper;
+            this.userCollectionDapper = userCollectionDapper;
         }
 
         // GET: /<controller>/
@@ -53,11 +53,11 @@ namespace HouseCrawler.Web.Controllers
         }
 
         public IActionResult GetHouseInfo(string cityName, string source = "", int houseCount = 300,
-            int intervalDay = 7, string keyword = "", bool refresh = false)
+            int intervalDay = 7, string keyword = "", bool refresh = false, int page = 0)
         {
             try
             {
-                var houseList = houseDapper.SearchHouseInfo(cityName, source, houseCount, intervalDay, keyword, refresh);
+                var houseList = houseDapper.SearchHouses(cityName, source, houseCount, intervalDay, keyword, refresh, page);
                 var rooms = houseList.Select(house =>
                 {
                     var markBGType = string.Empty;
