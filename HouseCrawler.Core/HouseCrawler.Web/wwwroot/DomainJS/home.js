@@ -21,7 +21,7 @@
 "use strict";
 
 require(['domready!', 'jquery', 'AMUI', 'mapController', 'city', 'commuteGo'], function (doc, $, AMUI, mapController, city, commuteGo) {
-    city.initAllCityInfo();
+    //city.initAllCityInfo();
     mapController.init();
 
     $("input[name='locationType']").bind('click', mapController.locationMethodOnChange)

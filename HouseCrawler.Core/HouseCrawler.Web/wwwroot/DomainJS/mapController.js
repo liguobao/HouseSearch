@@ -77,7 +77,7 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
                     if (index == count) {
                         $.AMUI.progress.done();
                     }
-
+                    initPositionPicker();
                 }
             });
         }
@@ -110,47 +110,22 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
                 _map.setCity(helper.getQueryString("cityname"));
             }
 
-            showCityInfo(function () {
-                $.AMUI.progress.start();
+            showCityInfo(getHouses)
 
-                if (dataResource == "houselist" || dataResource == "userCollection") {
-                    var houseCount = 300;
-                    //为了避免数据太多在手机上无法查看，移动平台只出70条数据
-                    if (helper.isMobile()) {
-                        houseCount = 70;
-                    } else {
-                        houseCount = helper.getQueryString("houseCount") ? helper.getQueryString("houseCount") : 300;
-                    }
-                    GetDataByIndex(houseCount, houseCount, dataResource);
-                } else {
-                    var pageCount = helper.getQueryString("PageCount");
-                    if (!pageCount) {
-                        pageCount = dataResource == "douban" ? 5 : 15;
-                    }
-                    for (var i = 1; i <= pageCount; i++) {
-                        GetDataByIndex(i, pageCount, dataResource);
-                    }
-                }
-
-            })
+           
         }
 
         var showCityInfo = function (ajaxGetter) {
             //实例化城市查询类
             var citysearch = new AMap.CitySearch();
             //自动获取用户IP，返回当前城市
-
             citysearch.getLocalCity(function (status, result) {
                 if (status === 'complete' && result.info === 'OK') {
                     if (result && result.city && result.bounds) {
                         var cityinfo = result.city;
                         var citybounds = result.bounds;
-
                         city.name = cityinfo.substring(0, cityinfo.length - 1);
                         city.shortCut(city.name);
-
-                        ajaxGetter();
-
                         document.getElementById('IPLocation').innerHTML = '您当前所在城市：' + city.name;
                         //地图显示当前城市
                         $("#IPLocationCity").text("城市：" + city.name);
@@ -159,6 +134,8 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
                 } else {
                     document.getElementById('IPLocation').innerHTML = result.info;
                 }
+                //只要返回结果就可以下一步了
+                ajaxGetter();
             });
         }
 
@@ -278,31 +255,56 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
             }
         }
 
-        AMapUI.loadUI(['misc/PositionPicker'], function (PositionPicker) {
-            var positionPicker = new PositionPicker({
-                mode: 'dragMarker',
-                map: _map,
-                iconStyle: { //自定义外观
-                    url: 'https://webapi.amap.com/ui/1.0/assets/position-picker2.png',
-                    ancher: [24, 40],
-                    size: [64, 64]
+        var initPositionPicker = function(){
+            AMapUI.loadUI(['misc/PositionPicker'], function (PositionPicker) {
+                var positionPicker = new PositionPicker({
+                    mode: 'dragMarker',
+                    map: _map,
+                    iconStyle: { //自定义外观
+                        url: 'https://webapi.amap.com/ui/1.0/assets/position-picker2.png',
+                        ancher: [24, 40],
+                        size: [64, 64]
+                    }
+                });
+    
+                positionPicker.on('success', function (positionResult) {
+                    console.log(positionResult);
+                    mapSignleton.workAddress = positionResult.address;
+                    $("#work-location").val(positionResult.address);
+                });
+                positionPicker.on('fail', function (positionResult) {
+    
+                });
+                var onModeChange = function (e) {
+                    positionPicker.setMode(e.target.value)
                 }
+                //positionPicker.start(_map.getBounds().getSouthWest());
+                positionPicker.start();
             });
+        }
 
-            positionPicker.on('success', function (positionResult) {
-                console.log(positionResult);
-                mapSignleton.workAddress = positionResult.address;
-                $("#work-location").val(positionResult.address);
-            });
-            positionPicker.on('fail', function (positionResult) {
-
-            });
-            var onModeChange = function (e) {
-                positionPicker.setMode(e.target.value)
+        var getHouses = function () {
+            $.AMUI.progress.start();
+            if (dataResource == "houselist" || dataResource == "userCollection") {
+                var houseCount = 300;
+                //为了避免数据太多在手机上无法查看，移动平台只出70条数据
+                if (helper.isMobile()) {
+                    houseCount = 70;
+                } else {
+                    houseCount = helper.getQueryString("houseCount") ? helper.getQueryString("houseCount") : 300;
+                }
+                GetDataByIndex(houseCount, houseCount, dataResource);
+            } else {
+                var pageCount = helper.getQueryString("PageCount");
+                if (!pageCount) {
+                    pageCount = dataResource == "douban" ? 5 : 15;
+                }
+                for (var i = 1; i <= pageCount; i++) {
+                    GetDataByIndex(i, pageCount, dataResource);
+                }
             }
-            //positionPicker.start(_map.getBounds().getSouthWest());
-            positionPicker.start();
-        });
+
+        }
 
         return {
             init: init,
