@@ -117,8 +117,8 @@ namespace HouseCrawler.Web.Controllers
                 return new HouseInfo
                 {
                     HouseTitle = houseTitle,
-                    HouseURL = $"http://{cnName}.58.com" + element.QuerySelector("a").GetAttribute("href"),
-                    Money = element.QuerySelector("b").TextContent,
+                    HouseOnlineURL = $"http://{cnName}.58.com" + element.QuerySelector("a").GetAttribute("href"),
+                    DisPlayPrice = element.QuerySelector("b").TextContent,
                     HouseLocation = new[] { "公寓", "青年社区" }.All(s => houseInfoList.Contains(s)) ? houseInfoList[0] : houseInfoList[1]
                 };
             });
@@ -136,8 +136,8 @@ namespace HouseCrawler.Web.Controllers
                 return new HouseInfo
                 {
                     HouseTitle = houseTitle,
-                    HouseURL = $"http://{cnName}.58.com" + element.QuerySelector("a").GetAttribute("href"),
-                    Money = element.QuerySelector("b").TextContent,
+                    HouseOnlineURL = $"http://{cnName}.58.com" + element.QuerySelector("a").GetAttribute("href"),
+                    DisPlayPrice = element.QuerySelector("b").TextContent,
                     HouseLocation = new[] { "公寓", "青年社区" }.All(s => houseInfoList.Contains(s)) ? houseInfoList[0] : houseInfoList[1]
                 };
             });

@@ -1,16 +1,23 @@
-﻿using System;
+﻿//============================================================
+//http://codelover.link author:李国宝
+//============================================================
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
+using HouseCrawler.Web.Common;
+using Newtonsoft.Json;
 
 namespace HouseCrawler.Web
 {
- 
-    public class BaseHouseInfo
-    {
+    [Serializable()]
 
+    /// <summary>
+    /// 
+    /// </summary>
+    public class HouseInfo
+    {
         public long Id { get; set; }
 
         /// <summary>
@@ -79,6 +86,29 @@ namespace HouseCrawler.Web
         /// 状态（0:未处理 1：有效 2:已作废）
         /// </summary>
         public int Status { get; set; }
+
+        /// <summary>
+        /// 定位图标
+        /// </summary>
+        public string LocationMarkBG
+        {
+            get
+            {
+                if (this.HousePrice > 0)
+                {
+                    return LocationMarkBGType.SelectColor((int)this.HousePrice / 1000);
+                }
+                return "";
+            }
+        }
+
+        public string DisplaySource
+        {
+            get
+            {
+                return ConstConfigurationName.ConvertToDisPlayName(this.Source);
+            }
+        }
 
     }
 }

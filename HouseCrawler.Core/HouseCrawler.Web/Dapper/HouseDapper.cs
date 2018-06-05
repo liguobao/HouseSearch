@@ -28,13 +28,13 @@ namespace HouseCrawler.Web
 
 
 
-        public IEnumerable<DBHouseInfo> SearchHouses(string cityName, string source = "",
+        public IEnumerable<HouseInfo> SearchHouses(string cityName, string source = "",
           int houseCount = 300, int intervalDay = 7, string keyword = "",
            bool refresh = false, int page = 0)
         {
             if (string.IsNullOrEmpty(source))
             {
-                var houseList = new List<DBHouseInfo>();
+                var houseList = new List<HouseInfo>();
                 foreach (var key in ConstConfigurationName.HouseTableNameDic.Keys)
                 {
                     //默认数据中暂时不出百姓网数据
@@ -54,12 +54,12 @@ namespace HouseCrawler.Web
 
         }
 
-        public IEnumerable<DBHouseInfo> Search(string cityName, string source = "",
+        public IEnumerable<HouseInfo> Search(string cityName, string source = "",
             int houseCount = 300, int intervalDay = 7, string keyword = "",
             bool refresh = false, int page = 0)
         {
             string redisKey = $"{cityName}-{source}-{intervalDay}-{houseCount}-{keyword}-{page}";
-            var houses = new List<DBHouseInfo>();
+            var houses = new List<HouseInfo>();
             if (!refresh)
             {
                 houses = redisService.ReadSearchCache(redisKey);
@@ -78,7 +78,7 @@ namespace HouseCrawler.Web
                     search_SQL = search_SQL + " and (HouseText like @KeyWord or HouseLocation like @KeyWord) ";
                 }
                 search_SQL = search_SQL + $" order by PubTime desc limit {houseCount * page}, {houseCount} ";
-                houses = dbConnection.Query<DBHouseInfo>(search_SQL,
+                houses = dbConnection.Query<HouseInfo>(search_SQL,
                     new
                     {
                         LocationCityName = cityName,
@@ -92,13 +92,13 @@ namespace HouseCrawler.Web
 
 
 
-        public DBHouseInfo GetHouseID(long houseID, string source)
+        public HouseInfo GetHouseID(long houseID, string source)
         {
             using (IDbConnection dbConnection = GetConnection())
             {
                 dbConnection.Open();
 
-                return dbConnection.Query<DBHouseInfo>($"SELECT * FROM {ConstConfigurationName.GetTableName(source)} where ID = @ID",
+                return dbConnection.Query<HouseInfo>($"SELECT * FROM {ConstConfigurationName.GetTableName(source)} where ID = @ID",
                   new
                   {
                       ID = houseID

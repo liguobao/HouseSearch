@@ -69,12 +69,12 @@ namespace HouseCrawler.Web
             }
         }
 
-        public List<DBHouseInfo> FindUserCollections(long userID, string city = "", string source = "")
+        public List<HouseInfo> FindUserCollections(long userID, string city = "", string source = "")
         {
 
             if (string.IsNullOrEmpty(source))
             {
-                var houses = new List<DBHouseInfo>();
+                var houses = new List<HouseInfo>();
                 foreach (var key in ConstConfigurationName.HouseTableNameDic.Keys)
                 {
                     houses.AddRange(SearchUserCollections(userID, city, key));
@@ -88,13 +88,13 @@ namespace HouseCrawler.Web
             }
         }
 
-        private List<DBHouseInfo> SearchUserCollections(long userID, string city, string source)
+        private List<HouseInfo> SearchUserCollections(long userID, string city, string source)
         {
             using (IDbConnection dbConnection = GetConnection())
             {
                 var tableName = ConstConfigurationName.GetTableName(source);
                 string sqlText = GetSQLText(city, tableName);
-                var list = dbConnection.Query<DBHouseInfo>(sqlText,
+                var list = dbConnection.Query<HouseInfo>(sqlText,
                     new
                     {
                         UserID = userID,

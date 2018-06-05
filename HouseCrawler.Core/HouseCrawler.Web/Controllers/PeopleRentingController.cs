@@ -17,13 +17,13 @@ namespace HouseCrawler.Web.Controllers
 
         public ActionResult Index()
         {
-           
+
             return View();
         }
 
         public ActionResult GetRentingData()
         {
-          
+
             var roomList = Enumerable.Range(1, 10).Select(index => GetRoomList(index)).Aggregate((a, b) => a.Concat(b));
             return Json(new { IsSuccess = true, HouseInfos = roomList });
         }
@@ -35,13 +35,18 @@ namespace HouseCrawler.Web.Controllers
             {
                 var roomList = GetRoomList(index);
                 return Json(new { IsSuccess = true, HouseInfos = roomList });
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 LogHelper.Error("GetRentingDatabyPageIndex Exception", ex);
-                return Json(new { IsSuccess = false, Error =$"http://www.huzhumaifang.com/Renting/index/p/{index}.html"+
-                    "获取数据异常，可能是哪里挂了吧。看不懂的异常如下：" +ex.ToString() });
+                return Json(new
+                {
+                    IsSuccess = false,
+                    Error = $"http://www.huzhumaifang.com/Renting/index/p/{index}.html" +
+                    "获取数据异常，可能是哪里挂了吧。看不懂的异常如下：" + ex.ToString()
+                });
             }
-          
+
         }
 
         private int GetPageCount(string indexURL)
@@ -54,18 +59,9 @@ namespace HouseCrawler.Web.Controllers
         private IEnumerable<HouseInfo> GetRoomList(int pageNum)
         {
             var houses = PeopleRentingCrawler.GetHouseData(pageNum);
-            return houses.Select(house =>
-            {
-                var markBGType = LocationMarkBGType.SelectColor((int)house.HousePrice/ 1000);
-                return new HouseInfo
-                {
-                    Money = house.DisPlayPrice,
-                    HouseURL = house.HouseOnlineURL,
-                    HouseLocation = house.HouseLocation,
-                    HouseTime = house.PubTime.ToShortDateString(),
-                    HousePrice = house.HousePrice
-                };
-            });
+
+            return houses;
+
         }
     }
 }

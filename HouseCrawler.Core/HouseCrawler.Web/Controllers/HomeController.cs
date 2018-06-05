@@ -58,21 +58,7 @@ namespace HouseCrawler.Web.Controllers
             try
             {
                 var houseList = houseDapper.SearchHouses(cityName, source, houseCount, intervalDay, keyword, refresh, page);
-                var rooms = houseList.Select(house =>
-                {
-                    return new HouseInfo
-                    {
-                        ID = house.Id,
-                        Source = house.Source,
-                        Money = house.DisPlayPrice,
-                        HouseURL = house.HouseOnlineURL,
-                        HouseLocation = house.HouseLocation,
-                        HouseTime = house.PubTime.ToString(),
-                        HouseTitle = house.HouseTitle,
-                        HousePrice = (int)house.HousePrice
-                    };
-                });
-                return Json(new { IsSuccess = true, HouseInfos = rooms });
+                return Json(new { IsSuccess = true, HouseInfos = houseList });
             }
             catch (Exception ex)
             {
@@ -88,22 +74,7 @@ namespace HouseCrawler.Web.Controllers
             try
             {
                 var houseList = houseDapper.SearchHouses(cityName, source, houseCount, intervalDay, keyword, refresh, page);
-                var rooms = houseList.Select(house =>
-                {
-
-                    return new HouseInfo
-                    {
-                        ID = house.Id,
-                        Source = house.Source,
-                        Money = house.DisPlayPrice,
-                        HouseURL = house.HouseOnlineURL,
-                        HouseLocation = house.HouseLocation,
-                        HouseTime = house.PubTime.ToString(),
-                        HouseTitle = house.HouseTitle,
-                        HousePrice = (int)house.HousePrice
-                    };
-                });
-                return Json(new { success = true, houses = rooms });
+                return Json(new { success = true, houses = houseList });
             }
             catch (Exception ex)
             {
@@ -215,22 +186,7 @@ namespace HouseCrawler.Web.Controllers
                 {
                     return Json(new { IsSuccess = false, error = "用户未登陆，无法查看房源收藏。" });
                 }
-                var houseList = userCollectionDapper.FindUserCollections(userID, cityName, source);
-                var rooms = houseList.Select(house =>
-               {
-
-                   return new HouseInfo
-                   {
-                       ID = house.Id,
-                       Source = house.Source,
-                       Money = house.DisPlayPrice,
-                       HouseURL = house.HouseOnlineURL,
-                       HouseLocation = house.HouseLocation,
-                       HouseTime = house.PubTime.ToString(),
-                       HouseTitle = house.HouseTitle,
-                       HousePrice = (int)house.HousePrice
-                   };
-               });
+                var rooms = userCollectionDapper.FindUserCollections(userID, cityName, source);
                 return Json(new { IsSuccess = true, HouseInfos = rooms });
             }
             catch (Exception ex)
@@ -291,7 +247,7 @@ namespace HouseCrawler.Web.Controllers
 
         public IActionResult UserHouseList()
         {
-            var userHouses = new List<DBHouseInfo>();
+            var userHouses = new List<HouseInfo>();
             var userID = GetUserID();
             if (userID == 0)
             {

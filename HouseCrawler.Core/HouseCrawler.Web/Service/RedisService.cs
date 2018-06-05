@@ -21,7 +21,7 @@ namespace HouseCrawler.Web
             this.configuration = configuration.Value;
         }
 
-        public List<DBHouseInfo> ReadSearchCache(string key)
+        public List<HouseInfo> ReadSearchCache(string key)
         {
             try
             {
@@ -31,7 +31,7 @@ namespace HouseCrawler.Web
                     if (db.KeyExists(key))
                     {
                         string houseJson = db.StringGet(key);
-                        return Newtonsoft.Json.JsonConvert.DeserializeObject<List<DBHouseInfo>>(houseJson);
+                        return Newtonsoft.Json.JsonConvert.DeserializeObject<List<HouseInfo>>(houseJson);
                     }
                     else
                     {
@@ -47,14 +47,14 @@ namespace HouseCrawler.Web
 
         }
 
-        public void WriteSearchCache(string key, List<DBHouseInfo> house)
+        public void WriteSearchCache(string key, List<HouseInfo> houses)
         {
             try
             {
                 using (ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(GetRedisOptions()))
                 {
                     IDatabase db = redis.GetDatabase();
-                    db.StringSet(key, Newtonsoft.Json.JsonConvert.SerializeObject(house), new System.TimeSpan(0, 30, 0));
+                    db.StringSet(key, Newtonsoft.Json.JsonConvert.SerializeObject(houses), new System.TimeSpan(0, 30, 0));
                 }
 
             }

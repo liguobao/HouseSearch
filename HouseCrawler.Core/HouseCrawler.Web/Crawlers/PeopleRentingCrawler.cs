@@ -8,11 +8,11 @@ namespace HouseCrawler.Web
 {
     public class PeopleRentingCrawler
     {
-        public static List<BaseHouseInfo> GetHouseData(int pageNum)
+        public static List<HouseInfo> GetHouseData(int pageNum)
         {
             var result = getResultFromAPI(pageNum);
 
-            List<BaseHouseInfo> houseList = new List<BaseHouseInfo>();
+            var houseList = new List<HouseInfo>();
             var resultJObject = JsonConvert.DeserializeObject<JObject>(result);
             if (resultJObject == null || resultJObject["head"] == null || !resultJObject["head"]["success"].ToObject<Boolean>())
             {
@@ -20,7 +20,7 @@ namespace HouseCrawler.Web
             }
             foreach (var item in resultJObject["houseList"])
             {
-                BaseHouseInfo houseInfo = new BaseHouseInfo();
+                var houseInfo = new HouseInfo();
                 var houseDesc = item["houseDescript"].ToObject<string>().Replace("😄", "");
                 var houseURL = $"http://www.huzhumaifang.com/Renting/house_detail/id/{item["houseId"]}.html";
                 houseInfo.HouseOnlineURL = houseURL;
