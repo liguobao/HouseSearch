@@ -1,17 +1,6 @@
 ﻿namespace HouseCrawler.Core
 {
 
-    public class ConnectionStrings
-    {
-        public static string MySQLConnectionString { get; set; }
-
-        public static string RedisConnectionString { get; set; }
-
-        public static string CCBHomeAPIKey { get; set; }
-
-
-    }
-
 
     public class APPConfiguration
     {
@@ -19,7 +8,7 @@
 
         public string RedisConnectionString { get; set; }
 
-        public static string CCBHomeAPIKey { get; set; }
+        public string CCBHomeAPIKey { get; set; }
 
         public string SenderAddress { get; set; }
 

@@ -1,4 +1,5 @@
-﻿using StackExchange.Redis;
+﻿using Microsoft.Extensions.Options;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,10 +9,16 @@ namespace HouseCrawler.Core.Common
 {
     public class RedisService
     {
-        public static bool ContainsHouse(string key, string value)
+        private APPConfiguration config;
+        public RedisService(IOptions<APPConfiguration> configuration)
+        {
+            this.config = configuration.Value;
+        }
+        
+        public bool ContainsHouse(string key, string value)
         {
             ConnectionMultiplexer redis = ConnectionMultiplexer
-                .Connect(ConnectionStrings.RedisConnectionString);
+                .Connect(config.RedisConnectionString);
             IDatabase db = redis.GetDatabase();
             if (db.KeyExists(key))
             {
@@ -19,7 +26,7 @@ namespace HouseCrawler.Core.Common
             }
             else
             {
-                db.StringSet(key,"");
+                db.StringSet(key, "");
                 return false;
             }
         }

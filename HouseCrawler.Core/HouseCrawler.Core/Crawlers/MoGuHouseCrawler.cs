@@ -23,12 +23,12 @@ namespace HouseCrawler.Core
 
         public void Run()
         {
-            foreach (var doubanConf in houseDapper.GetConfigurationList(ConstConfigurationName.MoguHouse))
+            foreach (var conf in houseDapper.GetConfigurationList(ConstConfigurationName.MoguHouse))
             {
                 LogHelper.RunActionNotThrowEx(() =>
                 {
                     List<BaseHouseInfo> houses = new List<BaseHouseInfo>();
-                    var confInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(doubanConf.ConfigurationValue);
+                    var confInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(conf.ConfigurationValue);
                     var cityName = confInfo.cityname.Value;
                     var cityId = (int)confInfo.cityid.Value;
                     // 2:合租 3:整租 5:业主房源
@@ -42,7 +42,7 @@ namespace HouseCrawler.Core
                         }
                     }
                     houseDapper.BulkInsertHouses(houses);
-                }, "MoGuHouseCrawler Run ", doubanConf);
+                }, "MoGuHouseCrawler Run ", conf);
             }
         }
 
@@ -64,26 +64,33 @@ namespace HouseCrawler.Core
             }
             foreach (var room in resultJObject["content"]["roomInfos"])
             {
-                var housePrice = room["maxShowPrice"].ToObject<decimal>();
-                var picURLs = new List<string>();
-                picURLs.Add(room["imageNew"].ToString());
-                var lastPublishTime = GetPublishTime(room);
-                var house = new BaseHouseInfo()
+                try
                 {
-                    HouseLocation = room["address"].ToString(),
-                    HouseTitle = $"{room["title"].ToString()}【{room["subtitleNew"].ToString()}】",
-                    HouseOnlineURL = $"https://h5.mgzf.com/houseDetail/{room["roomId"].ToString()}",
-                    HouseText = room.ToString(),
-                    HousePrice = housePrice,
-                    DisPlayPrice = housePrice > 0 ? $"{housePrice}元" : "",
-                    Source = ConstConfigurationName.MoguHouse,
-                    LocationCityName = cityName,
-                    PicURLs = JsonConvert.SerializeObject(picURLs),
-                    PubTime = lastPublishTime,
-                    Status = 1,
-                    IsAnalyzed = true
-                };
-                lstHouse.Add(house);
+                    var housePrice = room["maxShowPrice"].ToObject<decimal>();
+                    var picURLs = new List<string>();
+                    picURLs.Add(room["imageNew"].ToString());
+                    var lastPublishTime = GetPublishTime(room);
+                    var house = new BaseHouseInfo()
+                    {
+                        HouseLocation = room["address"].ToString(),
+                        HouseTitle = $"{room["title"].ToString()}【{room["subtitleNew"].ToString()}】",
+                        HouseOnlineURL = $"https://h5.mgzf.com/houseDetail/{room["roomId"].ToString()}",
+                        HouseText = room.ToString(),
+                        HousePrice = housePrice,
+                        DisPlayPrice = housePrice > 0 ? $"{housePrice}元" : "",
+                        Source = ConstConfigurationName.MoguHouse,
+                        LocationCityName = cityName,
+                        PicURLs = JsonConvert.SerializeObject(picURLs),
+                        PubTime = lastPublishTime,
+                        Status = 1,
+                        IsAnalyzed = true
+                    };
+                    lstHouse.Add(house);
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.Error("Convert to House error", ex, room);
+                }
             }
 
             return lstHouse;

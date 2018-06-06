@@ -1,5 +1,6 @@
 ﻿using HouseCrawler.Core.Common;
 using HouseCrawler.Core.DataContent;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
@@ -15,10 +16,13 @@ namespace HouseCrawler.Core
 
         private HouseDapper houseDapper;
 
-       public CCBHouesCrawler(HouseDapper houseDapper)
-       {
-           this.houseDapper = houseDapper;
-       }
+        private APPConfiguration config;
+
+        public CCBHouesCrawler(HouseDapper houseDapper, IOptions<APPConfiguration> configuration)
+        {
+            this.houseDapper = houseDapper;
+            this.config = configuration.Value;
+        }
 
         public void Run()
         {
@@ -38,7 +42,7 @@ namespace HouseCrawler.Core
         private int CaptureHouse(BizCrawlerConfiguration crawlerConfiguration)
         {
             var confInfo = JsonConvert.DeserializeObject<dynamic>(crawlerConfiguration.ConfigurationValue);
-            if (confInfo.shortcutname==null || string.IsNullOrEmpty(confInfo.shortcutname.Value))
+            if (confInfo.shortcutname == null || string.IsNullOrEmpty(confInfo.shortcutname.Value))
             {
                 return 0;
             }
@@ -71,7 +75,7 @@ namespace HouseCrawler.Core
                 houseInfo.HouseOnlineURL = houseURL;
                 houseInfo.HouseLocation = item["headline"].ToObject<string>();
                 houseInfo.HouseTitle = item["headline"].ToObject<string>();
-                houseInfo.LocationCityName = item["cityName"].ToObject<string>(); 
+                houseInfo.LocationCityName = item["cityName"].ToObject<string>();
                 houseInfo.HouseText = item.ToString();
                 houseInfo.HousePrice = item["totalPrice"].ToObject<Int32>();
                 houseInfo.DisPlayPrice = item["totalPrice"].ToString();
@@ -102,9 +106,9 @@ namespace HouseCrawler.Core
             return houseURL;
         }
 
-        private static string GetResultByAPI(string cityShortCutName, int page)
+        private  string GetResultByAPI(string cityShortCutName, int page)
         {
-            string formBody = $"_reqParams=apiKey%3D{ConnectionStrings.CCBHomeAPIKey}%26city%3D{cityShortCutName}%26saleOrLease%3Dlease%26pageSize%3D50%26page%3D{page}%26propType%3D11%26tmflags%3D3&_interfaceUrl=%2Fhlsp%2Fcityhouse%2Fdeal%2Fsearch&_reqMethod=GET";
+            string formBody = $"_reqParams=apiKey%3D{config.CCBHomeAPIKey}%26city%3D{cityShortCutName}%26saleOrLease%3Dlease%26pageSize%3D50%26page%3D{page}%26propType%3D11%26tmflags%3D3&_interfaceUrl=%2Fhlsp%2Fcityhouse%2Fdeal%2Fsearch&_reqMethod=GET";
             var client = new RestClient("http://bankservice.home.ccb.com/LHECISM/LanHaiHttpResfulReqServlet");
             var request = new RestRequest(Method.POST);
             request.AddHeader("content-type", "application/x-www-form-urlencoded");
@@ -114,7 +118,8 @@ namespace HouseCrawler.Core
             request.AddHeader("host", "bankservice.home.ccb.com");
             request.AddParameter("application/x-www-form-urlencoded", formBody, ParameterType.RequestBody);
             IRestResponse response = client.Execute(request);
-            if (response.IsSuccessful) {
+            if (response.IsSuccessful)
+            {
                 return response.Content;
             }
             return "";
