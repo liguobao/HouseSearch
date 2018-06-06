@@ -37,15 +37,15 @@ namespace HouseCrawler.Web
                 var houseList = new List<HouseInfo>();
                 foreach (var key in ConstConfigurationName.HouseTableNameDic.Keys)
                 {
-                    //默认数据中暂时不出百姓网数据
-                    if (key == ConstConfigurationName.BaiXing)
+                    //建荣家园数据质量比较差,默认不出
+                    if (key == ConstConfigurationName.CCBHouse)
                     {
                         continue;
                     }
                     // 因为会走几个表,默认每个表取100条
                     houseList.AddRange(Search(cityName, key, 100, intervalDay, keyword, refresh, page));
                 }
-                return houseList.OrderByDescending(h => h.PubTime).Take(houseCount);
+                return houseList.OrderByDescending(h => h.PubTime);
             }
             else
             {
