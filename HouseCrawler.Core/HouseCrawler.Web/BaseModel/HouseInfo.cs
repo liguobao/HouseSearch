@@ -80,6 +80,8 @@ namespace HouseCrawler.Web
         /// </summary>
         public int Status { get; set; }
 
+        public string PicURLs{get; set;}
+
         /// <summary>
         /// 定位图标
         /// </summary>
