@@ -67,9 +67,9 @@ namespace HouseCrawler.Core
                 try
                 {
                     var housePrice = room["maxShowPrice"].ToObject<decimal>();
-                    var picURLs = new List<string>();
-                    picURLs.Add(room["imageNew"].ToString());
+
                     var lastPublishTime = GetPublishTime(room);
+
                     var house = new BaseHouseInfo()
                     {
                         HouseLocation = room["address"].ToString(),
@@ -80,7 +80,7 @@ namespace HouseCrawler.Core
                         DisPlayPrice = housePrice > 0 ? $"{housePrice}元" : "",
                         Source = ConstConfigurationName.MoguHouse,
                         LocationCityName = cityName,
-                        PicURLs = JsonConvert.SerializeObject(picURLs),
+                        PicURLs = GetPhotos(room),
                         PubTime = lastPublishTime,
                         Status = 1,
                         IsAnalyzed = true
@@ -97,6 +97,16 @@ namespace HouseCrawler.Core
         }
 
 
+
+        private static string GetPhotos(JToken room)
+        {
+            var photos = new List<String>();
+            if (room["imageNew"] != null)
+            {
+                photos.Add(room["imageNew"].ToString().Replace("!mobile.list2", ""));
+            }
+            return JsonConvert.SerializeObject(photos);
+        }
         public static DateTime GetPublishTime(JToken room)
         {
             try

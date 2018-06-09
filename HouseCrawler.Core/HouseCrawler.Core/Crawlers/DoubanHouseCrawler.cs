@@ -63,6 +63,7 @@ namespace HouseCrawler.Core
             foreach (var topic in resultJObject["topics"])
             {
                 var housePrice = JiebaTools.GetHousePrice(topic["content"].ToString());
+                var photos = topic["photos"]?.Select(photo => photo["alt"].ToString()).ToList();
                 var house = new BaseHouseInfo()
                 {
                     HouseLocation = topic["title"].ToString(),
@@ -75,6 +76,7 @@ namespace HouseCrawler.Core
                     Source = ConstConfigurationName.Douban,
                     LocationCityName = cityName,
                     Status = 1,
+                    PicURLs = JsonConvert.SerializeObject(photos),
                     PubTime = topic["created"].ToObject<DateTime>()
                 };
                 lstHouseInfo.Add(house);

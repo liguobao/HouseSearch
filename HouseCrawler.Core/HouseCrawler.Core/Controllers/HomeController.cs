@@ -127,8 +127,6 @@ namespace HouseCrawler.Core.Controllers
 
         public IActionResult RunBaiXing()
         {
-            baixing.Run();
-            baixing.InitConfiguration();
             var list = baixing.test();
 
             return Json(new { success = true, houses = list });

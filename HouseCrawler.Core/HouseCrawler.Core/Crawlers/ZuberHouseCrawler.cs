@@ -68,8 +68,6 @@ namespace HouseCrawler.Core
                 {
                     var room = item["room"];
                     var housePrice = room["cost1"].ToObject<decimal>();
-                    var picURLs = new List<string>();
-
                     var house = new BaseHouseInfo()
                     {
                         HouseLocation = room["address"].ToString(),
@@ -82,7 +80,7 @@ namespace HouseCrawler.Core
                         Source = ConstConfigurationName.Zuber,
                         LocationCityName = cityName,
                         Status = 1,
-                        PicURLs = $"['{room["photo"].ToString()}']",
+                        PicURLs = GetPhotos(room),
                         PubTime = room["last_modify_time"].ToObject<DateTime>()
                     };
                     lstHouse.Add(house);
@@ -92,7 +90,15 @@ namespace HouseCrawler.Core
             return Tuple.Create<List<BaseHouseInfo>, string>(lstHouse, nextSequence);
         }
 
-
+        private static string GetPhotos(JToken room)
+        {
+            var photos = new List<String>();
+            if (room["photo"] != null)
+            {
+                photos.Add(room["photo"].ToString().Replace("?imageView2/0/w/300", ""));
+            }
+            return JsonConvert.SerializeObject(photos);
+        }
         private static string GetAPIResult(string cityName, string sequence)
         {
             try

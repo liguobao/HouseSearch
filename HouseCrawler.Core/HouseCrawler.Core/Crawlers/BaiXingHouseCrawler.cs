@@ -12,6 +12,7 @@ using System.Data.SqlClient;
 using Dapper;
 using HouseCrawler.Core.Models;
 using Microsoft.Extensions.Options;
+using AngleSharp.Dom;
 
 namespace HouseCrawler.Core
 {
@@ -67,11 +68,19 @@ namespace HouseCrawler.Core
             if (string.IsNullOrEmpty(houseHTML))
                 return houseList;
             var htmlDoc = htmlParser.Parse(houseHTML);
-            var logrList = htmlDoc.QuerySelectorAll("div.media-body");
-            if (!logrList.Any())
+
+            var houseItems = htmlDoc.QuerySelectorAll("li.listing-ad.item-regular");
+
+
+            if (!houseItems.Any())
                 return houseList;
-            foreach (var element in logrList)
+            foreach (var item in houseItems)
             {
+                var element = item.QuerySelector("div.media-body");
+                if (element == null)
+                {
+                    continue;
+                }
                 var disPlayPrice = element.QuerySelector("span.highlight").TextContent;
                 int.TryParse(disPlayPrice.Replace("元", ""), out var housePrice);
                 var adTitle = element.QuerySelector("a.ad-title");
@@ -97,13 +106,24 @@ namespace HouseCrawler.Core
                     HousePrice = housePrice,
                     HouseText = element.InnerHtml,
                     LocationCityName = cityName,
-                    PubTime = DateTime.Now
+                    PubTime = DateTime.Now,
+                    PicURLs = GetPhotos(item)
                 };
                 houseList.Add(houseInfo);
             }
             return houseList;
         }
 
+        private static String GetPhotos(IElement element)
+        {
+            var photos = new List<String>();
+            var imageURL = element.QuerySelector("img")?.GetAttribute("src");
+            if (imageURL != null)
+            {
+                photos.Add("https:" + imageURL);
+            }
+            return JsonConvert.SerializeObject(photos);
+        }
 
 
         public static string GetHouseHTML(string houseURL)

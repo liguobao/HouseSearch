@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using HouseCrawler.Core.DataContent;
 using RestSharp;
 using HouseCrawler.Core.Common;
+using AngleSharp.Dom;
 
 namespace HouseCrawler.Core
 {
@@ -77,14 +78,24 @@ namespace HouseCrawler.Core
                     HousePrice = housePrice,
                     HouseText = houseTitle,
                     LocationCityName = cityName,
-                    PubTime = DateTime.Now
+                    PubTime = DateTime.Now,
+                    PicURLs = GetPhotos(element)
                 };
                 houseList.Add(houseInfo);
             }
             return houseList;
         }
 
-
+        private static string GetPhotos(IElement element)
+        {
+            var photos = new List<String>();
+            var imageURL = element.QuerySelector("img")?.GetAttribute("lazy_src");
+            if (imageURL != null)
+            {
+                photos.Add("https:" + imageURL.Replace("?w=240", ""));
+            }
+            return JsonConvert.SerializeObject(photos);
+        }
 
         public static string GetHouseHTML(string houseURL)
         {
