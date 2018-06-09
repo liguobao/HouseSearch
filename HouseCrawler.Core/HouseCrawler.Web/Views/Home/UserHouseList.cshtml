@@ -38,8 +38,8 @@
                         <td class="ellipsis"><a href="@house.HouseOnlineURL" target="_blank">@house.HouseTitle</a></td>
                         <td class="ellipsis">@house.HouseLocation</td>
                         <td>@house.DisPlayPrice</td>
-                        <td>@house.PubTime.Value.ToString("yy-MM-dd HH:mm")</td>
-                        <td>@ConstConfigurationName.ConvertToDisPlayName(house.Source)</td>
+                        <td>@house.PubTime.ToString("yy-MM-dd HH:mm")</td>
+                        <td>@house.DisplaySource</td>
                         <td>
                             <div class="am-text-success">
                                  <a name="removeHouse" data-id='@house.Id' href="javascript: void(0)" ><span class="am-icon-remove">移除</span></a>
