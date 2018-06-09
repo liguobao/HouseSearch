@@ -33,7 +33,7 @@ define(['mapSignleton', 'city', 'transfer'], function(mapSignleton, city, transf
                 if(!house.houseTitle){
                     house.houseTitle = house.houseLocation;
                 }
-                var onlineURL = "<a target='_blank' href='" + house.HouseOnlineURL + "'>房源：" + house.houseTitle + displayMoney + sourceContent + "  </a>";
+                var onlineURL = "<a target='_blank' href='" + house.houseOnlineURL + "'>房源：" + house.houseTitle + displayMoney + sourceContent + "  </a>";
                 var starURL = "<a name='house-star' class='am-icon-star am-icon-f' house-id='"+house.id +"'  source='"+house.source+"'>            收藏</a> ";
                 rentMarker.content = "<div>" + onlineURL + starURL + "<div>"
                 rentMarker.on('click', function(e) {
