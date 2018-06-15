@@ -70,8 +70,7 @@ namespace HouseCrawler.Core
             var htmlDoc = htmlParser.Parse(houseHTML);
 
             var houseItems = htmlDoc.QuerySelectorAll("li.listing-ad.item-regular");
-
-
+            
             if (!houseItems.Any())
                 return houseList;
             foreach (var item in houseItems)

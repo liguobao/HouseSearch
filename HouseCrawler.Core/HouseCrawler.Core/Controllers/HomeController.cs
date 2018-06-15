@@ -92,7 +92,7 @@ namespace HouseCrawler.Core.Controllers
                         DisplaySource = ConstConfigurationName.ConvertToDisPlayName(house.Source)
                     };
                 });
-            ElasticsearchService.AddHouse(houses.ToList());
+            ElasticsearchService.SaveHouses(houses.ToList());
             return Json(new { IsSuccess = true, HouseInfos = rooms });
 
         }

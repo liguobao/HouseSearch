@@ -36,7 +36,19 @@ namespace HouseCrawler.Core
         /// <summary>
         /// 发布时间
         /// </summary>
-        public DateTime? PubTime { get; set; }
+        public DateTime PubTime { get; set; }
+
+
+        /// <summary>
+        /// 发布日期
+        /// </summary>
+        public DateTime PubDate { get { return this.PubTime.Date; } }
+
+        /// <summary>
+        /// 创建日期
+        /// </summary>
+        public DateTime DataCreateDate { get { return this.DataCreateTime.Date; } }
+        public DateTime DataCreateTime { get; set; }
 
         /// <summary>
         /// 价格（纯数字）
