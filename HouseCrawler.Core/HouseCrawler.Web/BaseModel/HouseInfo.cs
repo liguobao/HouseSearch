@@ -80,7 +80,23 @@ namespace HouseCrawler.Web
         /// </summary>
         public int Status { get; set; }
 
-        public string PicURLs{get; set;}
+        public string PicURLs { get; set; }
+
+        public List<string> Pictures
+        {
+            get
+            {
+                try
+                {
+                    return Newtonsoft.Json.JsonConvert.DeserializeObject<List<String>>(PicURLs);
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.Error("Get Pictures error", ex, this.HouseOnlineURL);
+                    return new List<string>();
+                }
+            }
+        }
 
         /// <summary>
         /// 定位图标
