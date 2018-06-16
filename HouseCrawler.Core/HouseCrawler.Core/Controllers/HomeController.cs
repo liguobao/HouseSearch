@@ -7,6 +7,7 @@ using System;
 using HouseCrawler.Core.Common;
 using HouseCrawler.Core.Service;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace HouseCrawler.Core.Controllers
 {
@@ -151,7 +152,15 @@ namespace HouseCrawler.Core.Controllers
         public IActionResult RunSyncHouse(string datetime)
         {
             DateTime pubTime = DateTime.Parse(datetime);
-            var houses = houseDapper.QueryByTimeSpan(pubTime, pubTime.AddDays(1));
+            var houses = houseDapper.QueryByTimeSpan(pubTime, pubTime.AddHours(3));
+            // var houses = new List<BaseHouseInfo>();
+            // BaseHouseInfo house = new BaseHouseInfo();
+            // house.HouseOnlineURL = "bing.com";
+            // house.Source = "test";
+            // house.PubTime = pubTime;
+            // house.DataCreateTime = pubTime;
+            // house.HouseTitle = "test";
+            // houses.Add(house);
             elasticsearchService.SaveHousesToES(houses);
             return Json(new { success = true });
         }

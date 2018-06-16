@@ -52,7 +52,7 @@ namespace HouseCrawler.Core.Service
                 {
                     //TODO
                 }
-                LogHelper.Info("SaveHouses finish,index:" + houseIndex + ",result:" + bulkRs.Errors);
+                LogHelper.Info("SaveHouses finish,index:" + houseIndex + ",Errors:" + bulkRs.Errors);
             };
         }
     }

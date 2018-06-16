@@ -25,8 +25,8 @@ namespace HouseCrawler.Core
         {
             LogHelper.RunActionTaskNotThrowEx(() =>
             {
-                var houses = houseDapper.QueryByTimeSpan(DateTime.Now.Date.AddDays(-1), DateTime.Now);
-                elasticsearchService.SaveHousesToES(houses);
+                //var houses = houseDapper.QueryByTimeSpan(DateTime.Now.Date.AddDays(-1), DateTime.Now);
+                //elasticsearchService.SaveHousesToES(houses);
             }, "SyncHousesToESJob");
 
         }

@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
 using HouseCrawler.Core.Models;
+using HouseCrawler.Core.Service;
 using Microsoft.Extensions.Options;
 using MySql.Data.MySqlClient;
 
@@ -12,19 +13,23 @@ namespace HouseCrawler.Core
 {
     public class HouseDapper
     {
-        private APPConfiguration _configuration;
+        private APPConfiguration configuration;
 
-        private RedisService _redis;
+        private RedisService redis;
 
-        public HouseDapper(IOptions<APPConfiguration> configuration, RedisService redis)
+        private ElasticsearchService elasticsearchService;
+
+        public HouseDapper(IOptions<APPConfiguration> configuration, RedisService redis,
+        ElasticsearchService elasticsearchService)
         {
-            _configuration = configuration.Value;
-            this._redis = redis;
+            this.configuration = configuration.Value;
+            this.redis = redis;
+            this.elasticsearchService = elasticsearchService;
         }
 
         private IDbConnection GetConnection()
         {
-            return new MySqlConnection(_configuration.MySQLConnectionString);
+            return new MySqlConnection(configuration.MySQLConnectionString);
         }
 
 
@@ -58,7 +63,10 @@ namespace HouseCrawler.Core
                                      list, transaction: transaction);
                 transaction.Commit();
             }
-
+            LogHelper.RunActionTaskNotThrowEx(() =>
+            {
+                elasticsearchService.SaveHousesToES(list);
+            }, "SaveHousesToES");
 
         }
 
@@ -135,7 +143,7 @@ namespace HouseCrawler.Core
             var houses = new List<BaseHouseInfo>();
             if (!refresh)
             {
-                houses = _redis.ReadSearchCache(redisKey);
+                houses = redis.ReadSearchCache(redisKey);
                 if (houses != null)
                 {
                     return houses;
@@ -158,7 +166,7 @@ namespace HouseCrawler.Core
                         KeyWord = $"%{keyword}%",
                         PubTime = DateTime.Now.Date.AddDays(-intervalDay)
                     }).ToList();
-                _redis.WriteSearchCache(redisKey, houses);
+                redis.WriteSearchCache(redisKey, houses);
                 return houses;
             }
         }
