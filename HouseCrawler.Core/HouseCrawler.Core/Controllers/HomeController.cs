@@ -31,6 +31,7 @@ namespace HouseCrawler.Core.Controllers
         private HKSpaciousCrawler hkSpacious;
 
         private BaiXingHouseCrawler baixing;
+        ElasticsearchService elasticsearchService;
 
         public HomeController(TodayHouseDashboardJob houseDashboardJob,
                               HouseDapper houseDapper,
@@ -43,7 +44,8 @@ namespace HouseCrawler.Core.Controllers
                               MoGuHouseCrawler mogu,
                               HKSpaciousCrawler hkSpacious,
                               BaiXingHouseCrawler baixing,
-                              SyncHousesToESJob syncHousesToESJob)
+                              SyncHousesToESJob syncHousesToESJob,
+                              ElasticsearchService elasticsearchService)
         {
             this.houseDashboardJob = houseDashboardJob;
             this.houseDapper = houseDapper;
@@ -57,6 +59,7 @@ namespace HouseCrawler.Core.Controllers
             this.hkSpacious = hkSpacious;
             this.baixing = baixing;
             this.syncHousesToESJob = syncHousesToESJob;
+            this.elasticsearchService = elasticsearchService;
         }
         // GET: /<controller>/
         public IActionResult Index()
@@ -142,6 +145,15 @@ namespace HouseCrawler.Core.Controllers
             //new GCJob().Run();
             syncHousesToESJob.Run();
             return Json(new { isSuccess = true });
+        }
+
+
+        public IActionResult RunSyncHouse(string datetime)
+        {
+            DateTime pubTime = DateTime.Parse(datetime);
+            var houses = houseDapper.QueryByTimeSpan(pubTime, pubTime.AddDays(1));
+            elasticsearchService.SaveHousesToES(houses);
+            return Json(new { success = true });
         }
     }
 }
