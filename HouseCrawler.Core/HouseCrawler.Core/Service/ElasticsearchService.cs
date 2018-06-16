@@ -50,9 +50,9 @@ namespace HouseCrawler.Core.Service
                 IBulkResponse bulkRs = elasticClient.IndexMany(groupitem, houseIndex);
                 if (bulkRs.Errors)//如果异常
                 {
+                    LogHelper.Info("SaveHouses finish,index:" + houseIndex + ",DebugInformation:" + bulkRs.DebugInformation);
                     //TODO
                 }
-                LogHelper.Info("SaveHouses finish,index:" + houseIndex + ",Errors:" + bulkRs.Errors);
             };
         }
     }
