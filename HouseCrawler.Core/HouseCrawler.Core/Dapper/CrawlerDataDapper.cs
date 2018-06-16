@@ -104,7 +104,31 @@ namespace HouseCrawler.Core
 
         }
 
-        public  IEnumerable<BaseHouseInfo> Search(string cityName, string source = "",
+
+        public List<BaseHouseInfo> QueryByTimeSpan(DateTime fromTime, DateTime toTime)
+        {
+            var houseList = new List<BaseHouseInfo>();
+            foreach (var key in ConstConfigurationName.HouseTableNameDic.Keys)
+            {
+                using (IDbConnection dbConnection = GetConnection())
+                {
+                    dbConnection.Open();
+                    string search_SQL = $"SELECT * from { ConstConfigurationName.GetTableName(key)} where " +
+                        $" PubTime BETWEEN @FromTime AND @ToTime ";
+                    search_SQL = search_SQL + $" order by PubTime desc";
+                    var houses = dbConnection.Query<BaseHouseInfo>(search_SQL,
+                        new
+                        {
+                            FromTime = fromTime,
+                            ToTime = toTime
+                        });
+                    houseList.AddRange(houses);
+                }
+            }
+            return houseList;
+        }
+
+        public IEnumerable<BaseHouseInfo> Search(string cityName, string source = "",
             int houseCount = 100, int intervalDay = 7, string keyword = "", bool refresh = false)
         {
             string redisKey = $"{cityName}-{source}-{intervalDay}-{houseCount}-{keyword}";

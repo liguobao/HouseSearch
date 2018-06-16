@@ -1,10 +1,11 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-
+using Nest;
 
 namespace HouseCrawler.Core
 {
 
+    [ElasticsearchType(IdProperty = "HouseOnlineURL", Name = "House")]
     public class BaseHouseInfo
     {
 

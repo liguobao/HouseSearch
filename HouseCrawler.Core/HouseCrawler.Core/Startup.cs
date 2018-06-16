@@ -53,6 +53,8 @@ namespace HouseCrawler.Core
             services.AddSingleton<EmailService, EmailService>();
             services.AddSingleton<RedisService, RedisService>();
             services.AddSingleton<HouseDashboardService, HouseDashboardService>();
+            services.AddSingleton<ElasticsearchService, ElasticsearchService>();
+
             #endregion
 
             #region Jobs
@@ -64,6 +66,7 @@ namespace HouseCrawler.Core
             services.AddSingleton<RefreshDashboardJob, RefreshDashboardJob>();
             services.AddSingleton<TodayHouseDashboardJob, TodayHouseDashboardJob>();
             services.AddSingleton<ZuberMoguJob, ZuberMoguJob>();
+            services.AddSingleton<SyncHousesToESJob, SyncHousesToESJob>();
             #endregion
 
             #region Crawler
@@ -109,7 +112,7 @@ namespace HouseCrawler.Core
 
 
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            
+
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using NLog;
 using System;
+using System.Threading.Tasks;
 
 namespace HouseCrawler.Core
 {
@@ -39,6 +40,26 @@ namespace HouseCrawler.Core
                 }
                 Error(functionName, ex);
             }
+        }
+
+        
+        public static void RunActionTaskNotThrowEx(Action action, string functionName = "default", Object oj = null)
+        {
+            Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    action.Invoke();
+                }
+                catch (Exception ex)
+                {
+                    if (oj != null)
+                    {
+                        Logger.Info("关键数据:" + Newtonsoft.Json.JsonConvert.SerializeObject(oj));
+                    }
+                    Error(functionName, ex);
+                }
+            });
         }
 
     }
