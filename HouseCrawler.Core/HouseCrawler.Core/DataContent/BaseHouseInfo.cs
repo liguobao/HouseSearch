@@ -5,7 +5,7 @@ using Nest;
 namespace HouseCrawler.Core
 {
 
-    [ElasticsearchType(IdProperty = "HouseOnlineURL", Name = "House")]
+    [ElasticsearchType(IdProperty = "HouseOnlineURL")]
     public class BaseHouseInfo
     {
 
