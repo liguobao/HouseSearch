@@ -88,6 +88,10 @@ namespace HouseCrawler.Web
             {
                 try
                 {
+                    if (string.IsNullOrEmpty(PicURLs))
+                    {
+                        return new List<string>();
+                    }
                     return Newtonsoft.Json.JsonConvert.DeserializeObject<List<String>>(PicURLs);
                 }
                 catch (Exception ex)
