@@ -143,8 +143,8 @@ namespace HouseCrawler.Core.Controllers
 
         public IActionResult StartGC()
         {
-            //new GCJob().Run();
-            syncHousesToESJob.Run();
+            new GCJob().Run();
+            //syncHousesToESJob.Run();
             return Json(new { isSuccess = true });
         }
 
@@ -152,15 +152,7 @@ namespace HouseCrawler.Core.Controllers
         public IActionResult RunSyncHouse(string datetime)
         {
             DateTime pubTime = DateTime.Parse(datetime);
-            var houses = houseDapper.QueryByTimeSpan(pubTime, pubTime.AddHours(3));
-            // var houses = new List<BaseHouseInfo>();
-            // BaseHouseInfo house = new BaseHouseInfo();
-            // house.HouseOnlineURL = "bing.com";
-            // house.Source = "test";
-            // house.PubTime = pubTime;
-            // house.DataCreateTime = pubTime;
-            // house.HouseTitle = "test";
-            // houses.Add(house);
+            var houses = houseDapper.QueryByTimeSpan(pubTime, pubTime.AddHours(24));
             elasticsearchService.SaveHousesToES(houses);
             return Json(new { success = true });
         }

@@ -69,10 +69,10 @@ namespace HouseCrawler.Core
                     var housePrice = room["maxShowPrice"].ToObject<decimal>();
 
                     var lastPublishTime = GetPublishTime(room);
-
+                    string location = room["address"] != null ? room["address"].ToString() : room["title"].ToString();
                     var house = new BaseHouseInfo()
                     {
-                        HouseLocation = room["address"].ToString(),
+                        HouseLocation = location,
                         HouseTitle = $"{room["title"].ToString()}【{room["subtitleNew"].ToString()}】",
                         HouseOnlineURL = $"https://h5.mgzf.com/houseDetail/{room["roomId"].ToString()}",
                         HouseText = room.ToString(),
