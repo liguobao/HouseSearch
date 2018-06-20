@@ -65,7 +65,7 @@ namespace HouseCrawler.Core
             }
             LogHelper.RunActionTaskNotThrowEx(() =>
             {
-                elasticsearchService.SaveHousesToES(list);
+                //elasticsearchService.SaveHousesToES(list);
             }, "SaveHousesToES");
 
         }
