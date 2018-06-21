@@ -1,0 +1,626 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="$PROJECT_DIR$" t="IncludeFlat">
+      <e p="CCBHouse_City.txt" t="Include" />
+      <e p="HouseCrawler.Core" t="IncludeRecursive">
+        <e p=".gitignore" t="Include" />
+        <e p="appsettings.Development.json" t="Include" />
+        <e p="appsettings.json" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Common" t="Include">
+          <e p="AppSettings.cs" t="Include" />
+          <e p="JiebaTools.cs" t="Include" />
+          <e p="LocationMarkBGType.cs" t="Include" />
+          <e p="LogHelper.cs" t="Include" />
+          <e p="RedisService.cs" t="Include" />
+          <e p="Tools.cs" t="Include" />
+        </e>
+        <e p="Controllers" t="Include">
+          <e p="HomeController.cs" t="Include" />
+        </e>
+        <e p="Crawlers" t="Include">
+          <e p="BaiXingHouseCrawler.cs" t="Include" />
+          <e p="CCBHouesCrawler.cs" t="Include" />
+          <e p="DoubanHouseCrawler.cs" t="Include" />
+          <e p="HKSpaciousCrawler.cs" t="Include" />
+          <e p="MoGuHouseCrawler.cs" t="Include" />
+          <e p="PeopleRentingCrawler.cs" t="Include" />
+          <e p="PinPaiGongYuHouseCrawler.cs" t="Include" />
+          <e p="ZuberHouseCrawler.cs" t="Include" />
+        </e>
+        <e p="Dapper" t="Include">
+          <e p="CrawlerDataDapper.cs" t="Include" />
+        </e>
+        <e p="DataContent" t="Include">
+          <e p="BaseHouseInfo.cs" t="Include" />
+          <e p="BizCrawlerConfiguration.cs" t="Include" />
+          <e p="BizCrawlerLog.cs" t="Include" />
+          <e p="DBHouseDashboard.cs" t="Include" />
+        </e>
+        <e p="Dockerfile" t="Include" />
+        <e p="HouseCrawler.Core.csproj" t="IncludeRecursive" />
+        <e p="Jieba.NET" t="Include">
+          <e p="JiebaNet.Analyser.deps.json" t="Include" />
+          <e p="JiebaNet.Analyser.dll" t="Include" />
+          <e p="JiebaNet.Analyser.pdb" t="Include" />
+          <e p="JiebaNet.Segmenter.deps.json" t="Include" />
+          <e p="JiebaNet.Segmenter.dll" t="Include" />
+          <e p="JiebaNet.Segmenter.pdb" t="Include" />
+        </e>
+        <e p="Jobs" t="Include">
+          <e p="BaiXingJob.cs" t="Include" />
+          <e p="DoubanCCBJob.cs" t="Include" />
+          <e p="GCJob.cs" t="Include" />
+          <e p="HKSpaciousJob.cs" t="Include" />
+          <e p="PingPaiPeopleJob.cs" t="Include" />
+          <e p="RefreshDashboardJob.cs" t="Include" />
+          <e p="SyncHousesToESJob.cs" t="Include" />
+          <e p="TodayHouseDashboardJob.cs" t="Include" />
+          <e p="ZuberMoguJob.cs" t="Include" />
+        </e>
+        <e p="Models" t="Include">
+          <e p="HouseDashboard.cs" t="Include" />
+          <e p="HouseInfo.cs" t="Include" />
+          <e p="HouseStat.cs" t="Include" />
+        </e>
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp2.0" t="Include">
+              <e p="HouseCrawler.Core.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Program.cs" t="Include" />
+        <e p="readme.md" t="Include" />
+        <e p="Resources" t="Include">
+          <e p="char_state_tab.json" t="Include" />
+          <e p="dict.txt" t="Include" />
+          <e p="idf.txt" t="Include" />
+          <e p="nlog.config" t="Include" />
+          <e p="pos_prob_emit.json" t="Include" />
+          <e p="pos_prob_start.json" t="Include" />
+          <e p="pos_prob_trans.json" t="Include" />
+          <e p="prob_emit.json" t="Include" />
+          <e p="prob_trans.json" t="Include" />
+          <e p="stopwords.txt" t="Include" />
+        </e>
+        <e p="satrt_docker.sh" t="Include" />
+        <e p="ScaffoldingReadMe.txt" t="Include" />
+        <e p="Service" t="Include">
+          <e p="ElasticsearchService.cs" t="Include" />
+          <e p="EmailService.cs" t="Include" />
+          <e p="HouseDashboardService.cs" t="Include" />
+          <e p="RedisService.cs" t="Include" />
+        </e>
+        <e p="Startup.cs" t="Include" />
+        <e p="views" t="Include">
+          <e p="Home" t="Include">
+            <e p="HouseList.cshtml" t="Include" />
+            <e p="Index.cshtml" t="Include" />
+            <e p="RunJobs.cshtml" t="Include" />
+            <e p="RunZuber.cshtml" t="Include" />
+          </e>
+          <e p="web.config" t="Include" />
+        </e>
+        <e p="wwwroot" t="Include">
+          <e p="availableProxy.json" t="Include" />
+          <e p="CSS" t="Include">
+            <e p="common.css" t="Include" />
+          </e>
+          <e p="DomainJS" t="Include">
+            <e p="amazeui.2.7.1.min.js" t="Include" />
+            <e p="build.js" t="Include" />
+            <e p="city.js" t="Include" />
+            <e p="city.json" t="Include" />
+            <e p="commuteGo.js" t="Include" />
+            <e p="domready.js" t="Include" />
+            <e p="es5.js" t="Include" />
+            <e p="helper.js" t="Include" />
+            <e p="home.js" t="Include" />
+            <e p="housecommom.js" t="Include" />
+            <e p="lib" t="Include">
+              <e p="addToolbar.js" t="Include" />
+              <e p="amazeui.2.7.1.min.js" t="Include" />
+              <e p="Chart.js" t="Include" />
+              <e p="es5.js" t="Include" />
+              <e p="jquery-1.11.3.min.js" t="Include" />
+              <e p="jquery.range.js" t="Include" />
+              <e p="require.2.1.1.min.js" t="Include" />
+            </e>
+            <e p="mapController.js" t="Include" />
+            <e p="mapSignleton.js" t="Include" />
+            <e p="marker.js" t="Include" />
+            <e p="package.bat" t="Include" />
+            <e p="package.sh" t="Include" />
+            <e p="polygon.js" t="Include" />
+            <e p="pv.json" t="Include" />
+            <e p="transfer.js" t="Include" />
+            <e p="umeng.js" t="Include" />
+            <e p="vehicle.js" t="Include" />
+            <e p="workLocation.js" t="Include" />
+          </e>
+          <e p="hometemplate" t="Include">
+            <e p="views" t="Include">
+              <e p="IMJ2V2" t="Include">
+                <e p="CSS" t="Include">
+                  <e p="admin.css" t="Include" />
+                  <e p="amazeui.css" t="Include" />
+                  <e p="amazeui.min.css" t="Include" />
+                  <e p="style.css" t="Include" />
+                  <e p="style.min.css" t="Include" />
+                </e>
+                <e p="fonts" t="Include">
+                  <e p="fontawesome-webfont.eot" t="Include" />
+                  <e p="fontawesome-webfont.svg" t="Include" />
+                  <e p="fontawesome-webfont.ttf" t="Include" />
+                  <e p="fontawesome-webfont.woff" t="Include" />
+                  <e p="fontawesome-webfont.woff2" t="Include" />
+                  <e p="FontAwesome.otf" t="Include" />
+                </e>
+                <e p="images" t="Include">
+                  <e p="640x480.jpg" t="Include" />
+                  <e p="about-bg.jpg" t="Include" />
+                  <e p="adobe.png" t="Include" />
+                  <e p="aliyun.png" t="Include" />
+                  <e p="apple.png" t="Include" />
+                  <e p="banner.jpg" t="Include" />
+                  <e p="banner1.jpg" t="Include" />
+                  <e p="blank.gif" t="Include" />
+                  <e p="case-bg.jpg" t="Include" />
+                  <e p="contact-bg-1.jpg" t="Include" />
+                  <e p="fruitxiao.png" t="Include" />
+                  <e p="home-bg.jpg" t="Include" />
+                  <e p="loading.gif" t="Include" />
+                  <e p="logo.png" t="Include" />
+                  <e p="logo@2x.png" t="Include" />
+                  <e p="microsoft.png" t="Include" />
+                  <e p="news-bg.jpg" t="Include" />
+                  <e p="service-bg.jpg" t="Include" />
+                  <e p="side-icon01.png" t="Include" />
+                  <e p="side-icon02.png" t="Include" />
+                  <e p="tencent.png" t="Include" />
+                  <e p="we-1.jpg" t="Include" />
+                  <e p="we-2.jpg" t="Include" />
+                  <e p="we-3.jpg" t="Include" />
+                  <e p="weixin.png" t="Include" />
+                </e>
+                <e p="js" t="Include">
+                  <e p="amazeui.ie8polyfill.js" t="Include" />
+                  <e p="amazeui.ie8polyfill.min.js" t="Include" />
+                  <e p="amazeui.js" t="Include" />
+                  <e p="amazeui.legacy.js" t="Include" />
+                  <e p="amazeui.legacy.min.js" t="Include" />
+                  <e p="amazeui.min.js" t="Include" />
+                  <e p="amazeui.widgets.helper.js" t="Include" />
+                  <e p="amazeui.widgets.helper.min.js" t="Include" />
+                  <e p="app.js" t="Include" />
+                  <e p="backtop.js" t="Include" />
+                  <e p="echo.min.js" t="Include" />
+                  <e p="handlebars.min.js" t="Include" />
+                  <e p="header.js" t="Include" />
+                  <e p="iepng.js" t="Include" />
+                  <e p="imagesloaded.pkgd.min.js" t="Include" />
+                  <e p="jquery.autocomplete.js" t="Include" />
+                  <e p="jquery.min.js" t="Include" />
+                  <e p="jquery.qrcode.min.js" t="Include" />
+                  <e p="KinSlideshow.js" t="Include" />
+                  <e p="photo.js" t="Include" />
+                  <e p="pic_roll.js" t="Include" />
+                  <e p="polyfill" t="Include">
+                    <e p="rem.min.js" t="Include" />
+                    <e p="respond.min.js" t="Include" />
+                  </e>
+                </e>
+              </e>
+            </e>
+          </e>
+          <e p="IMG" t="Include">
+            <e p="Gradient" t="Include">
+              <e p="Black.png" t="Include" />
+              <e p="Blue.png" t="Include" />
+              <e p="LightGreen.png" t="Include" />
+              <e p="OrangeYellow.png" t="Include" />
+              <e p="PaleGreen.png" t="Include" />
+              <e p="PaleRed.png" t="Include" />
+              <e p="PaleYellow.png" t="Include" />
+              <e p="Pink.png" t="Include" />
+              <e p="Red.png" t="Include" />
+              <e p="Violet.png" t="Include" />
+            </e>
+            <e p="Little" t="Include">
+              <e p="Black.png" t="Include" />
+              <e p="Blue.png" t="Include" />
+              <e p="LightGreen.png" t="Include" />
+              <e p="OrangeYellow.png" t="Include" />
+              <e p="PaleGreen.png" t="Include" />
+              <e p="PaleRed.png" t="Include" />
+              <e p="PaleYellow.png" t="Include" />
+              <e p="Pink.png" t="Include" />
+              <e p="Red.png" t="Include" />
+              <e p="Violet.png" t="Include" />
+            </e>
+          </e>
+        </e>
+      </e>
+      <e p="HouseCrawler.Core.sln" t="IncludeFlat" />
+      <e p="HouseCrawler.Web" t="IncludeRecursive">
+        <e p=".gitignore" t="Include" />
+        <e p="appsettings.Development.json" t="Include" />
+        <e p="appsettings.json" t="Include" />
+        <e p="BaseModel" t="Include">
+          <e p="BizCrawlerConfiguration.cs" t="Include" />
+          <e p="ConstConfigurationName.cs" t="Include" />
+          <e p="HouseInfo.cs" t="Include" />
+          <e p="UserCollection.cs" t="Include" />
+          <e p="UserInfo.cs" t="Include" />
+        </e>
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="bundleconfig.json" t="Include" />
+        <e p="Common" t="Include">
+          <e p="AppSettings.cs" t="Include" />
+          <e p="CommonEnum.cs" t="Include" />
+          <e p="Encryption.cs" t="Include" />
+          <e p="HTTPHelper.cs" t="Include" />
+          <e p="LogHelper.cs" t="Include" />
+          <e p="Tools.cs" t="Include" />
+        </e>
+        <e p="Controllers" t="Include">
+          <e p="AccountController.cs" t="Include" />
+          <e p="DoubanHomeController.cs" t="Include" />
+          <e p="ErrorController.cs" t="Include" />
+          <e p="HomeController.cs" t="Include" />
+          <e p="HonestHouseController.cs" t="Include" />
+          <e p="HouseController.cs" t="Include" />
+          <e p="PeopleRentingController.cs" t="Include" />
+        </e>
+        <e p="Crawlers" t="Include">
+          <e p="DoubanHouseCrawler.cs" t="Include" />
+          <e p="PeopleRentingCrawler.cs" t="Include" />
+          <e p="PinPaiGongYuHouseCrawler.cs" t="Include" />
+        </e>
+        <e p="Dapper" t="Include">
+          <e p="ConfigurationDapper.cs" t="Include" />
+          <e p="HouseDapper.cs" t="Include" />
+          <e p="UserCollectionDapper.cs" t="Include" />
+          <e p="UserDapper.cs" t="Include" />
+        </e>
+        <e p="Dockerfile" t="Include" />
+        <e p="HouseCrawler.Web.csproj" t="IncludeRecursive" />
+        <e p="Models" t="Include">
+          <e p="ErrorViewModel.cs" t="Include" />
+          <e p="HouseDashboard.cs" t="Include" />
+          <e p="ViewResult.cs" t="Include" />
+        </e>
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp2.0" t="Include">
+              <e p="HouseCrawler.Web.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Program.cs" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="launchSettings.json" t="Include" />
+          <e p="PublishProfiles" t="Include">
+            <e p="CustomProfile.pubxml" t="Include" />
+          </e>
+        </e>
+        <e p="Service" t="Include">
+          <e p="EmailService.cs" t="Include" />
+          <e p="HouseDashboardService.cs" t="Include" />
+          <e p="RedisService.cs" t="Include" />
+        </e>
+        <e p="start-house-web-docker.sh" t="Include" />
+        <e p="Startup.cs" t="Include" />
+        <e p="views" t="Include">
+          <e p="Account" t="Include">
+            <e p="Activated.cshtml" t="Include" />
+            <e p="Index.cshtml" t="Include" />
+            <e p="ModifyPassword.cshtml" t="Include" />
+            <e p="Register.cshtml" t="Include" />
+            <e p="RetrievePassword.cshtml" t="Include" />
+          </e>
+          <e p="DoubanHome" t="Include">
+            <e p="Index.cshtml" t="Include" />
+          </e>
+          <e p="Home" t="Include">
+            <e p="HouseList.cshtml" t="Include" />
+            <e p="Index.cshtml" t="Include" />
+            <e p="UserCollection.cshtml" t="Include" />
+            <e p="UserHouseDashboard.cshtml" t="Include" />
+            <e p="UserHouseList.cshtml" t="Include" />
+          </e>
+          <e p="HonestHouse" t="Include">
+            <e p="Index.cshtml" t="Include" />
+          </e>
+          <e p="House" t="Include">
+            <e p="Index.cshtml" t="Include" />
+          </e>
+          <e p="PeopleRenting" t="Include">
+            <e p="Index.cshtml" t="Include" />
+          </e>
+          <e p="User" t="Include">
+            <e p="Index.cshtml" t="Include" />
+          </e>
+          <e p="web.config" t="Include" />
+        </e>
+        <e p="wwwroot" t="Include">
+          <e p="assets" t="Include">
+            <e p="CSS" t="Include">
+              <e p="admin.css" t="Include" />
+              <e p="amazeui.css" t="Include" />
+              <e p="amazeui.flat.css" t="Include" />
+              <e p="amazeui.flat.min.css" t="Include" />
+              <e p="amazeui.min.css" t="Include" />
+              <e p="app.css" t="Include" />
+            </e>
+            <e p="fonts" t="Include">
+              <e p="fontawesome-webfont.eot" t="Include" />
+              <e p="fontawesome-webfont.svg" t="Include" />
+              <e p="fontawesome-webfont.ttf" t="Include" />
+              <e p="fontawesome-webfont.woff" t="Include" />
+              <e p="fontawesome-webfont.woff2" t="Include" />
+              <e p="FontAwesome.otf" t="Include" />
+            </e>
+            <e p="i" t="Include">
+              <e p="app-icon72x72@2x.png" t="Include" />
+              <e p="examples" t="Include">
+                <e p="admin-chrome.png" t="Include" />
+                <e p="admin-firefox.png" t="Include" />
+                <e p="admin-ie.png" t="Include" />
+                <e p="admin-opera.png" t="Include" />
+                <e p="admin-safari.png" t="Include" />
+                <e p="adminPage.png" t="Include" />
+                <e p="blogPage.png" t="Include" />
+                <e p="landing.png" t="Include" />
+                <e p="landingPage.png" t="Include" />
+                <e p="loginPage.png" t="Include" />
+                <e p="sidebarPage.png" t="Include" />
+              </e>
+              <e p="favicon.png" t="Include" />
+              <e p="login_bg.jpg" t="Include" />
+              <e p="startup-640x1096.png" t="Include" />
+            </e>
+            <e p="js" t="Include">
+              <e p="amazeui.ie8polyfill.js" t="Include" />
+              <e p="amazeui.ie8polyfill.min.js" t="Include" />
+              <e p="amazeui.js" t="Include" />
+              <e p="amazeui.min.js" t="Include" />
+              <e p="amazeui.widgets.helper.js" t="Include" />
+              <e p="amazeui.widgets.helper.min.js" t="Include" />
+              <e p="app.js" t="Include" />
+              <e p="handlebars.min.js" t="Include" />
+              <e p="jquery.min.js" t="Include" />
+            </e>
+            <e p="login" t="Include">
+              <e p="common.css" t="Include" />
+              <e p="icon.css" t="Include" />
+              <e p="link.css" t="Include" />
+              <e p="login.css" t="Include" />
+              <e p="new.css" t="Include" />
+              <e p="register.css" t="Include" />
+              <e p="style.css" t="Include" />
+              <e p="user.css" t="Include" />
+            </e>
+          </e>
+          <e p="bitbug_favicon.ico" t="Include" />
+          <e p="CSS" t="Include">
+            <e p="common.css" t="Include" />
+            <e p="site.css" t="Include" />
+            <e p="site.min.css" t="Include" />
+          </e>
+          <e p="DomainJS" t="Include">
+            <e p="account.js" t="Include" />
+            <e p="amazeui.2.7.1.min.js" t="Include" />
+            <e p="build.js" t="Include" />
+            <e p="city.js" t="Include" />
+            <e p="city.json" t="Include" />
+            <e p="commuteGo.js" t="Include" />
+            <e p="domready.js" t="Include" />
+            <e p="es5.js" t="Include" />
+            <e p="helper.js" t="Include" />
+            <e p="home.js" t="Include" />
+            <e p="housecommom.js" t="Include" />
+            <e p="lib" t="Include">
+              <e p="addToolbar.js" t="Include" />
+              <e p="amazeui.2.7.1.min.js" t="Include" />
+              <e p="Chart.js" t="Include" />
+              <e p="es5.js" t="Include" />
+              <e p="jquery-1.11.3.min.js" t="Include" />
+              <e p="jquery.range.js" t="Include" />
+              <e p="require.2.1.1.min.js" t="Include" />
+            </e>
+            <e p="mapController.js" t="Include" />
+            <e p="mapSignleton.js" t="Include" />
+            <e p="marker.js" t="Include" />
+            <e p="modifypassword.js" t="Include" />
+            <e p="package.bat" t="Include" />
+            <e p="package.sh" t="Include" />
+            <e p="polygon.js" t="Include" />
+            <e p="pv.json" t="Include" />
+            <e p="register.js" t="Include" />
+            <e p="retrievepassword.js" t="Include" />
+            <e p="transfer.js" t="Include" />
+            <e p="umeng.js" t="Include" />
+            <e p="vehicle.js" t="Include" />
+            <e p="workLocation.js" t="Include" />
+          </e>
+          <e p="favicon.ico" t="Include" />
+          <e p="hometemplate" t="Include">
+            <e p="views" t="Include">
+              <e p="IMJ2V2" t="Include">
+                <e p="CSS" t="Include">
+                  <e p="admin.css" t="Include" />
+                  <e p="amazeui.css" t="Include" />
+                  <e p="amazeui.min.css" t="Include" />
+                  <e p="style.css" t="Include" />
+                  <e p="style.min.css" t="Include" />
+                </e>
+                <e p="fonts" t="Include">
+                  <e p="fontawesome-webfont.eot" t="Include" />
+                  <e p="fontawesome-webfont.svg" t="Include" />
+                  <e p="fontawesome-webfont.ttf" t="Include" />
+                  <e p="fontawesome-webfont.woff" t="Include" />
+                  <e p="fontawesome-webfont.woff2" t="Include" />
+                  <e p="FontAwesome.otf" t="Include" />
+                </e>
+                <e p="images" t="Include">
+                  <e p="640x480.jpg" t="Include" />
+                  <e p="about-bg.jpg" t="Include" />
+                  <e p="adobe.png" t="Include" />
+                  <e p="aliyun.png" t="Include" />
+                  <e p="apple.png" t="Include" />
+                  <e p="banner.jpg" t="Include" />
+                  <e p="banner1.jpg" t="Include" />
+                  <e p="blank.gif" t="Include" />
+                  <e p="case-bg.jpg" t="Include" />
+                  <e p="contact-bg-1.jpg" t="Include" />
+                  <e p="fruitxiao.png" t="Include" />
+                  <e p="home-bg.jpg" t="Include" />
+                  <e p="loading.gif" t="Include" />
+                  <e p="logo.png" t="Include" />
+                  <e p="logo@2x.png" t="Include" />
+                  <e p="microsoft.png" t="Include" />
+                  <e p="news-bg.jpg" t="Include" />
+                  <e p="service-bg.jpg" t="Include" />
+                  <e p="side-icon01.png" t="Include" />
+                  <e p="side-icon02.png" t="Include" />
+                  <e p="tencent.png" t="Include" />
+                  <e p="we-1.jpg" t="Include" />
+                  <e p="we-2.jpg" t="Include" />
+                  <e p="we-3.jpg" t="Include" />
+                  <e p="weixin.png" t="Include" />
+                </e>
+                <e p="js" t="Include">
+                  <e p="amazeui.ie8polyfill.js" t="Include" />
+                  <e p="amazeui.ie8polyfill.min.js" t="Include" />
+                  <e p="amazeui.js" t="Include" />
+                  <e p="amazeui.legacy.js" t="Include" />
+                  <e p="amazeui.legacy.min.js" t="Include" />
+                  <e p="amazeui.min.js" t="Include" />
+                  <e p="amazeui.widgets.helper.js" t="Include" />
+                  <e p="amazeui.widgets.helper.min.js" t="Include" />
+                  <e p="app.js" t="Include" />
+                  <e p="backtop.js" t="Include" />
+                  <e p="echo.min.js" t="Include" />
+                  <e p="handlebars.min.js" t="Include" />
+                  <e p="header.js" t="Include" />
+                  <e p="iepng.js" t="Include" />
+                  <e p="imagesloaded.pkgd.min.js" t="Include" />
+                  <e p="jquery.autocomplete.js" t="Include" />
+                  <e p="jquery.min.js" t="Include" />
+                  <e p="jquery.qrcode.min.js" t="Include" />
+                  <e p="KinSlideshow.js" t="Include" />
+                  <e p="photo.js" t="Include" />
+                  <e p="pic_roll.js" t="Include" />
+                  <e p="polyfill" t="Include">
+                    <e p="rem.min.js" t="Include" />
+                    <e p="respond.min.js" t="Include" />
+                  </e>
+                </e>
+              </e>
+            </e>
+          </e>
+          <e p="images" t="Include">
+            <e p="banner1.svg" t="Include" />
+            <e p="banner2.svg" t="Include" />
+            <e p="banner3.svg" t="Include" />
+            <e p="banner4.svg" t="Include" />
+          </e>
+          <e p="IMG" t="Include">
+            <e p="Gradient" t="Include">
+              <e p="Black.png" t="Include" />
+              <e p="Blue.png" t="Include" />
+              <e p="LightGreen.png" t="Include" />
+              <e p="OrangeYellow.png" t="Include" />
+              <e p="PaleGreen.png" t="Include" />
+              <e p="PaleRed.png" t="Include" />
+              <e p="PaleYellow.png" t="Include" />
+              <e p="Pink.png" t="Include" />
+              <e p="Red.png" t="Include" />
+              <e p="Violet.png" t="Include" />
+            </e>
+            <e p="Little" t="Include">
+              <e p="Black.png" t="Include" />
+              <e p="Blue.png" t="Include" />
+              <e p="LightGreen.png" t="Include" />
+              <e p="OrangeYellow.png" t="Include" />
+              <e p="PaleGreen.png" t="Include" />
+              <e p="PaleRed.png" t="Include" />
+              <e p="PaleYellow.png" t="Include" />
+              <e p="Pink.png" t="Include" />
+              <e p="Red.png" t="Include" />
+              <e p="Violet.png" t="Include" />
+            </e>
+          </e>
+          <e p="js" t="Include">
+            <e p="site.js" t="Include" />
+            <e p="site.min.js" t="Include" />
+          </e>
+          <e p="lib" t="Include">
+            <e p="bootstrap" t="Include">
+              <e p=".bower.json" t="Include" />
+              <e p="dist" t="Include">
+                <e p="CSS" t="Include">
+                  <e p="bootstrap-theme.css" t="Include" />
+                  <e p="bootstrap-theme.css.map" t="Include" />
+                  <e p="bootstrap-theme.min.css" t="Include" />
+                  <e p="bootstrap-theme.min.css.map" t="Include" />
+                  <e p="bootstrap.css" t="Include" />
+                  <e p="bootstrap.css.map" t="Include" />
+                  <e p="bootstrap.min.css" t="Include" />
+                  <e p="bootstrap.min.css.map" t="Include" />
+                </e>
+                <e p="fonts" t="Include">
+                  <e p="glyphicons-halflings-regular.eot" t="Include" />
+                  <e p="glyphicons-halflings-regular.svg" t="Include" />
+                  <e p="glyphicons-halflings-regular.ttf" t="Include" />
+                  <e p="glyphicons-halflings-regular.woff" t="Include" />
+                  <e p="glyphicons-halflings-regular.woff2" t="Include" />
+                </e>
+                <e p="js" t="Include">
+                  <e p="bootstrap.js" t="Include" />
+                  <e p="bootstrap.min.js" t="Include" />
+                  <e p="npm.js" t="Include" />
+                </e>
+              </e>
+              <e p="LICENSE" t="Include" />
+            </e>
+            <e p="jquery" t="Include">
+              <e p=".bower.json" t="Include" />
+              <e p="dist" t="Include">
+                <e p="jquery.js" t="Include" />
+                <e p="jquery.min.js" t="Include" />
+                <e p="jquery.min.map" t="Include" />
+              </e>
+              <e p="LICENSE.txt" t="Include" />
+            </e>
+            <e p="jquery-validation" t="Include">
+              <e p=".bower.json" t="Include" />
+              <e p="dist" t="Include">
+                <e p="additional-methods.js" t="Include" />
+                <e p="additional-methods.min.js" t="Include" />
+                <e p="jquery.validate.js" t="Include" />
+                <e p="jquery.validate.min.js" t="Include" />
+              </e>
+              <e p="LICENSE.md" t="Include" />
+            </e>
+            <e p="jquery-validation-unobtrusive" t="Include">
+              <e p=".bower.json" t="Include" />
+              <e p="jquery.validate.unobtrusive.js" t="Include" />
+              <e p="jquery.validate.unobtrusive.min.js" t="Include" />
+            </e>
+          </e>
+          <e p="nlog.config" t="Include" />
+        </e>
+      </e>
+      <e p="packages" t="ExcludeRecursive" />
+      <e p="readme.md" t="Include" />
+      <e p="SQLScript" t="Include" />
+    </e>
+    <e p="$USER_HOME$/Library/Caches/Rider2018.1/resharper-host/local/Transient/ReSharperHost/v12/SolutionCaches/_HouseCrawler.Core.504921086.00" t="ExcludeRecursive" />
+    <e p="C:\Users\LGB83\Documents\dumps\Dump20180405-Configurations.sql" t="Include" />
+    <e p="C:\Users\LGB83\Documents\dumps\Dump20180405-Sructure.sql" t="Include" />
+  </component>
+</project>

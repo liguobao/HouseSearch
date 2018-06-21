@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="RIDER_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$/../.." />
+    <content url="file://C:/Users/LGB83/Documents/dumps/Dump20180405-Configurations.sql" />
+    <content url="file://C:/Users/LGB83/Documents/dumps/Dump20180405-Sructure.sql" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>

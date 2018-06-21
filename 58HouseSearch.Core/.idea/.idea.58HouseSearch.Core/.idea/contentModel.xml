@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="$PROJECT_DIR$" t="IncludeFlat">
+      <e p="58HouseSearch.Core" t="IncludeRecursive">
+        <e p=".gitignore" t="Include" />
+        <e p="58HouseSearch.Core.csproj" t="IncludeRecursive" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Common" t="Include">
+          <e p="CommonEnum.cs" t="Include" />
+          <e p="HTTPHelper.cs" t="Include" />
+          <e p="LogHelper.cs" t="Include" />
+          <e p="PVHelper.cs" t="Include" />
+        </e>
+        <e p="Controllers" t="Include">
+          <e p="DoubanHomeController.cs" t="Include" />
+          <e p="HonestHouseController.cs" t="Include" />
+          <e p="HouseController.cs" t="Include" />
+          <e p="PeopleRentingController.cs" t="Include" />
+          <e p="PVInfoController.cs" t="Include" />
+        </e>
+        <e p="Models" t="Include">
+          <e p="HouseInfo.cs" t="Include" />
+          <e p="PVInfo.cs" t="Include" />
+        </e>
+        <e p="nlog.config" t="Include" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp2.0" t="Include">
+              <e p="58HouseSearch.Core.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Program.cs" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="launchSettings.json" t="Include" />
+        </e>
+        <e p="Startup.cs" t="Include" />
+        <e p="Views" t="Include">
+          <e p="DoubanHome" t="Include">
+            <e p="Index.cshtml" t="Include" />
+          </e>
+          <e p="HonestHouse" t="Include">
+            <e p="Index.cshtml" t="Include" />
+          </e>
+          <e p="House" t="Include">
+            <e p="Index.cshtml" t="Include" />
+          </e>
+          <e p="PeopleRenting" t="Include">
+            <e p="Index.cshtml" t="Include" />
+          </e>
+          <e p="PVInfo" t="Include">
+            <e p="Index.cshtml" t="Include" />
+            <e p="WritePVToJson.cshtml" t="Include" />
+          </e>
+          <e p="web.config" t="Include" />
+        </e>
+        <e p="wwwroot" t="Include">
+          <e p="CSS" t="Include">
+            <e p="common.css" t="Include" />
+          </e>
+          <e p="DomainJS" t="Include">
+            <e p="amazeui.2.7.1.min.js" t="Include" />
+            <e p="build.js" t="Include" />
+            <e p="city.js" t="Include" />
+            <e p="city.json" t="Include" />
+            <e p="commuteGo.js" t="Include" />
+            <e p="domready.js" t="Include" />
+            <e p="es5.js" t="Include" />
+            <e p="helper.js" t="Include" />
+            <e p="home.js" t="Include" />
+            <e p="housecommom.js" t="Include" />
+            <e p="lib" t="Include">
+              <e p="addToolbar.js" t="Include" />
+              <e p="amazeui.2.7.1.min.js" t="Include" />
+              <e p="Chart.js" t="Include" />
+              <e p="es5.js" t="Include" />
+              <e p="jquery-1.11.3.min.js" t="Include" />
+              <e p="jquery.range.js" t="Include" />
+              <e p="require.2.1.1.min.js" t="Include" />
+            </e>
+            <e p="mapController.js" t="Include" />
+            <e p="mapSignleton.js" t="Include" />
+            <e p="marker.js" t="Include" />
+            <e p="package.bat" t="Include" />
+            <e p="package.sh" t="Include" />
+            <e p="polygon.js" t="Include" />
+            <e p="transfer.js" t="Include" />
+            <e p="vehicle.js" t="Include" />
+            <e p="workLocation.js" t="Include" />
+          </e>
+          <e p="IMG" t="Include">
+            <e p="Gradient" t="Include">
+              <e p="Black.png" t="Include" />
+              <e p="Blue.png" t="Include" />
+              <e p="LightGreen.png" t="Include" />
+              <e p="OrangeYellow.png" t="Include" />
+              <e p="PaleGreen.png" t="Include" />
+              <e p="PaleRed.png" t="Include" />
+              <e p="PaleYellow.png" t="Include" />
+              <e p="Pink.png" t="Include" />
+              <e p="Red.png" t="Include" />
+              <e p="Violet.png" t="Include" />
+            </e>
+            <e p="Little" t="Include">
+              <e p="Black.png" t="Include" />
+              <e p="Blue.png" t="Include" />
+              <e p="LightGreen.png" t="Include" />
+              <e p="OrangeYellow.png" t="Include" />
+              <e p="PaleGreen.png" t="Include" />
+              <e p="PaleRed.png" t="Include" />
+              <e p="PaleYellow.png" t="Include" />
+              <e p="Pink.png" t="Include" />
+              <e p="Red.png" t="Include" />
+              <e p="Violet.png" t="Include" />
+            </e>
+          </e>
+          <e p="pv.json" t="Include" />
+        </e>
+      </e>
+      <e p="58HouseSearch.Core.sln" t="IncludeFlat" />
+      <e p="packages" t="ExcludeRecursive" />
+    </e>
+    <e p="$USER_HOME$/Library/Caches/Rider2018.1/resharper-host/local/Transient/ReSharperHost/v12/SolutionCaches/_58HouseSearch.Core.-477220790.00" t="ExcludeRecursive" />
+  </component>
+</project>
