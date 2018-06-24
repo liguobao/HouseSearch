@@ -8,6 +8,7 @@ using HouseCrawler.Web.Service;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
+using Talk.OAuthClient;
 
 namespace HouseCrawler.Web.Controllers
 {
@@ -214,6 +215,40 @@ namespace HouseCrawler.Web.Controllers
             }
             userDataDapper.SavePassword(user.ID, Tools.GetMD5(password));
             return Json(new { success = true });
+        }
+
+
+        private IOAuthClient GetOAuthClient(AuthType authType)
+        {
+            string clientId = string.Empty;
+            string clientSecret = string.Empty;
+            string callbackUrl = string.Empty;
+
+            if (authType == AuthType.QQ)
+            {
+                clientId = "";
+                clientSecret = "";
+                callbackUrl = "https://" + Request.Host.Value + "CallbackUrl";
+            }
+            else if (authType == AuthType.Sina)
+            {
+                clientId = "";
+                clientSecret = "";
+                callbackUrl = "https://" + Request.Host.Value + "CallbackUrl";
+            }
+            return OAuthClientFactory.GetOAuthClient(clientId, clientSecret, callbackUrl, authType);
+        }
+
+        public IActionResult GetOAuthQQUrl()
+        {
+            var url = GetOAuthClient(AuthType.QQ).GetAuthUrl();
+            return Redirect(url);
+        }
+
+        public IActionResult GetOAuthSinaUrl()
+        {
+            var url = GetOAuthClient(AuthType.Sina).GetAuthUrl();
+            return Redirect(url);
         }
 
     }

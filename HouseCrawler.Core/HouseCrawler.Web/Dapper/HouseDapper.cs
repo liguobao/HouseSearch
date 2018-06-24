@@ -35,15 +35,17 @@ namespace HouseCrawler.Web
             if (string.IsNullOrEmpty(source))
             {
                 var houseList = new List<HouseInfo>();
-                foreach (var key in ConstConfigurationName.HouseTableNameDic.Keys)
+                // 因为会走几个表,默认每个表取N条
+                var houseSources = GetCityHouseSources(cityName);
+                var limitCount = houseCount / houseSources.Count;
+                foreach (var houseSource in houseSources)
                 {
                     //建荣家园数据质量比较差,默认不出
-                    if (key == ConstConfigurationName.CCBHouse)
+                    if (houseSource == ConstConfigurationName.CCBHouse)
                     {
                         continue;
                     }
-                    // 因为会走几个表,默认每个表取100条
-                    houseList.AddRange(Search(cityName, key, 100, intervalDay, keyword, refresh, page));
+                    houseList.AddRange(Search(cityName, houseSource, limitCount, intervalDay, keyword, refresh, page));
                 }
                 return houseList.OrderByDescending(h => h.PubTime);
             }
@@ -132,5 +134,44 @@ namespace HouseCrawler.Web
             }
         }
 
+
+        public List<HouseDashboard> LoadDashboard()
+        {
+            string houseDashboardJson = redisService.ReadCache("HouseDashboard");
+            if (string.IsNullOrEmpty(houseDashboardJson))
+            {
+                List<HouseDashboard> dashboards = GetHouseDashboard();
+                redisService.WriteCache("HouseDashboard", Newtonsoft.Json.JsonConvert.SerializeObject(dashboards));
+                return dashboards;
+            }
+            else
+            {
+                return Newtonsoft.Json.JsonConvert.DeserializeObject<List<HouseDashboard>>(houseDashboardJson);
+            }
+        }
+
+        public List<string> GetCityHouseSources(string cityName)
+        {
+            string redisKey = "CitySource-" + cityName;
+            string citySources = redisService.ReadCache(redisKey);
+            if (string.IsNullOrEmpty(citySources))
+            {
+                var dicCityNameToSources = LoadDashboard().GroupBy(d => d.CityName)
+                          .ToDictionary(item => item.Key, item => item.Select(db => db.Source).ToList());
+                var soures = new List<String>();
+                if (dicCityNameToSources != null && dicCityNameToSources.ContainsKey(cityName))
+                {
+                    soures = dicCityNameToSources[cityName];
+                }
+                redisService.WriteCache("redisKey", Newtonsoft.Json.JsonConvert.SerializeObject(soures));
+                return soures;
+            }
+            else
+            {
+                return Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(citySources);
+            }
+
+
+        }
     }
 }
