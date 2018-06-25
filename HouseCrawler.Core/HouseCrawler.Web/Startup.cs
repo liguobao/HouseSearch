@@ -55,10 +55,7 @@ namespace HouseCrawler.Web
             });
 
             //添加cors 服务
-            services.AddCors(o => o.AddPolicy("HomeCors", builder =>
-           builder.AllowAnyOrigin()
-           .AllowAnyMethod()
-           .AllowAnyHeader()));
+            services.AddCors(o => o.AddPolicy("HomeCors", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 
         }
 
@@ -66,15 +63,16 @@ namespace HouseCrawler.Web
 
         public void InitDI(IServiceCollection services)
         {
+            #region Dapper
             services.AddSingleton<HouseDapper, HouseDapper>();
             services.AddSingleton<ConfigurationDapper, ConfigurationDapper>();
             services.AddSingleton<UserCollectionDapper, UserCollectionDapper>();
             services.AddSingleton<UserDataDapper, UserDataDapper>();
+            services.AddSingleton<BaseDapper, BaseDapper>();
+            #endregion
+
 
             services.AddSingleton<EncryptionTools, EncryptionTools>();
-
-
-
 
             #region Service
             services.AddSingleton<EmailService, EmailService>();

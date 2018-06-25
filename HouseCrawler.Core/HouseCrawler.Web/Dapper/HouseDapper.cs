@@ -25,9 +25,7 @@ namespace HouseCrawler.Web
         {
             return new MySqlConnection(configuration.MySQLConnectionString);
         }
-
-
-
+        
         public IEnumerable<HouseInfo> SearchHouses(string cityName, string source = "",
           int houseCount = 300, int intervalDay = 7, string keyword = "",
            bool refresh = false, int page = 0)
