@@ -16,11 +16,11 @@ namespace HouseCrawler.Web
         {
         }
 
-        public UserCollection InsertUser(UserHouse userHouse)
+        public UserHouse InsertUser(UserHouse userHouse)
         {
             using (IDbConnection dbConnection = GetConnection())
             {
-                var collection = dbConnection.Query<UserCollection>(@"INSERT INTO `housecrawler`.`UserHouses`
+                var collection = dbConnection.Query<UserHouse>(@"INSERT INTO `housecrawler`.`UserHouses`
                                     (
                                     `UserId`,
                                     `HouseTitle`,
@@ -30,7 +30,6 @@ namespace HouseCrawler.Web
                                     `PubTime`,
                                     `HousePrice`,
                                     `LocationCityName`,
-                                    `DataCreateTime`,
                                     `Source`,
                                     `HouseText`,
                                     `Status`,
@@ -48,12 +47,36 @@ namespace HouseCrawler.Web
                                     @LocationCityName,
                                     @Source,
                                     @HouseText,
-                                    @DataChange_LastTime,
                                     @Status,
                                     @PicURLs,
                                     @RentTyp);",
                 userHouse).FirstOrDefault();
                 return collection;
+            }
+        }
+
+        /// <summary>
+        ///  获取用户N天内发布的房源数量
+        /// </summary>
+        public int GetUserHouseCount(long userId, int intervalDay)
+        {
+            DateTime today = DateTime.Now;
+            using (IDbConnection dbConnection = GetConnection())
+            {
+                dbConnection.Open();
+                return dbConnection.Query<int>(@"SELECT 
+                        count(*) as Count
+                    FROM
+                        UserHouses
+                    WHERE
+                        UserId = @UserId
+                            AND PubTime BETWEEN @FromDate AND @ToDate;",
+                new
+                {
+                    UserId = userId,
+                    FromDate = today.Date.AddDays(-intervalDay),
+                    ToDate = today.Date.AddDays(1)
+                }).FirstOrDefault();
             }
         }
 

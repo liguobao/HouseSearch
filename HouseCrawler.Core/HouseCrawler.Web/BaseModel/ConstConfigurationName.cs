@@ -25,6 +25,8 @@ namespace HouseCrawler.Web
 
         public static string BaiXing = "baixing";
 
+        public static string HouseMap = "housemap";
+
         public static string ConvertToDisPlayName(string configurationName)
         {
             var dicNameToDisplayName = new Dictionary<string, string>()
@@ -54,7 +56,8 @@ namespace HouseCrawler.Web
             { ConstConfigurationName.Zuber, "ZuberHouseInfos"},
             { ConstConfigurationName.MoguHouse, "MoguHouseInfos"},
             { ConstConfigurationName.HKSpacious, "HKHouseInfos"},
-            { ConstConfigurationName.BaiXing, "BaiXingHouseInfos"}
+            { ConstConfigurationName.BaiXing, "BaiXingHouseInfos"},
+            { ConstConfigurationName.HouseMap,"UserHouses"}
         };
 
 
