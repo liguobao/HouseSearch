@@ -1630,9 +1630,10 @@ pre code {
 .am-btn {
   display: inline-block;
   margin-bottom: 0;
-  padding: 0.5em 1em;
+  padding:15px;
+  padding-left:20px;
   vertical-align: middle;
-  font-size: 1.6rem;
+  font-size: 1.5rem!important;
   font-weight: normal;
   line-height: 1.2;
   text-align: center;
@@ -8402,7 +8403,7 @@ img.am-thumbnail,
   z-index: 1020;
   display: none;
   float: left;
-  min-width: 160px;
+
   padding: 15px;
   margin: 9px 0 0;
   text-align: left;

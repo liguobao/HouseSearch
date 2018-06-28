@@ -1,7 +1,19 @@
 ﻿@charset "UTF-8";
-@import url("style.min.css");
+
 body {
   color: #2b3242;
+}
+.home-a{
+  font-weight: 600;
+  letter-spacing: 7px;
+  font-size: 21px;
+  display: inline-block;
+  vertical-align: middle;
+}
+nav{
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 21em;
 }
 
 /*a {
@@ -126,6 +138,50 @@ a:hover,
   color: #fff;
   background-color: #ba1f2e;
   cursor: default;
+}
+.am-dropdown-content:before,
+.am-dropdown-content:after {
+  position: absolute;
+  /* display: block; */
+  display: none;
+  content: "";
+  width: 0;
+  height: 0;
+  border: 8px dashed transparent;
+  z-index: 1;
+}
+
+.am-icon-caret-down {
+  position: absolute;
+  right: 10px;
+}
+
+.am-dropdown {
+  position: relative;
+  display: inline-block;
+  min-width: 106px;
+}
+.am-dropdown-content {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1020;
+  display: none;
+  float: left;
+  min-width: 106px;
+  padding: 15px;
+  margin: 9px 0 0;
+  text-align: left;
+  line-height: 1.6;
+  background-color: #ffffff;
+  border: 1px solid #dddddd;
+  border-radius: 0;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  -webkit-animation-duration: .15s;
+  animation-duration: .15s;
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
 }
 .m-hd .am-dropdown-content {
   background: #ba1f2e;
@@ -669,7 +725,26 @@ figure.effect-lily:hover p {
 .m-contact-us .am-btn {
   width: 100%;
 }
-
+.am-btn {
+  display: inline-block;
+  margin-bottom: 0;
+  padding: 15px;
+  font-size: 1.6rem!important;
+  font-weight: 400;
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 0;
+  cursor: pointer;
+  outline: 0;
+  -webkit-appearance: none;
+  user-select: none;
+  -webkit-transition: background-color 300ms ease-out,border-color 300ms ease-out;
+  transition: background-color 300ms ease-out,border-color 300ms ease-out;
+  padding-left: 20px;
+}
 .m-contact-infobox {
   border: 1px solid #D8D8D8;
   background: #fff;
