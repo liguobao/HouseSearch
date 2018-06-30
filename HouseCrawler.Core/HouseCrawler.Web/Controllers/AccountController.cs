@@ -9,6 +9,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Talk.OAuthClient;
+using Microsoft.Extensions.Options;
 
 namespace HouseCrawler.Web.Controllers
 {
@@ -20,13 +21,22 @@ namespace HouseCrawler.Web.Controllers
 
         private EncryptionTools encryptionTools;
 
+        private APPConfiguration configuration;
+
+        private IOAuthClient authClient;
+
         public AccountController(UserDataDapper userDataDapper,
                           EmailService emailService,
-                          EncryptionTools encryptionTools)
+                          EncryptionTools encryptionTools,
+                          IOptions<APPConfiguration> configuration
+                          )
         {
             this.userDataDapper = userDataDapper;
             this.emailService = emailService;
             this.encryptionTools = encryptionTools;
+            this.configuration = configuration.Value;
+
+            this.authClient = GetOAuthClient();
         }
 
         public ActionResult Index()
@@ -218,36 +228,51 @@ namespace HouseCrawler.Web.Controllers
         }
 
 
-        private IOAuthClient GetOAuthClient(AuthType authType)
+        public ActionResult Auth(string code, string state)
         {
-            string clientId = string.Empty;
-            string clientSecret = string.Empty;
-            string callbackUrl = string.Empty;
+            if (!string.IsNullOrEmpty(code))
+            {
+                try
+                {
+                    var accessToken = authClient.GetAccessToken(code).Result;
+                    var qqUser = authClient.GetUserInfo(accessToken).Result;
+                    var userInfo = userDataDapper.FindUserByQQOpenUID(qqUser.Id);
+                    if (userInfo == null)
+                    {
+                        userDataDapper.InsertUserForQQAuth(new UserInfo() { UserName = qqUser.Name, QQOpenUID = qqUser.Id });
+                        userInfo = userDataDapper.FindUserByQQOpenUID(qqUser.Id);
+                    }
+                    var user = new ClaimsPrincipal(new ClaimsIdentity(new[]
+                                      {
+                    new Claim(ClaimTypes.Name, userInfo.UserName),
+                    new Claim(ClaimTypes.Email, userInfo.Email),
+                    new Claim(ClaimTypes.NameIdentifier, userInfo.ID.ToString())
+                    }, CookieAuthenticationDefaults.AuthenticationScheme));
+                    HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, user,
+                    new AuthenticationProperties
+                    {
+                        IsPersistent = true,
+                        ExpiresUtc = DateTimeOffset.Now.Add(TimeSpan.FromDays(7)) // 有效时间
+                    }).Wait();
+                    return View(new ViewResult() { success = true });
+                }
+                catch (Exception ex)
+                {
+                    return View(new ViewResult() { success = false, error = ex.ToString() });
+                }
+            }
+            return View(new ViewResult() { success = false, error = "无效的auth code" });
+        }
 
-            if (authType == AuthType.QQ)
-            {
-                clientId = "";
-                clientSecret = "";
-                callbackUrl = "https://" + Request.Host.Value + "CallbackUrl";
-            }
-            else if (authType == AuthType.Sina)
-            {
-                clientId = "";
-                clientSecret = "";
-                callbackUrl = "https://" + Request.Host.Value + "CallbackUrl";
-            }
-            return OAuthClientFactory.GetOAuthClient(clientId, clientSecret, callbackUrl, authType);
+        private IOAuthClient GetOAuthClient()
+        {
+            return OAuthClientFactory.GetOAuthClient(configuration.QQAPPID,
+             configuration.QQAPPKey, configuration.QQAuthReturnURL, AuthType.QQ);
         }
 
         public IActionResult GetOAuthQQUrl()
         {
-            var url = GetOAuthClient(AuthType.QQ).GetAuthUrl();
-            return Redirect(url);
-        }
-
-        public IActionResult GetOAuthSinaUrl()
-        {
-            var url = GetOAuthClient(AuthType.Sina).GetAuthUrl();
+            var url = authClient.GetAuthUrl();
             return Redirect(url);
         }
 

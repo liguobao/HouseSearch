@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
     <meta name="renderer" content="webkit">
-    <title>登录 - 地图搜租房</title>
+    <title>第三方登录 - 地图搜租房</title>
     <meta name="keywords" content=" WebBookmark,Find friend base on WebBookmark ">
     <meta name="description" content="WebBookmark,Find friend base on WebBookmark">
     <base href="."><!--[if IE]></base><![endif]-->
@@ -18,12 +18,6 @@
     <link href="~/assets/login/new.css" rel="stylesheet" />
     <link href="~/assets/login/style.css" rel="stylesheet" />
     <script src="~/assets/js/jquery.min.js"></script>
-    <script src="~/DomainJS/account.js"></script>
-    <script type="text/javascript">
-        var loginUrl = './Account/Login';
-        var qqLoginURL = './Account/GetOAuthQQUrl'
-
-    </script>
     <!--[if lte IE 8]>
     <script type="text/javascript" src="http://ask.amazeui.org/static/js/respond.js"></script>
     <![endif]-->
@@ -46,33 +40,15 @@
             <div class="mod-body am-cf">
                 <div class="content am-fl">
                     <h5 style="font-size:xx-large">地图搜租房</h5>
-                    <p>登录后查看个人收藏房源<br />房子是租来的,而生活不是。</p>
-                    <br />
-                    <ul>
-                        <li>
-                            <input type="text" id="aw-login-user-name" class="am-form-field am-radius" placeholder="邮箱 / 用户名" name="user_name">
-                        </li>
-                        <li>
-                            <input type="password" id="aw-login-user-password" class="am-form-field am-radius" placeholder="密码" name="password">
-                        </li>
-                        <li class="am-alert am-alert-danger error_message hide">
-                            <i class="icon icon-delete"></i> <em></em>
-                        </li>
-                        <li class="last">  
-                            其他账号：<a href="javascript:;" title="用QQ账号登录" id='qq_login' ><img src="https://qzonestyle.gtimg.cn/qzone/vas/opensns/res/img/Connect_logo_7.png" alt="Connect_logo_7.png"></a>
-                            <a href="javascript:;" id="login_submit" class="am-fr am-btn am-btn-secondary am-radius">登录</a>
-                            <a href="~/Account/RetrievePassword">&nbsp;&nbsp;忘记密码^-^</a>
-                        </li>
-                    </ul>
+                    <p>房子是租来的,而生活不是。</p>
+                    @if(Model.success){
+                       <label>登录成功,点击<a href="/">此处</a>回到首页.</label>
+                    }else{
+                         <label class="am-text-danger">登录异常,错误信息: @Model.error </label>
+                    }
                 </div>
                 <div class="side-bar am-fl">
                 </div>
-            </div>
-            <div class="mod-footer">
-                <span>还没有账号?</span>&nbsp;&nbsp;
-                <a href="~/Account/Register">立即注册</a>&nbsp;&nbsp;•&nbsp;&nbsp;
-                <a href="~/">游客访问</a>&nbsp;&nbsp;•&nbsp;&nbsp;
-
             </div>
         </div>
     </div>

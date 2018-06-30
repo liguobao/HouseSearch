@@ -27,7 +27,13 @@ namespace HouseCrawler.Web
 
         public string EncryptionConfigCIV { get; set; }
 
-         public string EncryptionConfigCKEY { get; set; }
+        public string EncryptionConfigCKEY { get; set; }
+
+        public string QQAPPID { get; set; }
+
+        public string QQAPPKey { get; set; }
+
+        public string QQAuthReturnURL { get; set; }
     }
 
 

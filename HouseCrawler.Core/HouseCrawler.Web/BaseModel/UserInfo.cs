@@ -31,5 +31,8 @@ namespace HouseCrawler.Web
         ///0:未激活 1:已激活 2:已禁用
         public int Status;
 
+
+        public string QQOpenUID{get;set;}
+
     }
 }

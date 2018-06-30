@@ -25,16 +25,27 @@ namespace HouseCrawler.Web
             return new MySqlConnection(configuration.MySQLConnectionString);
         }
 
-        public UserInfo InsertUser(UserInfo insertUser)
+        public void InsertUser(UserInfo insertUser)
         {
             using (IDbConnection dbConnection = GetConnection())
             {
                 insertUser.Password = Tools.GetMD5(insertUser.Password);
-                var user = dbConnection.Query<UserInfo>(@"INSERT INTO `UserInfos` 
+                dbConnection.Query<UserInfo>(@"INSERT INTO `UserInfos` 
                 (`UserName`,`Email`, `Password`, `ActivatedCode`,`ActivatedTime`)
                   VALUES (@UserName, @Email, @Password, @ActivatedCode, now());",
-                insertUser).FirstOrDefault();
-                return user;
+                insertUser);
+            }
+        }
+
+
+        public void InsertUserForQQAuth(UserInfo insertUser)
+        {
+            using (IDbConnection dbConnection = GetConnection())
+            {
+                var user = dbConnection.Query<UserInfo>(@"INSERT INTO `UserInfos` 
+                (`UserName`,`QQOpenUID`)
+                  VALUES (@UserName, @QQOpenUID);",
+                insertUser);
             }
         }
 
@@ -57,6 +68,17 @@ namespace HouseCrawler.Web
                 dbConnection.Open();
                 return dbConnection.Query<UserInfo>(@"SELECT * FROM housecrawler.UserInfos 
                 where (ActivatedCode = @ActivatedCode) ;", new { ActivatedCode = activatedCode }).FirstOrDefault();
+            }
+        }
+
+
+        public UserInfo FindUserByQQOpenUID(string qqOpenUID)
+        {
+            using (IDbConnection dbConnection = GetConnection())
+            {
+                dbConnection.Open();
+                return dbConnection.Query<UserInfo>(@"SELECT * FROM housecrawler.UserInfos 
+                where (QQOpenUID = @QQOpenUID) ;", new { QQOpenUID = qqOpenUID }).FirstOrDefault();
             }
         }
 
