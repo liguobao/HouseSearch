@@ -34,6 +34,10 @@ namespace HouseCrawler.Core.Jobs
             foreach (var item in cityDashboards)
             {
                 houseDapper.SearchHouses(item.Key, "", 500, 14, "", true);
+                foreach (var dashbord in item)
+                {
+                    houseDapper.SearchHouses(item.Key, dashbord.Source, 500, 14, "", true);
+                }
                 for (var page = 0; page <= 5; page++)
                 {
                     houseDapper.SearchHouses(item.Key, "", 140, 14, "", true, page);
