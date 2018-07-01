@@ -42,7 +42,7 @@
                     <h5 style="font-size:xx-large">地图搜租房</h5>
                     <p>房子是租来的,而生活不是。</p>
                     @if(Model.success){
-                       <label>登录成功,点击<a href="/">此处</a>回到首页.</label>
+                       <label>登录成功,<label id="second">5</label>秒后自动关闭此页面。<br/>点击<a href="/">此处</a>回到首页.</label>
                     }else{
                          <label class="am-text-danger">登录异常,错误信息: @Model.error </label>
                     }
@@ -63,6 +63,25 @@
     <div id="aw-ajax-box" class="aw-ajax-box"></div>
     <div style="display:none;" id="__crond"><img src="./" width="1" height="1"></div>
     <!-- Escape time: 0.075984001159668 --><!-- / DO NOT REMOVE -->
-
+        <script type="text/javascript">
+           $(function() {
+			var wait = $("#second").html();
+			timeOut();
+			/**
+			 * 实现倒计时
+			 */
+			function timeOut() {
+				if(wait != 0) {
+					setTimeout(function() {
+						$('#second').text(--wait);
+						timeOut();
+					}, 1000);
+				}else{
+                    window.open('/');
+                    window.close()
+                }
+			}
+		});
+        </script>
 </body>
 </html>
