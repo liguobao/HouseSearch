@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using HouseCrawler.Core.Common;
 using Nest;
+using Newtonsoft.Json;
 
 namespace HouseCrawler.Core
 {
@@ -16,6 +19,7 @@ namespace HouseCrawler.Core
         /// </summary>
         public string HouseTitle { get; set; }
 
+        [JsonIgnore]
         public string HouseText { get; set; }
 
         /// <summary>
@@ -39,18 +43,6 @@ namespace HouseCrawler.Core
         /// </summary>
         public DateTime PubTime { get; set; }
 
-
-        /// <summary>
-        /// 发布日期
-        /// </summary>
-        public DateTime PubDate { get { return this.PubTime.Date; } }
-
-        /// <summary>
-        /// 创建日期
-        /// </summary>
-        public DateTime DataCreateDate { get { return this.DataCreateTime.Date; } }
-        public DateTime DataCreateTime { get; set; }
-
         /// <summary>
         /// 价格（纯数字）
         /// </summary>
@@ -59,7 +51,13 @@ namespace HouseCrawler.Core
         /// <summary>
         /// 所在城市
         /// </summary>
+
         public string LocationCityName { get; set; }
+
+        /// <summary>
+        /// 创建时间
+        /// </summary>
+        public DateTime DataCreateTime { get; set; }
 
         /// <summary>
         /// 来源网站
@@ -76,10 +74,59 @@ namespace HouseCrawler.Core
         /// </summary>
         public int Status { get; set; }
 
-        /// <summary>
-        /// 图片地址
-        /// </summary>
         public string PicURLs { get; set; }
 
+        public List<string> Pictures
+        {
+            get
+            {
+                try
+                {
+                    if (string.IsNullOrEmpty(PicURLs))
+                    {
+                        return new List<string>();
+                    }
+                    return Newtonsoft.Json.JsonConvert.DeserializeObject<List<String>>(PicURLs);
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.Error("Get Pictures error", ex, this.HouseOnlineURL);
+                    return new List<string>();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 定位图标
+        /// </summary>
+        public string LocationMarkBG
+        {
+            get
+            {
+                if (this.HousePrice > 0)
+                {
+                    return LocationMarkBGType.SelectColor((int)this.HousePrice / 1000);
+                }
+                return "";
+            }
+        }
+        /// <summary>
+        /// 来源名称
+        /// </summary>
+        public string DisplaySource
+        {
+            get
+            {
+                return ConstConfigurationName.ConvertToDisPlayName(this.Source);
+            }
+        }
+
+        public DateTime PubDate
+        {
+            get
+            {
+                return this.PubTime.Date;
+            }
+        }
     }
 }

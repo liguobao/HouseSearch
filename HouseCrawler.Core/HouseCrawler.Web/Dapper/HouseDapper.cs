@@ -25,7 +25,7 @@ namespace HouseCrawler.Web
         {
             return new MySqlConnection(configuration.MySQLConnectionString);
         }
-        
+
         public IEnumerable<HouseInfo> SearchHouses(string cityName, string source = "",
           int houseCount = 300, int intervalDay = 7, string keyword = "",
            bool refresh = false, int page = 0)
@@ -63,7 +63,7 @@ namespace HouseCrawler.Web
             if (!refresh)
             {
                 houses = redisService.ReadSearchCache(redisKey);
-                if (houses != null)
+                if (houses != null && houses.Count > 0)
                 {
                     return houses;
                 }
@@ -85,7 +85,10 @@ namespace HouseCrawler.Web
                         KeyWord = $"%{keyword}%",
                         PubTime = DateTime.Now.Date.AddDays(-intervalDay)
                     }).ToList();
-                redisService.WriteSearchCache(redisKey, houses);
+                if (houses != null && houses.Count > 0)
+                {
+                    redisService.WriteSearchCache(redisKey, houses);
+                }
                 return houses;
             }
         }

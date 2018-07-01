@@ -34,6 +34,8 @@ namespace HouseCrawler.Core.Controllers
         private BaiXingHouseCrawler baixing;
         ElasticsearchService elasticsearchService;
 
+        private RefreshHouseCacheJob refreshHouseCacheJob;
+
         public HomeController(TodayHouseDashboardJob houseDashboardJob,
                               HouseDapper houseDapper,
                               HouseDashboardService houseDashboardService,
@@ -46,7 +48,8 @@ namespace HouseCrawler.Core.Controllers
                               HKSpaciousCrawler hkSpacious,
                               BaiXingHouseCrawler baixing,
                               SyncHousesToESJob syncHousesToESJob,
-                              ElasticsearchService elasticsearchService)
+                              ElasticsearchService elasticsearchService,
+                              RefreshHouseCacheJob refreshHouseCacheJob)
         {
             this.houseDashboardJob = houseDashboardJob;
             this.houseDapper = houseDapper;
@@ -61,6 +64,7 @@ namespace HouseCrawler.Core.Controllers
             this.baixing = baixing;
             this.syncHousesToESJob = syncHousesToESJob;
             this.elasticsearchService = elasticsearchService;
+            this.refreshHouseCacheJob = refreshHouseCacheJob;
         }
         // GET: /<controller>/
         public IActionResult Index()
@@ -77,7 +81,7 @@ namespace HouseCrawler.Core.Controllers
             int withAnyDays = 7, string keyword = "")
         {
 
-            var houses = houseDapper.SearchHouseInfo(cityName, source, houseCount, withAnyDays, keyword);
+            var houses = houseDapper.SearchHouses(cityName, source, houseCount, withAnyDays, keyword);
             var rooms = houses.Select(house =>
                 {
                     var markBGType = string.Empty;
@@ -154,6 +158,12 @@ namespace HouseCrawler.Core.Controllers
             DateTime pubTime = DateTime.Parse(datetime);
             var houses = houseDapper.QueryByTimeSpan(pubTime, pubTime.AddHours(24));
             elasticsearchService.SaveHousesToES(houses);
+            return Json(new { success = true });
+        }
+
+        public IActionResult RefreshHouseCache()
+        {
+            refreshHouseCacheJob.Run();
             return Json(new { success = true });
         }
     }

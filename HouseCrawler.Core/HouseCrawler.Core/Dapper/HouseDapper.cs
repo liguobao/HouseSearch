@@ -92,22 +92,30 @@ namespace HouseCrawler.Core
             }
         }
 
-        public IEnumerable<BaseHouseInfo> SearchHouseInfo(string cityName, string source = "",
-         int houseCount = 100, int intervalDay = 7, string keyword = "", bool refresh = false)
+        public IEnumerable<BaseHouseInfo> SearchHouses(string cityName, string source = "",
+         int houseCount = 300, int intervalDay = 7, string keyword = "",
+          bool refresh = false, int page = 0)
         {
             if (string.IsNullOrEmpty(source))
             {
                 var houseList = new List<BaseHouseInfo>();
-                foreach (var key in ConstConfigurationName.HouseTableNameDic.Keys)
+                // 因为会走几个表,默认每个表取N条
+                var houseSources = GetCityHouseSources(cityName);
+                var limitCount = houseCount / houseSources.Count;
+                foreach (var houseSource in houseSources)
                 {
-                    // 因为会走几个表,默认每个表取100条
-                    houseList.AddRange(Search(cityName, key, 100, intervalDay, keyword, refresh));
+                    //建荣家园数据质量比较差,默认不出
+                    if (houseSource == ConstConfigurationName.CCBHouse)
+                    {
+                        continue;
+                    }
+                    houseList.AddRange(Search(cityName, houseSource, limitCount, intervalDay, keyword, refresh, page));
                 }
-                return houseList.OrderByDescending(h => h.PubTime).Take(houseCount);
+                return houseList.OrderByDescending(h => h.PubTime);
             }
             else
             {
-                return Search(cityName, source, houseCount, intervalDay, keyword, refresh);
+                return Search(cityName, source, houseCount, intervalDay, keyword, refresh, page);
             }
 
         }
@@ -137,14 +145,15 @@ namespace HouseCrawler.Core
         }
 
         public IEnumerable<BaseHouseInfo> Search(string cityName, string source = "",
-            int houseCount = 100, int intervalDay = 7, string keyword = "", bool refresh = false)
+            int houseCount = 300, int intervalDay = 7, string keyword = "",
+            bool refresh = false, int page = 0)
         {
-            string redisKey = $"{cityName}-{source}-{intervalDay}-{houseCount}-{keyword}";
+            string redisKey = $"{cityName}-{source}-{intervalDay}-{houseCount}-{keyword}-{page}";
             var houses = new List<BaseHouseInfo>();
             if (!refresh)
             {
                 houses = redis.ReadSearchCache(redisKey);
-                if (houses != null)
+                if (houses != null && houses.Count > 0)
                 {
                     return houses;
                 }
@@ -156,9 +165,9 @@ namespace HouseCrawler.Core
                     $"and LocationCityName = @LocationCityName and  PubTime >= @PubTime";
                 if (!string.IsNullOrEmpty(keyword))
                 {
-                    search_SQL = search_SQL + " and (HouseText like @KeyWord or HouseLocation like @KeyWord or HouseTitle like @KeyWord) ";
+                    search_SQL = search_SQL + " and (HouseText like @KeyWord or HouseLocation like @KeyWord) ";
                 }
-                search_SQL = search_SQL + $" order by PubTime desc limit {houseCount} ";
+                search_SQL = search_SQL + $" order by PubTime desc limit {houseCount * page}, {houseCount} ";
                 houses = dbConnection.Query<BaseHouseInfo>(search_SQL,
                     new
                     {
@@ -166,10 +175,17 @@ namespace HouseCrawler.Core
                         KeyWord = $"%{keyword}%",
                         PubTime = DateTime.Now.Date.AddDays(-intervalDay)
                     }).ToList();
-                redis.WriteSearchCache(redisKey, houses);
+                if (houses != null && houses.Count > 0)
+                {
+                    redis.WriteSearchCache(redisKey, houses);
+                }
+
                 return houses;
             }
         }
+
+
+
 
 
         public List<BizCrawlerConfiguration> GetConfigurationList(string configurationName)
@@ -210,5 +226,48 @@ namespace HouseCrawler.Core
 
             }
         }
+
+
+        public List<string> GetCityHouseSources(string cityName)
+        {
+            string redisKey = "CitySource-" + cityName;
+            string citySources = redis.ReadCache(redisKey);
+            if (string.IsNullOrEmpty(citySources))
+            {
+                var dicCityNameToSources = LoadDashboard().GroupBy(d => d.CityName)
+                          .ToDictionary(item => item.Key, item => item.Select(db => db.Source).ToList());
+                var soures = new List<String>();
+                if (dicCityNameToSources != null && dicCityNameToSources.ContainsKey(cityName))
+                {
+                    soures = dicCityNameToSources[cityName];
+                }
+                redis.WriteCache(redisKey, Newtonsoft.Json.JsonConvert.SerializeObject(soures));
+                return soures;
+            }
+            else
+            {
+                return Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(citySources);
+            }
+
+
+        }
+
+        public List<HouseDashboard> LoadDashboard()
+        {
+            string houseDashboardJson = redis.ReadCache("HouseDashboard");
+            if (string.IsNullOrEmpty(houseDashboardJson))
+            {
+                List<HouseDashboard> dashboards = GetHouseDashboard();
+                redis.WriteCache("HouseDashboard", Newtonsoft.Json.JsonConvert.SerializeObject(dashboards));
+                return dashboards;
+            }
+            else
+            {
+                return Newtonsoft.Json.JsonConvert.DeserializeObject<List<HouseDashboard>>(houseDashboardJson);
+            }
+        }
+
+
+
     }
 }

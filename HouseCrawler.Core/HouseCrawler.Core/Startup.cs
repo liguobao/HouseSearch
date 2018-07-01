@@ -67,6 +67,8 @@ namespace HouseCrawler.Core
             services.AddSingleton<TodayHouseDashboardJob, TodayHouseDashboardJob>();
             services.AddSingleton<ZuberMoguJob, ZuberMoguJob>();
             services.AddSingleton<SyncHousesToESJob, SyncHousesToESJob>();
+            services.AddSingleton<RefreshHouseCacheJob, RefreshHouseCacheJob>();
+
             #endregion
 
             #region Crawler
