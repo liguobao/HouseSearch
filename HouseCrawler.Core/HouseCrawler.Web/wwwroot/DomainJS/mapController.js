@@ -288,7 +288,7 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
         var getHouses = function (page) {
             $.AMUI.progress.start();
             if (dataResource == "houselist" || dataResource == "userCollection") {
-                var houseCount = 300;
+                var houseCount = 500;
                 //为了避免数据太多在手机上无法查看，移动平台只出70条数据
                 if (helper.isMobile()) {
                     houseCount = 140;
