@@ -33,10 +33,10 @@ namespace HouseCrawler.Core.Jobs
             var cityDashboards = houseDapper.GetHouseDashboard().GroupBy(d => d.CityName);
             foreach (var item in cityDashboards)
             {
-                houseDapper.SearchHouses(item.Key, "", 300, 7, "", true);
+                houseDapper.SearchHouses(item.Key, "", 500, 14, "", true);
                 for (var page = 0; page <= 5; page++)
                 {
-                    houseDapper.SearchHouses(item.Key, "", 70, 7, "", true, page);
+                    houseDapper.SearchHouses(item.Key, "", 140, 14, "", true, page);
                 }
             }
 

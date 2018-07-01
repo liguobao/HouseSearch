@@ -33,7 +33,7 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
             } else if (dataResource == "houselist") {
                 var source = helper.getQueryString("source") ? helper.getQueryString("source") : "";
                 //默认出7天内的数据
-                var intervalDay = helper.getQueryString("intervalDay") ? helper.getQueryString("intervalDay") : 7;
+                var intervalDay = helper.getQueryString("intervalDay") ? helper.getQueryString("intervalDay") : 14;
                 var refresh = helper.getQueryString("refresh") ? helper.getQueryString("refresh") : false;
                 var keyword = helper.getQueryString("keyword") ? helper.getQueryString("keyword") : "";
                 dataInfo = {
@@ -291,9 +291,9 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
                 var houseCount = 300;
                 //为了避免数据太多在手机上无法查看，移动平台只出70条数据
                 if (helper.isMobile()) {
-                    houseCount = 70;
+                    houseCount = 140;
                 } else {
-                    houseCount = helper.getQueryString("houseCount") ? helper.getQueryString("houseCount") : 300;
+                    houseCount = helper.getQueryString("houseCount") ? helper.getQueryString("houseCount") : 500;
                 }
                 marker.clearArray();
                 GetDataByIndex(houseCount, houseCount, dataResource,page);
