@@ -42,7 +42,7 @@
                     <h5 style="font-size:xx-large">地图搜租房</h5>
                     <p>房子是租来的,而生活不是。</p>
                     @if(Model.success){
-                       <label>登录成功,<label id="second">5</label>秒后自动关闭此页面。<br/>点击<a href="/">此处</a>回到首页.</label>
+                       <label>登录成功,<label id="second">3</label>秒后自动关闭此页面。<br/>点击<a href="/">此处</a>回到首页.</label>
                     }else{
                          <label class="am-text-danger">登录异常,错误信息: @Model.error </label>
                     }
@@ -77,8 +77,7 @@
 						timeOut();
 					}, 1000);
 				}else{
-                    window.open('/');
-                    window.close()
+                    window.location.href = '/';
                 }
 			}
 		});
