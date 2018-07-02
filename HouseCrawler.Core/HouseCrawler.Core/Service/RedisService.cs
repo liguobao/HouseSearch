@@ -54,7 +54,7 @@ namespace HouseCrawler.Core
                 using (ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(GetRedisOptions()))
                 {
                     IDatabase db = redis.GetDatabase();
-                    db.StringSet(key, Newtonsoft.Json.JsonConvert.SerializeObject(house), new System.TimeSpan(0, 30, 0));
+                    db.StringSet(key, Newtonsoft.Json.JsonConvert.SerializeObject(house), new System.TimeSpan(0, 90, 0));
                 }
 
             }
