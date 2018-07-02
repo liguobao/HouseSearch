@@ -54,7 +54,7 @@ namespace HouseCrawler.Web
                 using (ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(GetRedisOptions()))
                 {
                     IDatabase db = redis.GetDatabase();
-                    db.StringSet(key, Newtonsoft.Json.JsonConvert.SerializeObject(houses), new System.TimeSpan(0, 30, 0));
+                    db.StringSet(key, Newtonsoft.Json.JsonConvert.SerializeObject(houses), new System.TimeSpan(0, 60, 0));
                 }
 
             }
@@ -92,7 +92,7 @@ namespace HouseCrawler.Web
                 using (ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(GetRedisOptions()))
                 {
                     IDatabase db = redis.GetDatabase();
-                    db.StringSet(key, value, new System.TimeSpan(0, 30, 0));
+                    db.StringSet(key, value, new System.TimeSpan(0, 60, 0));
                 }
             }
             catch (Exception ex)
