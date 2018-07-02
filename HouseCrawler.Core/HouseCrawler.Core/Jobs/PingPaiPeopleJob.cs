@@ -31,7 +31,7 @@ namespace HouseCrawler.Core
 
         }
 
-        [Invoke(Begin = "2018-05-29 00:25", Interval = 1000 * 3600, SkipWhileExecuting = true)]
+        [Invoke(Begin = "2018-07-01 00:25", Interval = 1000 * 3600, SkipWhileExecuting = true)]
         public void Run()
         {
             LogHelper.Info("PingPaiPeopleJob start");

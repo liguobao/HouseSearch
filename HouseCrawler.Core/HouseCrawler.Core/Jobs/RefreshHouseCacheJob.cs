@@ -23,7 +23,7 @@ namespace HouseCrawler.Core.Jobs
             this.redis = redis;
         }
 
-        [Invoke(Begin = "2018-01-10 00:30", Interval = 1000 * 3500, SkipWhileExecuting = true)]
+        [Invoke(Begin = "2018-07-01 00:30", Interval = 1000 * 3500, SkipWhileExecuting = true)]
         public void Run()
         {
             LogHelper.Info("开始RefreshHouseCacheJob...");

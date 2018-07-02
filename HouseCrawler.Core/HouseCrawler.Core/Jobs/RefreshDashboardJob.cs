@@ -16,7 +16,7 @@ namespace HouseCrawler.Core
             this.houseDashboardService = houseDashboardService;
         }
         //半个小时刷一次
-        [Invoke(Begin = "2018-05-05 00:00", Interval = 1000 * 1800 , SkipWhileExecuting = true)]
+        [Invoke(Begin = "2018-07-01 00:00", Interval = 1000 * 1800 , SkipWhileExecuting = true)]
         public void Run()
         {
             houseDashboardService.LoadDashboard();

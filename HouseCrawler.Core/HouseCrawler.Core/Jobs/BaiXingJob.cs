@@ -10,7 +10,7 @@ namespace HouseCrawler.Core
             this.crawler = crawler;
         }
         
-        [Invoke(Begin = "2018-05-20 00:00", Interval = 1000 * 3600, SkipWhileExecuting = true)]
+        [Invoke(Begin = "2018-07-01 00:00", Interval = 1000 * 3600, SkipWhileExecuting = true)]
         public void Run()
         {
             LogHelper.RunActionNotThrowEx(crawler.Run);

@@ -20,7 +20,7 @@ namespace HouseCrawler.Core
             this.houseDapper = houseDapper;
         }
 
-        [Invoke(Begin = "2018-06-16 03:50", Interval = 1000 * 3600 * 1, SkipWhileExecuting = true)]
+        [Invoke(Begin = "2018-07-01 03:50", Interval = 1000 * 3600 * 1, SkipWhileExecuting = true)]
         public void Run()
         {
             LogHelper.RunActionTaskNotThrowEx(() =>
