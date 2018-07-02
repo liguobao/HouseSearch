@@ -88,14 +88,17 @@ namespace HouseCrawler.Core.Controllers
                         case "huzhuzufang":
                             people.Run();
                             break;
-                        case "ccbHouse":
+                        case "ccbhouse":
                             ccbHouse.Run();
                             break;
                         case "mogu":
                             mogu.Run();
                             break;
-                        case "hkSpacious":
+                        case "hkspacious":
                             hkSpacious.Run();
+                            break;
+                        case "pinpaigongyu":
+                            pinpai.Run();
                             break;
                     }
                 }, source);
