@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Talk.OAuthClient;
 using Microsoft.Extensions.Options;
+using System.Collections.Generic;
 
 namespace HouseCrawler.Web.Controllers
 {
@@ -236,9 +237,19 @@ namespace HouseCrawler.Web.Controllers
                 {
                     var accessToken = authClient.GetAccessToken(code).Result;
                     var qqUser = authClient.GetUserInfo(accessToken).Result;
-                    var userInfo = userDataDapper.FindUserByQQOpenUID(qqUser.Id);
+                    var userInfo = userDataDapper.FindByID(GetUserID());
+                    //已登录 = 绑定此QQ
+                    if (userInfo != null)
+                    {
+                        userInfo.QQOpenUID = qqUser.Id;
+                        userDataDapper.UpdateUser(userInfo, new List<string>() { "QQOpenUID" });
+                        return View(new ViewResult() { success = true, message = "绑定成功!" });
+                    }
+                    //未登录,通过此ID获取用户
+                    userInfo = userDataDapper.FindUserByQQOpenUID(qqUser.Id);
                     if (userInfo == null)
                     {
+                        //新增用户
                         userDataDapper.InsertUserForQQAuth(new UserInfo() { UserName = qqUser.Name, QQOpenUID = qqUser.Id });
                         userInfo = userDataDapper.FindUserByQQOpenUID(qqUser.Id);
                     }
@@ -254,7 +265,7 @@ namespace HouseCrawler.Web.Controllers
                         IsPersistent = true,
                         ExpiresUtc = DateTimeOffset.Now.Add(TimeSpan.FromDays(7)) // 有效时间
                     }).Wait();
-                    return View(new ViewResult() { success = true });
+                    return View(new ViewResult() { success = true, message = "登录成功!" });
                 }
                 catch (Exception ex)
                 {
@@ -262,6 +273,22 @@ namespace HouseCrawler.Web.Controllers
                 }
             }
             return View(new ViewResult() { success = false, error = "无效的auth code" });
+        }
+
+        private long GetUserID()
+        {
+            var identity = ((ClaimsIdentity)HttpContext.User.Identity);
+            if (identity == null || identity.FindFirst(ClaimTypes.NameIdentifier) == null)
+            {
+                return 0;
+            }
+            var userID = identity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            if (string.IsNullOrEmpty(userID) || userID == "0")
+            {
+                return 0;
+            }
+
+            return long.Parse(userID);
         }
 
         private IOAuthClient GetOAuthClient()

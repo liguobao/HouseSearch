@@ -29,10 +29,15 @@ namespace HouseCrawler.Web
 
         public DateTime TokenTime { get; set; }
         ///0:未激活 1:已激活 2:已禁用
-        public int Status;
+        public int Status { get; set; }
 
+        public string Mobile { get; set; }
 
-        public string QQOpenUID{get;set;}
+        public string QQ { get; set; }
+
+        public string Intro { get; set; }
+
+        public string QQOpenUID { get; set; }
 
     }
 }

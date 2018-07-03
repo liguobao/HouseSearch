@@ -60,11 +60,11 @@
                                 <li><a href="~/Home/HouseList?cityname=苏州" target="_blank" rel="nofollow">苏州</a></li>
                             </ul>
                         </li>
-                        @if(!string.IsNullOrEmpty(ViewBag.UserName))
-                        {
-                            <li class="am-dropdown" data-am-dropdown>
-                                <a href="#" rel="nofollow" class="am-dropdown-toggle" data-am-dropdown-toggle>个人中心<span class="am-icon-caret-down"></span></a>
-                                <ul class="am-dropdown-content">
+                        <li class="am-dropdown" data-am-dropdown>
+                            <a href="#" rel="nofollow" class="am-dropdown-toggle" data-am-dropdown-toggle>个人中心<span class="am-icon-caret-down"></span></a>
+                            <ul class="am-dropdown-content">
+                                @if(!string.IsNullOrEmpty(ViewBag.UserName))
+                                {
                                     <li class="am-dropdown" data-am-dropdown>
                                         <a  href="javascript: void(0)" rel="nofollow" id="userCenter">房源看板</a>
                                     </li>
@@ -72,16 +72,25 @@
                                         <a  href="javascript: void(0)" rel="nofollow" id="userHouseList">收藏列表</a>
                                     </li>
                                     <li class="am-dropdown" data-am-dropdown>
+                                        <a  href="/Account/GetOAuthQQUrl" rel="nofollow" target="_blank">绑定QQ</a>
+                                    </li>
+                                    <li class="am-dropdown" data-am-dropdown>
                                         <a  href="javascript: void(0)" rel="nofollow" id="userSignOut">退出登录</a>
                                     </li>
-                                </ul>
-                            </li>
-
-                        }else{
-                            <li class="am-dropdown">
-                                <a href="~/Account" rel="nofollow">登陆/注册</a>
-                            </li>
-                        }
+                                }else{
+                                    <li class="am-dropdown" data-am-dropdown>
+                                        <a rel="nofollow" href="~/Account/GetOAuthQQUrl">QQ登录</a>
+                                    </li>
+                                    <li class="am-dropdown" data-am-dropdown>
+                                        <a rel="nofollow" href="~/Account">邮箱登录</a>
+                                    </li>
+                                    <li class="am-dropdown" data-am-dropdown>
+                                        <a rel="nofollow" href="~/Account/Register">注册账号</a>
+                                    </li>
+                                }
+                            
+                            </ul>
+                        </li>
                         <li class="am-dropdown" data-am-dropdown>
                             <a href="#" rel="nofollow" class="am-dropdown-toggle" data-am-dropdown-toggle>使用说明<span class="am-icon-caret-down"></span></a>
                             <ul class="am-dropdown-content">

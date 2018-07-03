@@ -42,10 +42,23 @@ namespace HouseCrawler.Web
         {
             using (IDbConnection dbConnection = GetConnection())
             {
-                var user = dbConnection.Query<UserInfo>(@"INSERT INTO `UserInfos` 
+                dbConnection.Query<UserInfo>(@"INSERT INTO `UserInfos` 
                 (`UserName`,`QQOpenUID`)
                   VALUES (@UserName, @QQOpenUID);",
                 insertUser);
+            }
+        }
+
+        public void UpdateUser(UserInfo user, List<String> fields)
+        {
+            if (fields == null || fields.Count == 0)
+            {
+                return;
+            }
+            using (IDbConnection dbConnection = GetConnection())
+            {
+                var fieldsSQL = string.Join(",", fields.Select(field => $" {field} =@{field} "));
+                dbConnection.Query<UserInfo>($"UPDATE UserInfos SET {fieldsSQL} WHERE ID =@ID", user);
             }
         }
 
@@ -57,6 +70,16 @@ namespace HouseCrawler.Web
                 dbConnection.Open();
                 return dbConnection.Query<UserInfo>(@"SELECT * FROM housecrawler.UserInfos 
                 where (UserName = @UserName or Email=@UserName) ;", new { UserName = userName }).FirstOrDefault();
+            }
+        }
+
+        public UserInfo FindByID(long userID)
+        {
+            using (IDbConnection dbConnection = GetConnection())
+            {
+                dbConnection.Open();
+                return dbConnection.Query<UserInfo>(@"SELECT * FROM housecrawler.UserInfos 
+                where (ID = @ID) ;", new { ID = userID }).FirstOrDefault();
             }
         }
 
