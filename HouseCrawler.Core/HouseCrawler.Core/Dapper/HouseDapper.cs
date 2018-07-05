@@ -92,34 +92,6 @@ namespace HouseCrawler.Core
             }
         }
 
-        public IEnumerable<BaseHouseInfo> SearchHouses(string cityName, string source = "",
-         int houseCount = 500, int intervalDay = 7, string keyword = "",
-          bool refresh = false, int page = 0)
-        {
-            if (string.IsNullOrEmpty(source))
-            {
-                var houseList = new List<BaseHouseInfo>();
-                // 因为会走几个表,默认每个表取N条
-                var houseSources = GetCityHouseSources(cityName);
-                var limitCount = houseCount / houseSources.Count;
-                foreach (var houseSource in houseSources)
-                {
-                    //建荣家园数据质量比较差,默认不出
-                    if (houseSource == ConstConfigurationName.CCBHouse)
-                    {
-                        continue;
-                    }
-                    houseList.AddRange(Search(cityName, houseSource, limitCount, intervalDay, keyword, refresh, page));
-                }
-                return houseList.OrderByDescending(h => h.PubTime);
-            }
-            else
-            {
-                return Search(cityName, source, houseCount, intervalDay, keyword, refresh, page);
-            }
-
-        }
-
 
         public List<BaseHouseInfo> QueryByTimeSpan(DateTime fromTime, DateTime toTime)
         {
@@ -185,7 +157,56 @@ namespace HouseCrawler.Core
         }
 
 
+        public IEnumerable<BaseHouseInfo> SearchHouses(HouseSearchCondition condition)
+        {
+            if (string.IsNullOrEmpty(condition.Source))
+            {
+                var houseList = new List<BaseHouseInfo>();
+                // 因为会走几个表,默认每个表取N条
+                var houseSources = GetCityHouseSources(condition.CityName);
+                var limitCount = condition.HouseCount / houseSources.Count;
+                foreach (var houseSource in houseSources)
+                {
+                    //建荣家园数据质量比较差,默认不出
+                    if (houseSource == ConstConfigurationName.CCBHouse)
+                    {
+                        continue;
+                    }
+                    condition.Source = houseSource;
+                    condition.HouseCount = limitCount;
+                    houseList.AddRange(Search(condition));
+                }
+                return houseList.OrderByDescending(h => h.PubTime);
+            }
+            else
+            {
+                return Search(condition);
+            }
 
+        }
+        public IEnumerable<BaseHouseInfo> Search(HouseSearchCondition condition)
+        {
+            string redisKey = condition.RedisKey;
+            var houses = new List<BaseHouseInfo>();
+            if (!condition.Refresh)
+            {
+                houses = redis.ReadSearchCache(redisKey);
+                if (houses != null && houses.Count > 0)
+                {
+                    return houses;
+                }
+            }
+            using (IDbConnection dbConnection = GetConnection())
+            {
+                dbConnection.Open();
+                houses = dbConnection.Query<BaseHouseInfo>(condition.QueryText, condition).ToList();
+                if (houses != null && houses.Count > 0)
+                {
+                    redis.WriteSearchCache(redisKey, houses);
+                }
+                return houses;
+            }
+        }
 
 
         public List<BizCrawlerConfiguration> GetConfigurationList(string configurationName)

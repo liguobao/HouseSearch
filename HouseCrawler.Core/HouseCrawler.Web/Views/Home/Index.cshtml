@@ -206,7 +206,7 @@
                     </p>
                 </li>
                 <li class="am-animation-slide-top" data-am-scrollspy="{animation:'slide-top', delay: 100}">
-                    <h2><a href="#" data-am-modal="{target: '#divHouseSearch', closeViaDimmer: 0 ,width: 400, height : 300}">高级搜索</a></h2>
+                    <h2><a href="#" data-am-modal="{target: '#divHouseSearch', closeViaDimmer: 0 ,width: 400, height : 320}">高级搜索</a></h2>
                     <p>支持关键字 + 信息来源 + 发布日期组合搜索.</p>
                 </li>
             </ul>
@@ -240,6 +240,11 @@
                     </select>
                 </div>
                 <div class="am-form-group">
+                    <input style="width:45%;float:left;" class="am-text-lg am-input-lg" id="input-fromPrice" placeholder="最低价" text="0">
+                    <label style="width:10%;float:left;">至</label>
+                    <input style="width:45%;float:left;" class="am-text-lg am-input-lg" id="input-toPrice" placeholder="最高价"  text="0">
+                </div>
+                <div class="am-form-group">
                     <select id="select-source" style="width:100%" class="am-text-lg">
                         <option value="douban">豆瓣租房小组</option>
                         <option value="zuber">Zuber合租平台</option>
@@ -259,8 +264,6 @@
                 <div class="am-form-group">
                     <input style="width:100%" class="am-text-lg am-input-lg" id="input-keyword" placeholder="搜索关键字">
                 </div>
-
-
                 <button type="button" class="am-btn am-btn-default am-round am-btn-secondary am-btn-xl" id="btn-StartSearch">开始搜索...</button>
             </div>
         </div>
@@ -461,6 +464,8 @@
                     var source = $('#select-source').val();
                     var intervalDay = $('#input-withAnyDays').val();
                     var keyword = $('#input-keyword').val();
+                    var fromPrice = $('#input-fromPrice').val();
+                    var toPrice = $('#input-toPrice').val();
 
                     var searchHouseURL = "../Home/HouseList?cityname=" + cityname;
 
@@ -472,6 +477,9 @@
                     }
                     if (keyword && keyword != "") {
                         searchHouseURL = searchHouseURL + "&keyword=" + keyword;
+                    }
+                    if (fromPrice && fromPrice != "" && toPrice && toPrice!="") {
+                        searchHouseURL = searchHouseURL + "&fromPrice=" + fromPrice + "&toPrice=" +toPrice;
                     }
                     window.open(searchHouseURL);
                     e.stopPropagation();

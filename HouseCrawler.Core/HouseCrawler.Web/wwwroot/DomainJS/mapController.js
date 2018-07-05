@@ -25,6 +25,7 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
         var GetDataByIndex = function (index, count, dataResource, page) {
 
             var dataInfo = [];
+            var contentType = "application/x-www-form-urlencoded; charset=UTF-8";
             if (dataResource == "douban") {
                 dataInfo = {
                     groupID: helper.getQueryString("groupID"),
@@ -36,15 +37,21 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
                 var intervalDay = helper.getQueryString("intervalDay") ? helper.getQueryString("intervalDay") : 14;
                 var refresh = helper.getQueryString("refresh") ? helper.getQueryString("refresh") : false;
                 var keyword = helper.getQueryString("keyword") ? helper.getQueryString("keyword") : "";
-                dataInfo = {
+                var fromPrice = helper.getQueryString("fromPrice") ? helper.getQueryString("fromPrice") : 0;
+                var toPrice = helper.getQueryString("toPrice") ? helper.getQueryString("toPrice") : 0;
+                var searchCondition = {
                     cityName: helper.getQueryString("cityname"),
                     source: source,
                     houseCount: count,
                     intervalDay: intervalDay,
                     keyword: keyword,
                     refresh: refresh,
-                    page: page
+                    page: page,
+                    toPrice:toPrice,
+                    fromPrice:fromPrice,
                 };
+                dataInfo = JSON.stringify(searchCondition);
+                contentType = "application/json;";
             } else if (dataResource === 'userCollection') {
                 var source = helper.getQueryString("source") ? helper.getQueryString("source") : "";
                 dataInfo = {
@@ -63,6 +70,7 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
                 type: "post",
                 url: getViewDefaultDataAction,
                 data: dataInfo,
+                contentType :  contentType,
                 success: function (result) {
                     if (result.isSuccess) {
                         var rent_locations = new Set();
@@ -113,7 +121,7 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
 
             showCityInfo(getHouses)
 
-           
+
         }
 
         var showCityInfo = function (ajaxGetter) {
@@ -255,7 +263,7 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
             }
         }
 
-        var initPositionPicker = function(){
+        var initPositionPicker = function () {
             AMapUI.loadUI(['misc/PositionPicker'], function (PositionPicker) {
                 var positionPicker = new PositionPicker({
                     mode: 'dragMarker',
@@ -266,7 +274,7 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
                         size: [64, 64]
                     }
                 });
-    
+
                 positionPicker.on('success', function (positionResult) {
                     //console.log(positionResult);
                     mapSignleton.workAddress = positionResult.address;
@@ -275,7 +283,7 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
                     $("#mobile-position-text").text(positionResult.address);
                 });
                 positionPicker.on('fail', function (positionResult) {
-    
+
                 });
                 var onModeChange = function (e) {
                     positionPicker.setMode(e.target.value)
@@ -296,7 +304,7 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
                     houseCount = helper.getQueryString("houseCount") ? helper.getQueryString("houseCount") : 500;
                 }
                 marker.clearArray();
-                GetDataByIndex(houseCount, houseCount, dataResource,page);
+                GetDataByIndex(houseCount, houseCount, dataResource, page);
             } else {
                 var pageCount = helper.getQueryString("PageCount");
                 if (!pageCount) {

@@ -26,16 +26,15 @@ namespace HouseCrawler.Web
             return new MySqlConnection(configuration.MySQLConnectionString);
         }
 
-        public IEnumerable<HouseInfo> SearchHouses(string cityName, string source = "",
-          int houseCount = 500, int intervalDay = 14, string keyword = "",
-           bool refresh = false, int page = 0)
+        
+        public IEnumerable<HouseInfo> SearchHouses(HouseSearchCondition condition)
         {
-            if (string.IsNullOrEmpty(source))
+            if (string.IsNullOrEmpty(condition.Source))
             {
                 var houseList = new List<HouseInfo>();
                 // 因为会走几个表,默认每个表取N条
-                var houseSources = GetCityHouseSources(cityName);
-                var limitCount = houseCount / houseSources.Count;
+                var houseSources = GetCityHouseSources(condition.CityName);
+                var limitCount = condition.HouseCount / houseSources.Count;
                 foreach (var houseSource in houseSources)
                 {
                     //建荣家园数据质量比较差,默认不出
@@ -43,24 +42,23 @@ namespace HouseCrawler.Web
                     {
                         continue;
                     }
-                    houseList.AddRange(Search(cityName, houseSource, limitCount, intervalDay, keyword, refresh, page));
+                    condition.Source = houseSource;
+                    condition.HouseCount = limitCount;
+                    houseList.AddRange(Search(condition));
                 }
                 return houseList.OrderByDescending(h => h.PubTime);
             }
             else
             {
-                return Search(cityName, source, houseCount, intervalDay, keyword, refresh, page);
+                return Search(condition);
             }
 
         }
-
-        public IEnumerable<HouseInfo> Search(string cityName, string source = "",
-            int houseCount = 500, int intervalDay = 14, string keyword = "",
-            bool refresh = false, int page = 0)
+        public IEnumerable<HouseInfo> Search(HouseSearchCondition condition)
         {
-            string redisKey = $"{cityName}-{source}-{intervalDay}-{houseCount}-{keyword}-{page}";
+            string redisKey = condition.RedisKey;
             var houses = new List<HouseInfo>();
-            if (!refresh)
+            if (!condition.Refresh)
             {
                 houses = redisService.ReadSearchCache(redisKey);
                 if (houses != null && houses.Count > 0)
@@ -71,20 +69,7 @@ namespace HouseCrawler.Web
             using (IDbConnection dbConnection = GetConnection())
             {
                 dbConnection.Open();
-                string search_SQL = $"SELECT * from { ConstConfigurationName.GetTableName(source)} where 1=1 " +
-                    $"and LocationCityName = @LocationCityName and  PubTime >= @PubTime";
-                if (!string.IsNullOrEmpty(keyword))
-                {
-                    search_SQL = search_SQL + " and (HouseText like @KeyWord or HouseLocation like @KeyWord) ";
-                }
-                search_SQL = search_SQL + $" order by PubTime desc limit {houseCount * page}, {houseCount} ";
-                houses = dbConnection.Query<HouseInfo>(search_SQL,
-                    new
-                    {
-                        LocationCityName = cityName,
-                        KeyWord = $"%{keyword}%",
-                        PubTime = DateTime.Now.Date.AddDays(-intervalDay)
-                    }).ToList();
+                houses = dbConnection.Query<HouseInfo>(condition.QueryText, condition).ToList();
                 if (houses != null && houses.Count > 0)
                 {
                     redisService.WriteSearchCache(redisKey, houses);

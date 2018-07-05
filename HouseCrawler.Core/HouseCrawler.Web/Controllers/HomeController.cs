@@ -57,7 +57,36 @@ namespace HouseCrawler.Web.Controllers
         {
             try
             {
-                var houseList = houseDapper.SearchHouses(cityName, source, houseCount, intervalDay, keyword, refresh, page);
+                var searchCondition = new HouseSearchCondition()
+                {
+                    CityName = cityName,
+                    Source = source,
+                    HouseCount = houseCount,
+                    IntervalDay = intervalDay,
+                    Keyword = keyword,
+                    Page = page,
+                    Refresh = refresh
+                };
+                var houseList = houseDapper.SearchHouses(searchCondition);
+                return Json(new { IsSuccess = true, HouseInfos = houseList });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { IsSuccess = false, error = ex.ToString() });
+            }
+        }
+
+        [HttpPost]
+        [EnableCors("HomeCors")]
+        public IActionResult Houses([FromBody] HouseSearchCondition search)
+        {
+            try
+            {
+                if (search == null || search.CityName == null)
+                {
+                    return Json(new { IsSuccess = false, error = "查询条件不能为null" });
+                }
+                var houseList = houseDapper.SearchHouses(search);
                 return Json(new { IsSuccess = true, HouseInfos = houseList });
             }
             catch (Exception ex)
@@ -67,13 +96,24 @@ namespace HouseCrawler.Web.Controllers
         }
 
 
+
         [EnableCors("HomeCors")]
         public IActionResult Houses(string cityName, string source = "", int houseCount = 500,
                     int intervalDay = 14, string keyword = "", bool refresh = false, int page = 0)
         {
             try
             {
-                var houseList = houseDapper.SearchHouses(cityName, source, houseCount, intervalDay, keyword, refresh, page);
+                var searchCondition = new HouseSearchCondition()
+                {
+                    CityName = cityName,
+                    Source = source,
+                    HouseCount = houseCount,
+                    IntervalDay = intervalDay,
+                    Keyword = keyword,
+                    Page = page,
+                    Refresh = refresh
+                };
+                var houseList = houseDapper.SearchHouses(searchCondition);
                 return Json(new { success = true, houses = houseList });
             }
             catch (Exception ex)
