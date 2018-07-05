@@ -37,6 +37,7 @@ namespace HouseCrawler.Core.Jobs
                 houseDapper.SearchHouses(search);
                 foreach (var dashbord in item)
                 {
+                    search.HouseCount = 500;
                     search.Source = dashbord.Source;
                     houseDapper.SearchHouses(search);
                 }
