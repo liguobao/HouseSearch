@@ -25,6 +25,8 @@ namespace HouseCrawler.Web
 
         public static string BaiXing = "baixing";
 
+        public static string Beike = "beike";
+
         public static string HouseMap = "housemap";
 
         public static string ConvertToDisPlayName(string configurationName)
@@ -38,6 +40,7 @@ namespace HouseCrawler.Web
                 { MoguHouse,"蘑菇租房"},
                 { CCBHouse,"CCB建融"},
                 { BaiXing,"百姓租房"},
+                { Beike, "贝壳租房" },
                 { CityHouseInfo,"城市租房信息"},
             };
             if (string.IsNullOrEmpty(configurationName))
@@ -57,7 +60,8 @@ namespace HouseCrawler.Web
             { ConstConfigurationName.MoguHouse, "MoguHouseInfos"},
             { ConstConfigurationName.HKSpacious, "HKHouseInfos"},
             { ConstConfigurationName.BaiXing, "BaiXingHouseInfos"},
-            { ConstConfigurationName.HouseMap,"UserHouses"}
+            { ConstConfigurationName.HouseMap,"UserHouses"},
+            { ConstConfigurationName.Beike,"BeiKeHouseInfos"}
         };
 
 

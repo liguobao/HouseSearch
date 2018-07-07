@@ -29,10 +29,12 @@ namespace HouseCrawler.Core.Controllers
         private CCBHouesCrawler ccbHouse;
         private ZuberHouseCrawler zuber;
         private MoGuHouseCrawler mogu;
+
+        private BeikeHouseCrawler beike;
         private HKSpaciousCrawler hkSpacious;
 
         private BaiXingHouseCrawler baixing;
-        ElasticsearchService elasticsearchService;
+        private ElasticsearchService elasticsearchService;
 
         private RefreshHouseCacheJob refreshHouseCacheJob;
 
@@ -49,7 +51,8 @@ namespace HouseCrawler.Core.Controllers
                               BaiXingHouseCrawler baixing,
                               SyncHousesToESJob syncHousesToESJob,
                               ElasticsearchService elasticsearchService,
-                              RefreshHouseCacheJob refreshHouseCacheJob)
+                              RefreshHouseCacheJob refreshHouseCacheJob,
+                              BeikeHouseCrawler beike)
         {
             this.houseDashboardJob = houseDashboardJob;
             this.houseDapper = houseDapper;
@@ -65,6 +68,7 @@ namespace HouseCrawler.Core.Controllers
             this.syncHousesToESJob = syncHousesToESJob;
             this.elasticsearchService = elasticsearchService;
             this.refreshHouseCacheJob = refreshHouseCacheJob;
+            this.beike = beike;
         }
 
 
@@ -99,6 +103,9 @@ namespace HouseCrawler.Core.Controllers
                             break;
                         case "pinpaigongyu":
                             pinpai.Run();
+                            break;
+                        case "beike":
+                            beike.Run();
                             break;
                     }
                 }, source);

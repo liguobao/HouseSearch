@@ -40,7 +40,9 @@ namespace HouseCrawler.Core
 
         public static string MoguHouse = "mogu";
 
-         public static string BaiXing = "baixing";
+        public static string BaiXing = "baixing";
+
+        public static string Beike = "beike";
 
         public static string CityHouseInfo = "cityhouse";
 
@@ -55,6 +57,7 @@ namespace HouseCrawler.Core
                 { Zuber,"Zuber平台"},
                 { CCBHouse,"CCB建融家园"},
                 { MoguHouse, "蘑菇租房" },
+                { Beike, "贝壳租房" },
                 { CityHouseInfo,"城市租房信息"},
             };
 
@@ -70,7 +73,8 @@ namespace HouseCrawler.Core
             { ConstConfigurationName.Zuber, "ZuberHouseInfos"},
             { ConstConfigurationName.MoguHouse, "MoguHouseInfos"},
             { ConstConfigurationName.HKSpacious, "HKHouseInfos"},
-            { ConstConfigurationName.BaiXing, "BaiXingHouseInfos"}
+            { ConstConfigurationName.BaiXing, "BaiXingHouseInfos"},
+            { ConstConfigurationName.Beike,"BeiKeHouseInfos"}
         };
 
         public static string GetTableName(string source)

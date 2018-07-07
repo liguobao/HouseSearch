@@ -80,6 +80,8 @@ namespace HouseCrawler.Core
             services.AddSingleton<PinPaiGongYuHouseCrawler, PinPaiGongYuHouseCrawler>();
             services.AddSingleton<ZuberHouseCrawler, ZuberHouseCrawler>();
             services.AddSingleton<BaiXingHouseCrawler, BaiXingHouseCrawler>();
+            services.AddSingleton<BeikeHouseCrawler, BeikeHouseCrawler>();
+
             #endregion
         }
 
@@ -98,7 +100,7 @@ namespace HouseCrawler.Core
             }
 
             //使用TimedJob
-           // app.UseTimedJob();
+            // app.UseTimedJob();
 
             app.UseStaticFiles();
 
