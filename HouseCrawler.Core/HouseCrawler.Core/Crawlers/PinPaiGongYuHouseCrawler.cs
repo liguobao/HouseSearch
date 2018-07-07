@@ -67,6 +67,9 @@ namespace HouseCrawler.Core
                     continue;
                 }
                 var onlineUrl = $"http://{shortCutName}.58.com" + element.QuerySelector("a").GetAttribute("href");
+                Uri uri = new Uri(onlineUrl);
+                //去除无用时间参数
+                onlineUrl = onlineUrl.Replace(uri.Query,"");
                 var houseLocation = new[] { "公寓", "青年社区" }.All(s => houseInfoList.Contains(s)) ? houseInfoList[0] : houseInfoList[1];
                 var houseInfo = new BaseHouseInfo
                 {

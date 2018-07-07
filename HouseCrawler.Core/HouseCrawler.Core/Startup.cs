@@ -29,7 +29,6 @@ namespace HouseCrawler.Core
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-
             Configuration = builder.Build();
         }
 
