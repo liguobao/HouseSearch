@@ -7,6 +7,7 @@ using HouseCrawler.Core.DataContent;
 using RestSharp;
 using HouseCrawler.Core.Common;
 using AngleSharp.Dom;
+using Newtonsoft.Json.Linq;
 
 namespace HouseCrawler.Core
 {
@@ -33,11 +34,10 @@ namespace HouseCrawler.Core
                 {
                     List<BaseHouseInfo> houses = new List<BaseHouseInfo>();
                     var confInfo = JsonConvert.DeserializeObject<dynamic>(crawlerConfiguration.ConfigurationValue);
-                    for (var index = 0; index < confInfo.pagecount.Value; index++)
+                    for (var page = 0; page < confInfo.pagecount.Value; page++)
                     {
-                        var url = $"http://{confInfo.shortcutname.Value}.58.com/pinpaigongyu/pn/{index}";
-                        var houseHTML = GetHouseHTML(url);
-                        houses.AddRange(GetDataFromHMTL(confInfo.shortcutname.Value, confInfo.cityname.Value, houseHTML));
+                        var jsonDate = GetDataFromAPI(confInfo.shortcutname.Value, page);
+                        houses.AddRange(GetHouses(confInfo.shortcutname.Value, confInfo.cityname.Value, jsonDate));
                     }
                     houseDapper.BulkInsertHouses(houses);
                     captrueHouseCount = captrueHouseCount + houses.Count;
@@ -47,71 +47,81 @@ namespace HouseCrawler.Core
             LogHelper.Info($"PinPaiGongYuHouseCrawler finish.本次共爬取到{captrueHouseCount}条数据，耗时{ (DateTime.Now - startTime).TotalSeconds}秒。");
         }
 
-        private static List<BaseHouseInfo> GetDataFromHMTL(string shortCutName, string cityName, string houseHTML)
+        private static List<BaseHouseInfo> GetHouses(string shortCutName, string cityName, string json)
         {
             List<BaseHouseInfo> houseList = new List<BaseHouseInfo>();
-            if (string.IsNullOrEmpty(houseHTML))
-                return houseList;
-            var htmlDoc = htmlParser.Parse(houseHTML);
-            var logrList = htmlDoc.QuerySelectorAll("li").Where(element => element.HasAttribute("logr"));
-            if (!logrList.Any())
-                return houseList;
-            foreach (var element in logrList)
+            var resultJObject = JsonConvert.DeserializeObject<JObject>(json);
+            foreach (var info in resultJObject["result"]["getListInfo"]["infolist"])
             {
-                var houseTitle = element.QuerySelector("h2").TextContent;
-                var houseInfoList = houseTitle.Split(' ');
-                int.TryParse(element.QuerySelector("b").TextContent, out var housePrice);
-                //推广房源,感觉存在py交易,直接跳过
-                if (element.QuerySelector("a").GetAttribute("href").Contains("legoclick.58.com"))
-                {
-                    continue;
-                }
-                var onlineUrl = $"http://{shortCutName}.58.com" + element.QuerySelector("a").GetAttribute("href");
-                Uri uri = new Uri(onlineUrl);
-                //去除无用时间参数
-                onlineUrl = onlineUrl.Replace(uri.Query,"");
-                var houseLocation = new[] { "公寓", "青年社区" }.All(s => houseInfoList.Contains(s)) ? houseInfoList[0] : houseInfoList[1];
+
+                var onlineUrl = $"https://{shortCutName}.58.com/pinpaigongyu/{info["infoID"].ToString()}x.shtml";
+                var housePrice = decimal.Parse(info["minPrice"].ToString());
                 var houseInfo = new BaseHouseInfo
                 {
-                    HouseTitle = houseTitle,
+                    HouseTitle = $"{info["title"].ToString()}-{info["layout"].ToString()}",
                     HouseOnlineURL = onlineUrl,
-                    DisPlayPrice = element.QuerySelector("b").TextContent,
-                    HouseLocation = houseLocation,
+                    DisPlayPrice = info["priceTitle"].ToString(),
+                    HouseLocation = info["title"].ToString(),
                     Source = ConstConfigurationName.PinPaiGongYu,
                     HousePrice = housePrice,
-                    HouseText = houseTitle,
+                    HouseText = info.ToString(),
                     LocationCityName = cityName,
-                    PubTime = DateTime.Now,
-                    PicURLs = GetPhotos(element)
+                    PubTime = new DateTime(info["postDate"]["year"].ToObject<int>(),
+                    info["postDate"]["mon"].ToObject<int>(),
+                    info["postDate"]["mday"].ToObject<int>(),
+                    info["postDate"]["hours"].ToObject<int>(),
+                    info["postDate"]["minutes"].ToObject<int>(),
+                    info["postDate"]["seconds"].ToObject<int>()),
+                    PicURLs = info["picsUrl"].ToString()
                 };
                 houseList.Add(houseInfo);
             }
             return houseList;
         }
 
-        private static string GetPhotos(IElement element)
+        public static string GetDataFromAPI(string citySortName, int page)
         {
-            var photos = new List<String>();
-            var imageURL = element.QuerySelector("img")?.GetAttribute("lazy_src");
-            if (imageURL != null)
-            {
-                photos.Add("https:" + imageURL.Replace("?w=240", ""));
-            }
-            return JsonConvert.SerializeObject(photos);
-        }
-
-        public static string GetHouseHTML(string houseURL)
-        {
-            var client = new RestClient(houseURL);
+            string parameters = $"&localname={citySortName}&page={page}";
+            var client = new RestClient("https://appgongyu.58.com/house/listing/gongyu?tabkey=allcity&action=getListInfo&curVer=8.6.5&appId=1&os=android&format=json&geotype=baidu&v=1"
+            + parameters);
             var request = new RestRequest(Method.GET);
-            request.AddHeader("connection", "keep-alive");
-            request.AddHeader("cookie", "f=n; f=n; f=n; id58=c5/njVqyV8E3W36xBFjjAg==; 58tj_uuid=c94df52b-df72-4d50-bddd-1afda5827d63; new_uv=1; utm_source=; spm=; init_refer=https%253A%252F%252Fwww.bing.com%252F; als=0; new_session=0; commontopbar_new_city_info=2%7C%E4%B8%8A%E6%B5%B7%7Csh; Hm_lvt_dcee4f66df28844222ef0479976aabf1=1521637318; f=n; ppStore_fingerprint=C57B6AC37AFB7EDD553E5DB2C335F4FC3E03018F34D46D58%EF%BC%BF1521637343698; Hm_lpvt_dcee4f66df28844222ef0479976aabf1=1521637344");
-            request.AddHeader("cache-control", "no-cache");
-            request.AddHeader("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
-            request.AddHeader("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.186 Safari/537.36");
-            request.AddHeader("upgrade-insecure-requests", "1");
-            request.AddHeader("accept-language", "zh-CN,zh;q=0.9,en;q=0.8");
-            request.AddHeader("accept-encoding", "gzip, deflate");
+            request.AddHeader("user-agent", "okhttp/3.4.2");
+            request.AddHeader("connection", "Keep-Alive");
+            request.AddHeader("host", "appgongyu.58.com");
+            request.AddHeader("product", "58app");
+            request.AddHeader("lat", "31.328703");
+            request.AddHeader("r", "1920_1080");
+            request.AddHeader("ua", "SM801");
+            request.AddHeader("brand", "SMARTISAN");
+            request.AddHeader("location", "2,6180,6348");
+            request.AddHeader("58mac", "B4:0B:44:80:2E:B6");
+            request.AddHeader("platform", "android");
+            request.AddHeader("currentcid", "2");
+            request.AddHeader("rnsoerror", "0");
+            request.AddHeader("os", "android");
+            request.AddHeader("owner", "baidu");
+            request.AddHeader("deviceid", "57b4bf2216c7d1da");
+            request.AddHeader("m", "B4:0B:44:80:2E:B6");
+            request.AddHeader("cid", "2");
+            request.AddHeader("androidid", "57b4bf2216c7d1da");
+            request.AddHeader("apn", "WIFI");
+            request.AddHeader("uniqueid", "0aa38c71a1f1192af301c5ac03aa0198");
+            request.AddHeader("58ua", "58app");
+            request.AddHeader("nettype", "wifi");
+            request.AddHeader("osarch", "arm64-v8a");
+            request.AddHeader("productorid", "1");
+            request.AddHeader("version", "8.6.5");
+            request.AddHeader("bangbangid", "1080866410605347478");
+            request.AddHeader("bundle", "com.wuba");
+            request.AddHeader("maptype", "2");
+            request.AddHeader("totalsize", "24.7");
+            request.AddHeader("rimei", "990006210059787");
+            request.AddHeader("id58", "97987698730095");
+            request.AddHeader("xxzl_deviceid", "IaqlqznImYdoMvhJpnkjFpsGfWr09FnsJscDy3FpeK+k+afS/XcvibL6qHQue6uz");
+            request.AddHeader("marketchannelid", "1593");
+            request.AddHeader("osv", "5.1.1");
+            request.AddHeader("lon", "121.39829");
+            request.AddHeader("official", "true");
             IRestResponse response = client.Execute(request);
             return response.Content;
         }
@@ -120,9 +130,13 @@ namespace HouseCrawler.Core
 
         public static void Test()
         {
-            var url = $"http://xa.58.com/pinpaigongyu/pn/1";
-            var houseHTML = GetHouseHTML(url);
-            var houses = GetDataFromHMTL("xa", "西安市", houseHTML);
+            var result = GetDataFromAPI("sh", 1);
+            var list = GetHouses("sh", "上海", result);
+            if (list != null)
+            {
+
+            }
+
         }
 
 
