@@ -26,7 +26,7 @@ namespace HouseCrawler.Web
             return new MySqlConnection(configuration.MySQLConnectionString);
         }
 
-        
+
         public IEnumerable<HouseInfo> SearchHouses(HouseSearchCondition condition)
         {
             if (string.IsNullOrEmpty(condition.Source))
@@ -115,7 +115,7 @@ namespace HouseCrawler.Web
                                 " + tableName + $" GROUP BY LocationCityName, Source ORDER BY HouseSum desc;");
                     list.AddRange(dashboards);
                 }
-                return list.Where(dash => dash.LastRecordPubTime.CompareTo(DateTime.Now.AddDays(-30)) > 0)
+                return list.Where(dash => dash.LastRecordPubTime.CompareTo(DateTime.Now.AddDays(-30)) > 0 && dash.HouseSum > 100)
                 .ToList();
             }
         }
