@@ -46,7 +46,10 @@ namespace HouseCrawler.Core
 
         public void InitDI(IServiceCollection services)
         {
+            #region Mapper
             services.AddSingleton<HouseDapper, HouseDapper>();
+            services.AddSingleton<ConfigurationDapper, ConfigurationDapper>();
+            #endregion Service
 
             #region Service
             services.AddSingleton<EmailService, EmailService>();

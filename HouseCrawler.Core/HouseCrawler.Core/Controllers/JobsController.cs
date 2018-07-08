@@ -132,5 +132,11 @@ namespace HouseCrawler.Core.Controllers
             LogHelper.RunActionTaskNotThrowEx(refreshHouseCacheJob.Run, "RefreshHouseCache");
             return Json(new { success = true });
         }
+
+        public IActionResult InitBeike()
+        {
+            beike.InitCityData();
+            return Json(new { success = true });
+        }
     }
 }

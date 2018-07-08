@@ -14,9 +14,13 @@ namespace HouseCrawler.Core
     public class BeikeHouseCrawler
     {
         private HouseDapper houseDapper;
-        public BeikeHouseCrawler(HouseDapper houseDapper)
+
+        private ConfigurationDapper configDapper;
+
+        public BeikeHouseCrawler(HouseDapper houseDapper, ConfigurationDapper configDapper)
         {
             this.houseDapper = houseDapper;
+            this.configDapper = configDapper;
         }
 
         public void Run()
@@ -25,7 +29,7 @@ namespace HouseCrawler.Core
             {
                 int captrueHouseCount = 0;
                 DateTime startTime = DateTime.Now;
-                foreach (var config in houseDapper.GetConfigurationList(ConstConfigurationName.Beike))
+                foreach (var config in configDapper.GetConfigurationList(ConstConfigurationName.Beike))
                 {
                     LogHelper.RunActionNotThrowEx(() =>
                     {
@@ -142,6 +146,52 @@ namespace HouseCrawler.Core
                 LogHelper.Error("GetAPIResult", ex);
             }
             return "";
+
+        }
+
+
+        public void InitCityData()
+        {
+            var client = new RestClient("https://app.api.ke.com/config/city/selectlist");
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("connection", "Keep-Alive");
+            request.AddHeader("host", "app.api.ke.com");
+            request.AddHeader("lianjia-im-version", "2.13.0-SNAPSHOT");
+            request.AddHeader("authorization", "MjAxODAxMTFfYW5kcm9pZDo0OGI4Mjg4M2NmNDdhYzAyZWQzMmFlZjI0ZmVhNjg0ODUxYzdkYWI5");
+            request.AddHeader("lianjia-version", "1.2.4");
+            request.AddHeader("lianjia-device-id", "865371037947909");
+            request.AddHeader("lianjia-channel", "Android_ke_chuizi");
+            request.AddHeader("user-agent", "Beike1.2.4;SMARTISAN OD103; Android 7.1.1");
+            request.AddHeader("extension", "lj_device_id_android=865371037947909&mac_id=B4:0B:44:D0:2E:D1&lj_imei=865371037947909&lj_android_id=a9adb10848897a64");
+            request.AddHeader("referer", "homepage%3Fcity_id%3D310000%26latitude%3D31.328682%26longitude%3D121.397956%26distance%3D5000%26limit_offset%3D0%26limit_count%3D10");
+            request.AddHeader("page-schema", "SelectCityActivity");
+            IRestResponse response = client.Execute(request);
+            var resultJObject = JsonConvert.DeserializeObject<JObject>(response.Content);
+            var configs = new List<BizCrawlerConfiguration>();
+            foreach (var tab in resultJObject["data"]["tab_list"])
+            {
+                if (tab["title"] != null && tab["title"].ToString() == "海外城市")
+                {
+                    continue;
+                }
+                foreach (var city in tab["list"].SelectMany(item =>item["cities"]))
+                {
+                    var cityId = city["id"].ToString();
+                    var name = city["name"].ToString();
+                    var abbr = city["abbr"].ToString();
+
+                    var configValue = "{'citySortName':'" + abbr + "','cityName':'" + name + "','cityID':'" + cityId + "','pagecount':10}";
+                    var config = new BizCrawlerConfiguration()
+                    {
+                        ConfigurationValue = configValue,
+                        ConfigurationName = "beike",
+                    };
+                    configs.Add(config);
+                }
+
+
+            }
+            configDapper.BulkInsertConfig(configs);
 
         }
 
