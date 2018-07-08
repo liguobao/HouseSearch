@@ -13,7 +13,7 @@ namespace HouseCrawler.Web
     {
         public string CityName { get; set; }
         public string Source { get; set; } = "";
-        public int HouseCount { get; set; } = 500;
+        public int HouseCount { get; set; } = 600;
         public int IntervalDay { get; set; } = 14;
         public string Keyword { get; set; } = "";
         public bool Refresh { get; set; }

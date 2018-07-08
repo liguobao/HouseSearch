@@ -52,7 +52,7 @@ namespace HouseCrawler.Web.Controllers
             return View();
         }
 
-        public IActionResult GetHouseInfo(string cityName, string source = "", int houseCount = 500,
+        public IActionResult GetHouseInfo(string cityName, string source = "", int houseCount = 600,
             int intervalDay = 14, string keyword = "", bool refresh = false, int page = 0)
         {
             try
@@ -98,7 +98,7 @@ namespace HouseCrawler.Web.Controllers
 
 
         [EnableCors("HomeCors")]
-        public IActionResult Houses(string cityName, string source = "", int houseCount = 500,
+        public IActionResult Houses(string cityName, string source = "", int houseCount = 600,
                     int intervalDay = 14, string keyword = "", bool refresh = false, int page = 0)
         {
             try

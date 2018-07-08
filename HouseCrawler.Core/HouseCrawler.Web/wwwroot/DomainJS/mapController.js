@@ -296,12 +296,12 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
         var getHouses = function (page) {
             $.AMUI.progress.start();
             if (dataResource == "houselist" || dataResource == "userCollection") {
-                var houseCount = 500;
+                var houseCount = 600;
                 //为了避免数据太多在手机上无法查看，移动平台只出70条数据
                 if (helper.isMobile()) {
-                    houseCount = 140;
+                    houseCount = 180;
                 } else {
-                    houseCount = helper.getQueryString("houseCount") ? helper.getQueryString("houseCount") : 500;
+                    houseCount = helper.getQueryString("houseCount") ? helper.getQueryString("houseCount") : 600;
                 }
                 marker.clearArray();
                 GetDataByIndex(houseCount, houseCount, dataResource, page);
