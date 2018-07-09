@@ -72,7 +72,7 @@ namespace HouseCrawler.Core
                     {
                         HouseLocation = room["address"].ToString(),
                         HouseTitle = room["summary"].ToString(),
-                        HouseOnlineURL = room["share_url"].ToString(),
+                        HouseOnlineURL = $"http://www.zuber.im/app/room/{room["id"].ToString()}",
                         HouseText = item.ToString(),
                         HousePrice = housePrice,
                         IsAnalyzed = true,
