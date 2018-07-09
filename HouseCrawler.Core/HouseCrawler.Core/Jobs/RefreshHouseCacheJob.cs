@@ -33,14 +33,26 @@ namespace HouseCrawler.Core.Jobs
             var cityDashboards = houseDapper.GetHouseDashboard().GroupBy(d => d.CityName);
             foreach (var item in cityDashboards)
             {
+                //聚合房源的缓存,前600条数据
                 var search = new HouseSearchCondition() { CityName = item.Key, HouseCount = 600, IntervalDay = 14, Refresh = true };
                 houseDapper.SearchHouses(search);
                 foreach (var dashbord in item)
                 {
+                    //每类房源的默认缓存,前600条数据
                     search.HouseCount = 600;
                     search.Source = dashbord.Source;
                     houseDapper.SearchHouses(search);
+
+                    // 为小程序做的缓存,每次拉10条,一共20页
+                    for (var page = 0; page <= 20; page++)
+                    {
+                        search.HouseCount = 10;
+                        search.Source = dashbord.Source;
+                        search.Page = page;
+                        houseDapper.SearchHouses(search);
+                    }
                 }
+                //为移动端做的缓存,每次拉180条,一共5页
                 for (var page = 0; page <= 5; page++)
                 {
                     search.Source = "";
@@ -48,6 +60,7 @@ namespace HouseCrawler.Core.Jobs
                     search.Page = page;
                     houseDapper.SearchHouses(search);
                 }
+
             }
 
             sw.Stop();
