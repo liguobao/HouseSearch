@@ -77,7 +77,7 @@ namespace HouseCrawler.Web.Controllers
         }
 
         [HttpPost]
-        [EnableCors("HomeCors")]
+        [EnableCors("APICors")]
         public IActionResult Houses([FromBody] HouseSearchCondition search)
         {
             try
@@ -97,7 +97,7 @@ namespace HouseCrawler.Web.Controllers
 
 
 
-        [EnableCors("HomeCors")]
+        [EnableCors("APICors")]
         public IActionResult Houses(string cityName, string source = "", int houseCount = 600,
                     int intervalDay = 14, string keyword = "", bool refresh = false, int page = 0)
         {
@@ -122,7 +122,7 @@ namespace HouseCrawler.Web.Controllers
             }
         }
 
-        [EnableCors("HomeCors")]
+        [EnableCors("APICors")]
         public IActionResult Dashboards()
         {
             var dashboards = houseDashboardService.LoadDashboard();

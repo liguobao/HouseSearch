@@ -56,7 +56,7 @@ namespace HouseCrawler.Web
             });
 
             //添加cors 服务
-            services.AddCors(o => o.AddPolicy("HomeCors", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+            services.AddCors(o => o.AddPolicy("APICors", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 
         }
 
@@ -79,6 +79,7 @@ namespace HouseCrawler.Web
             services.AddSingleton<EmailService, EmailService>();
             services.AddSingleton<RedisService, RedisService>();
             services.AddSingleton<HouseDashboardService, HouseDashboardService>();
+            services.AddSingleton<UserService,UserService>();
             #endregion
 
             #region Jobs
@@ -128,7 +129,7 @@ namespace HouseCrawler.Web
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            app.UseCors("HomeCors");
+            app.UseCors("APICors");
 
         }
 

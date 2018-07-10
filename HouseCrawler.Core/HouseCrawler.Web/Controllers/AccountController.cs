@@ -11,11 +11,16 @@ using Microsoft.AspNetCore.Authentication;
 using Talk.OAuthClient;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Cors;
 
 namespace HouseCrawler.Web.Controllers
 {
     public class AccountController : Controller
     {
+        private static string userTokenKey = "user_token_";
+
+        private static string userInfoKey = "user_";
+
         private UserDataDapper userDataDapper;
 
         private EmailService emailService;
@@ -26,17 +31,20 @@ namespace HouseCrawler.Web.Controllers
 
         private IOAuthClient authClient;
 
+        private RedisService redisService;
+
         public AccountController(UserDataDapper userDataDapper,
                           EmailService emailService,
                           EncryptionTools encryptionTools,
-                          IOptions<APPConfiguration> configuration
+                          IOptions<APPConfiguration> configuration,
+                          RedisService redisService
                           )
         {
             this.userDataDapper = userDataDapper;
             this.emailService = emailService;
             this.encryptionTools = encryptionTools;
             this.configuration = configuration.Value;
-
+            this.redisService = redisService;
             this.authClient = GetOAuthClient();
         }
 
@@ -64,6 +72,7 @@ namespace HouseCrawler.Web.Controllers
             }
         }
 
+        [EnableCors("APICors")]
         public ActionResult RegisterUser(string userName, string userEmail, string password)
         {
             var checkUser = userDataDapper.FindUser(userName);
@@ -101,7 +110,7 @@ namespace HouseCrawler.Web.Controllers
 
         }
 
-
+        [EnableCors("APICors")]
         public ActionResult Login(string userName, string password)
         {
             //var loginUser = new UserInfo(){ Email="test@qq.com", Password = "e10adc3949ba59abbe56e057f20f883e", Status =1};
