@@ -90,7 +90,8 @@ namespace HouseCrawler.Core
                 }
                 catch (Exception ex)
                 {
-                    LogHelper.Error("Get Pictures error", ex, this.HouseOnlineURL);
+                    LogHelper.Info(this.HouseOnlineURL);
+                    LogHelper.Error("Get Pictures error", ex);
                     return new List<string>();
                 }
             }
