@@ -61,7 +61,7 @@ namespace HouseCrawler.Core
                     HouseTitle = $"{info["title"].ToString()}-{info["layout"].ToString()}",
                     HouseOnlineURL = onlineUrl,
                     DisPlayPrice = info["priceTitle"].ToString(),
-                    HouseLocation = info["title"].ToString(),
+                    HouseLocation = GetHouseLocation(info),
                     Source = ConstConfigurationName.PinPaiGongYu,
                     HousePrice = housePrice,
                     HouseText = info.ToString(),
@@ -79,6 +79,25 @@ namespace HouseCrawler.Core
             return houseList;
         }
 
+        private static string GetHouseLocation(JToken info)
+        {
+            var houseLocation = "";
+            var title = info["title"].ToString();
+            var titleList = title.Split(" ");
+            if (titleList.Length >= 3)
+            {
+                houseLocation = titleList[2];
+            }
+            if (titleList.Length >= 4)
+            {
+                houseLocation = houseLocation + "-" + titleList[3];
+            }
+            if (string.IsNullOrEmpty(houseLocation))
+            {
+                houseLocation = info["titles"]["title"].ToString().Split("|")[1].Trim();
+            }
+            return houseLocation;
+        }
         public static string GetDataFromAPI(string citySortName, int page)
         {
             string parameters = $"&localname={citySortName}&page={page}";
