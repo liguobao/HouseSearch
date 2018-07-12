@@ -38,6 +38,8 @@ namespace HouseCrawler.Core.Controllers
 
         private RefreshHouseCacheJob refreshHouseCacheJob;
 
+       private RefreshHouseSourceJob refreshHouseSourceJob;
+
         public JobsController(TodayHouseDashboardJob houseDashboardJob,
                               HouseDapper houseDapper,
                               HouseDashboardService houseDashboardService,
@@ -52,6 +54,7 @@ namespace HouseCrawler.Core.Controllers
                               SyncHousesToESJob syncHousesToESJob,
                               ElasticsearchService elasticsearchService,
                               RefreshHouseCacheJob refreshHouseCacheJob,
+                              RefreshHouseSourceJob refreshHouseSourceJob,
                               BeikeHouseCrawler beike)
         {
             this.houseDashboardJob = houseDashboardJob;
@@ -68,6 +71,7 @@ namespace HouseCrawler.Core.Controllers
             this.syncHousesToESJob = syncHousesToESJob;
             this.elasticsearchService = elasticsearchService;
             this.refreshHouseCacheJob = refreshHouseCacheJob;
+            this.refreshHouseSourceJob = refreshHouseSourceJob;
             this.beike = beike;
         }
 
@@ -130,6 +134,12 @@ namespace HouseCrawler.Core.Controllers
         public IActionResult RefreshHouseCache()
         {
             LogHelper.RunActionTaskNotThrowEx(refreshHouseCacheJob.Run, "RefreshHouseCache");
+            return Json(new { success = true });
+        }
+
+        public IActionResult RefreshHouseSource()
+        {
+            LogHelper.RunActionTaskNotThrowEx(refreshHouseSourceJob.Run, "RefreshHouseSource");
             return Json(new { success = true });
         }
 
