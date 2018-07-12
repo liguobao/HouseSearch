@@ -17,7 +17,8 @@ using Newtonsoft.Json;
 namespace HouseCrawler.Web.API.Controllers
 {
 
-    public class UserController : Controller
+    [Route("api/[controller]")]
+    public class AccountController : ControllerBase
     {
 
         private UserDataDapper userDataDapper;
@@ -26,54 +27,32 @@ namespace HouseCrawler.Web.API.Controllers
 
         private EncryptionTools encryptionTools;
 
-        private APPConfiguration configuration;
-
-        private IOAuthClient authClient;
 
         private RedisService redisService;
 
         private UserService userService;
 
-        public UserController(UserDataDapper userDataDapper,
+        public AccountController(UserDataDapper userDataDapper,
                           EmailService emailService,
                           EncryptionTools encryptionTools,
-                          IOptions<APPConfiguration> configuration,
                           RedisService redisService,
                           UserService userService)
         {
             this.userDataDapper = userDataDapper;
             this.emailService = emailService;
             this.encryptionTools = encryptionTools;
-            this.configuration = configuration.Value;
             this.redisService = redisService;
             this.userService = userService;
         }
 
-        [HttpGet]
-        [HttpPost]
         [EnableCors("APICors")]
-        public ActionResult CheckUserEmail(string email)
-        {
-            var checkUser = userDataDapper.FindUser(email);
-            if (checkUser != null)
-            {
-                return Json(new { success = false, error = "用户已存在!" });
-            }
-            else
-            {
-                return Json(new { success = true });
-            }
-        }
-
-        [EnableCors("APICors")]
-        [HttpGet]
-        [HttpPost]
+        [HttpPost("/register", Name = "Register")]
         public ActionResult Register(UserInfo registerUser)
         {
             var checkUser = userDataDapper.FindUser(registerUser.UserName);
             if (checkUser != null)
             {
-                return Json(new { success = false, error = "用户已存在!" });
+                return Ok(new { success = false, error = "用户已存在!" });
             }
             try
             {
@@ -91,19 +70,18 @@ namespace HouseCrawler.Web.API.Controllers
                 emailService.Send(email);
                 registerUser.ActivatedCode = token;
                 userDataDapper.InsertUser(registerUser);
-                return Json(new { success = true, message = "注册成功!" });
+                return Ok(new { success = true, message = "注册成功!" });
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, error = ex.ToString() });
+                return Ok(new { success = false, error = ex.ToString() });
             }
 
 
         }
 
         [EnableCors("APICors")]
-        [HttpGet]
-        [HttpPost]
+        [HttpPost("", Name = "Login")]
         public ActionResult Login(UserInfo loginUser)
         {
             var userInfo = userDataDapper.FindUser(loginUser.UserName);
@@ -113,31 +91,31 @@ namespace HouseCrawler.Web.API.Controllers
                 {
                     string token = encryptionTools.Crypt($"{userInfo.ID}|{userInfo.UserName}");
                     userService.WriteUserToken(userInfo, token);
-                    return Json(new { success = true, token = token, messgae = "登录成功!", data = userInfo });
+                    return Ok(new { success = true, token = token, messgae = "登录成功!", data = userInfo });
                 }
                 else
                 {
-                    return Json(new { success = false, error = "密码错误!" });
+                    return Ok(new { success = false, error = "密码错误!" });
                 }
             }
             else
             {
-                return Json(new { success = false, error = "找不到用户信息或密码错误!" });
+                return Ok(new { success = false, error = "找不到用户信息或密码错误!" });
             }
 
         }
 
         [EnableCors("APICors")]
-        [HttpGet]
-        [HttpPost]
+        [HttpPost("/{userId}", Name = "Info")]
+        [HttpGet("/{userId}", Name = "Info")]
         public ActionResult Info(long userId, [FromHeader] string token)
         {
             var userInfo = userService.GetUserInfo(userId, token);
             if (userInfo != null)
             {
-                return Json(new { success = true, data = userInfo });
+                return Ok(new { success = true, data = userInfo });
             }
-            return Json(new { success = false, error = "用户不存在/鉴权失败!" });
+            return Ok(new { success = false, error = "用户不存在/鉴权失败!" });
         }
     }
 }
