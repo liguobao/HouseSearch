@@ -23,7 +23,7 @@ namespace HouseCrawler.Web.Service
         public UserInfo GetUserInfo(long userId, string token)
         {
             var userToken = redisService.ReadCache("user_token_" + userId, 0);
-            if (userToken == token)
+            if (userToken != null && userToken == token)
             {
                 var userJson = redisService.ReadCache("user_" + userId, 0);
                 return JsonConvert.DeserializeObject<UserInfo>(userJson);

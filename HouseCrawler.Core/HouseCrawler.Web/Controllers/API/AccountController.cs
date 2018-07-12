@@ -47,8 +47,12 @@ namespace HouseCrawler.Web.API.Controllers
 
         [EnableCors("APICors")]
         [HttpPost("/register", Name = "Register")]
-        public ActionResult Register(UserInfo registerUser)
+        public ActionResult Register([FromBody]UserSave registerUser)
         {
+            if (registerUser == null || string.IsNullOrEmpty(registerUser.Email) || string.IsNullOrEmpty(registerUser.UserName))
+            {
+                return Ok(new { success = false, error = "用户名/用户邮箱不能为空." });
+            }
             var checkUser = userDataDapper.FindUser(registerUser.UserName);
             if (checkUser != null)
             {
@@ -68,8 +72,12 @@ namespace HouseCrawler.Web.API.Controllers
                 email.Subject = "地图找租房-激活账号";
                 email.ReceiverName = registerUser.UserName;
                 emailService.Send(email);
-                registerUser.ActivatedCode = token;
-                userDataDapper.InsertUser(registerUser);
+                var insertUser = new UserInfo();
+                insertUser.Email = registerUser.Email;
+                insertUser.UserName = registerUser.UserName;
+                insertUser.Password = insertUser.Password;
+                insertUser.ActivatedCode = token;
+                userDataDapper.InsertUser(insertUser);
                 return Ok(new { success = true, message = "注册成功!" });
             }
             catch (Exception ex)
@@ -82,10 +90,14 @@ namespace HouseCrawler.Web.API.Controllers
 
         [EnableCors("APICors")]
         [HttpPost("", Name = "Login")]
-        public ActionResult Login(UserInfo loginUser)
+        public ActionResult Login([FromBody]UserSave loginUser)
         {
+            if (loginUser == null || string.IsNullOrEmpty(loginUser.UserName))
+            {
+                return Ok(new { success = false, error = "用户名/用户邮箱不能为空." });
+            }
             var userInfo = userDataDapper.FindUser(loginUser.UserName);
-            if (loginUser != null)
+            if (userInfo != null)
             {
                 if (userInfo.Password == Tools.GetMD5(loginUser.Password))
                 {
