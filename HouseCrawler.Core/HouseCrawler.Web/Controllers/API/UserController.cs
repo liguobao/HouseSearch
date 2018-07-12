@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Cors;
 using Newtonsoft.Json;
 
-namespace HouseCrawler.Web.Controllers
+namespace HouseCrawler.Web.API.Controllers
 {
 
     public class UserController : Controller

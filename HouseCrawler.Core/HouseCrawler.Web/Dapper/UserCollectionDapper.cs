@@ -56,7 +56,6 @@ namespace HouseCrawler.Web
             }
         }
 
-
         public void RemoveByIDAndUserID(long id, long userID)
         {
             using (IDbConnection dbConnection = GetConnection())
