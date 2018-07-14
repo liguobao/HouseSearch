@@ -16,13 +16,21 @@ dotnet run;
 
 ## 项目文件说明
 
-### Controllers
+### Common
 
-MVC中的Controller,继承于Controller,REST API或者普通Controller都在这里面
+公共方法类都在这里,一些工具类也在这里
+
+### Crawlers
+
+爬虫类,爬虫逻辑基本都在这里
 
 ### Dapper
 
 数据库访问Dapper,把N多的手写SQL全部封装成不同的Dapper,类似mybatis的mapping
+
+### Controllers
+
+MVC中的Controller,继承于Controller,REST API或者普通Controller都在这里面
 
 ### Jobs
 
@@ -36,11 +44,11 @@ MVC中的Controller,继承于Controller,REST API或者普通Controller都在这�
 
 前端代码:CSS + JS + 其他静态资源,View会使用这些文件
 
-### Views(暂无)
+### Views
 
 一般Controller都有自己的对应的View文件夹,用于存放不同的Controller View
 
-### Models(暂无)
+### Models
 
 MVC中的M,一般是View中使用的Model,不复杂的话DBModel和ViewModel可以共用
 
