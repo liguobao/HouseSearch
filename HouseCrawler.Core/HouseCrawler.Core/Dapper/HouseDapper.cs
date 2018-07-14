@@ -116,46 +116,6 @@ namespace HouseCrawler.Core
             return houseList;
         }
 
-        public IEnumerable<BaseHouseInfo> Search(string cityName, string source = "",
-            int houseCount = 500, int intervalDay = 7, string keyword = "",
-            bool refresh = false, int page = 0)
-        {
-            string redisKey = $"{cityName}-{source}-{intervalDay}-{houseCount}-{keyword}-{page}";
-            var houses = new List<BaseHouseInfo>();
-            if (!refresh)
-            {
-                houses = redis.ReadSearchCache(redisKey);
-                if (houses != null && houses.Count > 0)
-                {
-                    return houses;
-                }
-            }
-            using (IDbConnection dbConnection = GetConnection())
-            {
-                dbConnection.Open();
-                string search_SQL = $"SELECT * from { ConstConfigurationName.GetTableName(source)} where 1=1 " +
-                    $"and LocationCityName = @LocationCityName and  PubTime >= @PubTime";
-                if (!string.IsNullOrEmpty(keyword))
-                {
-                    search_SQL = search_SQL + " and (HouseText like @KeyWord or HouseLocation like @KeyWord) ";
-                }
-                search_SQL = search_SQL + $" order by PubTime desc limit {houseCount * page}, {houseCount} ";
-                houses = dbConnection.Query<BaseHouseInfo>(search_SQL,
-                    new
-                    {
-                        LocationCityName = cityName,
-                        KeyWord = $"%{keyword}%",
-                        PubTime = DateTime.Now.Date.AddDays(-intervalDay)
-                    }).ToList();
-                if (houses != null && houses.Count > 0)
-                {
-                    redis.WriteSearchCache(redisKey, houses);
-                }
-
-                return houses;
-            }
-        }
-
 
         public IEnumerable<BaseHouseInfo> SearchHouses(HouseSearchCondition condition)
         {

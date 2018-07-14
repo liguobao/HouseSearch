@@ -52,8 +52,21 @@ namespace HouseCrawler.Web
         {
             get
             {
-                string queryText = $"SELECT * from { ConstConfigurationName.GetTableName(this.Source)} where 1=1 " +
-                   $"and LocationCityName = @CityName and  PubTime >= @PubTime";
+
+                string queryText = @"SELECT Id,
+                                            HouseOnlineURL,
+                                            HouseTitle,
+                                            HouseLocation,
+                                            DisPlayPrice,
+                                            PubTime,
+                                            HousePrice,
+                                            LocationCityName,
+                                            Source,
+                                            PicURLs,
+                                            IsAnalyzed,
+                                            Status"
+                                   + $" from { ConstConfigurationName.GetTableName(this.Source)} where 1=1 "
+                                   + $" and LocationCityName = @CityName and  PubTime >= @PubTime ";
                 if (!string.IsNullOrEmpty(this.Keyword))
                 {
                     queryText = queryText + " and (HouseText like @LikeKeyWord or HouseLocation like @LikeKeyWord) ";

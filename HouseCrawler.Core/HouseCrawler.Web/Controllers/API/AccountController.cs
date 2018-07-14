@@ -78,7 +78,10 @@ namespace HouseCrawler.Web.API.Controllers
                 insertUser.Password = insertUser.Password;
                 insertUser.ActivatedCode = token;
                 userDataDapper.InsertUser(insertUser);
-                return Ok(new { success = true, message = "注册成功!" });
+                var userInfo = userDataDapper.FindUser(insertUser.UserName);
+                string loginToken = encryptionTools.Crypt($"{userInfo.ID}|{userInfo.UserName}");
+                userService.WriteUserToken(userInfo, loginToken);
+                return Ok(new { success = true, message = "注册成功!", token = loginToken, data = userInfo });
             }
             catch (Exception ex)
             {
