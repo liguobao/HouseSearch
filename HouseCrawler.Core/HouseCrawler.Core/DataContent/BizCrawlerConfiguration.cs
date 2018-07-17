@@ -44,6 +44,8 @@ namespace HouseCrawler.Core
 
         public static string Beike = "beike";
 
+        public static string Chengdufgj = "chengdufgj";
+
         public static string CityHouseInfo = "cityhouse";
 
 
@@ -58,6 +60,7 @@ namespace HouseCrawler.Core
                 { CCBHouse,"CCB建融家园"},
                 { MoguHouse, "蘑菇租房" },
                 { Beike, "贝壳租房" },
+                { Chengdufgj, "成都房建局" },
                 { CityHouseInfo,"城市租房信息"},
             };
 
@@ -66,15 +69,16 @@ namespace HouseCrawler.Core
 
 
         public static Dictionary<String, String> HouseTableNameDic = new Dictionary<string, string>() {
-            { ConstConfigurationName.Douban, "DoubanHouseInfos"},
-            { ConstConfigurationName.HuZhuZuFang, "MutualHouseInfos"},
-            { ConstConfigurationName.PinPaiGongYu, "ApartmentHouseInfos"},
-            { ConstConfigurationName.CCBHouse, "CCBHouseInfos"},
-            { ConstConfigurationName.Zuber, "ZuberHouseInfos"},
-            { ConstConfigurationName.MoguHouse, "MoguHouseInfos"},
-            { ConstConfigurationName.HKSpacious, "HKHouseInfos"},
-            { ConstConfigurationName.BaiXing, "BaiXingHouseInfos"},
-            { ConstConfigurationName.Beike,"BeiKeHouseInfos"}
+            { Douban, "DoubanHouseInfos"},
+            { HuZhuZuFang, "MutualHouseInfos"},
+            { PinPaiGongYu, "ApartmentHouseInfos"},
+            { CCBHouse, "CCBHouseInfos"},
+            { Zuber, "ZuberHouseInfos"},
+            { MoguHouse, "MoguHouseInfos"},
+            { HKSpacious, "HKHouseInfos"},
+            { BaiXing, "BaiXingHouseInfos"},
+            { Beike,"BeiKeHouseInfos"},
+            { Chengdufgj,"ChengduHouseInfos"}
         };
 
         public static string GetTableName(string source)

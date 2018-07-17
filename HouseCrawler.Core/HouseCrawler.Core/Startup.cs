@@ -86,6 +86,8 @@ namespace HouseCrawler.Core
             services.AddSingleton<ZuberHouseCrawler, ZuberHouseCrawler>();
             services.AddSingleton<BaiXingHouseCrawler, BaiXingHouseCrawler>();
             services.AddSingleton<BeikeHouseCrawler, BeikeHouseCrawler>();
+            services.AddSingleton<ChengduZufangCrawler, ChengduZufangCrawler>();
+            
 
             #endregion
         }
