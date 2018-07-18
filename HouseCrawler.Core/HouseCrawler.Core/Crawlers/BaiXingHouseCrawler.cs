@@ -54,16 +54,6 @@ namespace HouseCrawler.Core
             LogHelper.Info($"BaiXingHouseCrawler finish.本次共爬取到{captrueHouseCount}条数据，耗时{ (DateTime.Now - startTime).TotalSeconds}秒。");
         }
 
-        public List<BaseHouseInfo> test()
-        {
-            string shortCutName = "maoming";
-            var pageNum = 1;
-            var url = $"http://{shortCutName}.baixing.com/zhengzu/?grfy=1&page={pageNum}";
-            var houseHTML = GetHouseHTML(url);
-            var houses = GetDataFromHMTL("", "", houseHTML);
-            Console.WriteLine(houses.Count);
-            return houses;
-        }
 
         private static List<BaseHouseInfo> GetDataFromHMTL(string shortCutName, string cityName, string houseHTML)
         {

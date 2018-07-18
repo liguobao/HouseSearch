@@ -120,12 +120,6 @@ namespace HouseCrawler.Core.Controllers
             return Json(new { success = true });
         }
 
-        public IActionResult RunBaiXing()
-        {
-            var list = baixing.test();
-
-            return Json(new { success = true, houses = list });
-        }
 
 
         public IActionResult StartGC()

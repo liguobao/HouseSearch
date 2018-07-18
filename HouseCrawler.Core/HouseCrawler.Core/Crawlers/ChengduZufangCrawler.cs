@@ -55,52 +55,16 @@ namespace HouseCrawler.Core
             if (string.IsNullOrEmpty(houseHTML))
                 return houseList;
             var htmlDoc = htmlParser.Parse(houseHTML);
-
             var houseItems = htmlDoc.QuerySelectorAll("div.pan-item.clearfix");
-
             if (!houseItems.Any())
                 return houseList;
             foreach (var item in houseItems)
             {
-                var disPlayPriceItem = item.QuerySelector("strong.rent-price");
-                if (disPlayPriceItem == null)
-                {
-                    disPlayPriceItem = item.QuerySelector("strong.current-price");
-                }
-                var disPlayPrice = disPlayPriceItem.TextContent.Replace("元/月", "").Replace("\n", "").Replace("当前价：", "").Trim();
-                int.TryParse(disPlayPrice, out var housePrice);
-                var houseLocation = "";
-                var locationItem = item.QuerySelectorAll("p").Where(p => !p.ClassList.Any()).FirstOrDefault();
-                if (locationItem != null)
-                {
-                    houseLocation = locationItem.TextContent.Replace("\n", "").Replace(" ", "").Trim();
-                }
+                int housePrice = GetHousePrice(item);
+                string houseLocation = GetLocation(item);
                 var titleItem = item.QuerySelector("h2");
-                var pubTimeItems = item.QuerySelectorAll("p.p_gx");
-                var pubTimetext = "";
-                if (pubTimeItems != null && pubTimeItems.Count() > 0)
-                {
-                    if (pubTimeItems.Count() > 1)
-                    {
-                        pubTimetext = pubTimeItems[1].TextContent.Replace("\n", "").Replace("发布时间：", "").Trim();
-                    }
-                    else
-                    {
-                        pubTimetext = pubTimeItems[0].TextContent.Replace("\n", "").Replace("发布时间：", "").Trim();
-                    }
-                }
-                var pubTime = DateTime.Now;
-                DateTime.TryParse(pubTimetext, out pubTime);
-                var hrefList = titleItem.QuerySelector("a").GetAttribute("href").Split(";");
-                var houseURL = "";
-                if (hrefList.Count() > 0)
-                {
-                    houseURL = hrefList[0];
-                }
-                else
-                {
-                    houseURL = titleItem.QuerySelector("a").GetAttribute("href");
-                }
+                var pubTime = GetPubTime(item);
+                string houseURL = GetHouseURL(titleItem);
                 var houseInfo = new BaseHouseInfo
                 {
                     HouseTitle = titleItem.TextContent.Replace("\n", "").Trim() + houseLocation,
@@ -117,6 +81,66 @@ namespace HouseCrawler.Core
                 houseList.Add(houseInfo);
             }
             return houseList;
+        }
+
+        private static string GetHouseURL(IElement titleItem)
+        {
+            var hrefList = titleItem.QuerySelector("a").GetAttribute("href").Split(";");
+            var houseURL = "";
+            if (hrefList.Count() > 0)
+            {
+                houseURL = hrefList[0];
+            }
+            else
+            {
+                houseURL = titleItem.QuerySelector("a").GetAttribute("href");
+            }
+
+            return houseURL;
+        }
+
+        private static DateTime GetPubTime(IElement item)
+        {
+            var pubTimeItems = item.QuerySelectorAll("p.p_gx");
+            var pubTimetext = "";
+            if (pubTimeItems != null && pubTimeItems.Count() > 0)
+            {
+                if (pubTimeItems.Count() > 1)
+                {
+                    pubTimetext = pubTimeItems[1].TextContent.Replace("\n", "").Replace("发布时间：", "").Trim();
+                }
+                else
+                {
+                    pubTimetext = pubTimeItems[0].TextContent.Replace("\n", "").Replace("发布时间：", "").Trim();
+                }
+            }
+            var pubTime = DateTime.Now;
+            DateTime.TryParse(pubTimetext, out pubTime);
+            return pubTime;
+        }
+
+        private static string GetLocation(IElement item)
+        {
+            var houseLocation = "";
+            var locationItem = item.QuerySelectorAll("p").Where(p => !p.ClassList.Any()).FirstOrDefault();
+            if (locationItem != null)
+            {
+                houseLocation = locationItem.TextContent.Replace("\n", "").Replace(" ", "").Trim();
+            }
+
+            return houseLocation;
+        }
+
+        private static int GetHousePrice(IElement item)
+        {
+            var disPlayPriceItem = item.QuerySelector("strong.rent-price");
+            if (disPlayPriceItem == null)
+            {
+                disPlayPriceItem = item.QuerySelector("strong.current-price");
+            }
+            var disPlayPrice = disPlayPriceItem.TextContent.Replace("元/月", "").Replace("\n", "").Replace("当前价：", "").Trim();
+            int.TryParse(disPlayPrice, out var housePrice);
+            return housePrice;
         }
 
         private static String GetPhotos(IElement element)
