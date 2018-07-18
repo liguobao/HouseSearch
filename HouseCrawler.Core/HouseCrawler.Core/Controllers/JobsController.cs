@@ -2,7 +2,6 @@
 using HouseCrawler.Core.Models;
 using HouseCrawler.Core.Jobs;
 using StackExchange.Redis;
-using HouseCrawler.Core.DataContent;
 using System;
 using HouseCrawler.Core.Common;
 using HouseCrawler.Core.Service;

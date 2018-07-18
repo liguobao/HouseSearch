@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HouseCrawler.Web
 {
-    public static class ConstConfigurationName
+    public static class ConstConfigName
     {
         public static string Douban = "douban";
 
@@ -71,9 +71,9 @@ namespace HouseCrawler.Web
 
         public static string GetTableName(string source)
         {
-            if (ConstConfigurationName.HouseTableNameDic.ContainsKey(source))
+            if (ConstConfigName.HouseTableNameDic.ContainsKey(source))
             {
-                return ConstConfigurationName.HouseTableNameDic[source];
+                return ConstConfigName.HouseTableNameDic[source];
             }
 
             return "HouseInfos";

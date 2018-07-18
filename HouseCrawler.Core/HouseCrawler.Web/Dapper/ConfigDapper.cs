@@ -10,10 +10,10 @@ using System.Linq;
 
 namespace HouseCrawler.Web
 {
-    public class ConfigurationDapper
+    public class ConfigDapper
     {
         private APPConfiguration configuration;
-        public ConfigurationDapper(IOptions<APPConfiguration> configuration)
+        public ConfigDapper(IOptions<APPConfiguration> configuration)
         {
             this.configuration = configuration.Value;
         }
@@ -23,7 +23,7 @@ namespace HouseCrawler.Web
             return new MySqlConnection(configuration.MySQLConnectionString);
         }
 
-        public void Insert(BizCrawlerConfiguration conf)
+        public void Insert(CrawlerConfiguration conf)
         {
             string sqlText = @"INSERT INTO `housecrawler`.`CrawlerConfigurations`
              (`ConfigurationName`, `ConfigurationValue`, `ConfigurationKey`, `IsEnabled`) 

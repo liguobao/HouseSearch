@@ -18,7 +18,7 @@ namespace HouseCrawler.Web.Models
         {
             get
             {
-                return ConstConfigurationName.ConvertToDisPlayName(this.Source);
+                return ConstConfigName.ConvertToDisPlayName(this.Source);
             }
         }
 

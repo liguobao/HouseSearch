@@ -66,7 +66,7 @@ namespace HouseCrawler.Web
         {
             #region Dapper
             services.AddSingleton<HouseDapper, HouseDapper>();
-            services.AddSingleton<ConfigurationDapper, ConfigurationDapper>();
+            services.AddSingleton<ConfigDapper, ConfigDapper>();
             services.AddSingleton<UserCollectionDapper, UserCollectionDapper>();
             services.AddSingleton<UserDataDapper, UserDataDapper>();
             services.AddSingleton<BaseDapper, BaseDapper>();

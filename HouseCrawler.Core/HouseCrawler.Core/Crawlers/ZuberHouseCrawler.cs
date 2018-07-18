@@ -4,7 +4,6 @@ using System.Globalization;
 using System.Linq;
 using HouseCrawler.Core.Models;
 using HouseCrawler.Core.Common;
-using HouseCrawler.Core.DataContent;
 using RestSharp;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -20,14 +19,16 @@ namespace HouseCrawler.Core
 
 
         private HouseDapper houseDapper;
-        public ZuberHouseCrawler(HouseDapper houseDapper)
+        private ConfigDapper configDapper;
+        public ZuberHouseCrawler(HouseDapper houseDapper, ConfigDapper configDapper)
         {
             this.houseDapper = houseDapper;
+            this.configDapper = configDapper;
         }
 
         public void Run()
         {
-            foreach (var doubanConf in houseDapper.GetConfigurationList(ConstConfigurationName.Zuber))
+            foreach (var doubanConf in configDapper.GetList(ConstConfigName.Zuber))
             {
                 LogHelper.RunActionNotThrowEx(() =>
                 {
@@ -77,7 +78,7 @@ namespace HouseCrawler.Core
                         HousePrice = housePrice,
                         IsAnalyzed = true,
                         DisPlayPrice = housePrice > 0 ? $"{housePrice}元" : "",
-                        Source = ConstConfigurationName.Zuber,
+                        Source = ConstConfigName.Zuber,
                         LocationCityName = cityName,
                         Status = 1,
                         PicURLs = GetPhotos(room),

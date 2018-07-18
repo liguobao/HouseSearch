@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using HouseCrawler.Core.Models;
 using HouseCrawler.Core.Common;
-using HouseCrawler.Core.DataContent;
 using RestSharp;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -14,9 +11,12 @@ namespace HouseCrawler.Core
     public class DoubanHouseCrawler
     {
         private HouseDapper houseDapper;
-        public DoubanHouseCrawler(HouseDapper houseDapper)
+
+        private ConfigDapper configDapper;
+        public DoubanHouseCrawler(HouseDapper houseDapper, ConfigDapper configDapper)
         {
             this.houseDapper = houseDapper;
+            this.configDapper = configDapper;
         }
 
         public void Run()
@@ -25,7 +25,7 @@ namespace HouseCrawler.Core
             {
                 int captrueHouseCount = 0;
                 DateTime startTime = DateTime.Now;
-                foreach (var doubanConf in houseDapper.GetConfigurationList(ConstConfigurationName.Douban))
+                foreach (var doubanConf in configDapper.GetList(ConstConfigName.Douban))
                 {
                     LogHelper.RunActionNotThrowEx(() =>
                     {
@@ -73,7 +73,7 @@ namespace HouseCrawler.Core
                     HousePrice = housePrice,
                     IsAnalyzed = true,
                     DisPlayPrice = housePrice > 0 ? $"{housePrice}元" : "",
-                    Source = ConstConfigurationName.Douban,
+                    Source = ConstConfigName.Douban,
                     LocationCityName = cityName,
                     Status = 1,
                     PicURLs = JsonConvert.SerializeObject(photos),

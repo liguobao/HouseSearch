@@ -1,23 +1,17 @@
-﻿//============================================================
-//http://codelover.link author:李国宝
-//============================================================
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
-using HouseCrawler.Web.Common;
+using HouseCrawler.Core.Common;
+using Nest;
 using Newtonsoft.Json;
 
-namespace HouseCrawler.Web
+namespace HouseCrawler.Core
 {
-    [Serializable()]
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public class HouseInfo
+    [ElasticsearchType(IdProperty = "HouseOnlineURL")]
+    public class BaseHouseInfo
     {
+
         public long Id { get; set; }
 
         /// <summary>
@@ -96,7 +90,8 @@ namespace HouseCrawler.Web
                 }
                 catch (Exception ex)
                 {
-                    LogHelper.Error("Get Pictures error", ex, this.HouseOnlineURL);
+                    LogHelper.Info(this.HouseOnlineURL);
+                    LogHelper.Error("Get Pictures error", ex);
                     return new List<string>();
                 }
             }
@@ -123,9 +118,16 @@ namespace HouseCrawler.Web
         {
             get
             {
-                return ConstConfigurationName.ConvertToDisPlayName(this.Source);
+                return ConstConfigName.ConvertToDisPlayName(this.Source);
             }
         }
 
+        public DateTime PubDate
+        {
+            get
+            {
+                return this.PubTime.Date;
+            }
+        }
     }
 }

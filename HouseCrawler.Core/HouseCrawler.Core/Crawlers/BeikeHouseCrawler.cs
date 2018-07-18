@@ -4,7 +4,6 @@ using System.Globalization;
 using System.Linq;
 using HouseCrawler.Core.Models;
 using HouseCrawler.Core.Common;
-using HouseCrawler.Core.DataContent;
 using RestSharp;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -15,9 +14,9 @@ namespace HouseCrawler.Core
     {
         private HouseDapper houseDapper;
 
-        private ConfigurationDapper configDapper;
+        private ConfigDapper configDapper;
 
-        public BeikeHouseCrawler(HouseDapper houseDapper, ConfigurationDapper configDapper)
+        public BeikeHouseCrawler(HouseDapper houseDapper, ConfigDapper configDapper)
         {
             this.houseDapper = houseDapper;
             this.configDapper = configDapper;
@@ -29,7 +28,7 @@ namespace HouseCrawler.Core
             {
                 int captrueHouseCount = 0;
                 DateTime startTime = DateTime.Now;
-                foreach (var config in configDapper.GetConfigurationList(ConstConfigurationName.Beike))
+                foreach (var config in configDapper.GetList(ConstConfigName.Beike))
                 {
                     LogHelper.RunActionNotThrowEx(() =>
                     {
@@ -76,7 +75,7 @@ namespace HouseCrawler.Core
                     HousePrice = housePrice,
                     IsAnalyzed = true,
                     DisPlayPrice = housePrice > 0 ? $"{housePrice}元" : "",
-                    Source = ConstConfigurationName.Beike,
+                    Source = ConstConfigName.Beike,
                     LocationCityName = cityName,
                     Status = 1,
                     PicURLs = JsonConvert.SerializeObject(new List<string>()),
@@ -167,7 +166,7 @@ namespace HouseCrawler.Core
             request.AddHeader("page-schema", "SelectCityActivity");
             IRestResponse response = client.Execute(request);
             var resultJObject = JsonConvert.DeserializeObject<JObject>(response.Content);
-            var configs = new List<BizCrawlerConfiguration>();
+            var configs = new List<CrawlerConfiguration>();
             foreach (var tab in resultJObject["data"]["tab_list"])
             {
                 if (tab["title"] != null && tab["title"].ToString() == "海外城市")
@@ -181,7 +180,7 @@ namespace HouseCrawler.Core
                     var abbr = city["abbr"].ToString();
 
                     var configValue = "{'citySortName':'" + abbr + "','cityName':'" + name + "','cityID':'" + cityId + "','pagecount':10}";
-                    var config = new BizCrawlerConfiguration()
+                    var config = new CrawlerConfiguration()
                     {
                         ConfigurationValue = configValue,
                         ConfigurationName = "beike",

@@ -38,7 +38,7 @@ namespace HouseCrawler.Web
                 foreach (var houseSource in houseSources)
                 {
                     //建荣家园数据质量比较差,默认不出
-                    if (houseSource == ConstConfigurationName.CCBHouse)
+                    if (houseSource == ConstConfigName.CCBHouse)
                     {
                         continue;
                     }
@@ -86,7 +86,7 @@ namespace HouseCrawler.Web
             {
                 dbConnection.Open();
 
-                return dbConnection.Query<HouseInfo>($"SELECT * FROM {ConstConfigurationName.GetTableName(source)} where ID = @ID",
+                return dbConnection.Query<HouseInfo>($"SELECT * FROM {ConstConfigName.GetTableName(source)} where ID = @ID",
                   new
                   {
                       ID = houseID
@@ -104,9 +104,9 @@ namespace HouseCrawler.Web
             {
                 dbConnection.Open();
                 var list = new List<Models.HouseDashboard>();
-                foreach (var key in ConstConfigurationName.HouseTableNameDic.Keys)
+                foreach (var key in ConstConfigName.HouseTableNameDic.Keys)
                 {
-                    var tableName = ConstConfigurationName.GetTableName(key);
+                    var tableName = ConstConfigName.GetTableName(key);
                     var dashboards = dbConnection.Query<HouseDashboard>(@"SELECT 
                                 LocationCityName AS CityName,
                                 Source, COUNT(id) AS HouseSum, 

@@ -1,6 +1,5 @@
 ﻿using AngleSharp.Parser.Html;
 using HouseCrawler.Core.Common;
-using HouseCrawler.Core.DataContent;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
@@ -94,7 +93,7 @@ namespace HouseCrawler.Core
                     HouseOnlineURL = onlineUrl,
                     DisPlayPrice = disPlayPrice,
                     HouseLocation = houseLocation,
-                    Source = ConstConfigurationName.HKSpacious,
+                    Source = ConstConfigName.HKSpacious,
                     HousePrice = housePrice,
                     HouseText = element.InnerHtml,
                     LocationCityName = "香港",

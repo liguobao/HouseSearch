@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HouseCrawler.Web
 {
-    public class BizCrawlerConfiguration
+    public class CrawlerConfiguration
     {
         public long Id { get; set; }
 

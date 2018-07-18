@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using HouseCrawler.Core.DataContent;
 using HouseCrawler.Core.Service;
 using Microsoft.Extensions.Options;
 using Pomelo.AspNetCore.TimedJob;

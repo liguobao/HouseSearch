@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using AngleSharp.Parser.Html;
 using Newtonsoft.Json;
-using HouseCrawler.Core.DataContent;
 using RestSharp;
 using HouseCrawler.Core.Common;
 using AngleSharp.Dom;
@@ -16,9 +15,12 @@ namespace HouseCrawler.Core
         private static HtmlParser htmlParser = new HtmlParser();
 
         private HouseDapper houseDapper;
-        public PinPaiGongYuHouseCrawler(HouseDapper houseDapper)
+
+        private ConfigDapper configDapper;
+        public PinPaiGongYuHouseCrawler(HouseDapper houseDapper, ConfigDapper configDapper)
         {
             this.houseDapper = houseDapper;
+            this.configDapper = configDapper;
         }
 
 
@@ -27,7 +29,7 @@ namespace HouseCrawler.Core
             int captrueHouseCount = 0;
             DateTime startTime = DateTime.Now;
 
-            foreach (var crawlerConfiguration in houseDapper.GetConfigurationList(ConstConfigurationName.PinPaiGongYu)
+            foreach (var crawlerConfiguration in configDapper.GetList(ConstConfigName.PinPaiGongYu)
             .Where(c => c.IsEnabled).ToList())
             {
                 LogHelper.RunActionNotThrowEx(() =>
@@ -62,7 +64,7 @@ namespace HouseCrawler.Core
                     HouseOnlineURL = onlineUrl,
                     DisPlayPrice = info["priceTitle"].ToString(),
                     HouseLocation = GetHouseLocation(info),
-                    Source = ConstConfigurationName.PinPaiGongYu,
+                    Source = ConstConfigName.PinPaiGongYu,
                     HousePrice = housePrice,
                     HouseText = info.ToString(),
                     LocationCityName = cityName,
@@ -1887,16 +1889,16 @@ namespace HouseCrawler.Core
             dynamic lstCity = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(cityJsonString);
             if (lstCity != null)
             {
-                var lst = new List<BizCrawlerConfiguration>();
+                var lst = new List<CrawlerConfiguration>();
                 foreach (var cityInfo in lstCity)
                 {
                     if (cityInfo?.cityName?.Value != null && cityInfo.shortCut?.Value != null)
                     {
-                        lst.Add(new BizCrawlerConfiguration()
+                        lst.Add(new CrawlerConfiguration()
                         {
                             ConfigurationKey = 0,
                             ConfigurationValue = $"{{'cityname':'{Convert.ToString(cityInfo.cityName.Value)}','shortcutname':'{Convert.ToString(cityInfo.shortCut.Value)}','pagecount':10}}",
-                            ConfigurationName = ConstConfigurationName.PinPaiGongYu,
+                            ConfigurationName = ConstConfigName.PinPaiGongYu,
                             IsEnabled = true,
                         });
                     }

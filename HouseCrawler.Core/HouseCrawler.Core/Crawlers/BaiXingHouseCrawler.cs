@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using AngleSharp.Parser.Html;
 using Newtonsoft.Json;
-using HouseCrawler.Core.DataContent;
 using RestSharp;
 using HouseCrawler.Core.Common;
 using System.Data;
@@ -21,9 +20,13 @@ namespace HouseCrawler.Core
         private static HtmlParser htmlParser = new HtmlParser();
 
         private HouseDapper houseDapper;
-        public BaiXingHouseCrawler(HouseDapper houseDapper)
+
+        private ConfigDapper configDapper;
+        public BaiXingHouseCrawler(HouseDapper houseDapper,
+        ConfigDapper configDapper)
         {
             this.houseDapper = houseDapper;
+            this.configDapper = configDapper;
         }
 
 
@@ -31,7 +34,7 @@ namespace HouseCrawler.Core
         {
             int captrueHouseCount = 0;
             DateTime startTime = DateTime.Now;
-            foreach (var crawlerConfiguration in houseDapper.GetConfigurationList(ConstConfigurationName.BaiXing).ToList())
+            foreach (var crawlerConfiguration in configDapper.GetList(ConstConfigName.BaiXing).ToList())
             {
                 LogHelper.RunActionNotThrowEx(() =>
                 {
@@ -70,7 +73,7 @@ namespace HouseCrawler.Core
             var htmlDoc = htmlParser.Parse(houseHTML);
 
             var houseItems = htmlDoc.QuerySelectorAll("li.listing-ad.item-regular");
-            
+
             if (!houseItems.Any())
                 return houseList;
             foreach (var item in houseItems)
@@ -101,7 +104,7 @@ namespace HouseCrawler.Core
                     HouseOnlineURL = adTitle.GetAttribute("href"),
                     DisPlayPrice = disPlayPrice,
                     HouseLocation = houseLocation,
-                    Source = ConstConfigurationName.BaiXing,
+                    Source = ConstConfigName.BaiXing,
                     HousePrice = housePrice,
                     HouseText = element.InnerHtml,
                     LocationCityName = cityName,
@@ -1419,16 +1422,16 @@ namespace HouseCrawler.Core
             dynamic lstCity = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(cityJsonString);
             if (lstCity != null)
             {
-                var lst = new List<BizCrawlerConfiguration>();
+                var lst = new List<CrawlerConfiguration>();
                 foreach (var cityInfo in lstCity)
                 {
                     if (cityInfo?.name?.Value != null && cityInfo.code?.Value != null)
                     {
-                        lst.Add(new BizCrawlerConfiguration()
+                        lst.Add(new CrawlerConfiguration()
                         {
                             ConfigurationKey = 0,
                             ConfigurationValue = $"{{'cityname':'{Convert.ToString(cityInfo.name.Value)}','shortcutname':'{Convert.ToString(cityInfo.code.Value)}','pagecount':5}}",
-                            ConfigurationName = ConstConfigurationName.BaiXing,
+                            ConfigurationName = ConstConfigName.BaiXing,
                             IsEnabled = true,
                         });
                     }

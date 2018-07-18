@@ -1,5 +1,4 @@
 ﻿using HouseCrawler.Core.Common;
-using HouseCrawler.Core.DataContent;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -18,18 +17,21 @@ namespace HouseCrawler.Core
 
         private APPConfiguration config;
 
-        public CCBHouesCrawler(HouseDapper houseDapper, IOptions<APPConfiguration> configuration)
+        private ConfigDapper configDapper;
+
+        public CCBHouesCrawler(HouseDapper houseDapper, IOptions<APPConfiguration> configuration,
+        ConfigDapper configDapper)
         {
             this.houseDapper = houseDapper;
             this.config = configuration.Value;
+            this.configDapper = configDapper;
         }
 
         public void Run()
         {
             int captrueHouseCount = 0;
             DateTime startTime = DateTime.Now;
-            foreach (var crawlerConfiguration in houseDapper
-            .GetConfigurationList(ConstConfigurationName.CCBHouse).ToList())
+            foreach (var crawlerConfiguration in configDapper.GetList(ConstConfigName.CCBHouse).ToList())
             {
                 LogHelper.RunActionNotThrowEx(() =>
                 {
@@ -39,7 +41,7 @@ namespace HouseCrawler.Core
             LogHelper.Info($"CCBHouesCrawler finish.本次共爬取到{captrueHouseCount}条数据，耗时{ (DateTime.Now - startTime).TotalSeconds}秒。");
         }
 
-        private int CaptureHouse(BizCrawlerConfiguration crawlerConfiguration)
+        private int CaptureHouse(CrawlerConfiguration crawlerConfiguration)
         {
             var confInfo = JsonConvert.DeserializeObject<dynamic>(crawlerConfiguration.ConfigurationValue);
             if (confInfo.shortcutname == null || string.IsNullOrEmpty(confInfo.shortcutname.Value))
@@ -80,7 +82,7 @@ namespace HouseCrawler.Core
                 houseInfo.HousePrice = item["totalPrice"].ToObject<Int32>();
                 houseInfo.DisPlayPrice = item["totalPrice"].ToString();
                 houseInfo.PubTime = item["publishTime"].ToObject<DateTime>();
-                houseInfo.Source = ConstConfigurationName.CCBHouse;
+                houseInfo.Source = ConstConfigName.CCBHouse;
                 houseList.Add(houseInfo);
             }
 
@@ -106,7 +108,7 @@ namespace HouseCrawler.Core
             return houseURL;
         }
 
-        private  string GetResultByAPI(string cityShortCutName, int page)
+        private string GetResultByAPI(string cityShortCutName, int page)
         {
             string formBody = $"_reqParams=apiKey%3D{config.CCBHomeAPIKey}%26city%3D{cityShortCutName}%26saleOrLease%3Dlease%26pageSize%3D50%26page%3D{page}%26propType%3D11%26tmflags%3D3&_interfaceUrl=%2Fhlsp%2Fcityhouse%2Fdeal%2Fsearch&_reqMethod=GET";
             var client = new RestClient("http://bankservice.home.ccb.com/LHECISM/LanHaiHttpResfulReqServlet");

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using HouseCrawler.Core.DataContent;
 using RestSharp;
 using HouseCrawler.Core.Common;
 
@@ -12,9 +11,12 @@ namespace HouseCrawler.Core
     public class PeopleRentingCrawler
     {
         private HouseDapper houseDapper;
-        public PeopleRentingCrawler(HouseDapper houseDapper)
+
+        private ConfigDapper configDapper;
+        public PeopleRentingCrawler(HouseDapper houseDapper, ConfigDapper configDapper)
         {
             this.houseDapper = houseDapper;
+            this.configDapper = configDapper;
         }
 
 
@@ -23,7 +25,7 @@ namespace HouseCrawler.Core
             int captrueHouseCount = 0;
             DateTime startTime = DateTime.Now;
 
-            var peopleRentingConf = houseDapper.GetConfigurationList(ConstConfigurationName.HuZhuZuFang)
+            var peopleRentingConf = configDapper.GetList(ConstConfigName.HuZhuZuFang)
             .FirstOrDefault();
 
             var pageCount = peopleRentingConf != null
@@ -64,7 +66,7 @@ namespace HouseCrawler.Core
                 houseInfo.LocationCityName = "上海";
                 houseInfo.PubTime = item["houseCreateTime"].ToObject<DateTime>();
                 houseInfo.PicURLs = item["bigPicUrls"].ToString();
-                houseInfo.Source = ConstConfigurationName.HuZhuZuFang;
+                houseInfo.Source = ConstConfigName.HuZhuZuFang;
                 houseList.Add(houseInfo);
             }
             return houseList;

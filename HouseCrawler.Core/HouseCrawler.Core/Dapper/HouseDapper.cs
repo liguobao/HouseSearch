@@ -39,7 +39,7 @@ namespace HouseCrawler.Core
             {
                 return;
             }
-            var tableName = ConstConfigurationName.GetTableName(list.FirstOrDefault().Source);
+            var tableName = ConstConfigName.GetTableName(list.FirstOrDefault().Source);
             using (IDbConnection dbConnection = GetConnection())
             {
                 dbConnection.Open();
@@ -76,9 +76,9 @@ namespace HouseCrawler.Core
             {
                 dbConnection.Open();
                 var list = new List<HouseDashboard>();
-                foreach (var key in ConstConfigurationName.HouseTableNameDic.Keys)
+                foreach (var key in ConstConfigName.HouseTableNameDic.Keys)
                 {
-                    var tableName = ConstConfigurationName.GetTableName(key);
+                    var tableName = ConstConfigName.GetTableName(key);
                     var dashboards = dbConnection.Query<HouseDashboard>(@"SELECT 
                                 LocationCityName AS CityName,
                                 Source, COUNT(id) AS HouseSum, 
@@ -96,12 +96,12 @@ namespace HouseCrawler.Core
         public List<BaseHouseInfo> QueryByTimeSpan(DateTime fromTime, DateTime toTime)
         {
             var houseList = new List<BaseHouseInfo>();
-            foreach (var key in ConstConfigurationName.HouseTableNameDic.Keys)
+            foreach (var key in ConstConfigName.HouseTableNameDic.Keys)
             {
                 using (IDbConnection dbConnection = GetConnection())
                 {
                     dbConnection.Open();
-                    string search_SQL = $"SELECT * from { ConstConfigurationName.GetTableName(key)} where " +
+                    string search_SQL = $"SELECT * from { ConstConfigName.GetTableName(key)} where " +
                         $" PubTime BETWEEN @FromTime AND @ToTime ";
                     search_SQL = search_SQL + $" order by PubTime desc";
                     var houses = dbConnection.Query<BaseHouseInfo>(search_SQL,
@@ -128,7 +128,7 @@ namespace HouseCrawler.Core
                 foreach (var houseSource in houseSources)
                 {
                     //建荣家园数据质量比较差,默认不出
-                    if (houseSource == ConstConfigurationName.CCBHouse)
+                    if (houseSource == ConstConfigName.CCBHouse)
                     {
                         continue;
                     }
@@ -169,20 +169,6 @@ namespace HouseCrawler.Core
         }
 
 
-        public List<BizCrawlerConfiguration> GetConfigurationList(string configurationName)
-        {
-            using (IDbConnection dbConnection = GetConnection())
-            {
-                dbConnection.Open();
-                return dbConnection.Query<BizCrawlerConfiguration>(@"SELECT * FROM housecrawler.CrawlerConfigurations 
-                where ConfigurationName=@ConfigurationName;", new
-                {
-                    ConfigurationName = configurationName
-                }).ToList();
-            }
-        }
-
-
         public List<HouseStat> GetHouseStatList(int intervalDay = 1)
         {
             List<HouseStat> houseStatList = new List<HouseStat>();
@@ -191,7 +177,7 @@ namespace HouseCrawler.Core
             using (IDbConnection dbConnection = GetConnection())
             {
                 dbConnection.Open();
-                foreach (var tableName in ConstConfigurationName.HouseTableNameDic.Values)
+                foreach (var tableName in ConstConfigName.HouseTableNameDic.Values)
                 {
                     houseStatList.AddRange(dbConnection.Query<HouseStat>(@"SELECT COUNT(*) AS HouseSum,
                     MAX(PubTime) AS LastPubTime,

@@ -29,7 +29,7 @@ namespace HouseCrawler.Web
                     HouseOnlineURL = topic["share_url"].ToString(),
                     HouseText = topic["content"].ToString(),
                     IsAnalyzed = true,
-                    Source = ConstConfigurationName.Douban,
+                    Source = ConstConfigName.Douban,
                     LocationCityName = cityName,
                     Status = 1,
                     PubTime = topic["created"].ToObject<DateTime>(),

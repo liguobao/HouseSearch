@@ -22,14 +22,14 @@ namespace HouseCrawler.Web.API.Controllers
 
         private HouseDashboardService houseDashboardService;
 
-        private ConfigurationDapper configurationDapper;
+        private ConfigDapper configurationDapper;
 
         private UserCollectionDapper userCollectionDapper;
 
 
         public HousesController(HouseDapper houseDapper,
                               HouseDashboardService houseDashboardService,
-                              ConfigurationDapper configurationDapper,
+                              ConfigDapper configurationDapper,
                               UserCollectionDapper userCollectionDapper)
         {
             this.houseDapper = houseDapper;

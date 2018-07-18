@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HouseCrawler.Core
 {
-    public class BizCrawlerConfiguration
+    public class CrawlerConfiguration
     {
         public long Id { get; set; }
 
@@ -23,7 +23,7 @@ namespace HouseCrawler.Core
         public int ConfigurationKey { get; set; }
     }
 
-    public static class ConstConfigurationName
+    public static class ConstConfigName
     {
         public static string Douban = "douban";
 
@@ -83,9 +83,9 @@ namespace HouseCrawler.Core
 
         public static string GetTableName(string source)
         {
-            if (ConstConfigurationName.HouseTableNameDic.ContainsKey(source))
+            if (ConstConfigName.HouseTableNameDic.ContainsKey(source))
             {
-                return ConstConfigurationName.HouseTableNameDic[source];
+                return ConstConfigName.HouseTableNameDic[source];
             }
 
             return "HouseInfos";

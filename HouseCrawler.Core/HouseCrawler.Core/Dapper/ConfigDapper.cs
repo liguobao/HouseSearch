@@ -11,22 +11,22 @@ using MySql.Data.MySqlClient;
 
 namespace HouseCrawler.Core
 {
-    public class ConfigurationDapper
+    public class ConfigDapper
     {
         private APPConfiguration configuration;
 
-        public ConfigurationDapper(IOptions<APPConfiguration> configuration)
+        public ConfigDapper(IOptions<APPConfiguration> configuration)
         {
             this.configuration = configuration.Value;
         }
 
 
-        public List<BizCrawlerConfiguration> GetConfigurationList(string configurationName)
+        public List<CrawlerConfiguration> GetList(string configurationName)
         {
             using (IDbConnection dbConnection = GetConnection())
             {
                 dbConnection.Open();
-                return dbConnection.Query<BizCrawlerConfiguration>(@"SELECT * FROM housecrawler.CrawlerConfigurations 
+                return dbConnection.Query<CrawlerConfiguration>(@"SELECT * FROM housecrawler.CrawlerConfigurations 
                 where ConfigurationName=@ConfigurationName;", new
                 {
                     ConfigurationName = configurationName
@@ -34,7 +34,7 @@ namespace HouseCrawler.Core
             }
         }
 
-        public void BulkInsertConfig(List<BizCrawlerConfiguration> configs)
+        public void BulkInsertConfig(List<CrawlerConfiguration> configs)
         {
             using (IDbConnection dbConnection = GetConnection())
             {

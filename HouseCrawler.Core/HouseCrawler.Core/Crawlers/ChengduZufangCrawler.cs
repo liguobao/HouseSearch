@@ -3,15 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using AngleSharp.Parser.Html;
 using Newtonsoft.Json;
-using HouseCrawler.Core.DataContent;
 using RestSharp;
-using HouseCrawler.Core.Common;
 using System.Data;
 using MySql.Data.MySqlClient;
-using System.Data.SqlClient;
 using Dapper;
-using HouseCrawler.Core.Models;
-using Microsoft.Extensions.Options;
 using AngleSharp.Dom;
 
 namespace HouseCrawler.Core
@@ -21,9 +16,13 @@ namespace HouseCrawler.Core
         private static HtmlParser htmlParser = new HtmlParser();
 
         private HouseDapper houseDapper;
-        public ChengduZufangCrawler(HouseDapper houseDapper)
+
+        private ConfigDapper configDapper;
+
+        public ChengduZufangCrawler(HouseDapper houseDapper, ConfigDapper configDapper)
         {
             this.houseDapper = houseDapper;
+            this.configDapper = configDapper;
         }
 
 
@@ -31,7 +30,7 @@ namespace HouseCrawler.Core
         {
             int captrueHouseCount = 0;
             DateTime startTime = DateTime.Now;
-            foreach (var crawlerConfiguration in houseDapper.GetConfigurationList(ConstConfigurationName.Chengdufgj).ToList())
+            foreach (var crawlerConfiguration in configDapper.GetList(ConstConfigName.Chengdufgj).ToList())
             {
                 LogHelper.RunActionNotThrowEx(() =>
                 {
@@ -108,7 +107,7 @@ namespace HouseCrawler.Core
                     HouseOnlineURL = "http://zf.cdfgj.gov.cn" + houseURL,
                     DisPlayPrice = housePrice + "元/月",
                     HouseLocation = houseLocation,
-                    Source = ConstConfigurationName.Chengdufgj,
+                    Source = ConstConfigName.Chengdufgj,
                     HousePrice = housePrice,
                     HouseText = item.InnerHtml,
                     LocationCityName = cityName,
@@ -1424,16 +1423,16 @@ namespace HouseCrawler.Core
             dynamic lstCity = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(cityJsonString);
             if (lstCity != null)
             {
-                var lst = new List<BizCrawlerConfiguration>();
+                var lst = new List<CrawlerConfiguration>();
                 foreach (var cityInfo in lstCity)
                 {
                     if (cityInfo?.name?.Value != null && cityInfo.code?.Value != null)
                     {
-                        lst.Add(new BizCrawlerConfiguration()
+                        lst.Add(new CrawlerConfiguration()
                         {
                             ConfigurationKey = 0,
                             ConfigurationValue = $"{{'cityname':'{Convert.ToString(cityInfo.name.Value)}','shortcutname':'{Convert.ToString(cityInfo.code.Value)}','pagecount':5}}",
-                            ConfigurationName = ConstConfigurationName.BaiXing,
+                            ConfigurationName = ConstConfigName.BaiXing,
                             IsEnabled = true,
                         });
                     }

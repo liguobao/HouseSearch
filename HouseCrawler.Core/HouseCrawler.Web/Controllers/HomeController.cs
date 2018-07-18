@@ -21,14 +21,14 @@ namespace HouseCrawler.Web.Controllers
 
         private HouseDashboardService houseDashboardService;
 
-        private ConfigurationDapper configurationDapper;
+        private ConfigDapper configurationDapper;
 
         private UserCollectionDapper userCollectionDapper;
 
 
         public HomeController(HouseDapper houseDapper,
                               HouseDashboardService houseDashboardService,
-                              ConfigurationDapper configurationDapper,
+                              ConfigDapper configurationDapper,
                               UserCollectionDapper userCollectionDapper)
         {
             this.houseDapper = houseDapper;
@@ -140,16 +140,16 @@ namespace HouseCrawler.Web.Controllers
             if (topics != null && topics.Count() > 0)
             {
                 var cityInfo = $"{{ 'groupid':'{doubanGroup}','cityname':'{cityName}','pagecount':5}}";
-                var doubanConfig = new BizCrawlerConfiguration(); //(c => c.ConfigurationName == ConstConfigurationName.Douban && c.ConfigurationValue == cityInfo);
+                var doubanConfig = new CrawlerConfiguration(); //(c => c.ConfigurationName == ConstConfigurationName.Douban && c.ConfigurationValue == cityInfo);
                 if (doubanConfig != null)
                 {
                     return Json(new { IsSuccess = true });
                 }
-                var config = new BizCrawlerConfiguration()
+                var config = new CrawlerConfiguration()
                 {
                     ConfigurationKey = 0,
                     ConfigurationValue = cityInfo,
-                    ConfigurationName = ConstConfigurationName.Douban,
+                    ConfigurationName = ConstConfigName.Douban,
                     DataCreateTime = DateTime.Now,
                     IsEnabled = true,
                 };

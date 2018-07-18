@@ -65,7 +65,7 @@ namespace HouseCrawler.Web
                                             PicURLs,
                                             IsAnalyzed,
                                             Status"
-                                   + $" from { ConstConfigurationName.GetTableName(this.Source)} where 1=1 "
+                                   + $" from { ConstConfigName.GetTableName(this.Source)} where 1=1 "
                                    + $" and LocationCityName = @CityName and  PubTime >= @PubTime ";
                 if (!string.IsNullOrEmpty(this.Keyword))
                 {

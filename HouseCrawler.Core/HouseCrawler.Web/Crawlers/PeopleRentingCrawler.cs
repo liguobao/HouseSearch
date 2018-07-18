@@ -33,7 +33,7 @@ namespace HouseCrawler.Web
                 houseInfo.LocationCityName = "上海";
                 houseInfo.PubTime = item["houseCreateTime"].ToObject<DateTime>();
               
-                houseInfo.Source = ConstConfigurationName.HuZhuZuFang;
+                houseInfo.Source = ConstConfigName.HuZhuZuFang;
                 houseList.Add(houseInfo);
             }
             return houseList;

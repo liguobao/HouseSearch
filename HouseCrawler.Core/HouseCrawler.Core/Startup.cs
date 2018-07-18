@@ -48,7 +48,7 @@ namespace HouseCrawler.Core
         {
             #region Mapper
             services.AddSingleton<HouseDapper, HouseDapper>();
-            services.AddSingleton<ConfigurationDapper, ConfigurationDapper>();
+            services.AddSingleton<ConfigDapper, ConfigDapper>();
             #endregion Service
 
             #region Service

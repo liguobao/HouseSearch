@@ -2,7 +2,6 @@
 using HouseCrawler.Core.Models;
 using HouseCrawler.Core.Jobs;
 using StackExchange.Redis;
-using HouseCrawler.Core.DataContent;
 using System;
 using HouseCrawler.Core.Common;
 using HouseCrawler.Core.Service;
@@ -88,29 +87,7 @@ namespace HouseCrawler.Core.Controllers
                 IntervalDay = withAnyDays,
                 Keyword = keyword
             });
-            var rooms = houses.Select(house =>
-                {
-                    var markBGType = string.Empty;
-                    int housePrice = (int)house.HousePrice;
-                    if (housePrice > 0)
-                    {
-                        markBGType = LocationMarkBGType.SelectColor(housePrice / 1000);
-                    }
-
-                    return new HouseInfo
-                    {
-                        Source = house.Source,
-                        Money = house.DisPlayPrice,
-                        HouseURL = house.HouseOnlineURL,
-                        HouseLocation = house.HouseLocation,
-                        HouseTime = house.PubTime.ToString(),
-                        HouseTitle = house.HouseTitle,
-                        HousePrice = housePrice,
-                        LocationMarkBG = markBGType,
-                        DisplaySource = ConstConfigurationName.ConvertToDisPlayName(house.Source)
-                    };
-                });
-            return Json(new { IsSuccess = true, HouseInfos = rooms });
+            return Json(new { IsSuccess = true, HouseInfos = houses });
 
         }
 

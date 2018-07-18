@@ -74,7 +74,7 @@ namespace HouseCrawler.Web
             if (string.IsNullOrEmpty(source))
             {
                 var houses = new List<HouseInfo>();
-                foreach (var key in ConstConfigurationName.HouseTableNameDic.Keys)
+                foreach (var key in ConstConfigName.HouseTableNameDic.Keys)
                 {
                     houses.AddRange(SearchUserCollections(userID, city, key));
                 }
@@ -91,7 +91,7 @@ namespace HouseCrawler.Web
         {
             using (IDbConnection dbConnection = GetConnection())
             {
-                var tableName = ConstConfigurationName.GetTableName(source);
+                var tableName = ConstConfigName.GetTableName(source);
                 string sqlText = GetSQLText(city, tableName);
                 var list = dbConnection.Query<HouseInfo>(sqlText,
                     new
