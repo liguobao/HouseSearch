@@ -29,7 +29,7 @@
                             {
                                 var sum = cityHouseInfo.HouseSum > 9999 ? "9999+" : cityHouseInfo.HouseSum.ToString();
                                 <a href="~/Home/UserCollection?cityname=@cityName&source=@cityHouseInfo.Source&intervalDay=14&houseCount=500" target="_blank">
-                                    @ConstConfigurationName.ConvertToDisPlayName(cityHouseInfo.Source) (@sum)
+                                    @cityHouseInfo.DisplaySource (@sum)
                                 </a>
                                 <br />
 

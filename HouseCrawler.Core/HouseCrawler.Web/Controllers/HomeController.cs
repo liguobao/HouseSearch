@@ -140,7 +140,7 @@ namespace HouseCrawler.Web.Controllers
             if (topics != null && topics.Count() > 0)
             {
                 var cityInfo = $"{{ 'groupid':'{doubanGroup}','cityname':'{cityName}','pagecount':5}}";
-                var doubanConfig = new CrawlerConfiguration(); //(c => c.ConfigurationName == ConstConfigurationName.Douban && c.ConfigurationValue == cityInfo);
+                var doubanConfig = new CrawlerConfiguration();
                 if (doubanConfig != null)
                 {
                     return Json(new { IsSuccess = true });

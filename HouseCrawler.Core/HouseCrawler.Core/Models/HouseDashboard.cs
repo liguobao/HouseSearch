@@ -16,7 +16,13 @@ namespace HouseCrawler.Core.Models
 
         public DateTime LastRecordPubTime { get; set; }
 
-
+        public string DisplaySource
+        {
+            get
+            {
+                return ConstConfigName.ConvertToDisPlayName(this.Source);
+            }
+        }
 
 
     }
