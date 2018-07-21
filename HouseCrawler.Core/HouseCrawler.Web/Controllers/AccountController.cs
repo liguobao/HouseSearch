@@ -238,6 +238,25 @@ namespace HouseCrawler.Web.Controllers
         }
 
 
+        public ActionResult SetWorkAddress(string address)
+        {
+            var userId = GetUserID();
+            var success = userDataDapper.SaveWorkAddress(userId, address);
+            return Json(new { success = success });
+        }
+
+        public ActionResult Info()
+        {
+            var userId = GetUserID();
+            if (userId == 0)
+            {
+                return Json(new { success = false, error = "用户尚未登录." });
+            }
+            var userInfo = userDataDapper.FindByID(userId);
+            return Json(new { success = true, data = userInfo });
+        }
+
+
         public ActionResult Auth(string code, string state)
         {
             if (!string.IsNullOrEmpty(code))

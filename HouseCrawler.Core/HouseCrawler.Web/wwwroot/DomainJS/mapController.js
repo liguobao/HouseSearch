@@ -47,8 +47,8 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
                     keyword: keyword,
                     refresh: refresh,
                     page: page,
-                    toPrice:toPrice,
-                    fromPrice:fromPrice,
+                    toPrice: toPrice,
+                    fromPrice: fromPrice,
                 };
                 dataInfo = JSON.stringify(searchCondition);
                 contentType = "application/json;";
@@ -70,7 +70,7 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
                 type: "post",
                 url: getViewDefaultDataAction,
                 data: dataInfo,
-                contentType :  contentType,
+                contentType: contentType,
                 success: function (result) {
                     if (result.isSuccess) {
                         var rent_locations = new Set();
@@ -86,7 +86,7 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
                     if (index == count) {
                         $.AMUI.progress.done();
                     }
-                    initPositionPicker();
+                    
                 }
             });
         }
@@ -121,7 +121,30 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
 
             showCityInfo(getHouses)
 
+            initUserWorkAddress($);
+        }
 
+        var initUserWorkAddress = function () {
+            if (getUserInfo) {
+                $.ajax({
+                    type: "post",
+                    url: getUserInfo,
+                    data: {},
+                    success: function (result) {
+                        if (result && result.success && result.data && result.data.workAddress) {
+                            console.log(result.data);
+                            mapSignleton.workAddress = result.data.workAddress;
+                            $("#work-location").val(result.data.workAddress);
+                            workLocation.load();
+                        } else {
+                            console.log(result);
+                            workLocation.initPositionPicker();
+                        }
+                    }
+                });
+            }else{
+                workLocation.initPositionPicker();
+            }
         }
 
         var showCityInfo = function (ajaxGetter) {
@@ -238,6 +261,8 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
 
         };
 
+
+
         var move2Location = function () {
             _map.on('moveend', getCity);
 
@@ -263,35 +288,7 @@ var mapController = define(['jquery', 'AMUI', 'mapSignleton', 'marker',
             }
         }
 
-        var initPositionPicker = function () {
-            AMapUI.loadUI(['misc/PositionPicker'], function (PositionPicker) {
-                var positionPicker = new PositionPicker({
-                    mode: 'dragMarker',
-                    map: _map,
-                    iconStyle: { //自定义外观
-                        url: 'https://webapi.amap.com/ui/1.0/assets/position-picker2.png',
-                        ancher: [24, 40],
-                        size: [64, 64]
-                    }
-                });
-
-                positionPicker.on('success', function (positionResult) {
-                    //console.log(positionResult);
-                    mapSignleton.workAddress = positionResult.address;
-                    $("#work-location").val(positionResult.address);
-                    //$("#mobile-work-location").val(positionResult.address);
-                    $("#mobile-position-text").text(positionResult.address);
-                });
-                positionPicker.on('fail', function (positionResult) {
-
-                });
-                var onModeChange = function (e) {
-                    positionPicker.setMode(e.target.value)
-                }
-                //positionPicker.start(_map.getBounds().getSouthWest());
-                positionPicker.start();
-            });
-        }
+       
 
         var getHouses = function (page) {
             $.AMUI.progress.start();

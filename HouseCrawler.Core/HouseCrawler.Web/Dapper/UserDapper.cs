@@ -149,5 +149,17 @@ namespace HouseCrawler.Web
             }
         }
 
+
+        public bool SaveWorkAddress(long userID, string address)
+        {
+            using (IDbConnection dbConnection = GetConnection())
+            {
+                dbConnection.Open();
+                return dbConnection.Execute(@"UPDATE `UserInfos` SET WorkAddress=@WorkAddress  
+                WHERE `ID`=@ID ;",
+                new { ID = userID, WorkAddress = address }) > 0;
+            }
+        }
+
     }
 }

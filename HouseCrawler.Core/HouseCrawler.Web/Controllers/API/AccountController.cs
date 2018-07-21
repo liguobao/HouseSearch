@@ -119,18 +119,5 @@ namespace HouseCrawler.Web.API.Controllers
             }
 
         }
-
-        [EnableCors("APICors")]
-        [HttpPost("/{userId}", Name = "Info")]
-        [HttpGet("/{userId}", Name = "Info")]
-        public ActionResult Info(long userId, [FromHeader] string token)
-        {
-            var userInfo = userService.GetUserInfo(userId, token);
-            if (userInfo != null)
-            {
-                return Ok(new { success = true, data = userInfo });
-            }
-            return Ok(new { success = false, error = "用户不存在/鉴权失败!" });
-        }
     }
 }

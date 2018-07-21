@@ -23,9 +23,13 @@ namespace HouseCrawler.Core
 
         public List<CrawlerConfiguration> GetList(string configurationName)
         {
+
+
             using (IDbConnection dbConnection = GetConnection())
             {
                 dbConnection.Open();
+
+
                 return dbConnection.Query<CrawlerConfiguration>(@"SELECT * FROM housecrawler.CrawlerConfigurations 
                 where ConfigurationName=@ConfigurationName;", new
                 {

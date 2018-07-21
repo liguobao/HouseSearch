@@ -41,7 +41,10 @@ namespace HouseCrawler.Web
 
         public string Intro { get; set; }
 
+        [JsonIgnore]
         public string QQOpenUID { get; set; }
+
+        public string WorkAddress { get; set; }
 
     }
 }
