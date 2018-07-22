@@ -143,7 +143,7 @@
                     @foreach (var cityGroup in Model.GroupBy(c => c.CityName))
                     {
                         var cityName = cityGroup.First().CityName;
-                        <p><a href="~/Home/HouseList?cityname=@cityName" target="_blank">@cityName</a></p>
+                        <p><a href="/Home/HouseList?cityname=@cityName" target="_blank">@cityName</a></p>
                    }
                 </nav>
             </div>
@@ -338,12 +338,12 @@
                         {
                             var cityName = cityGroup.First().CityName;
                             <li class="am-animation-slide-top">
-                                <h2><a href="~/Home/HouseList?cityname=@cityName" target="_blank">@cityName</a></h2>
+                                <h2><a href="/Home/HouseList?cityname=@cityName" target="_blank">@cityName</a></h2>
                                 <p>
                                     @foreach (var cityHouseInfo in cityGroup)
                                     {
                                         var sum = cityHouseInfo.HouseSum > 9999 ? "9999+" : cityHouseInfo.HouseSum.ToString();
-                                        <a href="~/Home/HouseList?cityname=@cityName&source=@cityHouseInfo.Source&intervalDay=14&houseCount=600" target="_blank">
+                                        <a href="/Home/HouseList?cityname=@cityName&source=@cityHouseInfo.Source&intervalDay=14&houseCount=600" target="_blank">
                                             @cityHouseInfo.DisplaySource (@sum)
                                         </a>
                                         <br />
