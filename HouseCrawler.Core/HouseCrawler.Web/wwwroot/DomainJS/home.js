@@ -20,7 +20,7 @@
 
 "use strict";
 
-require(['domready!', 'jquery', 'AMUI', 'mapController', 'city', 'commuteGo'], function (doc, $, AMUI, mapController, city, commuteGo) {
+require(['domready!', 'jquery', 'AMUI', 'mapController', 'city', 'commuteGo','transfer'], function (doc, $, AMUI, mapController, city, commuteGo,transfer) {
     //city.initAllCityInfo();
     mapController.init();
 
@@ -79,6 +79,12 @@ require(['domready!', 'jquery', 'AMUI', 'mapController', 'city', 'commuteGo'], f
                 }
             }
         });
+    });
+
+    $('body').on('click', "[name='house-transfer']", function () {
+        var $this = $(this);
+        var location = $this.attr("location");
+        transfer.addAddress(location);
     });
 
 

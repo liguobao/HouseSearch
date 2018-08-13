@@ -34,10 +34,12 @@ define(['mapSignleton', 'city', 'transfer'], function(mapSignleton, city, transf
                     house.houseTitle = house.houseLocation;
                 }
                 var onlineURL = "<a target='_blank' href='" + house.houseOnlineURL + "'>房源：" + house.houseTitle + displayMoney + sourceContent + "  </a>";
-                var starURL = "<a name='house-star' class='am-icon-star am-icon-f' house-id='"+house.id +"'  source='"+house.source+"'>            收藏</a> ";
-                rentMarker.content = "<div>" + onlineURL + starURL + "<div>"
+                var starURL = "<a name='house-star' class='am-icon-star am-icon-f' house-id='"+house.id +"'  source='"+house.source+"'>            收藏      </a> ";
+                var transferButton = "<a name='house-transfer' class='am-icon-map-marker am-icon-f' href='javascript:void(0)' location='"+house.houseLocation+"'>    查看导航</a> ";
+                rentMarker.content = "<div>" + onlineURL + starURL + transferButton + "<div>"
                 rentMarker.on('click', function(e) {
-                    transfer.add(e, house.houseLocation);
+                    //debugger
+                    transfer.showContent(e, house.houseLocation);
                 });
             }
         })
