@@ -16,6 +16,8 @@
 
 ## [日常更新](/日常更新.md)
 
+## [一些技巧](/一些技巧.md)
+
 ## 项目代码介绍
 
 ### [HouseCrawler.Core(当前维护版本)](/HouseCrawler.Core)
