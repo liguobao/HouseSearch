@@ -67,5 +67,15 @@ namespace HouseCrawler.Web.API.Controllers
             return Ok(new { success = true, data = dashboards });
         }
 
+        [EnableCors("APICors")]
+        [HttpGet("citys")]
+        public IActionResult Citys()
+        {
+            var id = 0;
+            var citys = houseDashboardService.LoadDashboard().Select(d => d.CityName)
+            .Distinct().Select(city => new { id = id++, Name = city }).ToList();
+            return Ok(new { success = true, data = citys });
+        }
+
     }
 }
