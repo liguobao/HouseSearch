@@ -30,12 +30,13 @@ namespace HouseCrawler.Web.Service
             }
             return null;
         }
-
+        
 
         public void WriteUserToken(UserInfo loginUser, string token)
         {
             redisService.WriteCache("user_token_" + loginUser.ID, token, 0, 60 * 24 * 30);
             redisService.WriteCache("user_" + loginUser.ID, JsonConvert.SerializeObject(loginUser), 0, 60 * 24 * 30);
+            redisService.WriteCache(token, JsonConvert.SerializeObject(loginUser), 0, 60 * 24 * 30);
         }
     }
 }

@@ -46,7 +46,7 @@ namespace HouseCrawler.Web.API.Controllers
         }
 
         [EnableCors("APICors")]
-        [HttpPost("/register", Name = "Register")]
+        [HttpPost("register", Name = "Register")]
         public ActionResult Register([FromBody]UserSave registerUser)
         {
             if (registerUser == null || string.IsNullOrEmpty(registerUser.Email) || string.IsNullOrEmpty(registerUser.UserName))
