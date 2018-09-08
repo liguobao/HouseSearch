@@ -63,7 +63,15 @@ namespace HouseCrawler.Web.API.Controllers
         [HttpGet("dashboard")]
         public IActionResult Dashboards()
         {
-            var dashboards = houseDashboardService.LoadDashboard();
+            var id = 1;
+            var dashboards = houseDashboardService.LoadDashboard()
+            .GroupBy(d => d.CityName)
+            .Select(i => new
+            {
+                id = id++,
+                cityName = i.Key,
+                sources = i.ToList()
+            });
             return Ok(new { success = true, data = dashboards });
         }
 
