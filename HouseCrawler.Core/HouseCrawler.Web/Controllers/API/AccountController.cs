@@ -75,7 +75,7 @@ namespace HouseCrawler.Web.API.Controllers
                 var insertUser = new UserInfo();
                 insertUser.Email = registerUser.Email;
                 insertUser.UserName = registerUser.UserName;
-                insertUser.Password = insertUser.Password;
+                insertUser.Password = registerUser.Password;
                 insertUser.ActivatedCode = token;
                 userDataDapper.InsertUser(insertUser);
                 var userInfo = userDataDapper.FindUser(insertUser.UserName);
