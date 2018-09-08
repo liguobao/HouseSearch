@@ -106,7 +106,7 @@ namespace HouseCrawler.Web.API.Controllers
                 {
                     string token = encryptionTools.Crypt($"{userInfo.ID}|{userInfo.UserName}");
                     userService.WriteUserToken(userInfo, token);
-                    return Ok(new { success = true, token = token, messgae = "登录成功!", data = userInfo });
+                    return Ok(new { success = true, token = token, message = "登录成功!", data = userInfo });
                 }
                 else
                 {
