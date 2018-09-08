@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Cors;
+using Newtonsoft.Json.Linq;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -83,6 +84,49 @@ namespace HouseCrawler.Web.API.Controllers
             var citys = houseDashboardService.LoadDashboard().Select(d => d.CityName)
             .Distinct().Select(city => new { id = id++, Name = city }).ToList();
             return Ok(new { success = true, data = citys });
+        }
+
+        [EnableCors("APICors")]
+        [HttpPost("douban")]
+        public IActionResult AddDouBanGroup(JToken model)
+        {
+            string doubanGroup = model?["groupId"].ToString();
+            string cityName = model?["cityName"].ToString();
+            if (string.IsNullOrEmpty(doubanGroup) || string.IsNullOrEmpty(cityName))
+            {
+                return Ok(new { success = false, error = "请输入豆瓣小组Group和城市名称。" });
+            }
+            var topics = DoubanHouseCrawler.GetHouseData(doubanGroup, cityName, 1);
+            if (topics != null && topics.Count() > 0)
+            {
+                var cityInfo = $"{{ 'groupid':'{doubanGroup}','cityname':'{cityName}','pagecount':5}}";
+                var doubanConfig = new CrawlerConfiguration();
+                if (doubanConfig != null)
+                {
+                    return Ok(new { success = true });
+                }
+                var config = new CrawlerConfiguration()
+                {
+                    ConfigurationKey = 0,
+                    ConfigurationValue = cityInfo,
+                    ConfigurationName = ConstConfigName.Douban,
+                    DataCreateTime = DateTime.Now,
+                    IsEnabled = true,
+                };
+                configurationDapper.Insert(config);
+                return Ok(new { success = true });
+            }
+            else
+            {
+                return Ok(new
+                {
+                    success = false,
+                    error = "保存失败!请检查豆瓣小组ID（如：XMhouse）/城市名称（如：厦门）是否正确..."
+                });
+            }
+
+
+
         }
 
     }
