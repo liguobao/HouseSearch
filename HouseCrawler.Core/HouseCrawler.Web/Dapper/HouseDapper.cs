@@ -149,7 +149,7 @@ namespace HouseCrawler.Web
                 {
                     soures = dicCityNameToSources[cityName];
                 }
-                redisService.WriteCache("redisKey", Newtonsoft.Json.JsonConvert.SerializeObject(soures));
+                redisService.WriteCache(redisKey, Newtonsoft.Json.JsonConvert.SerializeObject(soures));
                 return soures;
             }
             else
