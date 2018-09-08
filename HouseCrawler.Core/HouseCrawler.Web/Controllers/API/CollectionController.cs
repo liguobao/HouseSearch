@@ -82,7 +82,7 @@ namespace HouseCrawler.Web.API.Controllers
             }
             catch (Exception ex)
             {
-                return Ok(new { IsSuccess = false, error = ex.ToString() });
+                return Ok(new { success = false, error = ex.ToString() });
             }
         }
 
