@@ -88,7 +88,7 @@ namespace HouseCrawler.Web.API.Controllers
 
         [EnableCors("APICors")]
         [HttpPost("douban")]
-        public IActionResult AddDouBanGroup(JToken model)
+        public IActionResult AddDouBanGroup([FromBody]JToken model)
         {
             string doubanGroup = model?["groupId"].ToString();
             string cityName = model?["cityName"].ToString();
