@@ -51,9 +51,17 @@ namespace HouseCrawler.Web.API.Controllers
             var userInfo = userService.GetUserInfo(userId, token);
             if (userInfo == null)
             {
-                return Ok(new { IsSuccess = false, error = "用户未登陆，无法进行操作。" });
+                return Ok(new { success = false, error = "用户未登陆，无法进行操作。" });
             }
-            var list = userCollectionDapper.LoadUserHouseDashboard(userId);
+            var id = 1;
+            var list = userCollectionDapper.LoadUserHouseDashboard(userId)
+            .GroupBy(d => d.CityName)
+            .Select(i => new
+            {
+                id = id++,
+                cityName = i.Key,
+                sources = i.ToList()
+            });
             return Ok(new { success = true, data = list });
         }
 
@@ -67,7 +75,7 @@ namespace HouseCrawler.Web.API.Controllers
                 var userInfo = userService.GetUserInfo(userId, token);
                 if (userInfo == null)
                 {
-                    return Ok(new { IsSuccess = false, error = "用户未登陆，无法进行操作。" });
+                    return Ok(new { success = false, error = "用户未登陆，无法进行操作。" });
                 }
                 var rooms = userCollectionDapper.FindUserCollections(userId, cityName, source);
                 return Ok(new { success = true, data = rooms });
@@ -88,14 +96,14 @@ namespace HouseCrawler.Web.API.Controllers
                 var userInfo = userService.GetUserInfo(userId, token);
                 if (userInfo == null)
                 {
-                    return Ok(new { IsSuccess = false, error = "用户未登陆，无法进行操作。" });
+                    return Ok(new { success = false, error = "用户未登陆，无法进行操作。" });
                 }
                 var houses = userCollectionDapper.FindUserCollections(userId);
                 return Ok(new { success = true, data = houses.FirstOrDefault(h => h.Id == id) });
             }
             catch (Exception ex)
             {
-                return Ok(new { IsSuccess = false, error = ex.ToString() });
+                return Ok(new { success = false, error = ex.ToString() });
             }
         }
 
@@ -127,7 +135,7 @@ namespace HouseCrawler.Web.API.Controllers
             var userInfo = userService.GetUserInfo(userId, token);
             if (userInfo == null)
             {
-                return Ok(new { IsSuccess = false, error = "用户未登陆，无法进行操作。" });
+                return Ok(new { success = false, error = "用户未登陆，无法进行操作。" });
             }
             var userCollection = userCollectionDapper.FindByIDAndUserID(id, userId);
             if (userCollection == null)
