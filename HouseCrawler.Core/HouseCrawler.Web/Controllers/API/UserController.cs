@@ -47,7 +47,7 @@ namespace HouseCrawler.Web.API.Controllers
 
 
         [EnableCors("APICors")]
-        [HttpGet("api/users/{userId}", Name = "Info")]
+        [HttpGet("v1/users/{userId}", Name = "Info")]
         public ActionResult Info(long userId, [FromHeader] string token)
         {
             var userInfo = userService.GetUserInfo(userId, token);
@@ -59,7 +59,7 @@ namespace HouseCrawler.Web.API.Controllers
         }
 
         [EnableCors("APICors")]
-        [HttpPost("api/users/{userId}/address", Name = "SetWorkAddress")]
+        [HttpPost("v1/users/{userId}/address", Name = "SetWorkAddress")]
         public ActionResult SetWorkAddress(long userId, [FromHeader] string token, [FromBody]JToken model)
         {
             if (string.IsNullOrEmpty(model?["address"]?.ToString()))

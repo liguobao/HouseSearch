@@ -16,7 +16,7 @@ using Newtonsoft.Json;
 
 namespace HouseCrawler.Web.API.Controllers
 {
-    [Route("api/users/")]
+    [Route("v1/users/")]
     public class CollectionsController : ControllerBase
     {
 

@@ -17,8 +17,6 @@ namespace HouseCrawler.Web.Controllers
 {
     public class WebController : Controller
     {
-
-
         private IOAuthClient _authClient;
 
         private UserDataDapper _userDataDapper;
@@ -40,9 +38,7 @@ namespace HouseCrawler.Web.Controllers
             _encryptionTools = encryptionTools;
         }
 
-
-        [EnableCors("APICors")]
-        [HttpGet("callback", Name = "Callback")]
+        
         public ActionResult Callback(string code, string state)
         {
             if (!string.IsNullOrEmpty(code))

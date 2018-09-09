@@ -16,7 +16,7 @@ using Newtonsoft.Json.Linq;
 
 namespace HouseCrawler.Web.API.Controllers
 {
-    [Route("api/[controller]/")]
+    [Route("v1/[controller]/")]
     public class HousesController : ControllerBase
     {
         private HouseDapper houseDapper;

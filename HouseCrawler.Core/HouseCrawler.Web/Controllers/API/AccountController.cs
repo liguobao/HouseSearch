@@ -17,7 +17,7 @@ using Newtonsoft.Json;
 namespace HouseCrawler.Web.API.Controllers
 {
 
-    [Route("api/[controller]")]
+    [Route("v1/[controller]")]
     public class AccountController : ControllerBase
     {
 
@@ -153,7 +153,7 @@ namespace HouseCrawler.Web.API.Controllers
         }
 
         [EnableCors("APICors")]
-        [HttpGet("oauthURL", Name = "GetQQOAuthUrl")]
+        [HttpGet("oauth-url", Name = "GetQQOAuthUrl")]
         public IActionResult GetQQOAuthUrl()
         {
             var url = _authClient.GetAuthUrl();
