@@ -32,7 +32,7 @@ namespace HouseCrawler.Web.Controllers
                           UserService userService,
                           EncryptionTools encryptionTools)
         {
-            _authClient = qqOAuthClient.GetOAuthClient();
+            _authClient = qqOAuthClient.GetAPIOAuthClient();
             _userDataDapper = userDataDapper;
             _userService = userService;
             _encryptionTools = encryptionTools;
