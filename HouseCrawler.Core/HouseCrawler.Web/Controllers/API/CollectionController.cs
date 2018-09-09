@@ -144,11 +144,11 @@ namespace HouseCrawler.Web.API.Controllers
             }
             try
             {
-                userCollectionDapper.RemoveByIDAndUserID(userCollection.HouseID, userCollection.UserID);
+                userCollectionDapper.RemoveByIDAndUserID(userCollection.ID, userCollection.UserID);
             }
-            catch
+            catch(Exception ex)
             {
-                return Ok(new { success = false, error = "删除失败." }); ;
+                return Ok(new { success = false, error = ex.ToString() }); ;
             }
 
             return Ok(new { success = true, message = "删除成功." });
