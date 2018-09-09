@@ -34,6 +34,14 @@ namespace HouseCrawler.Web
         public string QQAPPKey { get; set; }
 
         public string QQAuthReturnURL { get; set; }
+
+
+
+        public string QQAPIID { get; set; }
+
+        public string QQAPIKey { get; set; }
+
+        public string QQAPIAuthReturnURL { get; set; }
     }
 
 

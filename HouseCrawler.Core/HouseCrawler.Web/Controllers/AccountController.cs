@@ -37,7 +37,8 @@ namespace HouseCrawler.Web.Controllers
                           EmailService emailService,
                           EncryptionTools encryptionTools,
                           IOptions<APPConfiguration> configuration,
-                          RedisService redisService
+                          RedisService redisService,
+                          QQOAuthClient qqOAuthClient
                           )
         {
             this.userDataDapper = userDataDapper;
@@ -45,7 +46,7 @@ namespace HouseCrawler.Web.Controllers
             this.encryptionTools = encryptionTools;
             this.configuration = configuration.Value;
             this.redisService = redisService;
-            this.authClient = GetOAuthClient();
+            this.authClient = qqOAuthClient.GetOAuthClient();
         }
 
         public ActionResult Index()
@@ -319,11 +320,7 @@ namespace HouseCrawler.Web.Controllers
             return long.Parse(userID);
         }
 
-        private IOAuthClient GetOAuthClient()
-        {
-            return OAuthClientFactory.GetOAuthClient(configuration.QQAPPID,
-             configuration.QQAPPKey, configuration.QQAuthReturnURL, AuthType.QQ);
-        }
+
 
         public IActionResult GetOAuthQQUrl()
         {

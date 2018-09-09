@@ -80,6 +80,7 @@ namespace HouseCrawler.Web
             services.AddSingleton<RedisService, RedisService>();
             services.AddSingleton<HouseDashboardService, HouseDashboardService>();
             services.AddSingleton<UserService,UserService>();
+            services.AddSingleton<QQOAuthClient,QQOAuthClient>();
             #endregion
 
             #region Jobs

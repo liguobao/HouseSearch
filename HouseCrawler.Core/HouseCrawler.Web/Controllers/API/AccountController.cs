@@ -21,28 +21,29 @@ namespace HouseCrawler.Web.API.Controllers
     public class AccountController : ControllerBase
     {
 
-        private UserDataDapper userDataDapper;
+        private UserDataDapper _userDataDapper;
 
-        private EmailService emailService;
+        private EmailService _emailService;
 
-        private EncryptionTools encryptionTools;
+        private EncryptionTools _encryptionTools;
 
 
-        private RedisService redisService;
 
-        private UserService userService;
+        private UserService _userService;
+
+        private IOAuthClient _authClient;
 
         public AccountController(UserDataDapper userDataDapper,
                           EmailService emailService,
                           EncryptionTools encryptionTools,
-                          RedisService redisService,
-                          UserService userService)
+                          UserService userService,
+                          QQOAuthClient authClient)
         {
-            this.userDataDapper = userDataDapper;
-            this.emailService = emailService;
-            this.encryptionTools = encryptionTools;
-            this.redisService = redisService;
-            this.userService = userService;
+            this._userDataDapper = userDataDapper;
+            this._emailService = emailService;
+            this._encryptionTools = encryptionTools;
+            this._userService = userService;
+            _authClient = authClient.GetAPIOAuthClient();
         }
 
         [EnableCors("APICors")]
@@ -53,14 +54,14 @@ namespace HouseCrawler.Web.API.Controllers
             {
                 return Ok(new { success = false, error = "用户名/用户邮箱不能为空." });
             }
-            var checkUser = userDataDapper.FindUser(registerUser.UserName);
+            var checkUser = _userDataDapper.FindUser(registerUser.UserName);
             if (checkUser != null)
             {
                 return Ok(new { success = false, error = "用户已存在!" });
             }
             try
             {
-                string token = Tools.GetMD5(encryptionTools.Crypt(registerUser.UserName + registerUser.Email));
+                string token = Tools.GetMD5(_encryptionTools.Crypt(registerUser.UserName + registerUser.Email));
                 EmailInfo email = new EmailInfo();
                 email.Body = $"Hi,{registerUser.UserName}. <br>欢迎您注册地图搜租房(woyaozufang.live),你的账号已经注册成功." +
                 "<br/>为了保证您能正常体验网站服务，请点击下面的链接完成邮箱验证以激活账号."
@@ -71,16 +72,16 @@ namespace HouseCrawler.Web.API.Controllers
                 email.Receiver = registerUser.Email;
                 email.Subject = "地图找租房-激活账号";
                 email.ReceiverName = registerUser.UserName;
-                emailService.Send(email);
+                _emailService.Send(email);
                 var insertUser = new UserInfo();
                 insertUser.Email = registerUser.Email;
                 insertUser.UserName = registerUser.UserName;
                 insertUser.Password = registerUser.Password;
                 insertUser.ActivatedCode = token;
-                userDataDapper.InsertUser(insertUser);
-                var userInfo = userDataDapper.FindUser(insertUser.UserName);
-                string loginToken = encryptionTools.Crypt($"{userInfo.ID}|{userInfo.UserName}");
-                userService.WriteUserToken(userInfo, loginToken);
+                _userDataDapper.InsertUser(insertUser);
+                var userInfo = _userDataDapper.FindUser(insertUser.UserName);
+                string loginToken = _encryptionTools.Crypt($"{userInfo.ID}|{userInfo.UserName}");
+                _userService.WriteUserToken(userInfo, loginToken);
                 return Ok(new { success = true, message = "注册成功!", token = loginToken, data = userInfo });
             }
             catch (Exception ex)
@@ -99,13 +100,13 @@ namespace HouseCrawler.Web.API.Controllers
             {
                 return Ok(new { success = false, error = "用户名/用户邮箱不能为空." });
             }
-            var userInfo = userDataDapper.FindUser(loginUser.UserName);
+            var userInfo = _userDataDapper.FindUser(loginUser.UserName);
             if (userInfo != null)
             {
                 if (userInfo.Password == Tools.GetMD5(loginUser.Password))
                 {
-                    string token = encryptionTools.Crypt($"{userInfo.ID}|{userInfo.UserName}");
-                    userService.WriteUserToken(userInfo, token);
+                    string token = _encryptionTools.Crypt($"{userInfo.ID}|{userInfo.UserName}");
+                    _userService.WriteUserToken(userInfo, token);
                     return Ok(new { success = true, token = token, message = "登录成功!", data = userInfo });
                 }
                 else
@@ -119,5 +120,45 @@ namespace HouseCrawler.Web.API.Controllers
             }
 
         }
+
+
+        [EnableCors("APICors")]
+        [HttpGet("callback", Name = "Callback")]
+        public ActionResult Callback(string code, string state)
+        {
+            if (!string.IsNullOrEmpty(code))
+            {
+                try
+                {
+                    var accessToken = _authClient.GetAccessToken(code).Result;
+                    var qqUser = _authClient.GetUserInfo(accessToken).Result;
+                    //未登录,通过此ID获取用户
+                    var userInfo = _userDataDapper.FindUserByQQOpenUID(qqUser.Id);
+                    if (userInfo == null)
+                    {
+                        //新增用户
+                        _userDataDapper.InsertUserForQQAuth(new UserInfo() { UserName = qqUser.Name, QQOpenUID = qqUser.Id });
+                        userInfo = _userDataDapper.FindUserByQQOpenUID(qqUser.Id);
+                    }
+                    string token = _encryptionTools.Crypt($"{userInfo.ID}|{userInfo.UserName}");
+                    _userService.WriteUserToken(userInfo, token);
+                    return Ok(new { success = true, token = token, message = "登录成功!", data = userInfo });
+                }
+                catch (Exception ex)
+                {
+                    return Ok(new { success = false, error = ex.ToString() });
+                }
+            }
+            return Ok(new { success = false, error = "无效的auth code" });
+        }
+
+        [EnableCors("APICors")]
+        [HttpGet("oauthURL", Name = "GetQQOAuthUrl")]
+        public IActionResult GetQQOAuthUrl()
+        {
+            var url = _authClient.GetAuthUrl();
+            return Ok(new { success = true, url = url });
+        }
+
     }
 }
