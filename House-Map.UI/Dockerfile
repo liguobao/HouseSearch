@@ -1,7 +1,7 @@
 FROM node:10 AS build-env
 WORKDIR /app
 COPY ./package.json . 
-RUN npm install
+RUN npm install --registry=http://registry.npm.taobao.org
 COPY . .
 RUN npm run build
 
