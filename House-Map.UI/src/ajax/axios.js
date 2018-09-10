@@ -7,7 +7,7 @@ const vue = new Vue();
 
 const $ajax = axios.create({
   timeout: 5000,
-  baseURL: 'https://house-map.cn/v1/',
+  baseURL: 'https://api.house-map.cn/v1/',
   headers: {
     'Content-Type': 'application/json;charset=utf-8'
   }
