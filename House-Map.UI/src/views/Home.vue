@@ -643,7 +643,7 @@
             ]
           }
         ],
-        mapUrl: `https://www.woyaozufang.live/Home/HouseList`,
+        mapUrl: `https://api.house-map.cn/Home/HouseList`,
         sticky: false,
         elements: [],
         searchVisible: false,

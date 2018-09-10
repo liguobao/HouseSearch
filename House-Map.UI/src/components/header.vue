@@ -17,7 +17,7 @@
             </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item v-for="item in cities" :key="item">
-                  <a :href="`https://www.woyaozufang.live/Home/HouseList?cityname=${item}&token=${token}`"
+                  <a :href="`https://api.house-map.cn/Home/HouseList?cityname=${item}&token=${token}`"
                      target="_blank"
                      class="link-to">{{item}}</a>
                 </el-dropdown-item>

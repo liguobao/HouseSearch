@@ -196,7 +196,7 @@
             params.cityname = params.cityName;
             params.token = this.token;
             delete params.cityName;
-            window.open(`https://www.woyaozufang.live/Home/HouseList?${this.$qs.stringify(params)}`);
+            window.open(`https://api.house-map.cn/Home/HouseList?${this.$qs.stringify(params)}`);
           } else {
             this.getHousesList(params)
           }
