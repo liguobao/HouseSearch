@@ -30,7 +30,17 @@ namespace HouseCrawler.Web.Service
             }
             return null;
         }
-        
+
+        public UserInfo GetUserByToken(string token)
+        {
+            var userJson = redisService.ReadCache(token, 0);
+            if (!string.IsNullOrEmpty(userJson))
+            {
+                return JsonConvert.DeserializeObject<UserInfo>(userJson);
+            }
+            return null;
+        }
+
 
         public void WriteUserToken(UserInfo loginUser, string token)
         {

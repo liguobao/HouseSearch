@@ -16,7 +16,6 @@ namespace HouseCrawler.Web
         [JsonIgnore]
         public string ActivatedTime { get; set; }
 
-
         public string Email { get; set; }
 
         [JsonIgnore]
@@ -43,6 +42,15 @@ namespace HouseCrawler.Web
 
         [JsonIgnore]
         public string QQOpenUID { get; set; }
+
+        [JsonIgnore]
+        public string NewLoginToken
+        {
+            get
+            {
+                return Tools.GetMD5($"{this.ID}|{this.UserName}|{DateTime.Now.ToString()}");
+            }
+        }
 
         public string WorkAddress { get; set; }
 

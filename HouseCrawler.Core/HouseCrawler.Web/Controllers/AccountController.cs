@@ -137,7 +137,7 @@ namespace HouseCrawler.Web.Controllers
                         IsPersistent = true,
                         ExpiresUtc = DateTimeOffset.Now.Add(TimeSpan.FromDays(7)) // 有效时间
                     }).Wait();
-                    string token = encryptionTools.Crypt($"{loginUser.ID}|{loginUser.UserName}");
+                    string token = loginUser.NewLoginToken;
                     return Json(new { success = true, token = token, message = "登录成功!" });
                 }
                 else

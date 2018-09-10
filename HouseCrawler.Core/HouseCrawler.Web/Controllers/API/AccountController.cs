@@ -80,7 +80,7 @@ namespace HouseCrawler.Web.API.Controllers
                 insertUser.ActivatedCode = token;
                 _userDataDapper.InsertUser(insertUser);
                 var userInfo = _userDataDapper.FindUser(insertUser.UserName);
-                string loginToken = _encryptionTools.Crypt($"{userInfo.ID}|{userInfo.UserName}");
+                string loginToken = userInfo.NewLoginToken;
                 _userService.WriteUserToken(userInfo, loginToken);
                 return Ok(new { success = true, message = "注册成功!", token = loginToken, data = userInfo });
             }
@@ -105,7 +105,7 @@ namespace HouseCrawler.Web.API.Controllers
             {
                 if (userInfo.Password == Tools.GetMD5(loginUser.Password))
                 {
-                    string token = _encryptionTools.Crypt($"{userInfo.ID}|{userInfo.UserName}");
+                    string token = userInfo.NewLoginToken;
                     _userService.WriteUserToken(userInfo, token);
                     return Ok(new { success = true, token = token, message = "登录成功!", data = userInfo });
                 }
@@ -140,7 +140,7 @@ namespace HouseCrawler.Web.API.Controllers
                         _userDataDapper.InsertUserForQQAuth(new UserInfo() { UserName = qqUser.Name, QQOpenUID = qqUser.Id });
                         userInfo = _userDataDapper.FindUserByQQOpenUID(qqUser.Id);
                     }
-                    string token = _encryptionTools.Crypt($"{userInfo.ID}|{userInfo.UserName}");
+                    string token = userInfo.NewLoginToken;
                     _userService.WriteUserToken(userInfo, token);
                     return Ok(new { success = true, token = token, message = "登录成功!", data = userInfo });
                 }
