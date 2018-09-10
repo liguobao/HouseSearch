@@ -22,7 +22,7 @@
 
 ## 前端[House-Map.UI](/House-Map.UI)
 
-- vue.js 重构中
+- vue.js 冻爷[Erane](https://github.com/Erane/)重构中,已完成50%+
 
 ### 后端 [HouseCrawler.Core(当前维护版本)](/HouseCrawler.Core)
 
@@ -30,7 +30,7 @@
 
 - 数据库使用 MySQL, 缓存使用redis
 
-- Core项目为爬虫逻辑,Web项目为网站项目,逻辑分离
+- Core项目为爬虫逻辑,Web项目为API,逻辑分离
 
 - CI自动化发布使用Jenkins +Docker(这部分有兴趣可以看下:[手把手教你用Jenkins做Docker自动化发布](https://zhuanlan.zhihu.com/p/36509817))
 
