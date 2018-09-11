@@ -8,6 +8,11 @@
 </style>
 <script>
   export default {
+    data() {
+      return {
+        fullscreenLoading: true
+      }
+    },
     methods: {
       async login(options) {
         const params = Object.assign({}, options);
@@ -27,6 +32,7 @@
           state: query.state
         })
       }else {
+        this.fullscreenLoading = false;
         this.$router.replace('/')
       }
     },
