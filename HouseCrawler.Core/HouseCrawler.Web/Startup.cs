@@ -70,6 +70,9 @@ namespace HouseCrawler.Web
             services.AddSingleton<UserCollectionDapper, UserCollectionDapper>();
             services.AddSingleton<UserDataDapper, UserDataDapper>();
             services.AddSingleton<BaseDapper, BaseDapper>();
+            services.AddSingleton<NoticeDapper, NoticeDapper>();
+
+
             #endregion
 
 
@@ -79,8 +82,8 @@ namespace HouseCrawler.Web
             services.AddSingleton<EmailService, EmailService>();
             services.AddSingleton<RedisService, RedisService>();
             services.AddSingleton<HouseDashboardService, HouseDashboardService>();
-            services.AddSingleton<UserService,UserService>();
-            services.AddSingleton<QQOAuthClient,QQOAuthClient>();
+            services.AddSingleton<UserService, UserService>();
+            services.AddSingleton<QQOAuthClient, QQOAuthClient>();
             #endregion
 
             #region Jobs
