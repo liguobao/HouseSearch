@@ -106,7 +106,7 @@
         <div>
           Copyright 2016 - 2018 www.woyaozufang.live. All Rights Reserved
           <a href="http://www.miitbeian.gov.cn/" class="highlight-name" target="_blank">粤ICP备18055424号</a>
-          <a href="/" class="highlight-name" >地图搜租房</a>
+          <a href="/" class="highlight-name">地图搜租房</a>
         </div>
         <div class="call-me">
           <el-tooltip class="item" effect="dark" content="88888888" placement="top">
@@ -168,48 +168,48 @@
         key="user"
         :before-close="() => {toggleDialog('userHouseVisible')}"
     >
-      <house-search-list type="user" @close="toggleDialog" :house-list="userHouseList" :token="token"></house-search-list>
+      <house-search-list type="user" @close="toggleDialog" :house-list="userHouseList"
+                         :token="token"></house-search-list>
     </el-dialog>
-
   </div>
 </template>
 <style lang="scss" scoped>
-  .is-mobile.home{
+  .is-mobile.home {
     min-width: auto !important;
     min-height: auto !important;
-    .banner{
+    .banner {
       height: 200px;
       background-size: 100% auto;
-      .slogan{
+      .slogan {
         font-size: 16px;
         text-align: center;
         padding: 0 10px;
       }
-      .sub-slogan{
+      .sub-slogan {
         font-size: 12px;
         text-align: center;
         padding: 0 10px;
       }
-      .start{
+      .start {
         font-size: 12px;
         padding: 6px 10px;
       }
     }
-    .header{
+    .header {
       padding-left: 10px;
       padding-right: 10px;
       position: sticky;
       top: 0;
     }
-    footer{
+    footer {
       padding-left: 20px;
       padding-right: 20px;
       text-align: center;
-      >div{
+      > div {
         align-items: center;
         flex-direction: column;
       }
-      a{
+      a {
         display: block;
       }
     }
@@ -655,7 +655,7 @@
         userHouseVisible: false,
         userSource: false,
         dashboardsType: 'all',
-        isMobile: false
+        isMobile: false,
       }
     },
     methods: {
@@ -696,7 +696,7 @@
         this[key] = val || false;
       },
       scroll() {
-        if(this.isMobile) {
+        if (this.isMobile) {
           return
         }
         let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
@@ -721,22 +721,52 @@
           if (centerY > visibleTop && centerY < visibleBottom) {
             this.elements[i].classList.add('running');
           } else {
-            if(!this.isMobile) {
+            if (!this.isMobile) {
               this.elements[i].classList.remove('running');
             }
           }
         }
 
+      },
+      cleanNotify(id) {
+        let ids = localStorage.getItem('$notices') ? JSON.parse(localStorage.getItem('$notices')) : [];
+        ids.push(id);
+        let set = new Set(ids);
+        ids = Array.from(set);
+        localStorage.setItem('$notices',JSON.stringify(ids))
+      },
+      async getLastNotices() {
+        const ids = localStorage.getItem('$notices') && JSON.parse(localStorage.getItem('$notices'));
+        const data = await this.$ajax.get(`/notices/last`);
+        const date = this.$transformData(data.data.dataCreateTime,'yyyy-MM-dd hh:mm:ss') || data.data.dataCreateTime;
+        const html = `<div>${data.data.content}</div><div>${date}</div>`;
+        const self = this;
+        const res = ids.findIndex(item => {
+          return item === data.data.id
+        });
+        if(res === -1) {
+          this.$notify.info({
+            title: '系统公告',
+            position: 'bottom-right',
+            duration: 0,
+            message: html,
+            dangerouslyUseHTMLString: true,
+            onClose() {
+              self.cleanNotify(data.data.id)
+            }
+          });
+        }
       }
     },
     async created() {
       this.getUserInfo();
+      this.getLastNotices();
       let ua = navigator.userAgent;
       let ipad = ua.match(/(iPad).*OS\s([\d_]+)/),
-        isIphone =!ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/),
+        isIphone = !ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/),
         isAndroid = ua.match(/(Android)\s+([\d.]+)/),
         isMobile = isIphone || isAndroid;
-      if(isMobile) {
+      if (isMobile) {
         this.isMobile = true
       }
     },

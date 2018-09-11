@@ -60,11 +60,13 @@
           <li>
             <el-dropdown>
             <span class="el-dropdown-link nav-item">
-              使用说明<i class="el-icon-caret-bottom"></i>
+              说明/公告<i class="el-icon-caret-bottom"></i>
             </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item v-for="item in instructions" :key="item.url">
                   <a :href="item.url" target="_blank" class="link-to">{{item.name}}</a>
+                </el-dropdown-item>
+                <el-dropdown-item><a href="javascript:" class="link-to" @click="getHistoryNotices">历史公告</a>
                 </el-dropdown-item>
                 <el-dropdown-item><a href="javascript:" class="link-to" @click="scrollTo('contact')">联系我？</a>
                 </el-dropdown-item>
@@ -74,6 +76,22 @@
         </ul>
       </nav>
     </div>
+    <el-dialog
+        top="50px"
+        :width="isMobile ? '100%' : '70%'"
+        title="历史公告"
+        :visible.sync="noticesVisible"
+        append-to-body
+        center
+    >
+      <div class="history-notices">
+        <el-collapse  accordion>
+          <el-collapse-item :title="historyTitle(item)" :name="item.id" v-for="item in historyNotices" :key="item.id">
+            <div class="history-notices-item">{{item.content}}</div>
+          </el-collapse-item>
+        </el-collapse>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <style lang="scss" scoped>
@@ -179,6 +197,14 @@
   a {
     text-decoration: none;
   }
+  .history-notices{
+    max-height: 600px;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  .history-notices-item{
+    word-break: break-all;
+  }
 </style>
 <script>
   export default {
@@ -196,6 +222,11 @@
       },
     },
     methods: {
+      historyTitle(item){
+        const name = item.content.slice(0,40);
+        const time = this.$transformData(item.dataCreateTime,'yyyy-MM-dd hh:mm:ss')
+        return `${name}... (${time})`
+      },
       logOut() {
         this.$store.dispatch('UserLogout');
       },
@@ -214,6 +245,11 @@
         }).catch(() => {
 
         });
+      },
+      async getHistoryNotices() {
+        const data = await this.$ajax.get('/notices');
+        this.historyNotices = data.data;
+        this.noticesVisible = true;
       }
     },
     data() {
@@ -233,12 +269,14 @@
             url: 'https://github.com/liguobao/58HouseSearch/blob/master/%E6%97%A5%E5%B8%B8%E6%9B%B4%E6%96%B0.md'
           }
         ],
-        oauthUrl: undefined
+        oauthUrl: undefined,
+        noticesVisible: false,
+        historyNotices: []
       }
     },
     async created() {
       const data = await this.$ajax.get('/account/oauth-url');
-      this.oauthUrl = data.url
+      this.oauthUrl = data.url;
     }
   }
 </script>

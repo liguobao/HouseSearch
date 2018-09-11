@@ -76,6 +76,7 @@
       <el-table-column
           align="center"
           width="150"
+          sortable
           prop="housePrice"
           label="价格(元)">
       </el-table-column>
@@ -83,13 +84,15 @@
           align="center"
           prop="pubTime"
           width="180"
+          sortable
           label="发布时间">
         <template slot-scope="scope">
-          <i class="el-icon-time"></i> <span class="pub-time">{{ scope.row.pubTime }}</span>
+          <i class="el-icon-time"></i> <span class="pub-time">{{ $transformData(scope.row.pubTime,'yyyy-MM-dd hh:mm:ss') }}</span>
         </template>
       </el-table-column>
       <el-table-column
           align="center"
+          sortable
           prop="displaySource"
           label="来源">
       </el-table-column>
