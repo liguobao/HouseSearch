@@ -19,11 +19,11 @@ namespace HouseCrawler.Web.API.Controllers
 {
 
     [Route("v1/[controller]/")]
-    public class NoticeController : ControllerBase
+    public class NoticesController : ControllerBase
     {
         private NoticeDapper _dapper;
 
-        public NoticeController(NoticeDapper dapper)
+        public NoticesController(NoticeDapper dapper)
         {
             _dapper = dapper;
         }
@@ -31,6 +31,14 @@ namespace HouseCrawler.Web.API.Controllers
         [EnableCors("APICors")]
         [HttpGet("", Name = "Notice")]
         public ActionResult Info()
+        {
+            return Ok(new { success = true, data = _dapper.FindAllNotice() });
+        }
+
+
+        [EnableCors("APICors")]
+        [HttpGet("last", Name = "Notice")]
+        public ActionResult FindLastNotice()
         {
             return Ok(new { success = true, data = _dapper.FindLastNotice() });
         }

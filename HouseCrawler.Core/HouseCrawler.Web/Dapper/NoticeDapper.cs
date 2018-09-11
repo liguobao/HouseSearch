@@ -18,7 +18,6 @@ namespace HouseCrawler.Web
 
         public Notice FindLastNotice()
         {
-            DateTime today = DateTime.Now;
             using (IDbConnection dbConnection = GetConnection())
             {
                 dbConnection.Open();
@@ -31,6 +30,19 @@ namespace HouseCrawler.Web
                 {
                     Today = DateTime.Now.Date
                 }).FirstOrDefault();
+            }
+        }
+
+        public List<Notice> FindAllNotice()
+        {
+            using (IDbConnection dbConnection = GetConnection())
+            {
+                dbConnection.Open();
+                return dbConnection.Query<Notice>(@"SELECT 
+                        *
+                    FROM
+                        Notice
+                    order by DataCreateTime desc limit 10;").ToList();
             }
         }
     }
