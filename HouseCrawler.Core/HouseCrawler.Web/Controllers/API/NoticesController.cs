@@ -37,7 +37,7 @@ namespace HouseCrawler.Web.API.Controllers
 
 
         [EnableCors("APICors")]
-        [HttpGet("last", Name = "Notice")]
+        [HttpGet("last", Name = "FindLastNotice")]
         public ActionResult FindLastNotice()
         {
             return Ok(new { success = true, data = _dapper.FindLastNotice() });
