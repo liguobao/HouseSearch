@@ -744,7 +744,9 @@
         const res = ids.findIndex(item => {
           return item === data.data.id
         });
-        if(res === -1) {
+        const endTime = +new Date(data.data.endShowDate);
+        const now = +new Date();
+        if(res === -1 && (now <= endTime)) {
           this.$notify.info({
             title: '系统公告',
             position: 'bottom-right',
