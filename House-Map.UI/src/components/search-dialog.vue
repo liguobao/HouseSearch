@@ -62,10 +62,10 @@
               label="列表"
               value="0"
           ></el-option>
-          <el-option
-              label="地图"
-              value="1"
-          ></el-option>
+          <!--<el-option-->
+              <!--label="地图"-->
+              <!--value="1"-->
+          <!--&gt;</el-option>-->
         </el-select>
       </el-form-item>
       <el-form-item label-width="0px">
@@ -79,6 +79,7 @@
           </el-alert>
         </el-collapse-transition>
         <el-button type="primary" @click="search" :loading="loading" class="search">开始搜索</el-button>
+        <el-button  @click="toMap"  class="search">直达地图</el-button>
       </el-form-item>
     </el-form>
   </el-dialog>
@@ -187,19 +188,25 @@
       close() {
         this.$emit('close', 'searchVisible', false)
       },
+     async toMap() {
+        try {
+          await this.$refs.form.validate();
+          const params = Object.assign({}, this.form);
+          delete params.type;
+          params.cityname = params.cityName;
+          params.token = this.token;
+          delete params.cityName;
+          window.open(`https://api.house-map.cn/Home/HouseList?${this.$qs.stringify(params)}`);
+        } catch (e) {
+          this.loading = false;
+        }
+      },
       async search() {
         try {
           await this.$refs.form.validate();
           const params = Object.assign({}, this.form);
           delete params.type;
-          if (this.form.type == 1) {
-            params.cityname = params.cityName;
-            params.token = this.token;
-            delete params.cityName;
-            window.open(`https://api.house-map.cn/Home/HouseList?${this.$qs.stringify(params)}`);
-          } else {
-            this.getHousesList(params)
-          }
+          this.getHousesList(params)
         } catch (e) {
           this.loading = false;
         }
