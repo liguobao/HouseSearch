@@ -736,11 +736,12 @@
         localStorage.setItem('$notices',JSON.stringify(ids))
       },
       async getLastNotices() {
-        const ids = localStorage.getItem('$notices') && JSON.parse(localStorage.getItem('$notices'));
+        let ids = localStorage.getItem('$notices') && JSON.parse(localStorage.getItem('$notices'));
         const data = await this.$ajax.get(`/notices/last`);
         const date = this.$transformData(data.data.dataCreateTime,'yyyy-MM-dd hh:mm:ss') || data.data.dataCreateTime;
         const html = `<div>${data.data.content}</div><div>${date}</div>`;
         const self = this;
+        ids = ids || [];
         const res = ids.findIndex(item => {
           return item === data.data.id
         });
