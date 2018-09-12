@@ -86,10 +86,11 @@
     methods: {
       czc() {
         if(window._czc) {
-          var location = window.location;
-          var content_url = location.pathname + location.hash;
-          var referer_url = '/';
-          _czc.push(['_trackPageview', content_url, referer_url]);
+          let location = window.location
+          let contentUrl = location.pathname + location.hash
+          let refererUrl = '/'
+          window._czc.push(['_trackPageview', contentUrl, refererUrl])
+
         }else {
           setTimeout(() => {
             this.czc();
@@ -97,8 +98,15 @@
         }
       }
     },
-    created() {
-      this.czc();
+    mounted() {
+        let self = this;
+        const script = document.createElement('script')
+        script.src = 'https://s95.cnzz.com/z_stat.php?id=1260881876&web_id=1260881876'
+        script.language = 'JavaScript'
+        document.body.appendChild(script);
+        script.onload = function(){
+         self.czc();
+        }
     }
   }
 </script>
