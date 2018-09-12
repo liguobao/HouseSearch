@@ -78,8 +78,27 @@
 </style>
 <script>
   export default {
+    watch: {
+      '$route'() {
+        this.czc();
+      },
+    },
+    methods: {
+      czc() {
+        if(window._czc) {
+          var location = window.location;
+          var content_url = location.pathname + location.hash;
+          var referer_url = '/';
+          _czc.push(['_trackPageview', content_url, referer_url]);
+        }else {
+          setTimeout(() => {
+            this.czc();
+          },200)
+        }
+      }
+    },
     created() {
-
+      this.czc();
     }
   }
 </script>
