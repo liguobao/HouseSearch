@@ -40,7 +40,7 @@ Vue.prototype.$transformData = function (time, fmt) {
   return fmt
 };
 Vue.use(ElementUI);
-Vue.use(uweb,'1260881876')
+//Vue.use(uweb,'1260881876')
 
 new Vue({
   router,
