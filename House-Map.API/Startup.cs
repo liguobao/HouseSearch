@@ -54,26 +54,20 @@ namespace HouseMapAPI
             //services.AddSingleton<EncryptionTools, EncryptionTools>();
 
             #region Service
-             services.AddSingleton<EmailService, EmailService>();
+            services.AddSingleton<EmailService, EmailService>();
             services.AddSingleton<RedisService, RedisService>();
-             services.AddSingleton<HouseDashboardService, HouseDashboardService>();
-             services.AddSingleton<UserService, UserService>();
-             services.AddSingleton<QQOAuthClient, QQOAuthClient>();
+            services.AddSingleton<HouseDashboardService, HouseDashboardService>();
+            services.AddSingleton<UserService, UserService>();
+            services.AddSingleton<QQOAuthClient, QQOAuthClient>();
             #endregion
         }
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseHsts();
-            }
+            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            app.UseErrorHandling();
             app.UseMvc();
         }
     }
