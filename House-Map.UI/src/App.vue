@@ -24,6 +24,14 @@
     line-height: 1.6;
   }
   @font-face {
+    font-family: 'FontAwesome';
+    src: url('./fonts/fontawesome-webfont.eot?v=4.6.3');
+    src: url('./fonts/fontawesome-webfont.eot?#iefix&v=4.6.3') format('embedded-opentype'), url('./fonts/fontawesome-webfont.woff2?v=4.6.3') format('woff2'), url('./fonts/fontawesome-webfont.woff?v=4.6.3') format('woff'), url('./fonts/fontawesome-webfont.ttf?v=4.6.3') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  @font-face {
     font-family: 'iconfont';  /* project id 826486 */
     src: url('//at.alicdn.com/t/font_826486_ns6jc4zbuh.eot');
     src: url('//at.alicdn.com/t/font_826486_ns6jc4zbuh.eot?#iefix') format('embedded-opentype'),

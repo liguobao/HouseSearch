@@ -135,7 +135,7 @@
     > ul {
       display: flex;
       li {
-        max-width: 200px;
+        max-width: 240px;
       }
       .dropdown {
         width: 100%;
