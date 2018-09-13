@@ -17,6 +17,7 @@
     <PackageReference Include="StackExchange.Redis.StrongName" Version="1.2.7-alpha-00002"/>
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.1"/>
     <PackageReference Include="Dapper" Version="1.50.5"/>
+      <PackageReference Include="Talk.OAuthClient" Version="1.0.0"/>
   </ItemGroup>
 
 </Project>

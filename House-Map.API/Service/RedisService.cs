@@ -40,9 +40,21 @@ namespace HouseMapAPI.Service
             }
         }
 
-        internal void WriteCache(string state, string v, object loginState)
+        public void WriteCache(string key, string value, int dbName = 1, int minutes = 60)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(GetRedisOptions()))
+                {
+                    IDatabase db = redis.GetDatabase(dbName);
+                    db.StringSet(key, value, new System.TimeSpan(0, minutes, 0));
+                }
+            }
+            catch (Exception ex)
+            {
+                //LogHelper.Error("WriteCache", ex);
+            }
+
         }
 
         public T ReadCache<T>(string key, int dbName = 0)
@@ -63,21 +75,7 @@ namespace HouseMapAPI.Service
         }
 
 
-        public void WriteCache(string key, string value, int dbName = 0, TimeSpan? expiry = null)
-        {
-            try
-            {
-                using (ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(GetRedisOptions()))
-                {
-                    IDatabase db = redis.GetDatabase(dbName);
-                    db.StringSet(key, value, expiry);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
-        }
+        
 
         public bool DelteCache(string key, int dbName = 0)
         {
