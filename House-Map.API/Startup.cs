@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace HouseMap.API
+namespace HouseMapAPI
 {
     public class Startup
     {
@@ -39,8 +39,6 @@ namespace HouseMap.API
             {
                 app.UseHsts();
             }
-
-            app.UseHttpsRedirection();
             app.UseMvc();
         }
     }

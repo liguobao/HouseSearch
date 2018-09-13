@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "HouseMap.API": {
+    "HouseMapAPI": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "api/values",
