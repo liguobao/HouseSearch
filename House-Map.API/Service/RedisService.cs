@@ -15,9 +15,9 @@ namespace HouseMapAPI.Service
             return options;
         }
 
-        private APPConfiguration configuration;
+        private AppSettings configuration;
 
-        public RedisService(IOptions<APPConfiguration> configuration)
+        public RedisService(IOptions<AppSettings> configuration)
         {
             this.configuration = configuration.Value;
         }
