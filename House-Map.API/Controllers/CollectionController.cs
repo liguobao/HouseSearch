@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using HouseMapAPI.Dapper;
 using HouseMapAPI.Service;
 using HouseMapAPI.DBEntity;
+using HouseMapAPI.Filters;
 
 namespace HouseCrawler.Web.API.Controllers
 {
@@ -19,137 +20,55 @@ namespace HouseCrawler.Web.API.Controllers
     public class CollectionsController : ControllerBase
     {
 
-
-        private HouseDapper houseDapper;
-
-        private DashboardService houseDashboardService;
-
-        private ConfigDapper configurationDapper;
-
-        private UserCollectionDapper userCollectionDapper;
-        private UserService userService;
+        private UserCollectionService _collectionService;
 
 
-        public CollectionsController(HouseDapper houseDapper,
-                              DashboardService houseDashboardService,
-                              ConfigDapper configurationDapper,
-                              UserCollectionDapper userCollectionDapper,
-                              UserService userService)
+        public CollectionsController(UserCollectionService collectionService)
         {
-            this.houseDapper = houseDapper;
-            this.houseDashboardService = houseDashboardService;
-            this.configurationDapper = configurationDapper;
-            this.userCollectionDapper = userCollectionDapper;
-            this.userService = userService;
+            _collectionService = collectionService;
         }
 
         [HttpGet("{userId}/[controller]/dashboard", Name = "GetUserDashboard")]
         [EnableCors("APICors")]
+        [ServiceFilter(typeof(UserTokenFilter))]
         public IActionResult GetUserDashboard(long userId, [FromHeader] string token)
         {
-            var userInfo = userService.GetUserInfo(userId, token);
-            if (userInfo == null)
-            {
-                return Ok(new { success = false, error = "用户未登陆，无法进行操作。" });
-            }
-            var id = 1;
-            var list = userCollectionDapper.LoadUserHouseDashboard(userId)
-            .GroupBy(d => d.CityName)
-            .Select(i => new
-            {
-                id = id++,
-                cityName = i.Key,
-                sources = i.ToList()
-            });
-            return Ok(new { success = true, data = list });
+            return Ok(new { success = true, data = _collectionService.GetUserDashboards(userId) });
         }
 
         [EnableCors("APICors")]
         [HttpGet("{userId}/[controller]/", Name = "ListCollection")]
-        [HttpPost("{userId}/[controller]/", Name = "ListCollection")]
+        [ServiceFilter(typeof(UserTokenFilter))]
         public IActionResult List(long userId, [FromHeader] string token, string cityName, string source = "")
         {
-            try
-            {
-                var userInfo = userService.GetUserInfo(userId, token);
-                if (userInfo == null)
-                {
-                    return Ok(new { success = false, error = "用户未登陆，无法进行操作。" });
-                }
-                var rooms = userCollectionDapper.FindUserCollections(userId, cityName, source);
-                return Ok(new { success = true, data = rooms });
-            }
-            catch (Exception ex)
-            {
-                return Ok(new { success = false, error = ex.ToString() });
-            }
+            var rooms = _collectionService.FindUserCollections(userId, cityName, source);
+            return Ok(new { success = true, data = rooms });
         }
 
         [EnableCors("APICors")]
         [HttpGet("{userId}/[controller]/{id}", Name = "GetOne")]
-        [HttpPost("{userId}/[controller]/{id}", Name = "GetOne")]
+        [ServiceFilter(typeof(UserTokenFilter))]
         public IActionResult GetOne(long userId, [FromHeader] string token, long id)
         {
-            try
-            {
-                var userInfo = userService.GetUserInfo(userId, token);
-                if (userInfo == null)
-                {
-                    return Ok(new { success = false, error = "用户未登陆，无法进行操作。" });
-                }
-                var houses = userCollectionDapper.FindUserCollections(userId);
-                return Ok(new { success = true, data = houses.FirstOrDefault(h => h.Id == id) });
-            }
-            catch (Exception ex)
-            {
-                return Ok(new { success = false, error = ex.ToString() });
-            }
+            var houses = _collectionService.FindUserCollections(userId);
+            return Ok(new { success = true, data = houses.FirstOrDefault(h => h.Id == id) });
         }
 
         [EnableCors("APICors")]
         [HttpPost("{userId}/[controller]", Name = "CreateCollection")]
+        [ServiceFilter(typeof(UserTokenFilter))]
         public IActionResult Create(long userId, [FromBody] UserCollection userCollection, [FromHeader] string token)
         {
-            var userInfo = userService.GetUserInfo(userId, token);
-            if (userInfo == null)
-            {
-                return Ok(new { success = false, error = "用户未登陆，无法进行操作。" });
-            }
-            var house = houseDapper.GetHouseID(userCollection.HouseID, userCollection.Source);
-            if (house == null)
-            {
-                return Ok(new { successs = false, error = "房源信息不存在,请刷新页面后重试." });
-            }
-            userCollection.UserID = userId;
-            userCollection.Source = house.Source;
-            userCollection.HouseCity = house.LocationCityName;
-            userCollectionDapper.InsertUser(userCollection);
+            _collectionService.AddOne(userId, userCollection);
             return Ok(new { success = true, message = "收藏成功." }); ;
         }
 
         [EnableCors("APICors")]
         [HttpDelete("{userId}/[controller]/{id}", Name = "RemoveCollection")]
+        [ServiceFilter(typeof(UserTokenFilter))]
         public IActionResult Remove(long userId, long id, [FromHeader] string token)
         {
-            var userInfo = userService.GetUserInfo(userId, token);
-            if (userInfo == null)
-            {
-                return Ok(new { success = false, error = "用户未登陆，无法进行操作。" });
-            }
-            var userCollection = userCollectionDapper.FindByIDAndUserID(id, userId);
-            if (userCollection == null)
-            {
-                return Ok(new { successs = false, error = "房源信息不存在,请刷新页面后重试." });
-            }
-            try
-            {
-                userCollectionDapper.RemoveByIDAndUserID(userCollection.ID, userCollection.UserID);
-            }
-            catch(Exception ex)
-            {
-                return Ok(new { success = false, error = ex.ToString() }); ;
-            }
-
+            _collectionService.RemoveOne(userId, id);
             return Ok(new { success = true, message = "删除成功." });
         }
 
