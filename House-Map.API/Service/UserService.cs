@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Text;
 using HouseMapAPI.Common;
+using HouseMapAPI.CommonException;
 using HouseMapAPI.Dapper;
 using HouseMapAPI.DBEntity;
 using HouseMapAPI.Service;
@@ -136,13 +137,17 @@ namespace HouseMapAPI.Service
 
         public UserInfo GetUserInfo(long userId, string token)
         {
-            var userToken = _redisService.ReadCache("user_token_" + userId, 0);
-            if (userToken != null && userToken == token)
+            var userToken = _redisService.ReadCache(RedisKey.UserToken.Key + userId, RedisKey.UserToken.DBName);
+            if (string.IsNullOrEmpty(userToken))
             {
-                var userJson = _redisService.ReadCache("user_" + userId, 0);
-                return JsonConvert.DeserializeObject<UserInfo>(userJson);
+                throw new TokenInvalidException("can not find token in redis");
             }
-            return null;
+
+            if (userToken != token)
+            {
+                throw new TokenInvalidException("token invalid");
+            }
+            return _redisService.ReadCache<UserInfo>(RedisKey.UserId.Key + userId, RedisKey.UserId.DBName);
         }
 
         public UserInfo GetUserByToken(string token)

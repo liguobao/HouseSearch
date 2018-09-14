@@ -23,7 +23,7 @@ namespace HouseMapAPI.Filters
             if (context.HttpContext.Request.Headers.Keys.Contains("token"))
             {
                 var token = context.HttpContext.Request.Headers["token"].ToString();
-                var userInfo = _redisService.ReadCache<UserInfo>(token);
+                var userInfo = _redisService.ReadCache<UserInfo>(token, RedisKey.Token.DBName);
                 if (userInfo == null)
                 {
                     throw new TokenInvalidException("token invalid.");

@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using HouseMapAPI.Common;
 using HouseMapAPI.Dapper;
 using HouseMapAPI.Models;
 using HouseMapAPI.Service;
 
 namespace HouseMapAPI.Service
 {
-    public class HouseDashboardService
+    public class DashboardService
     {
         private RedisService redisService;
 
         private HouseDapper houseDapper;
 
-        public HouseDashboardService(RedisService redisService, HouseDapper houseDapper)
+        public DashboardService(RedisService redisService, HouseDapper houseDapper)
         {
             this.redisService = redisService;
             this.houseDapper = houseDapper;
@@ -22,17 +23,15 @@ namespace HouseMapAPI.Service
 
         public List<HouseDashboard> LoadDashboard()
         {
-            string houseDashboardJson = redisService.ReadCache("HouseDashboard");
-            if (string.IsNullOrEmpty(houseDashboardJson))
+            var dashboards =  redisService.ReadCache<List<HouseDashboard>>(RedisKey.HouseDashboard.Key,
+             RedisKey.HouseDashboard.DBName);
+            if (dashboards ==null)
             {
-                List<HouseDashboard> dashboards = houseDapper.GetHouseDashboard();
+                dashboards = houseDapper.GetHouseDashboard();
                 redisService.WriteObject("HouseDashboard", dashboards);
-                return dashboards;
             }
-            else
-            {
-                return Newtonsoft.Json.JsonConvert.DeserializeObject<List<HouseDashboard>>(houseDashboardJson);
-            }
+            return dashboards;
+            
         }
 
     }

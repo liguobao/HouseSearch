@@ -23,7 +23,7 @@ namespace HouseMapAPI.Service
         }
 
 
-        public string ReadCache(string key, int dbName = 0)
+        public string ReadCache(string key, int dbName)
         {
             try
             {
@@ -57,7 +57,7 @@ namespace HouseMapAPI.Service
 
         }
 
-        public T ReadCache<T>(string key, int dbName = 0)
+        public T ReadCache<T>(string key, int dbName)
         {
             try
             {

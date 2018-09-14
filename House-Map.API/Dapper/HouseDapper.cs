@@ -53,7 +53,7 @@ namespace HouseMapAPI.Dapper
             var houses = new List<HouseInfo>();
             if (!condition.Refresh)
             {
-                houses = _redisService.ReadCache<List<HouseInfo>>(redisKey);
+                houses = _redisService.ReadCache<List<HouseInfo>>(redisKey, RedisKey.Houses.DBName);
                 if (houses != null && houses.Count > 0)
                 {
                     return houses;
@@ -116,11 +116,12 @@ namespace HouseMapAPI.Dapper
 
         public List<HouseDashboard> LoadDashboard()
         {
-            string houseDashboardJson = _redisService.ReadCache("HouseDashboard");
+            string houseDashboardJson = _redisService.ReadCache(RedisKey.HouseDashboard.Key,
+             RedisKey.HouseDashboard.DBName);
             if (string.IsNullOrEmpty(houseDashboardJson))
             {
                 List<HouseDashboard> dashboards = GetHouseDashboard();
-                _redisService.WriteObject("HouseDashboard", dashboards);
+                _redisService.WriteObject(RedisKey.HouseDashboard.Key, dashboards);
                 return dashboards;
             }
             else
@@ -131,26 +132,22 @@ namespace HouseMapAPI.Dapper
 
         public List<string> GetCityHouseSources(string cityName)
         {
-            string redisKey = "CitySource-" + cityName;
-            string citySources = _redisService.ReadCache(redisKey);
-            if (string.IsNullOrEmpty(citySources))
+            string redisKey = RedisKey.CityHouseSource.Key + cityName;
+            var citySources = _redisService.ReadCache<List<string>>(redisKey, RedisKey.CityHouseSource.DBName);
+            if (citySources != null)
             {
-                var dicCityNameToSources = LoadDashboard().GroupBy(d => d.CityName)
-                          .ToDictionary(item => item.Key, item => item.Select(db => db.Source).ToList());
-                var soures = new List<String>();
-                if (dicCityNameToSources != null && dicCityNameToSources.ContainsKey(cityName))
-                {
-                    soures = dicCityNameToSources[cityName];
-                }
-                _redisService.WriteObject(redisKey, soures);
-                return soures;
-            }
-            else
-            {
-                return Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(citySources);
+                return citySources;
             }
 
-
+            var dicCityNameToSources = LoadDashboard().GroupBy(d => d.CityName)
+                      .ToDictionary(item => item.Key, item => item.Select(db => db.Source).ToList());
+            var soures = new List<String>();
+            if (dicCityNameToSources != null && dicCityNameToSources.ContainsKey(cityName))
+            {
+                soures = dicCityNameToSources[cityName];
+            }
+            _redisService.WriteObject(redisKey, soures);
+            return soures;
         }
     }
 }

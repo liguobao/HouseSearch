@@ -20,7 +20,7 @@ namespace HouseCrawler.Web.API.Controllers
     {
         private HouseDapper houseDapper;
 
-        private HouseDashboardService houseDashboardService;
+        private DashboardService houseDashboardService;
 
         private ConfigDapper configurationDapper;
 
@@ -28,7 +28,7 @@ namespace HouseCrawler.Web.API.Controllers
 
 
         public HousesController(HouseDapper houseDapper,
-                              HouseDashboardService houseDashboardService,
+                              DashboardService houseDashboardService,
                               ConfigDapper configurationDapper,
                               UserCollectionDapper userCollectionDapper)
         {
