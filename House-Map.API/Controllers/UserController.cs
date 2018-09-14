@@ -20,7 +20,7 @@ namespace HouseCrawler.Web.API.Controllers
     public class UserController : ControllerBase
     {
 
-        private UserDataDapper userDataDapper;
+        private UserDapper userDataDapper;
 
         private EmailService emailService;
 
@@ -31,7 +31,7 @@ namespace HouseCrawler.Web.API.Controllers
 
         private UserService userService;
 
-        public UserController(UserDataDapper userDataDapper,
+        public UserController(UserDapper userDataDapper,
                           EmailService emailService,
                           EncryptionTools encryptionTools,
                           RedisService redisService,

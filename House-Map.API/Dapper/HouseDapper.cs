@@ -65,7 +65,7 @@ namespace HouseMapAPI.Dapper
                 houses = dbConnection.Query<HouseInfo>(condition.QueryText, condition).ToList();
                 if (houses != null && houses.Count > 0)
                 {
-                    _redisService.WriteCache(redisKey, Newtonsoft.Json.JsonConvert.SerializeObject(houses));
+                    _redisService.WriteObject(redisKey, houses);
                 }
                 return houses;
             }
@@ -120,7 +120,7 @@ namespace HouseMapAPI.Dapper
             if (string.IsNullOrEmpty(houseDashboardJson))
             {
                 List<HouseDashboard> dashboards = GetHouseDashboard();
-                _redisService.WriteCache("HouseDashboard", Newtonsoft.Json.JsonConvert.SerializeObject(dashboards));
+                _redisService.WriteObject("HouseDashboard", dashboards);
                 return dashboards;
             }
             else
@@ -142,7 +142,7 @@ namespace HouseMapAPI.Dapper
                 {
                     soures = dicCityNameToSources[cityName];
                 }
-                _redisService.WriteCache(redisKey, Newtonsoft.Json.JsonConvert.SerializeObject(soures));
+                _redisService.WriteObject(redisKey, soures);
                 return soures;
             }
             else

@@ -43,7 +43,7 @@ namespace HouseMapAPI
             services.AddSingleton<HouseDapper, HouseDapper>();
             services.AddSingleton<ConfigDapper, ConfigDapper>();
             services.AddSingleton<UserCollectionDapper, UserCollectionDapper>();
-            services.AddSingleton<UserDataDapper, UserDataDapper>();
+            services.AddSingleton<UserDapper, UserDapper>();
             services.AddSingleton<BaseDapper, BaseDapper>();
             services.AddSingleton<NoticeDapper, NoticeDapper>();
 

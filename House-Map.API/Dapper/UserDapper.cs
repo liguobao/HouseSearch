@@ -10,9 +10,9 @@ using System.Linq;
 
 namespace HouseMapAPI.Dapper
 {
-    public class UserDataDapper:BaseDapper
+    public class UserDapper:BaseDapper
     {
-        public UserDataDapper(IOptions<AppSettings> configuration) : base(configuration)
+        public UserDapper(IOptions<AppSettings> configuration) : base(configuration)
         {
 
         }

@@ -26,7 +26,7 @@ namespace HouseMapAPI.Service
             if (string.IsNullOrEmpty(houseDashboardJson))
             {
                 List<HouseDashboard> dashboards = houseDapper.GetHouseDashboard();
-                redisService.WriteCache("HouseDashboard", Newtonsoft.Json.JsonConvert.SerializeObject(dashboards));
+                redisService.WriteObject("HouseDashboard", dashboards);
                 return dashboards;
             }
             else

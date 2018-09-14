@@ -40,14 +40,14 @@ namespace HouseMapAPI.Service
             }
         }
 
-        public void WriteCache(string key, string value, int dbName = 1, int minutes = 60)
+        public void WriteObject(string key, Object value, int dbName = 1, int minutes = 60)
         {
             try
             {
                 using (ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(GetRedisOptions()))
                 {
                     IDatabase db = redis.GetDatabase(dbName);
-                    db.StringSet(key, value, new System.TimeSpan(0, minutes, 0));
+                    db.StringSet(key,  Newtonsoft.Json.JsonConvert.SerializeObject(value), new System.TimeSpan(0, minutes, 0));
                 }
             }
             catch (Exception ex)
