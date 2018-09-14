@@ -23,8 +23,6 @@ namespace HouseMapAPI.Service
         private HouseDapper _houseDapper;
 
 
-
-
         private UserCollectionDapper _dapper;
 
         public UserCollectionService(HouseDapper houseDapper, UserCollectionDapper userCollectionDapper)

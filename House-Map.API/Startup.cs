@@ -58,6 +58,9 @@ namespace HouseMapAPI
             services.AddSingleton<RedisService, RedisService>();
             services.AddSingleton<DashboardService, DashboardService>();
             services.AddSingleton<UserService, UserService>();
+            services.AddSingleton<ConfigService, ConfigService>();
+            services.AddSingleton<HouseService, HouseService>();
+            services.AddSingleton<UserCollectionService, UserCollectionService>();
             services.AddSingleton<QQOAuthClient, QQOAuthClient>();
             #endregion
         }

@@ -47,12 +47,12 @@ namespace HouseMapAPI.Service
                 using (ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(GetRedisOptions()))
                 {
                     IDatabase db = redis.GetDatabase(dbName);
-                    db.StringSet(key,  Newtonsoft.Json.JsonConvert.SerializeObject(value), new System.TimeSpan(0, minutes, 0));
+                    db.StringSet(key, Newtonsoft.Json.JsonConvert.SerializeObject(value), new System.TimeSpan(0, minutes, 0));
                 }
             }
             catch (Exception ex)
             {
-                //LogHelper.Error("WriteCache", ex);
+                Console.WriteLine(ex.ToString());
             }
 
         }
@@ -64,7 +64,7 @@ namespace HouseMapAPI.Service
                 using (ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(GetRedisOptions()))
                 {
                     IDatabase db = redis.GetDatabase(dbName);
-                    return db.KeyExists(key) == true ? Newtonsoft.Json.JsonConvert.DeserializeObject<T>(db.StringGet(key).ToString()) :  default(T);
+                    return db.KeyExists(key) == true ? Newtonsoft.Json.JsonConvert.DeserializeObject<T>(db.StringGet(key).ToString()) : default(T);
                 }
             }
             catch (Exception ex)
@@ -75,7 +75,7 @@ namespace HouseMapAPI.Service
         }
 
 
-        
+
 
         public bool DelteCache(string key, int dbName = 0)
         {
