@@ -13,6 +13,7 @@ using Newtonsoft.Json.Linq;
 using HouseMapAPI.Dapper;
 using HouseMapAPI.Service;
 using HouseMapAPI.Common;
+using HouseMapAPI.Filters;
 
 namespace HouseCrawler.Web.API.Controllers
 {
@@ -20,58 +21,31 @@ namespace HouseCrawler.Web.API.Controllers
     public class UserController : ControllerBase
     {
 
-        private UserDapper userDataDapper;
-
-        private EmailService emailService;
-
-        private EncryptionTools encryptionTools;
-
-
-        private RedisService redisService;
-
         private UserService userService;
 
-        public UserController(UserDapper userDataDapper,
-                          EmailService emailService,
-                          EncryptionTools encryptionTools,
-                          RedisService redisService,
-                          UserService userService)
+        public UserController(UserService userService)
         {
-            this.userDataDapper = userDataDapper;
-            this.emailService = emailService;
-            this.encryptionTools = encryptionTools;
-            this.redisService = redisService;
             this.userService = userService;
         }
 
 
         [EnableCors("APICors")]
         [HttpGet("v1/users/{userId}", Name = "Info")]
+        [ServiceFilter(typeof(UserTokenFilter))]
         public ActionResult Info(long userId, [FromHeader] string token)
         {
-            var userInfo = userService.GetUserInfo(userId, token);
-            if (userInfo != null)
-            {
-                return Ok(new { success = true, data = userInfo });
-            }
-            return Ok(new { success = false, error = "用户不存在/鉴权失败!" });
+            return Ok(new { success = true, data = userService.GetUserByToken(token) });
         }
 
         [EnableCors("APICors")]
         [HttpPost("v1/users/{userId}/address", Name = "SetWorkAddress")]
+        [ServiceFilter(typeof(UserTokenFilter))]
         public ActionResult SetWorkAddress(long userId, [FromHeader] string token, [FromBody]JToken model)
         {
-            if (string.IsNullOrEmpty(model?["address"]?.ToString()))
+            return Ok(new
             {
-                return Ok(new { success = false, error = "地址不能为空!" });
-            }
-            var userInfo = userService.GetUserInfo(userId, token);
-            if (userInfo == null)
-            {
-                return Ok(new { success = false, error = "用户不存在/鉴权失败!" });
-            }
-            var success = userDataDapper.SaveWorkAddress(userId, model?["address"]?.ToString());
-            return Ok(new { success = success });
+                success = userService.SaveWorkAddress(userId, model?["address"]?.ToString())
+            });
         }
     }
 }

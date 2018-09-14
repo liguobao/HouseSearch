@@ -18,24 +18,22 @@ namespace HouseCrawler.Web.API.Controllers
     [Route("v1/[controller]/")]
     public class HousesController : ControllerBase
     {
-        private HouseDapper houseDapper;
 
-        private DashboardService houseDashboardService;
+        private DashboardService _dashboardService;
 
-        private ConfigDapper configurationDapper;
+        private ConfigService _configService;
 
-        private UserCollectionDapper userCollectionDapper;
+        private HouseService _houseService;
 
 
-        public HousesController(HouseDapper houseDapper,
-                              DashboardService houseDashboardService,
-                              ConfigDapper configurationDapper,
-                              UserCollectionDapper userCollectionDapper)
+
+        public HousesController(HouseService houseService,
+                              DashboardService dashboardService,
+                              ConfigService configService)
         {
-            this.houseDapper = houseDapper;
-            this.houseDashboardService = houseDashboardService;
-            this.configurationDapper = configurationDapper;
-            this.userCollectionDapper = userCollectionDapper;
+            _houseService = houseService;
+            _dashboardService = dashboardService;
+            _configService = configService;
         }
 
 
@@ -44,19 +42,7 @@ namespace HouseCrawler.Web.API.Controllers
         [EnableCors("APICors")]
         public IActionResult Search([FromBody] HouseSearchCondition search)
         {
-            try
-            {
-                if (search == null || search.CityName == null)
-                {
-                    return Ok(new { success = false, error = "查询条件不能为null" });
-                }
-                var houseList = houseDapper.SearchHouses(search);
-                return Ok(new { success = true, data = houseList });
-            }
-            catch (Exception ex)
-            {
-                return Ok(new { success = false, error = ex.ToString() });
-            }
+            return Ok(new { success = true, data = _houseService.Search(search) });
         }
 
         [EnableCors("APICors")]
@@ -64,7 +50,7 @@ namespace HouseCrawler.Web.API.Controllers
         public IActionResult Dashboards()
         {
             var id = 1;
-            var dashboards = houseDashboardService.LoadDashboard()
+            var dashboards = _dashboardService.LoadDashboard()
             .GroupBy(d => d.CityName)
             .Select(i => new
             {
@@ -79,10 +65,7 @@ namespace HouseCrawler.Web.API.Controllers
         [HttpGet("citys")]
         public IActionResult Citys()
         {
-            var id = 0;
-            var citys = houseDashboardService.LoadDashboard().Select(d => d.CityName)
-            .Distinct().Select(city => new { id = id++, Name = city }).ToList();
-            return Ok(new { success = true, data = citys });
+            return Ok(new { success = true, data = _dashboardService.LoadCitys() });
         }
 
         [EnableCors("APICors")]
@@ -91,40 +74,8 @@ namespace HouseCrawler.Web.API.Controllers
         {
             string doubanGroup = model?["groupId"].ToString();
             string cityName = model?["cityName"].ToString();
-            if (string.IsNullOrEmpty(doubanGroup) || string.IsNullOrEmpty(cityName))
-            {
-                return Ok(new { success = false, error = "请输入豆瓣小组Group和城市名称。" });
-            }
-            var topics =""; //DoubanHouseCrawler.GetHouseData(doubanGroup, cityName, 1);
-            if (topics != null && topics.Count() > 0)
-            {
-                var cityInfo = $"{{ 'groupid':'{doubanGroup}','cityname':'{cityName}','pagecount':5}}";
-                var doubanConfig = new CrawlerConfiguration();
-                if (doubanConfig != null)
-                {
-                    return Ok(new { success = true });
-                }
-                var config = new CrawlerConfiguration()
-                {
-                    ConfigurationKey = 0,
-                    ConfigurationValue = cityInfo,
-                    ConfigurationName = ConstConfigName.Douban,
-                    DataCreateTime = DateTime.Now,
-                    IsEnabled = true,
-                };
-                configurationDapper.Insert(config);
-                return Ok(new { success = true });
-            }
-            else
-            {
-                return Ok(new
-                {
-                    success = false,
-                    error = "保存失败!请检查豆瓣小组ID（如：XMhouse）/城市名称（如：厦门）是否正确..."
-                });
-            }
-
-
+            _configService.AddDoubanConfig(doubanGroup, cityName);
+            return Ok(new { success = true });
 
         }
 

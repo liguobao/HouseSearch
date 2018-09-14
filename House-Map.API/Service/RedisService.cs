@@ -40,7 +40,7 @@ namespace HouseMapAPI.Service
             }
         }
 
-        public void WriteObject(string key, Object value, int dbName = 1, int minutes = 60)
+        public void WriteObject(string key, Object value, int dbName, int minutes = 60)
         {
             try
             {

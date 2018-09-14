@@ -23,15 +23,23 @@ namespace HouseMapAPI.Service
 
         public List<HouseDashboard> LoadDashboard()
         {
-            var dashboards =  redisService.ReadCache<List<HouseDashboard>>(RedisKey.HouseDashboard.Key,
+            var dashboards = redisService.ReadCache<List<HouseDashboard>>(RedisKey.HouseDashboard.Key,
              RedisKey.HouseDashboard.DBName);
-            if (dashboards ==null)
+            if (dashboards == null)
             {
                 dashboards = houseDapper.GetHouseDashboard();
-                redisService.WriteObject("HouseDashboard", dashboards);
+                redisService.WriteObject(RedisKey.HouseDashboard.Key,
+                 dashboards, RedisKey.HouseDashboard.DBName);
             }
             return dashboards;
-            
+
+        }
+
+        public Object LoadCitys()
+        {
+            var id = 0;
+            return LoadDashboard().Select(d => d.CityName)
+            .Distinct().Select(city => new { id = id++, Name = city }).ToList();
         }
 
     }

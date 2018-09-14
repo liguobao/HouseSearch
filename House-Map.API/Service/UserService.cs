@@ -173,9 +173,14 @@ namespace HouseMapAPI.Service
             return _userDapper.FindUser(userName);
         }
 
-        internal void InsertUser(UserInfo insertUser)
+        public bool SaveWorkAddress(long userID, string address)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(address))
+            {
+                throw new UnProcessableException("地址不能为空!");
+            }
+            return _userDapper.SaveWorkAddress(userID, address);
         }
+
     }
 }
