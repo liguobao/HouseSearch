@@ -6,6 +6,7 @@ using HouseMapAPI.Common;
 using HouseMapAPI.CommonException;
 using HouseMapAPI.Dapper;
 using HouseMapAPI.DBEntity;
+using HouseMapAPI.Models;
 using HouseMapAPI.Service;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;

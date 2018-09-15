@@ -20,7 +20,7 @@ namespace HouseMapAPI.Dapper
 
 
 
-        public void Insert(CrawlerConfiguration conf)
+        public void Insert(CrawlerConfig conf)
         {
             string sqlText = @"INSERT INTO `housecrawler`.`CrawlerConfigurations`
              (`ConfigurationName`, `ConfigurationValue`, `ConfigurationKey`, `IsEnabled`) 

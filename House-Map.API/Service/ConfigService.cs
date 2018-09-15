@@ -39,12 +39,12 @@ namespace HouseMapAPI.Service
                 throw new Exception("保存失败!请检查豆瓣小组ID（如：XMhouse）/城市名称（如：厦门）是否正确...");
             }
             var cityInfo = $"{{ 'groupid':'{groupId}','cityname':'{cityName}','pagecount':5}}";
-            var doubanConfig = new CrawlerConfiguration();
+            var doubanConfig = new CrawlerConfig();
             if (doubanConfig != null)
             {
                 return;
             }
-            var config = new CrawlerConfiguration()
+            var config = new CrawlerConfig()
             {
                 ConfigurationKey = 0,
                 ConfigurationValue = cityInfo,

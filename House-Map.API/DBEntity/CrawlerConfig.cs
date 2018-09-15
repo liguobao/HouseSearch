@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HouseMapAPI.DBEntity
 {
-    public class CrawlerConfiguration
+    public class CrawlerConfig
     {
         public long Id { get; set; }
 

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using HouseCrawler.Web.Common;
 using HouseMapAPI.Common;
 using Newtonsoft.Json;
 
@@ -94,9 +95,8 @@ namespace HouseMapAPI.DBEntity
                     }
                     return Newtonsoft.Json.JsonConvert.DeserializeObject<List<String>>(PicURLs);
                 }
-                catch (Exception ex)
+                catch
                 {
-                    //LogHelper.Error("Get Pictures error", ex, this.HouseOnlineURL);
                     return new List<string>();
                 }
             }
@@ -111,7 +111,7 @@ namespace HouseMapAPI.DBEntity
             {
                 if (this.HousePrice > 0)
                 {
-                    //return LocationMarkBGType.SelectColor((int)this.HousePrice / 1000);
+                    return LocationMarkBGType.SelectColor((int)this.HousePrice / 1000);
                 }
                 return "";
             }

@@ -2,17 +2,13 @@ using System;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using HouseMapAPI.Service;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
 using Talk.OAuthClient;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Cors;
 using Newtonsoft.Json;
-using HouseMapAPI.Dapper;
-using HouseMapAPI.DBEntity;
 using HouseMapAPI.Common;
+using HouseMapAPI.Models;
 
 namespace HouseMapAPI.Controllers
 {

@@ -1,7 +1,7 @@
 using System;
 using Newtonsoft.Json;
 
-namespace HouseMapAPI.DBEntity
+namespace HouseMapAPI.Models
 {
 
     public class UserSave

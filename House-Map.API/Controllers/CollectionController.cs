@@ -1,18 +1,14 @@
 using System;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
 using Talk.OAuthClient;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Cors;
 using Newtonsoft.Json;
-using HouseMapAPI.Dapper;
 using HouseMapAPI.Service;
-using HouseMapAPI.DBEntity;
 using HouseMapAPI.Filters;
+using HouseMapAPI.DBEntity;
 
 namespace HouseCrawler.Web.API.Controllers
 {
