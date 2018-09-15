@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using NLog.Web;
 
 namespace HouseMapAPI
 {
@@ -70,6 +71,7 @@ namespace HouseMapAPI
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            env.ConfigureNLog("nlog.config");
             app.UseErrorHandling();
             app.UseMvc();
         }

@@ -1,8 +1,10 @@
+
 using HouseMapAPI.CommonException;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using NLog;
 using System;
 using System.Net;
 using System.Threading.Tasks;
@@ -11,13 +13,9 @@ public class ErrorHandlingMiddleware
 {
     private readonly RequestDelegate next;
 
-    private readonly ILogger _logger;
-
-    public ErrorHandlingMiddleware(RequestDelegate next,
-     ILogger<ErrorHandlingMiddleware> logger)
+        public ErrorHandlingMiddleware(RequestDelegate next)
     {
         this.next = next;
-        this._logger = logger;
     }
 
     public async Task Invoke(HttpContext context)
@@ -28,7 +26,7 @@ public class ErrorHandlingMiddleware
         }
         catch (Exception ex)
         {
-            _logger.LogError(-1, ex, ex.Message);
+            LogManager.GetCurrentClassLogger().Error(ex);
             if (ex is TokenInvalidException)
             {
                 await HandleExceptionAsync(context, ex.Message, 401);
