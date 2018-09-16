@@ -34,6 +34,20 @@ namespace HouseMapAPI.Service
             return dashboards;
 
         }
+        
+        public dynamic LoadCityDashboards()
+        {
+             var id = 1;
+            var dashboards = LoadDashboard()
+            .GroupBy(d => d.CityName)
+            .Select(i => new
+            {
+                id = id++,
+                cityName = i.Key,
+                sources = i.ToList()
+            });
+            return dashboards;
+        }
 
         public Object LoadCitys()
         {

@@ -46,16 +46,11 @@ namespace HouseCrawler.Web.API.Controllers
         [HttpGet("dashboard")]
         public IActionResult Dashboards()
         {
-            var id = 1;
-            var dashboards = _dashboardService.LoadDashboard()
-            .GroupBy(d => d.CityName)
-            .Select(i => new
+            return Ok(new
             {
-                id = id++,
-                cityName = i.Key,
-                sources = i.ToList()
+                success = true,
+                data = _dashboardService.LoadCityDashboards()
             });
-            return Ok(new { success = true, data = dashboards });
         }
 
         [EnableCors("APICors")]
@@ -73,7 +68,6 @@ namespace HouseCrawler.Web.API.Controllers
             string cityName = model?["cityName"].ToString();
             _configService.AddDoubanConfig(doubanGroup, cityName);
             return Ok(new { success = true });
-
         }
 
     }

@@ -46,9 +46,9 @@ namespace HouseCrawler.Core.Jobs
                         houseDapper.SearchHouses(search);
 
                         // 为小程序做的缓存,每次拉10条,一共20页
-                        for (var page = 0; page <= 20; page++)
+                        for (var page = 0; page <= 30; page++)
                         {
-                            search.HouseCount = 10;
+                            search.HouseCount = 20;
                             search.Source = dashbord.Source;
                             search.Page = page;
                             houseDapper.SearchHouses(search);
@@ -59,6 +59,15 @@ namespace HouseCrawler.Core.Jobs
                     {
                         search.Source = "";
                         search.HouseCount = 180;
+                        search.Page = page;
+                        houseDapper.SearchHouses(search);
+                    }
+
+                    //为小程序做的缓存,每次拉20条,一共30页
+                    for (var page = 0; page <= 30; page++)
+                    {
+                        search.Source = "";
+                        search.HouseCount = 20;
                         search.Page = page;
                         houseDapper.SearchHouses(search);
                     }
