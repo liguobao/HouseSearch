@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using HouseMapAPI.Common;
 using HouseMapAPI.Dapper;
+using HouseMapAPI.Filters;
 using HouseMapAPI.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -64,7 +65,8 @@ namespace HouseMapAPI
             services.AddSingleton<UserCollectionService, UserCollectionService>();
             services.AddSingleton<QQOAuthClient, QQOAuthClient>();
             services.AddSingleton<WeChatAppDecrypt, WeChatAppDecrypt>();
-            
+            services.AddScoped<UserTokenFilter, UserTokenFilter>();
+
             #endregion
         }
 
