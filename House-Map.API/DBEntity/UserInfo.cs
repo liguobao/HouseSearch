@@ -22,9 +22,11 @@ namespace HouseMapAPI.DBEntity
         [JsonIgnore]
         public string Password { get; set; }
 
-        public DateTime DataCreateTime { get; set; }
+        [JsonIgnore]
+        public DateTime DataCreateTime { get; set; } = DateTime.Now;
 
-        public DateTime DataChange_LastTime { get; set; }
+        [JsonIgnore]
+        public DateTime DataChange_LastTime { get; set; } = DateTime.Now;
 
 
         [JsonIgnore]
@@ -44,12 +46,21 @@ namespace HouseMapAPI.DBEntity
         [JsonIgnore]
         public string QQOpenUID { get; set; }
 
+
+        [JsonIgnore]
+        public string WechatOpenID { get; set; }
+
+        public string AvatarUrl { get; set; }
+
+        [JsonIgnore]
+        public string JsonData { get; set; }
+
         [JsonIgnore]
         public string NewLoginToken
         {
             get
             {
-                return Tools.GetMD5($"{this.ID}|{this.UserName}|{DateTime.Now.ToString()}");
+                return Tools.GetMD5($"{this.ID}|{this.UserName}|{DateTime.Now.ToString() + this.DataCreateTime}");
             }
         }
 

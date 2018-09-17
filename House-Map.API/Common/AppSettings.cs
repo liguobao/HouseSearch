@@ -3,7 +3,7 @@ namespace HouseMapAPI.Common
 {
     public class AppSettings
     {
-       
+
         public string MySQLConnectionString { get; set; }
 
         public string RedisConnectionString { get; set; }
@@ -42,6 +42,10 @@ namespace HouseMapAPI.Common
         public string QQAPIKey { get; set; }
 
         public string QQAPIAuthReturnURL { get; set; }
+
+        public string WechatAppId { get; set; }
+
+        public string WechatAppSecret { get; set; }
 
 
 

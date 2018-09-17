@@ -26,13 +26,18 @@ namespace HouseMapAPI.Service
 
         private IOAuthClient _authClient;
 
-        public UserService(RedisService redisService, UserDapper userDapper, EmailService emailService, QQOAuthClient authClient)
+        private WeChatAppDecrypt _weChatAppDecrypt;
+
+        public UserService(RedisService redisService, UserDapper userDapper,
+         EmailService emailService, QQOAuthClient authClient,
+          WeChatAppDecrypt weChatAppDecrypt)
         {
 
             _redisService = redisService;
             _userDapper = userDapper;
             _emailService = emailService;
             _authClient = authClient.GetAPIOAuthClient();
+            _weChatAppDecrypt = weChatAppDecrypt;
         }
 
         public Tuple<string, UserInfo> Register(UserSave registerUser)
@@ -72,12 +77,18 @@ namespace HouseMapAPI.Service
             var accessToken = _authClient.GetAccessToken(code).Result;
             var qqUser = _authClient.GetUserInfo(accessToken).Result;
             //未登录,通过此ID获取用户
-            var userInfo = _userDapper.FindUserByQQOpenUID(qqUser.Id);
+            var userInfo = _userDapper.FindByQQOpenID(qqUser.Id);
             if (userInfo == null)
             {
                 //新增用户
-                _userDapper.InsertUserForQQAuth(new UserInfo() { UserName = qqUser.Name, QQOpenUID = qqUser.Id });
-                userInfo = _userDapper.FindUserByQQOpenUID(qqUser.Id);
+                _userDapper.InsertUserForQQAuth(new UserInfo()
+                {
+                    UserName = qqUser.Name,
+                    QQOpenUID = qqUser.Id,
+                    AvatarUrl = qqUser.ImgUrl,
+                    JsonData = JsonConvert.SerializeObject(qqUser)
+                });
+                userInfo = _userDapper.FindByQQOpenID(qqUser.Id);
             }
             string token = userInfo.NewLoginToken;
             WriteUserToken(userInfo, token);
@@ -182,6 +193,33 @@ namespace HouseMapAPI.Service
             }
             return _userDapper.SaveWorkAddress(userID, address);
         }
+
+
+        public Tuple<string, UserInfo> WechatLogin(WechatLoginInfo loginInfo)
+        {
+            Console.WriteLine($"WeixinLoginInfo:{JsonConvert.SerializeObject(loginInfo)}");
+            var wechatUser = _weChatAppDecrypt.Decrypt(loginInfo);
+            if (wechatUser == null)
+            {
+                throw new TokenInvalidException("解密微信用户信息失败.");
+            }
+            var userInfo = _userDapper.FindByWechatOpenID(wechatUser.openId);
+            if (userInfo == null)
+            {
+                _userDapper.InsertUserForWechat(new UserInfo()
+                {
+                    UserName = wechatUser.nickName,
+                    WechatOpenID = wechatUser.openId,
+                    AvatarUrl = wechatUser.avatarUrl,
+                    JsonData = JsonConvert.SerializeObject(wechatUser)
+                });
+            }
+            string token = userInfo.NewLoginToken;
+            WriteUserToken(userInfo, token);
+            return Tuple.Create<string, UserInfo>(token, userInfo);
+        }
+
+
 
     }
 }

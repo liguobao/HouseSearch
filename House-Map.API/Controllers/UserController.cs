@@ -18,11 +18,13 @@ namespace HouseCrawler.Web.API.Controllers
     public class UserController : ControllerBase
     {
 
-        private UserService userService;
+        private UserService _userService;
+
+       
 
         public UserController(UserService userService)
         {
-            this.userService = userService;
+            _userService = userService;
         }
 
 
@@ -31,7 +33,7 @@ namespace HouseCrawler.Web.API.Controllers
         [ServiceFilter(typeof(UserTokenFilter))]
         public ActionResult Info(long userId, [FromHeader] string token)
         {
-            return Ok(new { success = true, data = userService.GetUserByToken(token) });
+            return Ok(new { success = true, data = _userService.GetUserByToken(token) });
         }
 
         [EnableCors("APICors")]
@@ -41,8 +43,11 @@ namespace HouseCrawler.Web.API.Controllers
         {
             return Ok(new
             {
-                success = userService.SaveWorkAddress(userId, model?["address"]?.ToString())
+                success = _userService.SaveWorkAddress(userId, model?["address"]?.ToString())
             });
         }
+
+
+
     }
 }

@@ -10,14 +10,14 @@ using System.Linq;
 
 namespace HouseMapAPI.Dapper
 {
-    public class UserDapper:BaseDapper
+    public class UserDapper : BaseDapper
     {
         public UserDapper(IOptions<AppSettings> configuration) : base(configuration)
         {
 
         }
 
-    
+
         public void InsertUser(UserInfo insertUser)
         {
             using (IDbConnection dbConnection = GetConnection())
@@ -36,8 +36,19 @@ namespace HouseMapAPI.Dapper
             using (IDbConnection dbConnection = GetConnection())
             {
                 dbConnection.Query<UserInfo>(@"INSERT INTO `UserInfos` 
-                (`UserName`,`QQOpenUID`)
-                  VALUES (@UserName, @QQOpenUID);",
+                (`UserName`,`QQOpenUID`,`AvatarUrl`,`JsonData`)
+                  VALUES (@UserName, @QQOpenUID,@AvatarUrl,@JsonData);",
+                insertUser);
+            }
+        }
+
+        public void InsertUserForWechat(UserInfo insertUser)
+        {
+            using (IDbConnection dbConnection = GetConnection())
+            {
+                dbConnection.Query<UserInfo>(@"INSERT INTO `UserInfos` 
+                (`UserName`,`WechatOpenID`,`AvatarUrl`,`JsonData`)
+                  VALUES (@UserName, @WechatOpenID,@AvatarUrl,@JsonData);",
                 insertUser);
             }
         }
@@ -88,13 +99,23 @@ namespace HouseMapAPI.Dapper
         }
 
 
-        public UserInfo FindUserByQQOpenUID(string qqOpenUID)
+        public UserInfo FindByQQOpenID(string qqOpenUID)
         {
             using (IDbConnection dbConnection = GetConnection())
             {
                 dbConnection.Open();
                 return dbConnection.Query<UserInfo>(@"SELECT * FROM housecrawler.UserInfos 
                 where (QQOpenUID = @QQOpenUID) ;", new { QQOpenUID = qqOpenUID }).FirstOrDefault();
+            }
+        }
+
+        public UserInfo FindByWechatOpenID(string openUID)
+        {
+            using (IDbConnection dbConnection = GetConnection())
+            {
+                dbConnection.Open();
+                return dbConnection.Query<UserInfo>(@"SELECT * FROM housecrawler.UserInfos 
+                where (WechatOpenID = @WechatOpenID) ;", new { WechatOpenID = openUID }).FirstOrDefault();
             }
         }
 

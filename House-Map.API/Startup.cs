@@ -63,6 +63,8 @@ namespace HouseMapAPI
             services.AddSingleton<HouseService, HouseService>();
             services.AddSingleton<UserCollectionService, UserCollectionService>();
             services.AddSingleton<QQOAuthClient, QQOAuthClient>();
+            services.AddSingleton<WeChatAppDecrypt, WeChatAppDecrypt>();
+            
             #endregion
         }
 

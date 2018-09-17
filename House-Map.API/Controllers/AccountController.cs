@@ -21,6 +21,7 @@ namespace HouseMapAPI.Controllers
 
         private IOAuthClient _authClient;
 
+
         public AccountController(UserService userService,
                           QQOAuthClient authClient)
         {
@@ -52,6 +53,15 @@ namespace HouseMapAPI.Controllers
         public ActionResult Callback(string code, string state)
         {
             var result = _userService.OAuthCallback(code);
+            return Ok(new { success = true, token = result.Item1, message = "登录成功!", data = result.Item2 });
+        }
+
+
+        [EnableCors("APICors")]
+        [HttpPost("weixin", Name = "Weixin")]
+        public ActionResult Weixin([FromBody]WechatLoginInfo loginInfo)
+        {
+            var result = _userService.WechatLogin(loginInfo);
             return Ok(new { success = true, token = result.Item1, message = "登录成功!", data = result.Item2 });
         }
 
