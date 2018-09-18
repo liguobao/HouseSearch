@@ -1,0 +1,14 @@
+/Users/liguobao/code/58HouseSearch/House-Map.Crawler/bin/Debug/netcoreapp2.1/HouseMap.Crawler.deps.json
+/Users/liguobao/code/58HouseSearch/House-Map.Crawler/bin/Debug/netcoreapp2.1/HouseMap.Crawler.runtimeconfig.json
+/Users/liguobao/code/58HouseSearch/House-Map.Crawler/bin/Debug/netcoreapp2.1/HouseMap.Crawler.runtimeconfig.dev.json
+/Users/liguobao/code/58HouseSearch/House-Map.Crawler/bin/Debug/netcoreapp2.1/HouseMap.Crawler.dll
+/Users/liguobao/code/58HouseSearch/House-Map.Crawler/bin/Debug/netcoreapp2.1/HouseMap.Crawler.pdb
+/Users/liguobao/code/58HouseSearch/House-Map.Crawler/obj/Debug/netcoreapp2.1/HouseMap.Crawler.csprojAssemblyReference.cache
+/Users/liguobao/code/58HouseSearch/House-Map.Crawler/obj/Debug/netcoreapp2.1/HouseMap.Crawler.csproj.CoreCompileInputs.cache
+/Users/liguobao/code/58HouseSearch/House-Map.Crawler/obj/Debug/netcoreapp2.1/HouseMap.Crawler.RazorAssemblyInfo.cache
+/Users/liguobao/code/58HouseSearch/House-Map.Crawler/obj/Debug/netcoreapp2.1/HouseMap.Crawler.RazorAssemblyInfo.cs
+/Users/liguobao/code/58HouseSearch/House-Map.Crawler/obj/Debug/netcoreapp2.1/HouseMap.Crawler.AssemblyInfoInputs.cache
+/Users/liguobao/code/58HouseSearch/House-Map.Crawler/obj/Debug/netcoreapp2.1/HouseMap.Crawler.AssemblyInfo.cs
+/Users/liguobao/code/58HouseSearch/House-Map.Crawler/obj/Debug/netcoreapp2.1/HouseMap.Crawler.RazorTargetAssemblyInfo.cache
+/Users/liguobao/code/58HouseSearch/House-Map.Crawler/obj/Debug/netcoreapp2.1/HouseMap.Crawler.dll
+/Users/liguobao/code/58HouseSearch/House-Map.Crawler/obj/Debug/netcoreapp2.1/HouseMap.Crawler.pdb
