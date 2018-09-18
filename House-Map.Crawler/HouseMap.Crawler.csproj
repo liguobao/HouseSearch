@@ -18,6 +18,7 @@
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.5.3"/>
     <PackageReference Include="NEST" Version="6.3.0"/>
     <PackageReference Include="AngleSharp" Version="0.9.10"/>
+    <PackageReference Include="Pomelo.AspNetCore.TimedJob" Version="2.0.0-rtm-10046"/>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="JiebaNet.Analyser">

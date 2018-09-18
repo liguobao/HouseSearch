@@ -2881,6 +2881,22 @@
           "lib/netstandard2.0/NLog.Web.AspNetCore.dll": {}
         }
       },
+      "Pomelo.AspNetCore.TimedJob/2.0.0-rtm-10046": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNetCore.Hosting": "2.0.0",
+          "Microsoft.EntityFrameworkCore": "2.0.0",
+          "Microsoft.Extensions.DependencyModel": "2.0.0",
+          "System.Threading": "4.3.0",
+          "System.Threading.Timer": "4.3.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Pomelo.AspNetCore.TimedJob.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Pomelo.AspNetCore.TimedJob.dll": {}
+        }
+      },
       "Pomelo.EntityFrameworkCore.MySql/2.1.2": {
         "type": "package",
         "dependencies": {
@@ -4790,6 +4806,17 @@
         },
         "runtime": {
           "lib/netstandard1.3/System.Threading.ThreadPool.dll": {}
+        }
+      },
+      "System.Threading.Timer/4.3.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "1.1.0",
+          "Microsoft.NETCore.Targets": "1.1.0",
+          "System.Runtime": "4.3.0"
+        },
+        "compile": {
+          "ref/netstandard1.2/System.Threading.Timer.dll": {}
         }
       },
       "System.ValueTuple/4.3.0": {
@@ -7839,6 +7866,16 @@
         "lib/netstandard2.0/NLog.Web.AspNetCore.xml",
         "nlog.web.aspnetcore.4.5.3.nupkg.sha512",
         "nlog.web.aspnetcore.nuspec"
+      ]
+    },
+    "Pomelo.AspNetCore.TimedJob/2.0.0-rtm-10046": {
+      "sha512": "jr4IuHSqs8iXO1O3AenYhUL2UujV94II2PWA5tigChAUQqVuoGS5pA1vbwPch3WueA78PrTVTnclXx45HE+aQA==",
+      "type": "package",
+      "path": "pomelo.aspnetcore.timedjob/2.0.0-rtm-10046",
+      "files": [
+        "lib/netstandard2.0/Pomelo.AspNetCore.TimedJob.dll",
+        "pomelo.aspnetcore.timedjob.2.0.0-rtm-10046.nupkg.sha512",
+        "pomelo.aspnetcore.timedjob.nuspec"
       ]
     },
     "Pomelo.EntityFrameworkCore.MySql/2.1.2": {
@@ -12647,6 +12684,59 @@
         "system.threading.threadpool.nuspec"
       ]
     },
+    "System.Threading.Timer/4.3.0": {
+      "sha512": "Z6YfyYTCg7lOZjJzBjONJTFKGN9/NIYKSxhU5GRd+DTwHSZyvWp1xuI5aR+dLg+ayyC5Xv57KiY4oJ0tMO89fQ==",
+      "type": "package",
+      "path": "system.threading.timer/4.3.0",
+      "files": [
+        "ThirdPartyNotices.txt",
+        "dotnet_library_license.txt",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net451/_._",
+        "lib/portable-net451+win81+wpa81/_._",
+        "lib/win81/_._",
+        "lib/wpa81/_._",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "lib/xamarintvos10/_._",
+        "lib/xamarinwatchos10/_._",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net451/_._",
+        "ref/netcore50/System.Threading.Timer.dll",
+        "ref/netcore50/System.Threading.Timer.xml",
+        "ref/netcore50/de/System.Threading.Timer.xml",
+        "ref/netcore50/es/System.Threading.Timer.xml",
+        "ref/netcore50/fr/System.Threading.Timer.xml",
+        "ref/netcore50/it/System.Threading.Timer.xml",
+        "ref/netcore50/ja/System.Threading.Timer.xml",
+        "ref/netcore50/ko/System.Threading.Timer.xml",
+        "ref/netcore50/ru/System.Threading.Timer.xml",
+        "ref/netcore50/zh-hans/System.Threading.Timer.xml",
+        "ref/netcore50/zh-hant/System.Threading.Timer.xml",
+        "ref/netstandard1.2/System.Threading.Timer.dll",
+        "ref/netstandard1.2/System.Threading.Timer.xml",
+        "ref/netstandard1.2/de/System.Threading.Timer.xml",
+        "ref/netstandard1.2/es/System.Threading.Timer.xml",
+        "ref/netstandard1.2/fr/System.Threading.Timer.xml",
+        "ref/netstandard1.2/it/System.Threading.Timer.xml",
+        "ref/netstandard1.2/ja/System.Threading.Timer.xml",
+        "ref/netstandard1.2/ko/System.Threading.Timer.xml",
+        "ref/netstandard1.2/ru/System.Threading.Timer.xml",
+        "ref/netstandard1.2/zh-hans/System.Threading.Timer.xml",
+        "ref/netstandard1.2/zh-hant/System.Threading.Timer.xml",
+        "ref/portable-net451+win81+wpa81/_._",
+        "ref/win81/_._",
+        "ref/wpa81/_._",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "ref/xamarintvos10/_._",
+        "ref/xamarinwatchos10/_._",
+        "system.threading.timer.4.3.0.nupkg.sha512",
+        "system.threading.timer.nuspec"
+      ]
+    },
     "System.ValueTuple/4.3.0": {
       "sha512": "cNLEvBX3d6MMQRZe3SMFNukVbitDAEpVZO17qa0/2FHxZ7Y7PpFRpr6m2615XYM/tYYYf0B+WyHNujqIw8Luwg==",
       "type": "package",
@@ -12993,6 +13083,7 @@
       "NLog.Extensions.Logging >= 1.0.1",
       "NLog.Web.AspNetCore >= 4.5.3",
       "Newtonsoft.Json >= 11.0.2",
+      "Pomelo.AspNetCore.TimedJob >= 2.0.0-rtm-10046",
       "Pomelo.EntityFrameworkCore.MySql >= 2.1.2",
       "RestSharp >= 106.3.1",
       "StackExchange.Redis.StrongName >= 1.2.7-alpha-00002"
@@ -13079,6 +13170,10 @@
           "Newtonsoft.Json": {
             "target": "Package",
             "version": "[11.0.2, )"
+          },
+          "Pomelo.AspNetCore.TimedJob": {
+            "target": "Package",
+            "version": "[2.0.0-rtm-10046, )"
           },
           "Pomelo.EntityFrameworkCore.MySql": {
             "target": "Package",

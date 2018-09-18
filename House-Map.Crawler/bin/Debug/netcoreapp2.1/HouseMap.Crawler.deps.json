@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.1",
-    "signature": "0bc0d1c20923485bfe4347e02b7c9f4271e6e416"
+    "signature": "2488d1bb63d2c7e39a0353ab57765c07a0481136"
   },
   "compilationOptions": {
     "defines": [
@@ -34,6 +34,7 @@
           "NLog.Extensions.Logging": "1.0.1",
           "NLog.Web.AspNetCore": "4.5.3",
           "Newtonsoft.Json": "11.0.2",
+          "Pomelo.AspNetCore.TimedJob": "2.0.0-rtm-10046",
           "Pomelo.EntityFrameworkCore.MySql": "2.1.2",
           "RestSharp": "106.3.1",
           "StackExchange.Redis.StrongName": "1.2.7-alpha-00002",
@@ -759,6 +760,24 @@
           "lib/netstandard2.0/NLog.Web.AspNetCore.dll": {}
         }
       },
+      "Pomelo.AspNetCore.TimedJob/2.0.0-rtm-10046": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Hosting": "2.1.1",
+          "Microsoft.EntityFrameworkCore": "2.1.2",
+          "Microsoft.Extensions.DependencyModel": "2.1.0",
+          "System.Threading": "4.3.0",
+          "System.Threading.Timer": "4.3.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Pomelo.AspNetCore.TimedJob.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.0.0.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Pomelo.AspNetCore.TimedJob.dll": {}
+        }
+      },
       "Pomelo.EntityFrameworkCore.MySql/2.1.2": {
         "dependencies": {
           "Microsoft.EntityFrameworkCore.Relational": "2.1.2",
@@ -1131,6 +1150,13 @@
         "dependencies": {
           "System.Runtime": "4.3.0",
           "System.Runtime.Handles": "4.3.0"
+        }
+      },
+      "System.Threading.Timer/4.3.0": {
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "2.1.0",
+          "Microsoft.NETCore.Targets": "2.1.0",
+          "System.Runtime": "4.3.0"
         }
       },
       "JiebaNet.Analyser/1.0.0.0": {
@@ -4165,6 +4191,13 @@
       "path": "nlog.web.aspnetcore/4.5.3",
       "hashPath": "nlog.web.aspnetcore.4.5.3.nupkg.sha512"
     },
+    "Pomelo.AspNetCore.TimedJob/2.0.0-rtm-10046": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-jr4IuHSqs8iXO1O3AenYhUL2UujV94II2PWA5tigChAUQqVuoGS5pA1vbwPch3WueA78PrTVTnclXx45HE+aQA==",
+      "path": "pomelo.aspnetcore.timedjob/2.0.0-rtm-10046",
+      "hashPath": "pomelo.aspnetcore.timedjob.2.0.0-rtm-10046.nupkg.sha512"
+    },
     "Pomelo.EntityFrameworkCore.MySql/2.1.2": {
       "type": "package",
       "serviceable": true,
@@ -4311,6 +4344,13 @@
       "sha512": "sha512-k/+g4b7vjdd4aix83sTgC9VG6oXYKAktSfNIJUNGxPEj7ryEOfzHHhfnmsZvjxawwcD9HyWXKCXmPjX8U4zeSw==",
       "path": "system.threading.threadpool/4.3.0",
       "hashPath": "system.threading.threadpool.4.3.0.nupkg.sha512"
+    },
+    "System.Threading.Timer/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Z6YfyYTCg7lOZjJzBjONJTFKGN9/NIYKSxhU5GRd+DTwHSZyvWp1xuI5aR+dLg+ayyC5Xv57KiY4oJ0tMO89fQ==",
+      "path": "system.threading.timer/4.3.0",
+      "hashPath": "system.threading.timer.4.3.0.nupkg.sha512"
     },
     "JiebaNet.Analyser/1.0.0.0": {
       "type": "reference",
