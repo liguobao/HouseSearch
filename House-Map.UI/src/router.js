@@ -23,6 +23,14 @@ const router = new Router({
         title: '第三方登录'
       },
       component: () => import('./views/third-party-login.vue')
+    },
+    {
+      path: '/Map',
+      name: 'Map',
+      meta: {
+        title: '地图搜租房'
+      },
+      component: () => import('./views/Map.vue')
     }
   ]
 });

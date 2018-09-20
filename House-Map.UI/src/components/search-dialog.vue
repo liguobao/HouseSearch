@@ -15,10 +15,11 @@
         center
         :before-close="closeSearchList"
     >
-      <house-search-list type="all" :house-list="houseList" :options="form"  :get-houses-list="getHousesList" key="all" ref="search-list"></house-search-list>
+      <house-search-list type="all" :house-list="houseList" :options="form" :get-houses-list="getHousesList" key="all"
+                         ref="search-list"></house-search-list>
     </el-dialog>
     <el-form ref="form" :model="form" :label-width="isMobile ? '0px' : '130px'" class="form" :rules="rules">
-      <el-form-item  :label="isMobile ? '' : '地区'" prop="cityName">
+      <el-form-item :label="isMobile ? '' : '地区'" prop="cityName">
         <el-select v-model="form.cityName" placeholder="请选择地区" style="width: 100%" filterable allow-create>
           <!--<el-option label="全部" value=""></el-option>-->
           <el-option
@@ -29,7 +30,7 @@
           ></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item  :label="isMobile ? '' : '价位'" prop="price">
+      <el-form-item :label="isMobile ? '' : '价位'" prop="price">
         <el-col :span="11">
           <el-input v-model="form.fromPrice" placeholder="最低价" :maxlength="8"></el-input>
         </el-col>
@@ -38,7 +39,7 @@
           <el-input v-model="form.toPrice" placeholder="最高价" :maxlength="8"></el-input>
         </el-col>
       </el-form-item>
-      <el-form-item  :label="isMobile ? '' : '房源'">
+      <el-form-item :label="isMobile ? '' : '房源'">
         <el-select v-model="form.source" placeholder="请选择房源" style="width: 100%" filterable>
           <el-option label="全部" value=""></el-option>
           <el-option
@@ -50,7 +51,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item  :label="isMobile ? '' : '时限(天数)'" prop="intervalDay">
+      <el-form-item :label="isMobile ? '' : '时限(天数)'" prop="intervalDay">
         <el-input v-model="form.intervalDay" placeholder="几天内的数据？默认十天" :maxlength="8"></el-input>
       </el-form-item>
       <el-form-item :label="isMobile ? '' : '关键词'">
@@ -63,8 +64,8 @@
               value="0"
           ></el-option>
           <!--<el-option-->
-              <!--label="地图"-->
-              <!--value="1"-->
+          <!--label="地图"-->
+          <!--value="1"-->
           <!--&gt;</el-option>-->
         </el-select>
       </el-form-item>
@@ -79,7 +80,7 @@
           </el-alert>
         </el-collapse-transition>
         <el-button type="primary" @click="search" :loading="loading" class="search">开始搜索</el-button>
-        <el-button  @click="toMap"  class="search">直达地图</el-button>
+        <el-button @click="toMap" class="search">直达地图</el-button>
       </el-form-item>
     </el-form>
   </el-dialog>
@@ -188,7 +189,7 @@
       close() {
         this.$emit('close', 'searchVisible', false)
       },
-     async toMap() {
+      async toMap() {
         try {
           await this.$refs.form.validate();
           const params = Object.assign({}, this.form);
@@ -196,7 +197,9 @@
           params.cityname = params.cityName;
           params.token = this.token;
           delete params.cityName;
-          window.open(`https://api.house-map.cn/Home/HouseList?${this.$qs.stringify(params)}`);
+
+          let {href} = this.$router.resolve({path: `/Map?${this.$qs.stringify(params)}`});
+          window.open(href, '_blank');
         } catch (e) {
           this.loading = false;
         }
@@ -211,22 +214,22 @@
           this.loading = false;
         }
       },
-      async getHousesList(options,type) {
+      async getHousesList(options, type) {
         const params = Object.assign({
           houseCount: 100,
-          page:1
+          page: 1
         }, options);
-        if(!type) {
+        if (!type) {
           this.loading = true;
         }
         const data = await this.$ajax.post('/houses', {
           ...params
         });
-        if(!type) {
+        if (!type) {
           this.loading = false;
           this.houseList = data.data;
           this.searchRes = true;
-        }else {
+        } else {
           this.houseList = data.data;
         }
       },

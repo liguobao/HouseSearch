@@ -5,7 +5,9 @@ import store from './store';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import $ajax from './ajax/axios';
-import uweb from 'vue-uweb'
+// import uweb from 'vue-uweb'
+
+// 初始化vue-amap
 
 let qs = require('qs');
 
