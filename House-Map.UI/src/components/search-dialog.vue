@@ -191,6 +191,7 @@
       },
       async toMap() {
         try {
+
           await this.$refs.form.validate();
           const params = Object.assign({}, this.form);
           delete params.type;

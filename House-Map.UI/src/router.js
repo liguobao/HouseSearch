@@ -24,14 +24,14 @@ const router = new Router({
       },
       component: () => import('./views/third-party-login.vue')
     },
-    {
-      path: '/Map',
-      name: 'Map',
-      meta: {
-        title: '地图搜租房'
-      },
-      component: () => import('./views/Map.vue')
-    }
+    // {
+    //   path: '/Map',
+    //   name: 'Map',
+    //   meta: {
+    //     title: '地图搜租房'
+    //   },
+    //   component: () => import('./views/Map.vue')
+    // }
   ]
 });
 
