@@ -33,10 +33,7 @@ namespace HouseMap.Crawler
         {
             var cityName = config["cityname"].ToString();
             var sequence = config["sequence"]?.ToString();
-            var data = GetAPIResult(cityName, sequence);
-            var resultJson = JsonConvert.DeserializeObject<JObject>(data);
-
-            return data;
+            return GetAPIResult(cityName, sequence); ;
         }
 
         public override List<BaseHouseInfo> ParseHouses(JToken config, string data)
