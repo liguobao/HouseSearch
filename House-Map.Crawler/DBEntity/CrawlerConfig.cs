@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HouseMap.Crawler
 {
-    public class CrawlerConfiguration
+    public class CrawlerConfig
     {
         public long Id { get; set; }
 

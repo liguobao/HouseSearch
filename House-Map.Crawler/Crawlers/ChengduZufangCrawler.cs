@@ -1450,12 +1450,12 @@ namespace HouseMap.Crawler
             dynamic lstCity = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(cityJsonString);
             if (lstCity != null)
             {
-                var lst = new List<CrawlerConfiguration>();
+                var lst = new List<CrawlerConfig>();
                 foreach (var cityInfo in lstCity)
                 {
                     if (cityInfo?.name?.Value != null && cityInfo.code?.Value != null)
                     {
-                        lst.Add(new CrawlerConfiguration()
+                        lst.Add(new CrawlerConfig()
                         {
                             ConfigurationKey = 0,
                             ConfigurationValue = $"{{'cityname':'{Convert.ToString(cityInfo.name.Value)}','shortcutname':'{Convert.ToString(cityInfo.code.Value)}','pagecount':5}}",

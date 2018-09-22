@@ -167,7 +167,7 @@ namespace HouseMap.Crawler
             request.AddHeader("page-schema", "SelectCityActivity");
             IRestResponse response = client.Execute(request);
             var resultJObject = JsonConvert.DeserializeObject<JObject>(response.Content);
-            var configs = new List<CrawlerConfiguration>();
+            var configs = new List<CrawlerConfig>();
             foreach (var tab in resultJObject["data"]["tab_list"])
             {
                 if (tab["title"] != null && tab["title"].ToString() == "海外城市")
@@ -181,7 +181,7 @@ namespace HouseMap.Crawler
                     var abbr = city["abbr"].ToString();
 
                     var configValue = "{'citySortName':'" + abbr + "','cityName':'" + name + "','cityID':'" + cityId + "','pagecount':10}";
-                    var config = new CrawlerConfiguration()
+                    var config = new CrawlerConfig()
                     {
                         ConfigurationValue = configValue,
                         ConfigurationName = "beike",

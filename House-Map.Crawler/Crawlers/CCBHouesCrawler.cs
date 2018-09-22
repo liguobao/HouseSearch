@@ -44,7 +44,7 @@ namespace HouseMap.Crawler
             LogHelper.Info($"CCBHouesCrawler finish.本次共爬取到{captrueHouseCount}条数据，耗时{ (DateTime.Now - startTime).TotalSeconds}秒。");
         }
 
-        private int CaptureHouse(CrawlerConfiguration crawlerConfiguration)
+        private int CaptureHouse(CrawlerConfig crawlerConfiguration)
         {
             var confInfo = JsonConvert.DeserializeObject<dynamic>(crawlerConfiguration.ConfigurationValue);
             if (confInfo.shortcutname == null || string.IsNullOrEmpty(confInfo.shortcutname.Value))

@@ -20,7 +20,7 @@ namespace HouseMap.Crawler.Dapper
         }
 
 
-        public List<CrawlerConfiguration> GetList(string configurationName)
+        public List<CrawlerConfig> GetList(string configurationName)
         {
 
 
@@ -29,7 +29,7 @@ namespace HouseMap.Crawler.Dapper
                 dbConnection.Open();
 
 
-                return dbConnection.Query<CrawlerConfiguration>(@"SELECT * FROM housecrawler.CrawlerConfigurations 
+                return dbConnection.Query<CrawlerConfig>(@"SELECT * FROM housecrawler.CrawlerConfigurations 
                 where ConfigurationName=@ConfigurationName;", new
                 {
                     ConfigurationName = configurationName
@@ -37,7 +37,7 @@ namespace HouseMap.Crawler.Dapper
             }
         }
 
-        public void BulkInsertConfig(List<CrawlerConfiguration> configs)
+        public void BulkInsertConfig(List<CrawlerConfig> configs)
         {
             using (IDbConnection dbConnection = GetConnection())
             {
