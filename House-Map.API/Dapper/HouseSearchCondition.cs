@@ -72,12 +72,15 @@ namespace HouseMapAPI.Dapper
                 {
                     queryText = queryText + " and (HouseText like @LikeKeyWord or HouseLocation like @LikeKeyWord) ";
                 }
-                if (this.FromPrice != 0 && this.ToPrice != 0 && this.FromPrice <= this.ToPrice)
+                if (this.FromPrice > 0 && this.ToPrice >= 0 && this.FromPrice <= this.ToPrice)
                 {
-                    queryText = queryText + $" and (HousePrice >= {this.FromPrice} and HousePrice <={this.ToPrice}) ";
+                    queryText = queryText + $" and (HousePrice >= {this.FromPrice} and HousePrice <={this.ToPrice}) "
+                    + $" order by HousePrice, PubTime limit {this.HouseCount * this.Page}, {this.HouseCount}";
                 }
-                queryText = queryText + $" order by PubTime desc limit {this.HouseCount * this.Page}, {this.HouseCount} ";
-
+                else
+                {
+                    queryText = queryText + $" order by PubTime desc limit {this.HouseCount * this.Page}, {this.HouseCount} ";
+                }
                 return queryText;
 
             }

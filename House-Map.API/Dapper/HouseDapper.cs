@@ -39,7 +39,7 @@ namespace HouseMapAPI.Dapper
                     condition.HouseCount = limitCount;
                     houseList.AddRange(Search(condition));
                 }
-                return houseList.OrderByDescending(h => h.PubTime).ThenBy(h =>h.HousePrice);
+                return houseList.OrderByDescending(h => h.PubTime);
             }
             else
             {
