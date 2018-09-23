@@ -199,8 +199,8 @@
           params.token = this.token;
           delete params.cityName;
           window.open(`https://api.house-map.cn/Home/HouseList?${this.$qs.stringify(params)}`);
-          // let {href} = this.$router.resolve({path: `/Map?${this.$qs.stringify(params)}`});
-          // window.open(href, '_blank');
+          //   let {href} = this.$router.resolve({path: `/Map?${this.$qs.stringify(params)}`});
+          //   window.open(href, '_blank');
         } catch (e) {
           this.loading = false;
         }
