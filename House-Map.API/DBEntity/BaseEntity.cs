@@ -1,7 +1,3 @@
-//============================================================
-//http://codelover.link author:李国宝
-//============================================================
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -14,10 +10,12 @@ namespace HouseMapAPI.DBEntity
 {
 
     [Serializable]
-    [Table("UserHouses")]
-    public class UserHouse : BaseEntity
+    public class BaseEntity
     {
-        public long UserId { get; set; }
+        public long ID { get; set; }
 
+        public DateTime DataCreateTime { get; set; }
+
+        public DateTime DataChangeLastTime { get; set; } = DateTime.Now;
     }
 }

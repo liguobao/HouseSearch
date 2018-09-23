@@ -35,14 +35,14 @@ namespace HouseMapAPI.DBEntity
         {
             var dicNameToDisplayName = new Dictionary<string, string>()
             {
-                { Douban,"豆瓣小組"},
-                { PinPaiGongYu,"品牌公寓"},
+                { Douban,"豆瓣"},
+                { PinPaiGongYu,"公寓"},
                 { HuZhuZuFang,"互助租房"},
                 { Zuber,"Zuber"},
-                { MoguHouse,"蘑菇租房"},
+                { MoguHouse,"蘑菇"},
                 { CCBHouse,"CCB建融"},
-                { BaiXing,"百姓租房"},
-                { Beike, "贝壳租房" },
+                { BaiXing,"百姓"},
+                { Beike, "贝壳" },
                 { Chengdufgj, "成都房建局" },
                 { CityHouseInfo,"城市租房信息"},
             };

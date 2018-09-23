@@ -57,7 +57,15 @@ namespace HouseCrawler.Web.API.Controllers
         [HttpGet("citys")]
         public IActionResult Citys()
         {
-            return Ok(new { success = true, data = _dashboardService.LoadCitys() });
+            return Ok(new { success = true, data = _dashboardService.LoadCities() });
+        }
+
+
+        [EnableCors("APICors")]
+        [HttpGet("cities")]
+        public IActionResult Cities()
+        {
+            return Ok(new { success = true, data = _dashboardService.LoadCities() });
         }
 
         [EnableCors("APICors")]

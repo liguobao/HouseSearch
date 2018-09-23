@@ -49,7 +49,7 @@ namespace HouseMapAPI.Service
             return dashboards;
         }
 
-        public Object LoadCitys()
+        public Object LoadCities()
         {
             var id = 0;
             return LoadDashboard().Select(d => d.CityName)

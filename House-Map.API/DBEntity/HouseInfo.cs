@@ -24,6 +24,8 @@ namespace HouseMapAPI.DBEntity
         /// <summary>
         /// 标题
         /// </summary>
+        [Required]
+        [Display(Name = "房源标题,建议简单描述房源信息,如:XX小区-两房一厅-主卧3000/月")]
         public string HouseTitle { get; set; }
 
         [JsonIgnore]
