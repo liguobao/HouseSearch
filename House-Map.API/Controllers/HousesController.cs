@@ -37,7 +37,7 @@ namespace HouseCrawler.Web.API.Controllers
 
         [HttpPost("", Name = "Search")]
         [EnableCors("APICors")]
-        public IActionResult Search([FromBody] HouseSearchCondition search)
+        public IActionResult Search([FromBody] HouseCondition search)
         {
             return Ok(new { success = true, data = _houseService.Search(search) });
         }

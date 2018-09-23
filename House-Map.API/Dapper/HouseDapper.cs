@@ -20,7 +20,7 @@ namespace HouseMapAPI.Dapper
         }
 
 
-        public IEnumerable<HouseInfo> SearchHouses(HouseSearchCondition condition)
+        public IEnumerable<HouseInfo> SearchHouses(HouseCondition condition)
         {
             if (string.IsNullOrEmpty(condition.Source))
             {
@@ -47,7 +47,7 @@ namespace HouseMapAPI.Dapper
             }
 
         }
-        public IEnumerable<HouseInfo> Search(HouseSearchCondition condition)
+        public IEnumerable<HouseInfo> Search(HouseCondition condition)
         {
             string redisKey = condition.RedisKey;
             var houses = new List<HouseInfo>();

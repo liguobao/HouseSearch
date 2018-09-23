@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace HouseMapAPI.Dapper
 {
-    public class HouseSearchCondition
+    public class HouseCondition
     {
         public string CityName { get; set; }
         public string Source { get; set; } = "";

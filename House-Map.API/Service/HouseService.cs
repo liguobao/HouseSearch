@@ -28,7 +28,7 @@ namespace HouseMapAPI.Service
             this.houseDapper = houseDapper;
         }
 
-        public IEnumerable<HouseInfo> Search(HouseSearchCondition condition)
+        public IEnumerable<HouseInfo> Search(HouseCondition condition)
         {
             if (condition == null || condition.CityName == null)
             {
