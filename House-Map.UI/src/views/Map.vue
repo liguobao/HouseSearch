@@ -906,7 +906,7 @@
                             self.lnglat = location;
                             // self.keyword = result.geocodes[0].formattedAddress;
                         } else {
-                            location = map.getBounds().getSouthWest();
+                            location = self.map.getBounds().getSouthWest();
                             self.lnglat = location;
                             // self.keyword = self.cityName;
                             positionPicker.start(location)
