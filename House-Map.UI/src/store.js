@@ -3,11 +3,18 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+let ua = navigator.userAgent;
+let ipad = ua.match(/(iPad).*OS\s([\d_]+)/),
+    isIphone = !ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/),
+    isAndroid = ua.match(/(Android)\s+([\d.]+)/),
+    isMobile = isIphone || isAndroid;
+
 export default new Vuex.Store({
   state: {
     token: localStorage.getItem('token'),
     userInfo: localStorage.getItem('u') ? JSON.parse(localStorage.getItem('u')) : undefined,
-    fullscreenLoading: false
+    fullscreenLoading: false,
+    isMobile
   },
   mutations: {
     LOGIN: (state, data) => {
