@@ -57,8 +57,28 @@
             </div>
         </template>
         <template v-else>
-            <div class="mobile-bg">
-
+            <div class="mobile-bg" v-if="makerInfo" @click="handleMobileBg">
+                <div class="content">
+                    <section>
+                        <span class="content-name">房源: </span>
+                        <a :href="makerInfo.houseOnlineURL" target="_blank"
+                           class="content-value">{{makerInfo.title}}</a>
+                    </section>
+                    <section v-if="makerInfo.displayMoney">
+                        <span class="content-value">{{makerInfo.displayMoney}}</span>
+                    </section>
+                    <section>
+                        <span class="content-value">{{makerInfo.sourceContent}}</span>
+                    </section>
+                    <section>
+                        <span class="content-name btn" @click="collect(makerInfo)"><i
+                                class="el-icon-star-on"></i>收藏</span>
+                    </section>
+                    <section>
+                        <span class="content-name btn" @click="navTo(makerInfo)"><i
+                                class="el-icon-location"></i>开始导航</span>
+                    </section>
+                </div>
             </div>
         </template>
         <div id="panel" v-show="transferWays" :class="{'slide-up' : toggleUp,'is-mobile' : isMobile}">
@@ -268,6 +288,40 @@
             }
         }
     }
+
+    .mobile-bg {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        .content {
+            padding: 10px;
+            height: 100%;
+            max-height: 100%;
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+            width: 45%;
+            position: absolute;
+            right: 0;
+            top: 0;
+            background: #fff;
+            border-top-left-radius: 3px;
+            border-bottom-left-radius: 3px;
+            .content-name {
+                &.btn {
+                    display: block;
+                }
+            }
+            section {
+                padding: 15px 0;
+                border-bottom: 1px solid #eee;
+                font-size: 14px;
+            }
+        }
+    }
 </style>
 <style lang="scss">
     .map {
@@ -435,7 +489,8 @@
                 searching: false,
                 loginType: undefined,
                 done: null,
-                collection: false
+                collection: false,
+                makerInfo: undefined
             }
         },
         computed: {
@@ -456,7 +511,23 @@
             }
         },
         methods: {
+            handleMobileBg(e) {
+                if (e.target === e.currentTarget) {
+                    this.makerInfo = undefined;
+                }
+            },
+            navTo(item) {
+                this.transfer(item.geocodes.location, this.map, this);
+                this.makerInfo = undefined;
+            },
             async collect(item) {
+                let self = this;
+                if (!self.user) {
+                    await new Promise(async (resolve1, reject1) => {
+                        self.loginVisible = true;
+                        self.done = resolve1;
+                    });
+                }
                 if (this.collection) {
                     return
                 }
@@ -468,7 +539,12 @@
                     source: item.source
                 });
                 this.collection = false;
-                this.$message.success(data.message)
+                this.makerInfo = undefined;
+                if (this.isMobile) {
+                    alert(data.message)
+                } else {
+                    this.$message.success(data.message);
+                }
             },
             toggleDialog(key, val, type) {
                 if (key === 'loginVisible') {
@@ -652,82 +728,87 @@
 
                                     marker.on('click', function (e) {
 
-                                        const makerInfoComponent = Vue.extend({
-                                            render(h) {
-                                                return h('div', {
-                                                    class: ['marker-info']
-                                                }, [
-                                                    h('a', {
-                                                        attrs: {
-                                                            target: '_blank',
-                                                            href: item.houseOnlineURL
-                                                        },
-                                                        class: ['marker-link'],
-                                                        domProps: {
-                                                            innerHTML: `房源: ${title}`
-                                                        }
-                                                    }),
-                                                    h('a', {
-                                                        attrs: {
-                                                            target: '_blank',
-                                                            href: item.houseOnlineURL
-                                                        },
-                                                        class: ['marker-link'],
-                                                        domProps: {
-                                                            innerHTML: `${displayMoney}`
-                                                        }
-                                                    }),
-                                                    h('a', {
-                                                        attrs: {
-                                                            target: '_blank',
-                                                            href: item.houseOnlineURL
-                                                        },
-                                                        class: ['marker-link'],
-                                                        domProps: {
-                                                            innerHTML: `${sourceContent}`
-                                                        }
-                                                    }),
-                                                    h('span', {
-                                                        class: ['marker-info', 'marker-link'],
-                                                        on: {
-                                                            click: async function (e) {
-                                                                if (!self.user) {
-                                                                    await new Promise(async (resolve1, reject1) => {
-                                                                        self.loginVisible = true;
-                                                                        self.done = resolve1;
-                                                                    });
-                                                                }
-                                                                self.collect(item)
-                                                            }
-                                                        }
-                                                    }, [
-                                                        h('i', {
-                                                            class: ['el-icon-star-on']
-                                                        }),
-                                                        '收藏',
-                                                    ]),
-                                                    h('span', {
-                                                        class: ['marker-info', 'marker-link'],
-                                                        on: {
-                                                            click: function (e) {
-                                                                self.transfer(result.geocodes[0].location, map, self);
-                                                                infoWindow.close();
-                                                            }
-                                                        }
-                                                    }, [
-                                                        h('i', {
-                                                            class: ['el-icon-location'],
-                                                        }),
-                                                        '开始导航'
-                                                    ])
-                                                ])
+                                        if (self.isMobile) {
+                                            self.makerInfo = {
+                                                ...item,
+                                                displayMoney,
+                                                sourceContent,
+                                                title,
+                                                geocodes: result.geocodes[0]
                                             }
-                                        });
+                                        } else {
+                                            const makerInfoComponent = Vue.extend({
+                                                render(h) {
+                                                    return h('div', {
+                                                        class: ['marker-info']
+                                                    }, [
+                                                        h('a', {
+                                                            attrs: {
+                                                                target: '_blank',
+                                                                href: item.houseOnlineURL
+                                                            },
+                                                            class: ['marker-link'],
+                                                            domProps: {
+                                                                innerHTML: `房源: ${title}`
+                                                            }
+                                                        }),
+                                                        h('a', {
+                                                            attrs: {
+                                                                target: '_blank',
+                                                                href: item.houseOnlineURL
+                                                            },
+                                                            class: ['marker-link'],
+                                                            domProps: {
+                                                                innerHTML: `${displayMoney}`
+                                                            }
+                                                        }),
+                                                        h('a', {
+                                                            attrs: {
+                                                                target: '_blank',
+                                                                href: item.houseOnlineURL
+                                                            },
+                                                            class: ['marker-link'],
+                                                            domProps: {
+                                                                innerHTML: `${sourceContent}`
+                                                            }
+                                                        }),
+                                                        h('span', {
+                                                            class: ['marker-info', 'marker-link'],
+                                                            on: {
+                                                                click: async function (e) {
+                                                                    self.collect(item)
+                                                                }
+                                                            }
+                                                        }, [
+                                                            h('i', {
+                                                                class: ['el-icon-star-on']
+                                                            }),
+                                                            '收藏',
+                                                        ]),
+                                                        h('span', {
+                                                            class: ['marker-info', 'marker-link'],
+                                                            on: {
+                                                                click: function (e) {
+                                                                    self.transfer(result.geocodes[0].location, map, self);
+                                                                    infoWindow.close();
+                                                                }
+                                                            }
+                                                        }, [
+                                                            h('i', {
+                                                                class: ['el-icon-location'],
+                                                            }),
+                                                            '开始导航'
+                                                        ])
+                                                    ])
+                                                }
+                                            });
 
-                                        const component = new makerInfoComponent().$mount();
+                                            const component = new makerInfoComponent().$mount();
 
-                                        infoWindow.setContent(component.$el);
-                                        infoWindow.open(map, e.target.getPosition());
+                                            infoWindow.setContent(component.$el);
+                                            infoWindow.open(map, e.target.getPosition());
+                                        }
+
                                     });
                                     resolve(marker)
                                 } else {
@@ -813,7 +894,7 @@
 
                     let info = await this.getList();
                     let data = info.data;
-                    // data.length = 20;
+                    data.length = 20;
                     // this.showRight = true;
 
 
