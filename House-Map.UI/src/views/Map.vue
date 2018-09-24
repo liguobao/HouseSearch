@@ -1003,7 +1003,7 @@
 
                     let info = await this.getList();
                     let data = info.data;
-                    data.length = 20;
+                    // data.length = 20;
                     // this.showRight = true;
 
 
