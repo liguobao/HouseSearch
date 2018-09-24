@@ -1,7 +1,3 @@
-//============================================================
-//http://codelover.link author:李国宝
-//============================================================
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -15,9 +11,8 @@ namespace HouseMapAPI.DBEntity
 
     [Serializable]
     [Table("UserHouses")]
-    public class UserHouse : BaseEntity
+    public class UserHouse : DBHouse
     {
         public long UserId { get; set; }
-
     }
 }

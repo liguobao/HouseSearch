@@ -175,8 +175,8 @@ namespace HouseMapAPI.Service
 
         public void WriteUserToken(UserInfo loginUser, string token)
         {
-            _redisService.WriteObject("user_token_" + loginUser.ID, token, 0, 60 * 24 * 30);
-            _redisService.WriteObject("user_" + loginUser.ID, loginUser, 0, 60 * 24 * 30);
+            _redisService.WriteObject(RedisKey.UserToken.Key + loginUser.ID, token, 0, 60 * 24 * 30);
+            _redisService.WriteObject(RedisKey.UserId.Key + loginUser.ID, loginUser, 0, 60 * 24 * 30);
             _redisService.WriteObject(token, loginUser, 0, 60 * 24 * 30);
         }
 
@@ -191,9 +191,17 @@ namespace HouseMapAPI.Service
             {
                 throw new UnProcessableException("地址不能为空!");
             }
-            return _userDapper.SaveWorkAddress(userID, address);
+            var success = _userDapper.SaveWorkAddress(userID, address);
+            RefreshUserCache(userID);
+            return success;
         }
 
+        private void RefreshUserCache(long userID)
+        {
+            var token = _redisService.ReadCache<string>(RedisKey.UserToken.Key + userID, RedisKey.UserToken.DBName);
+            var user = _userDapper.FindByID(userID);
+            WriteUserToken(user, token);
+        }
 
         public Tuple<string, UserInfo> WechatLogin(WechatLoginInfo loginInfo)
         {

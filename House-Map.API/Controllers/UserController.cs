@@ -20,7 +20,7 @@ namespace HouseCrawler.Web.API.Controllers
 
         private UserService _userService;
 
-       
+
 
         public UserController(UserService userService)
         {
