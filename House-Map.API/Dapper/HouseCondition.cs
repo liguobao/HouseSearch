@@ -28,7 +28,7 @@ namespace HouseMapAPI.Dapper
             {
 
                 var key = $"{this.CityName}-{this.Source}-{this.IntervalDay}-{this.HouseCount}-{this.Keyword}-{this.Page}";
-                if (this.FromPrice != 0 && this.ToPrice != 0 && this.FromPrice <= this.ToPrice)
+                if (this.FromPrice > 0 && this.ToPrice > 0 && this.FromPrice <= this.ToPrice)
                 {
                     key = key + $"{-this.FromPrice}-{this.ToPrice}";
                 }
