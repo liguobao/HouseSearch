@@ -646,9 +646,14 @@
                 this.showRight = !this.showRight
             },
             async getList() {
+                let houseCount = undefined;
+                if(this.isMobile) {
+                    houseCount = 100;
+                }
                 return await this.$ajax.post('/houses', {
                     ...this.$route.query,
-                    cityName: this.cityName
+                    cityName: this.cityName,
+                    houseCount
                 });
             },
             transfer(position, map, self) {
