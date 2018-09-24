@@ -95,6 +95,9 @@
   </div>
 </template>
 <style lang="scss" scoped>
+  ul{
+    margin: 0;
+  }
   .is-mobile.header {
     background: #1a1f2a;
     .title {

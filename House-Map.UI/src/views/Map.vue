@@ -18,7 +18,7 @@
                 </div>
                 <div class="card-item">
                     <span class="card-name">时长(分钟)</span>
-                    <el-slider class="card-value" :min="1" :max="120" v-model="times" size="mini"></el-slider>
+                    <el-slider class="card-value" :min="1" :max="60" v-model="times" size="mini"></el-slider>
                     <span class="card-times">{{times}}</span>
                 </div>
                 <div class="card-item">
@@ -39,7 +39,7 @@
                     </el-select>
                 </div>
                 <div class="card-item btn">
-                    <el-button type="primary" size="mini" @click="search">查询</el-button>
+                    <el-button type="primary" size="mini" @click="search" :loading="searching">查询</el-button>
                     <!--<el-button size="mini">清空</el-button>-->
                 </div>
             </div>
@@ -56,9 +56,25 @@
                 </ul>
             </div>
         </template>
+        <template v-else>
+            <div class="mobile-bg">
+
+            </div>
+        </template>
         <div id="panel" v-show="transferWays" :class="{'slide-up' : toggleUp,'is-mobile' : isMobile}">
             <span class="panel-handle" @click="toggleUp = !toggleUp">{{!toggleUp ? '收起' : '展开'}}</span>
         </div>
+
+        <el-dialog
+                title="地图搜租房"
+                :width="isMobile ? '100%' : '700px'"
+                center
+                :visible="loginVisible"
+                :before-close="() => {toggleDialog('loginVisible')}"
+        >
+            <login ref="login" @close="toggleDialog" :done="done" :login-type="loginType"></login>
+        </el-dialog>
+
         <!--<div class="right" :class="{'show-right' : showRight}">-->
         <!--<section class="link">-->
         <!--<router-link class="to" :to="item.link" v-for="item in rightLinks">{{item.text}}</router-link>-->
@@ -257,8 +273,6 @@
     .map {
         height: 100vh;
         width: 100%;
-        display: flex;
-        flex-direction: row;
         .container {
             height: 100%;
             flex: auto;
@@ -302,7 +316,7 @@
             border: solid 1px silver;
             -webkit-overflow-scrolling: touch;
             transition: all 0.3s;
-            &.is-mobile{
+            &.is-mobile {
                 top: 6%;
             }
             .panel-handle {
@@ -321,9 +335,12 @@
 </style>
 <script>
     import Vue from 'vue'
+    import Login from './../components/login';
 
     export default {
-
+        components: {
+            Login
+        },
         data() {
             return {
                 zoom: 12,
@@ -413,7 +430,12 @@
                 lnglat: undefined,
                 arrivalRange: undefined,
                 polygons: [],
-                positionPicker: undefined
+                positionPicker: undefined,
+                loginVisible: false,
+                searching: false,
+                loginType: undefined,
+                done: null,
+                collection: false
             }
         },
         computed: {
@@ -422,6 +444,9 @@
             },
             isMobile() {
                 return this.$store.state.isMobile
+            },
+            user() {
+                return !!this.$store.state.userInfo
             }
         },
         watch: {
@@ -431,8 +456,33 @@
             }
         },
         methods: {
+            async collect(item) {
+                if (this.collection) {
+                    return
+                }
+                this.collection = true;
+                const userId = this.$store.state.userInfo.id;
+                const data = await this.$ajax.post(`/users/${userId}/collections`, {
+                    userId,
+                    houseID: item.id,
+                    source: item.source
+                });
+                this.collection = false;
+                this.$message.success(data.message)
+            },
+            toggleDialog(key, val, type) {
+                if (key === 'loginVisible') {
+                    if (type) {
+                        this.loginType = type;
+                    } else {
+                        this.loginType = undefined;
+                    }
+                }
+                this[key] = val || false;
+            },
             search() {
                 let self = this;
+                self.searching = true;
                 self.arrivalRange = new AMap.ArrivalRange();
                 self.arrivalRange.search(self.lnglat, self.times, function (status, result) {
                     self.map.remove(self.polygons);
@@ -452,6 +502,10 @@
                         self.map.add(self.polygons);
                         self.map.setFitView();
                         self.map.setZoomAndCenter(13, self.lnglat);
+                        self.searching = false;
+                    } else {
+                        self.$message.error('未知错误');
+                        self.searching = false;
                     }
                 }, {
                     policy: self.waysMethod
@@ -568,6 +622,9 @@
                     });
                     let list = await Promise.all(data.map(function (item) {
                         return new Promise((resolve, reject) => {
+                            if (!item) {
+                                reject(item)
+                            }
                             code.getLocation(item.houseLocation, (status, result) => {
                                 if (status === "complete" && result.info === 'OK') {
 
@@ -633,13 +690,19 @@
                                                     h('span', {
                                                         class: ['marker-info', 'marker-link'],
                                                         on: {
-                                                            click: function (e) {
-
+                                                            click: async function (e) {
+                                                                if (!self.user) {
+                                                                    await new Promise(async (resolve1, reject1) => {
+                                                                        self.loginVisible = true;
+                                                                        self.done = resolve1;
+                                                                    });
+                                                                }
+                                                                self.collect(item)
                                                             }
                                                         }
                                                     }, [
                                                         h('i', {
-                                                            class: ['el-icon-star-off']
+                                                            class: ['el-icon-star-on']
                                                         }),
                                                         '收藏',
                                                     ]),
