@@ -102,7 +102,10 @@
         <div id="panel" v-show="transferWays" :class="{'slide-up' : toggleUp,'is-mobile' : isMobile}">
             <span class="panel-handle" @click="toggleUp = !toggleUp">{{!toggleUp ? '收起' : '展开'}}</span>
         </div>
-
+        <span @click="whereAmI" class="where-am-i" :class="{'is-mobile' : isMobile}">
+            <i class="el-icon-location"></i>
+            我在哪
+        </span>
         <el-dialog
                 title="地图搜租房"
                 :width="isMobile ? '100%' : '700px'"
@@ -364,6 +367,24 @@
             }
         }
     }
+    .where-am-i{
+        position: fixed;
+        z-index: 60;
+        right: 20px;
+        bottom: 20px;
+        text-align: center;
+        font-size: 12px;
+        background: #fff;
+        border-radius: 4px;
+        padding: 10px;
+        cursor: pointer;
+        &.is-mobile{
+            right: 18%;
+        }
+        i{
+            display: block;
+        }
+    }
 </style>
 <style lang="scss">
     .map {
@@ -413,7 +434,7 @@
             -webkit-overflow-scrolling: touch;
             transition: all 0.3s;
             &.is-mobile {
-                top: 6%;
+                top: 10%;
             }
             .panel-handle {
                 display: block;
@@ -553,6 +574,9 @@
             }
         },
         methods: {
+            whereAmI() {
+                this.positionPicker.start(this.lnglat)
+            },
             next() {
                 const query = this.$route.query;
                 let page = 1;
@@ -957,7 +981,7 @@
 
                     let info = await this.getList();
                     let data = info.data;
-                    // data.length = 20;
+                    data.length = 20;
                     // this.showRight = true;
 
 
