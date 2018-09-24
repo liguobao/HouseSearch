@@ -1,63 +1,63 @@
 <template>
     <div class="map">
         <div class="container" id="map-container">
-            <template v-if="!isMobile">
-                <div class="card">
-                    <h4>出行到达圈查询</h4>
-                    <div class="card-item">
-                        <span class="card-name">出发位置</span>
-                        <el-input
-                                id="keyword"
-                                class="card-value"
-                                size="mini"
-                                placeholder="请输入内容"
-                                v-model="keyword"
-                                clearable>
-                        </el-input>
-                    </div>
-                    <div class="card-item">
-                        <span class="card-name">时长(分钟)</span>
-                        <el-slider class="card-value" :min="1" :max="120" v-model="times" size="mini"></el-slider>
-                        <span class="card-times">{{times}}</span>
-                    </div>
-                    <div class="card-item">
-                        <span class="card-name">出行方式</span>
-                        <el-select v-model="waysMethod" placeholder="请选择出行方式" class="card-value" size="mini">
-                            <el-option
-                                    label="地铁+公交"
-                                    value="">
-                            </el-option>
-                            <el-option
-                                    label="地铁"
-                                    value="SUBWAY">
-                            </el-option>
-                            <el-option
-                                    label="公交"
-                                    value="BUS">
-                            </el-option>
-                        </el-select>
-                    </div>
-                    <div class="card-item btn">
-                        <el-button type="primary" size="mini" @click="search">查询</el-button>
-                        <!--<el-button size="mini">清空</el-button>-->
-                    </div>
-                </div>
-                <span class="highlight-text">特此声明:房源信息来自网络，本网站不对其真实性负责。首次载入无数据可尝试【F5】强制刷新.问题反馈：codelover@qq.com</span>
-                <div class="icon-tips">
-                    <ul>
-                        <!--<li class="btn">-->
-                        <!--<el-button type="success" size="medium" @click="toggleRight">上班导航</el-button>-->
-                        <!--</li>-->
-                        <li v-for="item in iconTips">
-                            <img :src="item.src"/>
-                            <span>{{item.text}}</span>
-                        </li>
-                    </ul>
-                </div>
-            </template>
         </div>
-        <div id="panel" v-show="transferWays" :class="{'slide-up' : toggleUp}">
-            <span class="panel-handle" @click="toggleUp = !toggleUp">收起</span>
+        <template v-if="!isMobile && !loading">
+            <div class="card">
+                <h4>出行到达圈查询</h4>
+                <div class="card-item">
+                    <span class="card-name">上班地点</span>
+                    <el-input
+                            id="keyword"
+                            class="card-value"
+                            size="mini"
+                            placeholder="请输入内容"
+                            v-model="keyword"
+                            clearable>
+                    </el-input>
+                </div>
+                <div class="card-item">
+                    <span class="card-name">时长(分钟)</span>
+                    <el-slider class="card-value" :min="1" :max="120" v-model="times" size="mini"></el-slider>
+                    <span class="card-times">{{times}}</span>
+                </div>
+                <div class="card-item">
+                    <span class="card-name">出行方式</span>
+                    <el-select v-model="waysMethod" placeholder="请选择出行方式" class="card-value" size="mini">
+                        <el-option
+                                label="地铁+公交"
+                                value="">
+                        </el-option>
+                        <el-option
+                                label="地铁"
+                                value="SUBWAY">
+                        </el-option>
+                        <el-option
+                                label="公交"
+                                value="BUS">
+                        </el-option>
+                    </el-select>
+                </div>
+                <div class="card-item btn">
+                    <el-button type="primary" size="mini" @click="search">查询</el-button>
+                    <!--<el-button size="mini">清空</el-button>-->
+                </div>
+            </div>
+            <span class="highlight-text">特此声明:房源信息来自网络，本网站不对其真实性负责。首次载入无数据可尝试【F5】强制刷新.问题反馈：codelover@qq.com</span>
+            <div class="icon-tips">
+                <ul>
+                    <!--<li class="btn">-->
+                    <!--<el-button type="success" size="medium" @click="toggleRight">上班导航</el-button>-->
+                    <!--</li>-->
+                    <li v-for="item in iconTips">
+                        <img :src="item.src"/>
+                        <span>{{item.text}}</span>
+                    </li>
+                </ul>
+            </div>
+        </template>
+        <div id="panel" v-show="transferWays" :class="{'slide-up' : toggleUp,'is-mobile' : isMobile}">
+            <span class="panel-handle" @click="toggleUp = !toggleUp">{{!toggleUp ? '收起' : '展开'}}</span>
         </div>
         <!--<div class="right" :class="{'show-right' : showRight}">-->
         <!--<section class="link">-->
@@ -110,7 +110,7 @@
 </template>
 <style scoped lang="scss">
     .highlight-text {
-        position: absolute;
+        position: fixed;
         color: red;
         left: 5px;
         top: 2px;
@@ -119,7 +119,7 @@
     }
 
     .icon-tips {
-        position: absolute;
+        position: fixed;
         right: 20px;
         top: 30px;
         z-index: 66;
@@ -241,7 +241,7 @@
                 text-align: center;
                 justify-content: center;
             }
-            .card-times{
+            .card-times {
                 margin-left: 10px;
             }
             .card-value {
@@ -296,12 +296,15 @@
             background-color: white;
             max-height: 80%;
             overflow-y: auto;
-            top: 6%;
+            top: 254px;
             left: 5%;
             width: 250px;
             border: solid 1px silver;
             -webkit-overflow-scrolling: touch;
             transition: all 0.3s;
+            &.is-mobile{
+                top: 6%;
+            }
             .panel-handle {
                 display: block;
                 padding: 0 10px;
@@ -409,7 +412,8 @@
                 map: undefined,
                 lnglat: undefined,
                 arrivalRange: undefined,
-                polygons: []
+                polygons: [],
+                positionPicker: undefined
             }
         },
         computed: {
@@ -422,6 +426,7 @@
         },
         watch: {
             '$route.query': function (params) {
+                this.loading = true;
                 this.init()
             }
         },
@@ -446,7 +451,7 @@
                         }
                         self.map.add(self.polygons);
                         self.map.setFitView();
-                        self.map.setZoomAndCenter(13,self.lnglat);
+                        self.map.setZoomAndCenter(13, self.lnglat);
                     }
                 }, {
                     policy: self.waysMethod
@@ -491,6 +496,9 @@
 
                         positionPicker.on('success', function (positionResult) {
                             self.myPosition = positionResult.position;
+                            self.positionPicker = positionPicker;
+                            self.lnglat = positionResult.position;
+                            self.keyword = positionResult.address
                         });
 
                         // positionPicker.start();
@@ -554,126 +562,119 @@
             },
             addMaker(map, data, code, self) {
                 return new Promise(async (resolve, reject) => {
-                    try {
-                        let infoWindow = new AMap.InfoWindow({
-                            offset: new AMap.Pixel(0, -30),
-                            content: ``  //传入 dom 对象，或者 html 字符串
-                        });
-                        let list = await Promise.all(data.map(function (item) {
-                            return new Promise((resolve, reject) => {
-                                code.getLocation(item.houseLocation, (status, result) => {
-                                    if (status === "complete" && result.info === 'OK') {
+                    let infoWindow = new AMap.InfoWindow({
+                        offset: new AMap.Pixel(0, -30),
+                        content: ``  //传入 dom 对象，或者 html 字符串
+                    });
+                    let list = await Promise.all(data.map(function (item) {
+                        return new Promise((resolve, reject) => {
+                            code.getLocation(item.houseLocation, (status, result) => {
+                                if (status === "complete" && result.info === 'OK') {
 
-                                        let icon = 'https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png';
-                                        if (item.locationMarkBG) {
-                                            icon = require('./../images/' + (item.locationMarkBG));
-                                        }
-
-                                        let marker = new AMap.Marker({
-                                            map: map,
-                                            title: item.houseLocation,
-                                            icon,
-                                            position: [result.geocodes[0].location.lng, result.geocodes[0].location.lat]
-                                        });
-
-
-                                        map.add(marker);
-
-                                        let displayMoney = item.DisPlayPrice ? "  租金：" + item.DisPlayPrice : "";
-                                        let sourceContent = item.displaySource ? " 来源：" + item.displaySource : "";
-                                        let title = item.houseTitle;
-                                        if (title) {
-                                            title = item.houseLocation;
-                                        }
-
-                                        marker.on('click', function (e) {
-
-                                            const makerInfoComponent = Vue.extend({
-                                                render(h) {
-                                                    return h('div', {
-                                                        class: ['marker-info']
-                                                    }, [
-                                                        h('a', {
-                                                            attrs: {
-                                                                target: '_blank',
-                                                                href: item.houseOnlineURL
-                                                            },
-                                                            class: ['marker-link'],
-                                                            domProps: {
-                                                                innerHTML: `房源: ${title}`
-                                                            }
-                                                        }),
-                                                        h('a', {
-                                                            attrs: {
-                                                                target: '_blank',
-                                                                href: item.houseOnlineURL
-                                                            },
-                                                            class: ['marker-link'],
-                                                            domProps: {
-                                                                innerHTML: `${displayMoney}`
-                                                            }
-                                                        }),
-                                                        h('a', {
-                                                            attrs: {
-                                                                target: '_blank',
-                                                                href: item.houseOnlineURL
-                                                            },
-                                                            class: ['marker-link'],
-                                                            domProps: {
-                                                                innerHTML: `${sourceContent}`
-                                                            }
-                                                        }),
-                                                        h('span', {
-                                                            class: ['marker-info', 'marker-link'],
-                                                            on: {
-                                                                click: function (e) {
-
-                                                                }
-                                                            }
-                                                        }, [
-                                                            h('i', {
-                                                                class: ['el-icon-star-off']
-                                                            }),
-                                                            '收藏',
-                                                        ]),
-                                                        h('span', {
-                                                            class: ['marker-info', 'marker-link'],
-                                                            on: {
-                                                                click: function (e) {
-                                                                    self.transfer(result.geocodes[0].location, map, self);
-                                                                    infoWindow.close();
-                                                                }
-                                                            }
-                                                        }, [
-                                                            h('i', {
-                                                                class: ['el-icon-location'],
-                                                            }),
-                                                            '开始导航'
-                                                        ])
-                                                    ])
-                                                }
-                                            });
-
-                                            const component = new makerInfoComponent().$mount();
-
-                                            infoWindow.setContent(component.$el);
-                                            infoWindow.open(map, e.target.getPosition());
-                                        });
-                                        resolve(marker)
-                                    } else {
-                                        resolve(item);
-                                        //reject(new Error('找不到坐标'))
+                                    let icon = 'https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png';
+                                    if (item.locationMarkBG) {
+                                        icon = require('./../images/' + (item.locationMarkBG));
                                     }
-                                })
-                            })
-                        }));
-                        resolve()
-                    }catch (e) {
-                        console.log('这里出错了')
-                        resolve();
-                        throw e
-                    }
 
+                                    let marker = new AMap.Marker({
+                                        map: map,
+                                        title: item.houseLocation,
+                                        icon,
+                                        position: [result.geocodes[0].location.lng, result.geocodes[0].location.lat]
+                                    });
+
+
+                                    map.add(marker);
+
+                                    let displayMoney = item.DisPlayPrice ? "  租金：" + item.DisPlayPrice : "";
+                                    let sourceContent = item.displaySource ? " 来源：" + item.displaySource : "";
+                                    let title = item.houseTitle;
+                                    if (title) {
+                                        title = item.houseLocation;
+                                    }
+
+                                    marker.on('click', function (e) {
+
+                                        const makerInfoComponent = Vue.extend({
+                                            render(h) {
+                                                return h('div', {
+                                                    class: ['marker-info']
+                                                }, [
+                                                    h('a', {
+                                                        attrs: {
+                                                            target: '_blank',
+                                                            href: item.houseOnlineURL
+                                                        },
+                                                        class: ['marker-link'],
+                                                        domProps: {
+                                                            innerHTML: `房源: ${title}`
+                                                        }
+                                                    }),
+                                                    h('a', {
+                                                        attrs: {
+                                                            target: '_blank',
+                                                            href: item.houseOnlineURL
+                                                        },
+                                                        class: ['marker-link'],
+                                                        domProps: {
+                                                            innerHTML: `${displayMoney}`
+                                                        }
+                                                    }),
+                                                    h('a', {
+                                                        attrs: {
+                                                            target: '_blank',
+                                                            href: item.houseOnlineURL
+                                                        },
+                                                        class: ['marker-link'],
+                                                        domProps: {
+                                                            innerHTML: `${sourceContent}`
+                                                        }
+                                                    }),
+                                                    h('span', {
+                                                        class: ['marker-info', 'marker-link'],
+                                                        on: {
+                                                            click: function (e) {
+
+                                                            }
+                                                        }
+                                                    }, [
+                                                        h('i', {
+                                                            class: ['el-icon-star-off']
+                                                        }),
+                                                        '收藏',
+                                                    ]),
+                                                    h('span', {
+                                                        class: ['marker-info', 'marker-link'],
+                                                        on: {
+                                                            click: function (e) {
+                                                                self.transfer(result.geocodes[0].location, map, self);
+                                                                infoWindow.close();
+                                                            }
+                                                        }
+                                                    }, [
+                                                        h('i', {
+                                                            class: ['el-icon-location'],
+                                                        }),
+                                                        '开始导航'
+                                                    ])
+                                                ])
+                                            }
+                                        });
+
+                                        const component = new makerInfoComponent().$mount();
+
+                                        infoWindow.setContent(component.$el);
+                                        infoWindow.open(map, e.target.getPosition());
+                                    });
+                                    resolve(marker)
+                                } else {
+                                    resolve(item);
+                                    //reject(new Error('找不到坐标'))
+                                }
+                            })
+                        })
+                    }));
+                    resolve()
                 })
             },
             keywordSelect(map, positionPicker) {
@@ -693,7 +694,7 @@
                     // placeSearch.search(e.poi.name);  //关键字查询查询
                 }
             },
-            getCityCenter(positionPicker, code,self) {
+            getCityCenter(positionPicker, code, self) {
                 let location = undefined;
                 return new Promise((resolve, reject) => {
                     code.getLocation(this.cityName, (status, result) => { // 城市中心点
@@ -701,11 +702,11 @@
                             location = result.geocodes[0].location;
                             positionPicker.start(location);
                             self.lnglat = location;
-                            self.keyword = result.geocodes[0].formattedAddress;
+                            // self.keyword = result.geocodes[0].formattedAddress;
                         } else {
                             location = map.getBounds().getSouthWest();
                             self.lnglat = location;
-                            self.keyword = self.cityName;
+                            // self.keyword = self.cityName;
                             positionPicker.start(location)
                         }
                         resolve()
@@ -713,48 +714,53 @@
                 })
             },
             async init() {
-                this.loading = false;
                 const loading = this.$loading({
                     lock: true,
                     text: '正在加载数据',
                     spinner: 'el-icon-loading',
                     background: 'rgba(0, 0, 0, 0.7)'
                 });
-                const query = this.$route.query;
-                let cityName = query.cityname;
-                if (!cityName) {
-                    cityName = await this.getActiveCityName(this);
+                try {
+                    const query = this.$route.query;
+                    let cityName = query.cityname;
+                    if (!cityName) {
+                        cityName = await this.getActiveCityName(this);
+                    }
+                    this.activeCityName = this.cityName = cityName;
+
+                    let map = new AMap.Map('map-container', {
+                        zoom: this.zoom,
+                        resizeEnable: true,
+                    });
+                    this.map = map;
+                    map.clearMap();
+                    map.setCity(this.cityName);
+                    let self = this;
+
+                    await this.installPlugin(map, self);
+                    let positionPicker = await this.installAmapUI(map, self);
+
+                    let code = new AMap.Geocoder({
+                        city: this.cityName,
+                        radius: 1000
+                    });
+
+                    await this.getCityCenter(positionPicker, code, self);
+                    this.keywordSelect(map, positionPicker);
+
+                    let info = await this.getList();
+                    let data = info.data;
+                    // data.length = 20;
+                    // this.showRight = true;
+
+
+                    await this.addMaker(map, data, code, self);
+                    loading.close();
+                    this.loading = false;
+                } catch (e) {
+                    this.$message.error('初始化地图失败,请再次刷新');
+                    throw e
                 }
-                this.activeCityName = this.cityName = cityName;
-
-                let map = new AMap.Map('map-container', {
-                    zoom: this.zoom,
-                    resizeEnable: true,
-                });
-                this.map = map;
-                map.clearMap();
-                map.setCity(this.cityName);
-                let self = this;
-
-                await this.installPlugin(map, self);
-                let positionPicker = await this.installAmapUI(map, self);
-
-                let code = new AMap.Geocoder({
-                    city: this.cityName,
-                    radius: 1000
-                });
-
-                await this.getCityCenter(positionPicker, code,self);
-                this.keywordSelect(map, positionPicker);
-
-                let info = await this.getList();
-                let data = info.data;
-                // data.length = 20;
-                // this.showRight = true;
-
-
-                await this.addMaker(map, data, code, self);
-                loading.close();
             },
 
             appendScript(url, cb) {
