@@ -40,7 +40,7 @@
                     </el-select>
                 </div>
                 <div class="card-item btn">
-                    <el-button type="primary" size="mini" @click="search" :loading="searching" >查询</el-button>
+                    <el-button type="primary" size="mini" @click="search" :loading="searching">查询</el-button>
                     <el-button type="info" size="mini" :loading="searching" @click="next">下一页</el-button>
                     <!--<el-button size="mini">清空</el-button>-->
                 </div>
@@ -100,7 +100,7 @@
             </div>
         </template>
         <div id="panel" v-show="transferWays" :class="{'slide-up' : toggleUp,'is-mobile' : isMobile}">
-            <span class="panel-handle" @click="toggleUp = !toggleUp">{{!toggleUp ? '收起' : '展开'}}</span>
+            <!--<span class="panel-handle" @click="toggleUp = !toggleUp">{{!toggleUp ? '收起' : '展开'}}</span>-->
         </div>
         <span @click="whereAmI" class="where-am-i" :class="{'is-mobile' : isMobile}">
             <i class="el-icon-location"></i>
@@ -310,30 +310,31 @@
         }
     }
 
-    .filter{
+    .filter {
         position: fixed;
         z-index: 40;
         left: 0;
         top: 0;
         width: 100%;
-        background: rgba(0,0,0,0.7);
+        background: rgba(0, 0, 0, 0.7);
         padding: 10px;
         display: flex;
         align-items: center;
-        .filter-item{
+        .filter-item {
             display: flex;
             flex-direction: row;
             font-size: 12px;
             align-items: center;
-            &:nth-of-type(2n){
+            &:nth-of-type(2n) {
                 margin-left: 5px;
             }
-            span{
+            span {
                 color: #fff;
                 width: 70px;
             }
         }
     }
+
     .mobile-bg {
         position: fixed;
         width: 100%;
@@ -367,7 +368,8 @@
             }
         }
     }
-    .where-am-i{
+
+    .where-am-i {
         position: fixed;
         z-index: 60;
         right: 20px;
@@ -378,10 +380,10 @@
         border-radius: 4px;
         padding: 10px;
         cursor: pointer;
-        &.is-mobile{
+        &.is-mobile {
             right: 18%;
         }
-        i{
+        i {
             display: block;
         }
     }
@@ -580,12 +582,12 @@
             next() {
                 const query = this.$route.query;
                 let page = 1;
-                if(!query.page) {
+                if (!query.page) {
                     page = 2;
-                }else {
+                } else {
                     page = (+query.page) + 1;
                 }
-                const params = Object.assign({},query,{page});
+                const params = Object.assign({}, query, {page});
                 this.$router.push({
                     query: params
                 })
@@ -671,7 +673,7 @@
             },
             async getList() {
                 let houseCount = undefined;
-                if(this.isMobile) {
+                if (this.isMobile) {
                     houseCount = 100;
                 }
                 return await this.$ajax.post('/houses', {
@@ -695,6 +697,26 @@
 
                 this.transferFn.search([this.myPosition.lng, this.myPosition.lat], [position.lng, position.lat], function (status, result) {
                     self.transferWays = true;
+                    let panelHandle = document.querySelector('.panel-handle');
+                    if (!panelHandle) {
+                        const panelComponent = Vue.extend({
+                            render(h) {
+                                return h('span', {
+                                    class: ['panel-handle'],
+                                    on: {
+                                        click() {
+                                            self.toggleUp = !self.toggleUp
+                                        }
+                                    }
+                                },self.toggleUp ? '收起' : '展开')
+                            }
+                        });
+
+                        const component = new panelComponent().$mount();
+                        document.querySelector(`#panel`).appendChild(component.$el)
+
+                    }
+
                 });
 
             },
@@ -918,7 +940,7 @@
                 function select(e) {
                     positionPicker.start(e.poi.location);
                     self.lnglat = e.poi.location;
-                    if(self.isMobile) {
+                    if (self.isMobile) {
                         self.search()
                     }
                     // placeSearch.setCity(e.poi.adcode);
@@ -981,7 +1003,7 @@
 
                     let info = await this.getList();
                     let data = info.data;
-                    // data.length = 20;
+                    data.length = 20;
                     // this.showRight = true;
 
 
