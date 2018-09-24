@@ -434,7 +434,7 @@
             -webkit-overflow-scrolling: touch;
             transition: all 0.3s;
             &.is-mobile {
-                top: 10%;
+                top: 12%;
             }
             .panel-handle {
                 display: block;
@@ -981,7 +981,7 @@
 
                     let info = await this.getList();
                     let data = info.data;
-                    data.length = 20;
+                    // data.length = 20;
                     // this.showRight = true;
 
 
