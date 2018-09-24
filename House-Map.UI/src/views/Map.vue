@@ -2,7 +2,7 @@
     <div class="map">
         <div class="container" id="map-container">
         </div>
-        <template v-if="!isMobile && !loading">
+        <template v-if="!isMobile">
             <div class="card">
                 <h4>出行到达圈查询</h4>
                 <div class="card-item">
@@ -11,6 +11,7 @@
                             id="keyword"
                             class="card-value"
                             size="mini"
+                            type="text"
                             placeholder="请输入内容"
                             v-model="keyword"
                             clearable>
@@ -39,7 +40,8 @@
                     </el-select>
                 </div>
                 <div class="card-item btn">
-                    <el-button type="primary" size="mini" @click="search" :loading="searching">查询</el-button>
+                    <el-button type="primary" size="mini" @click="search" :loading="searching" >查询</el-button>
+                    <el-button type="info" size="mini" :loading="searching" @click="next">下一页</el-button>
                     <!--<el-button size="mini">清空</el-button>-->
                 </div>
             </div>
@@ -57,6 +59,22 @@
             </div>
         </template>
         <template v-else>
+            <div class="filter">
+                <div class="filter-item">
+                    <span>上班地点: </span>
+                    <el-input
+                            id="keyword"
+                            class="card-value"
+                            size="mini"
+                            placeholder="请输入内容"
+                            v-model="keyword"
+                            clearable>
+                    </el-input>
+                </div>
+                <div class="filter-item">
+                    <el-button type="primary" size="mini" :loading="searching" @click="next">下一页</el-button>
+                </div>
+            </div>
             <div class="mobile-bg" v-if="makerInfo" @click="handleMobileBg">
                 <div class="content">
                     <section>
@@ -289,6 +307,30 @@
         }
     }
 
+    .filter{
+        position: fixed;
+        z-index: 40;
+        left: 0;
+        top: 0;
+        width: 100%;
+        background: rgba(0,0,0,0.7);
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        .filter-item{
+            display: flex;
+            flex-direction: row;
+            font-size: 12px;
+            align-items: center;
+            &:nth-of-type(2n){
+                margin-left: 5px;
+            }
+            span{
+                color: #fff;
+                width: 70px;
+            }
+        }
+    }
     .mobile-bg {
         position: fixed;
         width: 100%;
@@ -511,6 +553,19 @@
             }
         },
         methods: {
+            next() {
+                const query = this.$route.query;
+                let page = 1;
+                if(!query.page) {
+                    page = 2;
+                }else {
+                    page = (+query.page) + 1;
+                }
+                const params = Object.assign({},query,{page});
+                this.$router.push({
+                    query: params
+                })
+            },
             handleMobileBg(e) {
                 if (e.target === e.currentTarget) {
                     this.makerInfo = undefined;
@@ -834,6 +889,9 @@
                 function select(e) {
                     positionPicker.start(e.poi.location);
                     self.lnglat = e.poi.location;
+                    if(self.isMobile) {
+                        self.search()
+                    }
                     // placeSearch.setCity(e.poi.adcode);
                     // placeSearch.search(e.poi.name);  //关键字查询查询
                 }
@@ -860,7 +918,7 @@
             async init() {
                 const loading = this.$loading({
                     lock: true,
-                    text: '正在加载数据',
+                    text: '正在加载数据,若等待时间过长,请重新刷新页面',
                     spinner: 'el-icon-loading',
                     background: 'rgba(0, 0, 0, 0.7)'
                 });
@@ -894,7 +952,7 @@
 
                     let info = await this.getList();
                     let data = info.data;
-                    data.length = 20;
+                    // data.length = 20;
                     // this.showRight = true;
 
 

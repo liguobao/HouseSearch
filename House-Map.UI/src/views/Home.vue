@@ -29,11 +29,11 @@
                 </p>
                 <div class="cities">
                     <div class="city-item" v-for="item in cities" :key="item.name">
-                        <a target="_blank" :href="mapUrl + `?cityname=${item.cityname}&token=${token}`"
+                        <a target="_blank" @click="navTo({cityname:item.cityname})" href="javascript:;"
                            class="highlight-name">{{item.name}}</a>
                         <div class="form" v-if="item.form && item.form.length">
                             <a target="_blank"
-                               :href="mapUrl + `?cityname=${item.cityname}&source=${where.source}&token=${token}`"
+                               @click="navTo({cityname: item.cityname,source: where.source})" href="javascript:;"
                                class="highlight-name" v-for="(where,index) in item.form" :key="where.name">
                                 {{where.name}}
                                 <template v-if="index < item.form.length - 1">、</template>
@@ -43,13 +43,19 @@
                     <div class="city-item">
                         <a target="_blank" href="javascript:;" class="highlight-name" @click="showDashboards('all')">更多城市</a>
                         <div class="form">
-                            <a target="_blank" :href="mapUrl + `?cityname=成都&token=${token}`" class="highlight-name">
+                            <a target="_blank"
+                               @click="navTo({cityname:`成都`})" href="javascript:;"
+                               class="highlight-name">
                                 成都、
                             </a>
-                            <a target="_blank" :href="mapUrl + `?cityname=杭州&token=${token}`" class="highlight-name">
+                            <a target="_blank"
+                               @click="navTo({cityname:`杭州`})" href="javascript:;"
+                               class="highlight-name">
                                 杭州、
                             </a>
-                            <a target="_blank" :href="mapUrl + `?cityname=厦门&token=${token}`" class="highlight-name">
+                            <a target="_blank"
+                               @click="navTo({cityname:`厦门`})" href="javascript:;"
+                               class="highlight-name">
                                 厦门...
                             </a>
                         </div>
@@ -140,7 +146,8 @@
                 :visible="dashboardsVisible"
                 :before-close="() => {toggleDialog('dashboardsVisible')}"
         >
-            <dashboards :type="dashboardsType" :key="dashboardsType" :is-mobile="isMobile" :token="token"></dashboards>
+            <dashboards :nav-to="navTo" :type="dashboardsType" :key="dashboardsType" :is-mobile="isMobile"
+                        :token="token"></dashboards>
         </el-dialog>
 
         <el-dialog
@@ -642,11 +649,13 @@
                         form: [
                             {
                                 name: '豆瓣',
-                                url: 'douban'
+                                url: '',
+                                source: 'douban'
                             },
                             {
                                 name: 'Zuber',
-                                url: 'zuber'
+                                url: '',
+                                source: 'zuber'
                             },
                         ]
                     }
@@ -663,10 +672,13 @@
                 userHouseVisible: false,
                 userSource: false,
                 dashboardsType: 'all',
-                isMobile: false,
             }
         },
         methods: {
+            navTo(item) {
+                let {href} = this.$router.resolve({path: `/Map?${this.$qs.stringify(item)}`});
+                window.open(href, '_blank');
+            },
             showDashboards(type) {
                 this.dashboardsType = type;
                 this.toggleDialog('dashboardsVisible', true)
