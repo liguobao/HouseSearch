@@ -3,7 +3,7 @@ WORKDIR /app
 
 # copy csproj and restore as distinct layers
 COPY src/*.csproj ./
-COPY /House-Map.API/HouseMap.Dao/*.csproj /House-Map.API/HouseMap.Dao/HouseMap.Dao.csproj
+COPY /API/HouseMap.Dao/*.csproj /API/HouseMap.Dao/HouseMap.Dao.csproj
 RUN dotnet restore
 
 # copy everything else and build
