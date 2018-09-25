@@ -23,7 +23,7 @@ namespace HouseMap.Crawler.Controllers
 
         public IActionResult Index(string source)
         {
-            _zuber.Run();
+            //_zuber.Run();
             return Json(new { success = true });
         }
 

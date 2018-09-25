@@ -40,13 +40,16 @@ namespace HouseMap.Crawler
             #region Mapper
             services.AddSingleton<HouseDapper, HouseDapper>();
             services.AddSingleton<ConfigDapper, ConfigDapper>();
+            services.AddSingleton<HouseStatDapper,HouseStatDapper>();
             #endregion Service
 
             #region Service
             services.AddSingleton<EmailService, EmailService>();
             services.AddSingleton<RedisTool, RedisTool>();
+            services.AddSingleton<HouseService, HouseService>();
             services.AddSingleton<HouseDashboardService, HouseDashboardService>();
             services.AddSingleton<ElasticsearchService, ElasticsearchService>();
+
 
             #endregion
 
