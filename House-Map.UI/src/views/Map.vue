@@ -1013,6 +1013,9 @@
           // this.showRight = true;
 
 
+          setTimeout(() => {
+            loading.close();
+          },1000 * 20);
           await this.addMaker(map, data, code, self);
           loading.close();
           this.loading = false;
