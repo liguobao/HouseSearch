@@ -13,26 +13,26 @@ namespace HouseMapAPI.Service
 {
     public class DashboardService
     {
-        private RedisTool RedisTool;
+        private RedisTool _redisTool;
 
 
         private ConfigDapper _configDapper;
 
         public DashboardService(RedisTool RedisTool, ConfigDapper configDapper)
         {
-            this.RedisTool = RedisTool;
+            this._redisTool = RedisTool;
             _configDapper = configDapper;
 
         }
 
         public List<HouseDashboard> LoadDashboard()
         {
-            var dashboards = RedisTool.ReadCache<List<HouseDashboard>>(RedisKey.HouseDashboard.Key,
+            var dashboards = _redisTool.ReadCache<List<HouseDashboard>>(RedisKey.HouseDashboard.Key,
              RedisKey.HouseDashboard.DBName);
             if (dashboards == null || dashboards.Count == 0)
             {
                 dashboards = _configDapper.GetDashboards();
-                RedisTool.WriteObject(RedisKey.HouseDashboard.Key, dashboards, RedisKey.HouseDashboard.DBName);
+                _redisTool.WriteObject(RedisKey.HouseDashboard.Key, dashboards, RedisKey.HouseDashboard.DBName);
             }
             return dashboards;
         }

@@ -4,29 +4,26 @@ using System.Net;
 using System.Net.Mail;
 using System.Text;
 using HouseMap.Common;
-using HouseMapAPI.CommonException;
 using HouseMap.Dao;
 using HouseMap.Dao.DBEntity;
 using HouseMap.Models;
-using HouseMapAPI.Service;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using Talk.OAuthClient;
-using HouseMap.Common;
+using System.Linq;
 
-namespace HouseMapAPI.Service
+namespace HouseMap.Dao
 {
 
     public class HouseService
     {
 
-        private RedisTool RedisTool;
+        private RedisTool _redisTool;
 
         private HouseDapper houseDapper;
 
         public HouseService(RedisTool RedisTool, HouseDapper houseDapper)
         {
-            this.RedisTool = RedisTool;
+            this._redisTool = RedisTool;
             this.houseDapper = houseDapper;
         }
 
@@ -36,7 +33,16 @@ namespace HouseMapAPI.Service
             {
                 throw new Exception("查询条件不能为null");
             }
-            return houseDapper.SearchHouses(condition);
+            var houses = _redisTool.ReadCache<List<HouseInfo>>(condition.RedisKey, RedisKey.Houses.DBName);
+            if (houses == null || houses.Count == 0)
+            {
+                houses = houseDapper.SearchHouses(condition).ToList();
+                if (houses != null && houses.Count > 0)
+                {
+                    _redisTool.WriteObject(condition.RedisKey, houses, RedisKey.Houses.DBName);
+                }
+            }
+            return houses;
         }
 
     }
