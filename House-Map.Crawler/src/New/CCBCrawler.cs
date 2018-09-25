@@ -16,14 +16,15 @@ using HouseMap.Crawler.Common;
 using Newtonsoft.Json.Linq;
 using Microsoft.Extensions.Options;
 using HouseMap.Models;
+using HouseMap.Common;
 
 namespace HouseMap.Crawler
 {
 
     public class CCBCrawler : BaseCrawler
     {
-        private APPConfiguration _configuration;
-        public CCBCrawler(IOptions<APPConfiguration> configuration, HouseDapper houseDapper, ConfigDapper configDapper)
+        private readonly AppSettings _configuration;
+        public CCBCrawler(IOptions<AppSettings> configuration, HouseDapper houseDapper, ConfigDapper configDapper)
          : base(houseDapper, configDapper)
         {
             this.Source = ConstConfigName.CCBHouse;

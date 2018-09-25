@@ -2,6 +2,7 @@ using System;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
+using HouseMap.Common;
 using HouseMap.Crawler.Common;
 using Microsoft.Extensions.Options;
 
@@ -10,9 +11,9 @@ namespace HouseMap.Crawler.Service
 
     public class EmailService
     {
-        APPConfiguration configuration;
+        private readonly AppSettings configuration;
 
-        public EmailService(IOptions<APPConfiguration> configuration)
+        public EmailService(IOptions<AppSettings> configuration)
         {
             this.configuration = configuration.Value;
         }

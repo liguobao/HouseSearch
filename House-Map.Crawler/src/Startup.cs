@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HouseMap.Common;
 using HouseMap.Crawler.Common;
 using HouseMap.Crawler.Jobs;
 using HouseMap.Crawler.Service;
@@ -30,7 +31,7 @@ namespace HouseMap.Crawler
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-             services.AddOptions().Configure<APPConfiguration>(Configuration);
+             services.AddOptions().Configure<AppSettings>(Configuration);
             InitDI(services);
         }
 
@@ -43,7 +44,7 @@ namespace HouseMap.Crawler
 
             #region Service
             services.AddSingleton<EmailService, EmailService>();
-            services.AddSingleton<RedisService, RedisService>();
+            services.AddSingleton<RedisTool, RedisTool>();
             services.AddSingleton<HouseDashboardService, HouseDashboardService>();
             services.AddSingleton<ElasticsearchService, ElasticsearchService>();
 

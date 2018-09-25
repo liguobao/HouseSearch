@@ -10,15 +10,16 @@ using System.Linq;
 using HouseMap.Crawler.Common;
 
 using HouseMap.Models;
+using HouseMap.Common;
 
 namespace HouseMap.Crawler.Service
 {
 
     public class ElasticsearchService
     {
-        APPConfiguration configuration;
+        AppSettings configuration;
 
-        public ElasticsearchService(IOptions<APPConfiguration> configuration)
+        public ElasticsearchService(IOptions<AppSettings> configuration)
         {
             this.configuration = configuration.Value;
         }

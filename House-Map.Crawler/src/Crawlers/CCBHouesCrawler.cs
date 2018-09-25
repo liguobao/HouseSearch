@@ -1,4 +1,5 @@
 ﻿
+using HouseMap.Common;
 using HouseMap.Crawler.Common;
 using HouseMap.Dao;
 using HouseMap.Dao.DBEntity;
@@ -19,11 +20,11 @@ namespace HouseMap.Crawler
 
         private HouseDapper houseDapper;
 
-        private APPConfiguration config;
+        private AppSettings config;
 
         private ConfigDapper configDapper;
 
-        public CCBHouesCrawler(HouseDapper houseDapper, IOptions<APPConfiguration> configuration,
+        public CCBHouesCrawler(HouseDapper houseDapper, IOptions<AppSettings> configuration,
         ConfigDapper configDapper)
         {
             this.houseDapper = houseDapper;

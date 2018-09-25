@@ -15,18 +15,14 @@ namespace HouseMap.Crawler.Jobs
     public class RefreshHouseSourceJob : Job
     {
 
-        private RedisService redis;
-
-        private readonly HouseDapper _houseDapper;
+      private HouseService _houseService;
 
         private readonly HouseStatDapper _statDapper;
 
 
-        public RefreshHouseSourceJob(HouseDapper houseDapper, RedisService redis, HouseStatDapper statDapper)
+        public RefreshHouseSourceJob(HouseService houseService, HouseStatDapper statDapper)
         {
-            //this.configuration = configuration.Value;
-            this._houseDapper = houseDapper;
-            this.redis = redis;
+            _houseService = houseService;
             _statDapper = statDapper;
         }
 
@@ -43,13 +39,13 @@ namespace HouseMap.Crawler.Jobs
                 {
                     //聚合房源的缓存,前600条数据
                     var search = new HouseCondition() { CityName = item.Key, HouseCount = 600, IntervalDay = 14, Refresh = true };
-                    _houseDapper.SearchHouses(search);
+                    _houseService.Search(search);
                     foreach (var dashbord in item)
                     {
                         //每类房源的默认缓存,前600条数据
                         search.HouseCount = 600;
                         search.Source = dashbord.Source;
-                        _houseDapper.SearchHouses(search);
+                        _houseService.Search(search);
                     }
                 }, "RefreshHouse");
             }

@@ -1,4 +1,6 @@
 
+using System.Runtime.Serialization;
+
 namespace HouseMap.Common
 {
     public class AppSettings
@@ -8,7 +10,7 @@ namespace HouseMap.Common
 
         public string RedisConnectionString { get; set; }
 
-        public static string CCBHomeAPIKey { get; set; }
+        public string CCBHomeAPIKey { get; set; }
 
         public string SenderAddress { get; set; }
 
@@ -46,8 +48,8 @@ namespace HouseMap.Common
         public string WechatAppId { get; set; }
 
         public string WechatAppSecret { get; set; }
-
-
-
+        public string ESUserName { get; set; }
+        public string ESPassword { get; set; }
+        public string ESURL { get; set; }
     }
 }

@@ -6,18 +6,19 @@ using HouseMap.Dao.DBEntity;
 using HouseMap.Crawler.Service;
 using Microsoft.Extensions.Options;
 using Pomelo.AspNetCore.TimedJob;
+using HouseMap.Common;
 
 namespace HouseMap.Crawler.Jobs
 {
     public class TodayHouseDashboardJob : Job
     {
-        EmailService emailService;
+        private readonly EmailService emailService;
 
-        APPConfiguration configuration;
+        private readonly AppSettings configuration;
 
-        HouseStatDapper _statDapper;
+        private readonly HouseStatDapper _statDapper;
 
-        public TodayHouseDashboardJob(EmailService emailService, IOptions<APPConfiguration> configuration,
+        public TodayHouseDashboardJob(EmailService emailService, IOptions<AppSettings> configuration,
          HouseStatDapper statDapper)
         {
             this.emailService = emailService;
@@ -25,7 +26,7 @@ namespace HouseMap.Crawler.Jobs
             this._statDapper = statDapper;
         }
 
-        [Invoke(Begin = "2018-07-01 23:00", Interval = 1000 * 3600 *8, SkipWhileExecuting = true)]
+        [Invoke(Begin = "2018-07-01 23:00", Interval = 1000 * 3600 * 8, SkipWhileExecuting = true)]
         public void Run()
         {
             var today = DateTime.Now.ToLocalTime();
@@ -49,7 +50,7 @@ namespace HouseMap.Crawler.Jobs
             bodyHTML = bodyHTML + " </table>";
             email.Body = bodyHTML;
             emailService.Send(email);
-            
+
         }
     }
 }

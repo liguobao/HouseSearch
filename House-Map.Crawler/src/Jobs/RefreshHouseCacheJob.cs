@@ -15,20 +15,16 @@ namespace HouseMap.Crawler.Jobs
     public class RefreshHouseCacheJob : Job
     {
 
-        private RedisService redis;
-
-        private HouseDapper houseDapper;
+        private HouseService _houseService;
 
         private readonly HouseStatDapper _statDapper;
 
 
 
 
-        public RefreshHouseCacheJob(HouseDapper houseDapper, RedisService redis, HouseStatDapper statDapper)
+        public RefreshHouseCacheJob(HouseService houseService, HouseStatDapper statDapper)
         {
-            //this.configuration = configuration.Value;
-            this.houseDapper = houseDapper;
-            this.redis = redis;
+            _houseService = houseService;
             _statDapper = statDapper;
         }
 
@@ -46,13 +42,13 @@ namespace HouseMap.Crawler.Jobs
                 {
                     //聚合房源的缓存,前600条数据
                     var search = new HouseCondition() { CityName = item.Key, HouseCount = 600, IntervalDay = 14, Refresh = true };
-                    houseDapper.SearchHouses(search);
+                    _houseService.Search(search);
                     foreach (var dashbord in item)
                     {
                         //每类房源的默认缓存,前600条数据
                         search.HouseCount = 600;
                         search.Source = dashbord.Source;
-                        houseDapper.SearchHouses(search);
+                        _houseService.Search(search);
 
                         // 为小程序做的缓存,每次拉10条,一共20页
                         for (var page = 0; page <= 30; page++)
@@ -60,7 +56,7 @@ namespace HouseMap.Crawler.Jobs
                             search.HouseCount = 20;
                             search.Source = dashbord.Source;
                             search.Page = page;
-                            houseDapper.SearchHouses(search);
+                            _houseService.Search(search);
                         }
                     }
                     //为移动端做的缓存,每次拉180条,一共5页
@@ -69,7 +65,7 @@ namespace HouseMap.Crawler.Jobs
                         search.Source = "";
                         search.HouseCount = 180;
                         search.Page = page;
-                        houseDapper.SearchHouses(search);
+                        _houseService.Search(search);
                     }
 
                     //为小程序做的缓存,每次拉20条,一共30页
@@ -78,7 +74,7 @@ namespace HouseMap.Crawler.Jobs
                         search.Source = "";
                         search.HouseCount = 20;
                         search.Page = page;
-                        houseDapper.SearchHouses(search);
+                        _houseService.Search(search);
                     }
 
                 }, "RefreshHouse");
