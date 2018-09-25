@@ -1,12 +1,11 @@
-﻿using HouseMapAPI.Common;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 
-namespace HouseMapAPI.Service
+namespace HouseMap.Common
 {
-    public class RedisService
+    public class RedisTool
     {
         private ConfigurationOptions GetRedisOptions()
         {
@@ -17,7 +16,7 @@ namespace HouseMapAPI.Service
 
         private AppSettings configuration;
 
-        public RedisService(IOptions<AppSettings> configuration)
+        public RedisTool(IOptions<AppSettings> configuration)
         {
             this.configuration = configuration.Value;
         }

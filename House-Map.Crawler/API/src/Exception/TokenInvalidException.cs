@@ -9,7 +9,7 @@ namespace HouseMapAPI.CommonException
 {
     public class TokenInvalidException : Exception
     {
-        public TokenInvalidException(string messgae) : base(messgae)
+        public TokenInvalidException(string message) : base(message)
         {
 
         }

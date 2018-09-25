@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using HouseMapAPI.Common;
-using HouseMapAPI.Dapper;
-using HouseMapAPI.Models;
+using HouseMap.Models;
+using HouseMap.Dao;
+using HouseMap.Dao.DBEntity;
+using HouseMap.Models;
+using HouseMap.Common;
 using HouseMapAPI.Service;
 using Newtonsoft.Json.Linq;
 
@@ -11,26 +13,26 @@ namespace HouseMapAPI.Service
 {
     public class DashboardService
     {
-        private RedisService redisService;
+        private RedisTool RedisTool;
 
 
         private ConfigDapper _configDapper;
 
-        public DashboardService(RedisService redisService, ConfigDapper configDapper)
+        public DashboardService(RedisTool RedisTool, ConfigDapper configDapper)
         {
-            this.redisService = redisService;
+            this.RedisTool = RedisTool;
             _configDapper = configDapper;
 
         }
 
         public List<HouseDashboard> LoadDashboard()
         {
-            var dashboards = redisService.ReadCache<List<HouseDashboard>>(RedisKey.HouseDashboard.Key,
+            var dashboards = RedisTool.ReadCache<List<HouseDashboard>>(RedisKey.HouseDashboard.Key,
              RedisKey.HouseDashboard.DBName);
             if (dashboards == null || dashboards.Count == 0)
             {
                 dashboards = _configDapper.GetDashboards();
-                redisService.WriteObject(RedisKey.HouseDashboard.Key, dashboards, RedisKey.HouseDashboard.DBName);
+                RedisTool.WriteObject(RedisKey.HouseDashboard.Key, dashboards, RedisKey.HouseDashboard.DBName);
             }
             return dashboards;
         }

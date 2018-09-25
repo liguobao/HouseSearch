@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using HouseMapAPI.Common;
-using HouseMapAPI.Dapper;
-using HouseMapAPI.DBEntity;
+using HouseMap.Common;
+using HouseMap.Dao;
 using HouseMapAPI.Filters;
 using HouseMapAPI.Service;
 using Microsoft.AspNetCore.Builder;
@@ -70,7 +69,7 @@ namespace HouseMapAPI
 
             #region Service
             services.AddSingleton<EmailService, EmailService>();
-            services.AddSingleton<RedisService, RedisService>();
+            services.AddSingleton<RedisTool, RedisTool>();
             services.AddSingleton<DashboardService, DashboardService>();
             services.AddSingleton<UserService, UserService>();
             services.AddSingleton<ConfigService, ConfigService>();

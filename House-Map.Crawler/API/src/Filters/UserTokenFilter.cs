@@ -1,7 +1,7 @@
 using System;
-using HouseMapAPI.Common;
+using HouseMap.Common;
+using HouseMap.Dao.DBEntity;
 using HouseMapAPI.CommonException;
-using HouseMapAPI.DBEntity;
 using HouseMapAPI.Service;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -9,11 +9,11 @@ namespace HouseMapAPI.Filters
 {
     public class UserTokenFilter : ActionFilterAttribute
     {
-        private RedisService _redisService;
+        private RedisTool _RedisTool;
 
-        public UserTokenFilter(RedisService redisService)
+        public UserTokenFilter(RedisTool RedisTool)
         {
-            _redisService = redisService;
+            _RedisTool = RedisTool;
         }
 
 
@@ -26,7 +26,7 @@ namespace HouseMapAPI.Filters
             }
 
             var token = context.HttpContext.Request.Headers["token"].ToString();
-            var userInfo = _redisService.ReadCache<UserInfo>(token, RedisKey.Token.DBName);
+            var userInfo = _RedisTool.ReadCache<UserInfo>(token, RedisKey.Token.DBName);
             if (userInfo == null)
             {
                 throw new TokenInvalidException("token invalid.");

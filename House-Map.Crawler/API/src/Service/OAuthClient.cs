@@ -2,7 +2,7 @@ using System;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
-using HouseMapAPI.Common;
+using HouseMap.Common;
 using Microsoft.Extensions.Options;
 using Talk.OAuthClient;
 

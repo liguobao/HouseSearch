@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
-using HouseMapAPI.Common;
+using HouseMap.Common;
 using HouseMapAPI.CommonException;
-using HouseMapAPI.Dapper;
-using HouseMapAPI.DBEntity;
+using HouseMap.Dao;
+using HouseMap.Dao.DBEntity;
+using HouseMap.Models;
 using HouseMapAPI.Service;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Talk.OAuthClient;
+using HouseMap.Common;
 
 namespace HouseMapAPI.Service
 {
@@ -18,13 +20,13 @@ namespace HouseMapAPI.Service
     public class HouseService
     {
 
-        private RedisService redisService;
+        private RedisTool RedisTool;
 
         private HouseDapper houseDapper;
 
-        public HouseService(RedisService redisService, HouseDapper houseDapper)
+        public HouseService(RedisTool RedisTool, HouseDapper houseDapper)
         {
-            this.redisService = redisService;
+            this.RedisTool = RedisTool;
             this.houseDapper = houseDapper;
         }
 

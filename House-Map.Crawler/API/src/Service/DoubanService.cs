@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using RestSharp;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using HouseMapAPI.DBEntity;
+using HouseMap.Dao;
+using HouseMap.Dao.DBEntity;
+using HouseMap.Models;
+using HouseMap.Common;
 
 namespace HouseMapAPI.Service
 {

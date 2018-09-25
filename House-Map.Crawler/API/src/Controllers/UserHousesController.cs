@@ -7,11 +7,12 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Cors;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using HouseMapAPI.Dapper;
 using HouseMapAPI.Service;
-using HouseMapAPI.Common;
 using HouseMapAPI.Filters;
-using HouseMapAPI.DBEntity;
+using HouseMap.Dao;
+using HouseMap.Dao.DBEntity;
+using HouseMap.Models;
+using HouseMap.Common;
 
 namespace HouseCrawler.Web.API.Controllers
 {

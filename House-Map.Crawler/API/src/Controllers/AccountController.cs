@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Cors;
 using Newtonsoft.Json;
-using HouseMapAPI.Common;
+using HouseMap.Common;
 using HouseMapAPI.Models;
 
 namespace HouseMapAPI.Controllers

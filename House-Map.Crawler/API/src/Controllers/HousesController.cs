@@ -5,8 +5,9 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Cors;
 using Newtonsoft.Json.Linq;
 using HouseMapAPI.Service;
-using HouseMapAPI.DBEntity;
-using HouseMapAPI.Dapper;
+using HouseMap.Dao;
+using HouseMap.Dao.DBEntity;
+using HouseMap.Models;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 

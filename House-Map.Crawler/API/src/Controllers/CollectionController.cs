@@ -8,7 +8,9 @@ using Microsoft.AspNetCore.Cors;
 using Newtonsoft.Json;
 using HouseMapAPI.Service;
 using HouseMapAPI.Filters;
-using HouseMapAPI.DBEntity;
+using HouseMap.Dao;
+using HouseMap.Dao.DBEntity;
+using HouseMap.Models;
 
 namespace HouseCrawler.Web.API.Controllers
 {

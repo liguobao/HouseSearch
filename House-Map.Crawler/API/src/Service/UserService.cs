@@ -2,15 +2,15 @@ using System;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
-using HouseMapAPI.Common;
 using HouseMapAPI.CommonException;
-using HouseMapAPI.Dapper;
-using HouseMapAPI.DBEntity;
-using HouseMapAPI.Models;
-using HouseMapAPI.Service;
+using HouseMap.Dao;
+using HouseMap.Dao.DBEntity;
+using HouseMap.Models;
+using HouseMap.Common;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Talk.OAuthClient;
+using HouseMapAPI.Models;
 
 namespace HouseMapAPI.Service
 {
@@ -18,7 +18,7 @@ namespace HouseMapAPI.Service
     public class UserService
     {
 
-        private RedisService _redisService;
+        private RedisTool _RedisTool;
 
         private UserDapper _userDapper;
 
@@ -28,12 +28,12 @@ namespace HouseMapAPI.Service
 
         private WeChatAppDecrypt _weChatAppDecrypt;
 
-        public UserService(RedisService redisService, UserDapper userDapper,
+        public UserService(RedisTool RedisTool, UserDapper userDapper,
          EmailService emailService, QQOAuthClient authClient,
           WeChatAppDecrypt weChatAppDecrypt)
         {
 
-            _redisService = redisService;
+            _RedisTool = RedisTool;
             _userDapper = userDapper;
             _emailService = emailService;
             _authClient = authClient.GetAPIOAuthClient();
@@ -149,7 +149,7 @@ namespace HouseMapAPI.Service
 
         public UserInfo GetUserInfo(long userId, string token)
         {
-            var userToken = _redisService.ReadCache(RedisKey.UserToken.Key + userId, RedisKey.UserToken.DBName);
+            var userToken = _RedisTool.ReadCache(RedisKey.UserToken.Key + userId, RedisKey.UserToken.DBName);
             if (string.IsNullOrEmpty(userToken))
             {
                 throw new TokenInvalidException("can not find token in redis");
@@ -159,20 +159,20 @@ namespace HouseMapAPI.Service
             {
                 throw new TokenInvalidException("token invalid");
             }
-            return _redisService.ReadCache<UserInfo>(RedisKey.UserId.Key + userId, RedisKey.UserId.DBName);
+            return _RedisTool.ReadCache<UserInfo>(RedisKey.UserId.Key + userId, RedisKey.UserId.DBName);
         }
 
         public UserInfo GetUserByToken(string token)
         {
-            return _redisService.ReadCache<UserInfo>(token, 0);
+            return _RedisTool.ReadCache<UserInfo>(token, 0);
         }
 
 
         public void WriteUserToken(UserInfo loginUser, string token)
         {
-            _redisService.WriteObject(RedisKey.UserToken.Key + loginUser.ID, token, 0, 60 * 24 * 30);
-            _redisService.WriteObject(RedisKey.UserId.Key + loginUser.ID, loginUser, 0, 60 * 24 * 30);
-            _redisService.WriteObject(token, loginUser, 0, 60 * 24 * 30);
+            _RedisTool.WriteObject(RedisKey.UserToken.Key + loginUser.ID, token, 0, 60 * 24 * 30);
+            _RedisTool.WriteObject(RedisKey.UserId.Key + loginUser.ID, loginUser, 0, 60 * 24 * 30);
+            _RedisTool.WriteObject(token, loginUser, 0, 60 * 24 * 30);
         }
 
         public UserInfo FindUser(string userName)
@@ -193,10 +193,10 @@ namespace HouseMapAPI.Service
 
         private void RefreshUserCache(long userID)
         {
-            var token = _redisService.ReadCache<string>(RedisKey.UserToken.Key + userID, RedisKey.UserToken.DBName);
+            var token = _RedisTool.ReadCache<string>(RedisKey.UserToken.Key + userID, RedisKey.UserToken.DBName);
             var user = _userDapper.FindByID(userID);
-            _redisService.DeleteCache(RedisKey.UserId.Key + userID);
-            _redisService.DeleteCache(token);
+            _RedisTool.DeleteCache(RedisKey.UserId.Key + userID);
+            _RedisTool.DeleteCache(token);
             WriteUserToken(user, token);
         }
 

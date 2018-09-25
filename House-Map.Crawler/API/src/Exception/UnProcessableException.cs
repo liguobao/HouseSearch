@@ -9,7 +9,7 @@ namespace HouseMapAPI.CommonException
 {
     public class UnProcessableException : Exception
     {
-        public UnProcessableException(string messgae) : base(messgae)
+        public UnProcessableException(string message) : base(message)
         {
 
         }

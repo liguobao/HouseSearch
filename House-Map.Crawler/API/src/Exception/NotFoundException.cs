@@ -7,7 +7,7 @@ namespace HouseMapAPI.CommonException
 {
     public class NotFoundException : Exception
     {
-        public NotFoundException(string messgae) : base(messgae)
+        public NotFoundException(string message) : base(message)
         {
 
         }
