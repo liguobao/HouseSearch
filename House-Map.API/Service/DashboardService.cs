@@ -27,23 +27,9 @@ namespace HouseMapAPI.Service
         {
             var dashboards = redisService.ReadCache<List<HouseDashboard>>(RedisKey.HouseDashboard.Key,
              RedisKey.HouseDashboard.DBName);
-            if (dashboards == null)
+            if (dashboards == null || dashboards.Count == 0)
             {
-                dashboards = new List<HouseDashboard>();
-                var configs = _configDapper.FindAll();
-                foreach (var config in configs)
-                {
-                    var configJson = JToken.Parse(config.ConfigurationValue);
-                    var dash = new HouseDashboard()
-                    {
-                        Source = config.ConfigurationName,
-                        CityName = configJson["cityname"] != null
-                        ? configJson["cityname"].ToString()
-                        : configJson["cityName"].ToString(),
-                        HouseSum = 9999,
-                        LastRecordPubTime = DateTime.Now
-                    };
-                }
+                dashboards = _configDapper.GetDashboards();
                 redisService.WriteObject(RedisKey.HouseDashboard.Key, dashboards, RedisKey.HouseDashboard.DBName);
             }
             return dashboards;

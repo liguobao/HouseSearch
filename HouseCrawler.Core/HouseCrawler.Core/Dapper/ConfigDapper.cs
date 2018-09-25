@@ -8,6 +8,7 @@ using HouseCrawler.Core.Models;
 using HouseCrawler.Core.Service;
 using Microsoft.Extensions.Options;
 using MySql.Data.MySqlClient;
+using Newtonsoft.Json.Linq;
 
 namespace HouseCrawler.Core
 {
@@ -54,6 +55,36 @@ namespace HouseCrawler.Core
         private IDbConnection GetConnection()
         {
             return new MySqlConnection(configuration.MySQLConnectionString);
+        }
+
+        public List<CrawlerConfiguration> FindAll()
+        {
+            using (IDbConnection dbConnection = GetConnection())
+            {
+                dbConnection.Open();
+                return dbConnection.Query<CrawlerConfiguration>("SELECT * FROM housecrawler.CrawlerConfigurations").ToList();
+            }
+        }
+
+        public List<HouseDashboard> GetDashboards()
+        {
+            var configs = FindAll();
+            var dashboards = new List<HouseDashboard>();
+            foreach (var config in configs)
+            {
+                var configJson = JToken.Parse(config.ConfigurationValue);
+                var dash = new HouseDashboard()
+                {
+                    Source = config.ConfigurationName,
+                    CityName = configJson["cityname"] != null
+                    ? configJson["cityname"].ToString()
+                    : configJson["cityName"].ToString(),
+                    HouseSum = 9999,
+                    LastRecordPubTime = DateTime.Now
+                };
+                dashboards.Add(dash);
+            }
+            return dashboards;
         }
 
     }

@@ -15,12 +15,15 @@ namespace HouseCrawler.Core.Jobs
 
         private HouseDapper houseDapper;
 
+        private ConfigDapper configDapper;
 
-        public RefreshHouseSourceJob(HouseDapper houseDapper, RedisService redis)
+
+        public RefreshHouseSourceJob(HouseDapper houseDapper, RedisService redis,ConfigDapper configDapper)
         {
             //this.configuration = configuration.Value;
             this.houseDapper = houseDapper;
             this.redis = redis;
+            this.configDapper = configDapper;
         }
 
         [Invoke(Begin = "2018-07-01 00:30", Interval = 1000 * 3500, SkipWhileExecuting = true)]
@@ -29,7 +32,7 @@ namespace HouseCrawler.Core.Jobs
             LogHelper.Info("开始RefreshHouseSourceJob...");
             var sw = new System.Diagnostics.Stopwatch();
             sw.Start();
-            var cityDashboards = houseDapper.GetHouseDashboard().GroupBy(d => d.CityName);
+            var cityDashboards = configDapper.GetDashboards().GroupBy(d => d.CityName);
             foreach (var item in cityDashboards)
             {
                 LogHelper.RunActionNotThrowEx(() =>

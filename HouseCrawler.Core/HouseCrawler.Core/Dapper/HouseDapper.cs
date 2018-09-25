@@ -19,12 +19,15 @@ namespace HouseCrawler.Core
 
         private ElasticsearchService elasticsearchService;
 
+        private ConfigDapper _configMap;
+
         public HouseDapper(IOptions<APPConfiguration> configuration, RedisService redis,
-        ElasticsearchService elasticsearchService)
+        ElasticsearchService elasticsearchService,ConfigDapper configMap)
         {
             this.configuration = configuration.Value;
             this.redis = redis;
             this.elasticsearchService = elasticsearchService;
+            this._configMap = configMap;
         }
 
         private IDbConnection GetConnection()
@@ -69,29 +72,6 @@ namespace HouseCrawler.Core
             }, "SaveHousesToES");
 
         }
-
-        public List<HouseDashboard> GetHouseDashboard()
-        {
-            using (IDbConnection dbConnection = GetConnection())
-            {
-                dbConnection.Open();
-                var list = new List<HouseDashboard>();
-                foreach (var key in ConstConfigName.HouseTableNameDic.Keys)
-                {
-                    var tableName = ConstConfigName.GetTableName(key);
-                    var dashboards = dbConnection.Query<HouseDashboard>(@"SELECT 
-                                LocationCityName AS CityName,
-                                Source, COUNT(id) AS HouseSum, 
-                                MAX(PubTime) AS LastRecordPubTime
-                            FROM 
-                                " + tableName + $" GROUP BY LocationCityName, Source ORDER BY HouseSum desc;");
-                    list.AddRange(dashboards);
-                }
-                return list.Where(dash => dash.LastRecordPubTime.CompareTo(DateTime.Now.AddDays(-30)) > 0 && dash.HouseSum > 100)
-                .ToList();
-            }
-        }
-
 
         public List<BaseHouseInfo> QueryByTimeSpan(DateTime fromTime, DateTime toTime)
         {
@@ -201,7 +181,7 @@ namespace HouseCrawler.Core
             string citySources = redis.ReadCache(redisKey);
             if (string.IsNullOrEmpty(citySources))
             {
-                var dicCityNameToSources = LoadDashboard().GroupBy(d => d.CityName)
+                var dicCityNameToSources = _configMap.GetDashboards().GroupBy(d => d.CityName)
                           .ToDictionary(item => item.Key, item => item.Select(db => db.Source).ToList());
                 var soures = new List<String>();
                 if (dicCityNameToSources != null && dicCityNameToSources.ContainsKey(cityName))
@@ -219,20 +199,6 @@ namespace HouseCrawler.Core
 
         }
 
-        public List<HouseDashboard> LoadDashboard()
-        {
-            string houseDashboardJson = redis.ReadCache("HouseDashboard");
-            if (string.IsNullOrEmpty(houseDashboardJson))
-            {
-                List<HouseDashboard> dashboards = GetHouseDashboard();
-                redis.WriteCache("HouseDashboard", Newtonsoft.Json.JsonConvert.SerializeObject(dashboards));
-                return dashboards;
-            }
-            else
-            {
-                return Newtonsoft.Json.JsonConvert.DeserializeObject<List<HouseDashboard>>(houseDashboardJson);
-            }
-        }
 
 
 
