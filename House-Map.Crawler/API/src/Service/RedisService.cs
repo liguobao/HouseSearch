@@ -77,7 +77,7 @@ namespace HouseMapAPI.Service
 
 
 
-        public bool DelteCache(string key, int dbName = 0)
+        public bool DeleteCache(string key, int dbName = 0)
         {
             try
             {

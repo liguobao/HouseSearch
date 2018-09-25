@@ -43,7 +43,8 @@ namespace HouseCrawler.Web.API.Controllers
         {
             return Ok(new
             {
-                success = _userService.SaveWorkAddress(userId, model?["address"]?.ToString())
+                success = _userService.SaveWorkAddress(userId, model?["address"]?.ToString()),
+                data = _userService.GetUserByToken(token)
             });
         }
 

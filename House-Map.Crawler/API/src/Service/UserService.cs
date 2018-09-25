@@ -164,12 +164,7 @@ namespace HouseMapAPI.Service
 
         public UserInfo GetUserByToken(string token)
         {
-            var userJson = _redisService.ReadCache(token, 0);
-            if (!string.IsNullOrEmpty(userJson))
-            {
-                return JsonConvert.DeserializeObject<UserInfo>(userJson);
-            }
-            return null;
+            return _redisService.ReadCache<UserInfo>(token, 0);
         }
 
 
@@ -200,6 +195,8 @@ namespace HouseMapAPI.Service
         {
             var token = _redisService.ReadCache<string>(RedisKey.UserToken.Key + userID, RedisKey.UserToken.DBName);
             var user = _userDapper.FindByID(userID);
+            _redisService.DeleteCache(RedisKey.UserId.Key + userID);
+            _redisService.DeleteCache(token);
             WriteUserToken(user, token);
         }
 
