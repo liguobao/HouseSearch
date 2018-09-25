@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/HouseMap.Crawler.csproj"
+                "${workspaceFolder}/src/HouseMap.Crawler.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

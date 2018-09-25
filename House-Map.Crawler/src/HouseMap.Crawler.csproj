@@ -60,4 +60,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\House-Map.API\HouseMap.Dao\HouseMap.Dao.csproj" />
+  </ItemGroup>
 </Project>
