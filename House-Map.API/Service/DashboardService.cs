@@ -5,6 +5,7 @@ using HouseMapAPI.Common;
 using HouseMapAPI.Dapper;
 using HouseMapAPI.Models;
 using HouseMapAPI.Service;
+using Newtonsoft.Json.Linq;
 
 namespace HouseMapAPI.Service
 {
@@ -12,12 +13,13 @@ namespace HouseMapAPI.Service
     {
         private RedisService redisService;
 
-        private HouseDapper houseDapper;
 
-        public DashboardService(RedisService redisService, HouseDapper houseDapper)
+        private ConfigDapper _configDapper;
+
+        public DashboardService(RedisService redisService, ConfigDapper configDapper)
         {
             this.redisService = redisService;
-            this.houseDapper = houseDapper;
+            _configDapper = configDapper;
 
         }
 
@@ -27,17 +29,29 @@ namespace HouseMapAPI.Service
              RedisKey.HouseDashboard.DBName);
             if (dashboards == null)
             {
-                dashboards = houseDapper.GetHouseDashboard();
-                redisService.WriteObject(RedisKey.HouseDashboard.Key,
-                 dashboards, RedisKey.HouseDashboard.DBName);
+                dashboards = new List<HouseDashboard>();
+                var configs = _configDapper.FindAll();
+                foreach (var config in configs)
+                {
+                    var configJson = JToken.Parse(config.ConfigurationValue);
+                    var dash = new HouseDashboard()
+                    {
+                        Source = config.ConfigurationName,
+                        CityName = configJson["cityname"] != null
+                        ? configJson["cityname"].ToString()
+                        : configJson["cityName"].ToString(),
+                        HouseSum = 9999,
+                        LastRecordPubTime = DateTime.Now
+                    };
+                }
+                redisService.WriteObject(RedisKey.HouseDashboard.Key, dashboards, RedisKey.HouseDashboard.DBName);
             }
             return dashboards;
-
         }
-        
+
         public dynamic LoadCityDashboards()
         {
-             var id = 1;
+            var id = 1;
             var dashboards = LoadDashboard()
             .GroupBy(d => d.CityName)
             .Select(i => new

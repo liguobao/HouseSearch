@@ -12,7 +12,7 @@ namespace HouseMapAPI.DBEntity
     [Serializable]
     public class BaseEntity
     {
-        public long ID { get; set; }
+        public string Id { get; set; }
 
         public DateTime DataCreateTime { get; set; }
 

@@ -36,18 +36,18 @@ namespace HouseMapAPI.Common
         public static KeyConfig HouseDashboard = new KeyConfig()
         {
             Key = "HouseDashboard",
-            ExpireTime = new TimeSpan(TimeSpan.TicksPerMinute * 60),
+            ExpireTime = new TimeSpan(TimeSpan.TicksPerMinute * 60 * 12),
             DBName = 1
         };
 
-         public static KeyConfig CityHouseSource = new KeyConfig()
+        public static KeyConfig CityHouseSource = new KeyConfig()
         {
             Key = "CitySource-",
-            ExpireTime = new TimeSpan(TimeSpan.TicksPerMinute * 60),
+            ExpireTime = new TimeSpan(TimeSpan.TicksPerMinute * 60 * 12),
             DBName = 1
         };
 
-        
+
 
         public static KeyConfig FindPasswordCode = new KeyConfig()
         {
@@ -64,6 +64,6 @@ namespace HouseMapAPI.Common
 
         public TimeSpan ExpireTime { get; set; }
 
-        public int DBName { get; set; } =0;
+        public int DBName { get; set; } = 0;
     }
 }

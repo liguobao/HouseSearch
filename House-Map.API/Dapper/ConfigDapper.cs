@@ -37,5 +37,15 @@ namespace HouseMapAPI.Dapper
 
         }
 
+
+        public List<CrawlerConfig> FindAll()
+        {
+            using (IDbConnection dbConnection = GetConnection())
+            {
+                dbConnection.Open();
+                return dbConnection.Query<CrawlerConfig>("SELECT * FROM housecrawler.CrawlerConfigurations").ToList();
+            }
+        }
+
     }
 }

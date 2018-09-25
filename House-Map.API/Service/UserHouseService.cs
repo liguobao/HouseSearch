@@ -31,7 +31,7 @@ namespace HouseMapAPI.Service
             {
                 throw new UnProcessableException("object can not empty.");
             }
-
+            newOne.Id = Tools.GetUUId();
             _context.UserHouses.Add(newOne);
             _context.SaveChanges();
             return newOne;
