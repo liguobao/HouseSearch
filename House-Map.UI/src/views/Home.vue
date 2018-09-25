@@ -12,6 +12,7 @@
                 :show-dashboards="showDashboards"
                 :scroll-to="scrollTo"
                 :token="token"
+                :get-user-info="getUserInfo"
         >
 
         </Header>
@@ -550,7 +551,8 @@
     import Dashboards from './../components/dashboards';
     import DoubanAdd from './../components/douban-add';
     import Login from './../components/login'
-    import HouseSearchList from './../components/house-search-list'
+    import HouseSearchList from './../components/house-search-list';
+    import userInfo from './../components/user-info';
 
     export default {
         name: 'home',
@@ -692,18 +694,7 @@
                 this.$store.dispatch('UpdateFullscreenLoading', false);
             },
             async getUserInfo() {
-                const u = localStorage.getItem('u');
-                if (!u) {
-                    this.$store.dispatch('UserLogout');
-                } else {
-                    try {
-                        const userId = JSON.parse(u).id;
-                        const data = await this.$ajax.get(`/users/${userId}`);
-                        this.$store.dispatch('UpdateUserInfo', data.data);
-                    } catch (e) {
-                        this.$store.dispatch('UserLogout');
-                    }
-                }
+              await userInfo(this)
             },
             toggleDialog(key, val, type) {
                 if (key === 'loginVisible') {

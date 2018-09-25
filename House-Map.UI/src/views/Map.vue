@@ -455,7 +455,7 @@
 <script>
   import Vue from 'vue'
   import Login from './../components/login';
-
+  import userInfo from './../components/user-info';
   export default {
     components: {
       Login
@@ -953,20 +953,26 @@
           // placeSearch.search(e.poi.name);  //关键字查询查询
         }
       },
-      getCityCenter(positionPicker, code, self) {
+      getCityCenter(positionPicker, code, self,name,cb) {
         let location = undefined;
         return new Promise((resolve, reject) => {
-          code.getLocation(this.cityName, (status, result) => { // 城市中心点
+          code.getLocation(name, (status, result) => { // 城市中心点
             if (status === "complete" && result.info === 'OK') {
               location = result.geocodes[0].location;
               positionPicker.start(location);
               self.lnglat = location;
               // self.keyword = result.geocodes[0].formattedAddress;
             } else {
-              location = self.map.getBounds().getSouthWest();
-              self.lnglat = location;
-              // self.keyword = self.cityName;
-              positionPicker.start(location)
+
+              if(cb) {
+                cb();
+              }else {
+                location = self.map.getBounds().getSouthWest();
+                self.lnglat = location;
+                // self.keyword = self.cityName;
+                positionPicker.start(location)
+              }
+
             }
             resolve()
           });
@@ -1004,7 +1010,16 @@
             radius: 1000
           });
 
-          await this.getCityCenter(positionPicker, code, self);
+
+
+          if(this.$store.state.userInfo && this.$store.state.userInfo.workAddress) {
+            await this.getCityCenter(positionPicker, code, self,this.$store.state.userInfo.workAddress,async () => {
+              await this.getCityCenter(positionPicker, code, self,this.cityName);
+            });
+          }else {
+            await this.getCityCenter(positionPicker, code, self,this.cityName);
+          }
+
           this.keywordSelect(map, positionPicker);
 
           let info = await this.getList();
@@ -1047,11 +1062,12 @@
       plugin.push(`AMap.ToolBar`);
       let url = `https://webapi.amap.com/maps?v=1.4.8&key=${key}&plugin=${plugin.join()}`;
 
+      userInfo(this);
       await this.appendScript(url);
       await this.appendScript(`//webapi.amap.com/ui/1.0/main.js?v=1.0.11`);
 
 
-      this.init()
+      this.init();
     }
   }
 </script>
