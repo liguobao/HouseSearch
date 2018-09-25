@@ -18,4 +18,7 @@
     <PackageReference Include="NLog.Extensions.Logging" Version="1.0.1" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.5.3" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HouseMap.Dao\HouseMap.Dao.csproj" />
+  </ItemGroup>
 </Project>
