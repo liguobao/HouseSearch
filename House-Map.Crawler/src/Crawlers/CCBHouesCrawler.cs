@@ -1,7 +1,8 @@
 ﻿
 using HouseMap.Crawler.Common;
-using HouseMap.Crawler.Dapper;
-using HouseMap.Crawler.DBEntity;
+using HouseMap.Dao;
+using HouseMap.Dao.DBEntity;
+using HouseMap.Models;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -53,7 +54,7 @@ namespace HouseMap.Crawler
             }
             int captrueHouseCount = 0;
             string cityShortCutName = confInfo.shortcutname.Value;
-            List<BaseHouseInfo> houses = new List<BaseHouseInfo>();
+            List<HouseInfo> houses = new List<HouseInfo>();
             for (var pageNum = 1; pageNum < confInfo.pagecount.Value; pageNum++)
             {
                 var result = GetResultByAPI(cityShortCutName, pageNum);
@@ -64,9 +65,9 @@ namespace HouseMap.Crawler
             return captrueHouseCount;
         }
 
-        private static List<BaseHouseInfo> GetHouseData(string cityShortCutName, string result)
+        private static List<HouseInfo> GetHouseData(string cityShortCutName, string result)
         {
-            var houseList = new List<BaseHouseInfo>();
+            var houseList = new List<HouseInfo>();
             if (string.IsNullOrEmpty(result))
             {
                 return houseList;
@@ -75,7 +76,7 @@ namespace HouseMap.Crawler
             var resultJObject = JsonConvert.DeserializeObject<JObject>(result);
             foreach (var item in resultJObject["items"])
             {
-                BaseHouseInfo houseInfo = new BaseHouseInfo();
+                HouseInfo houseInfo = new HouseInfo();
                 string houseURL = GetHouseOnlineURL(cityShortCutName, item);
                 houseInfo.HouseOnlineURL = houseURL;
                 houseInfo.HouseLocation = item["headline"].ToObject<string>();

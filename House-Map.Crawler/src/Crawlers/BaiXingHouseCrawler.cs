@@ -9,9 +9,10 @@ using MySql.Data.MySqlClient;
 using System.Data.SqlClient;
 using Dapper;
 using AngleSharp.Dom;
-using HouseMap.Crawler.Dapper;
+using HouseMap.Dao;
+using HouseMap.Dao.DBEntity;
 using HouseMap.Crawler.Common;
-using HouseMap.Crawler.DBEntity;
+using HouseMap.Models;
 
 namespace HouseMap.Crawler
 {
@@ -38,7 +39,7 @@ namespace HouseMap.Crawler
             {
                 LogHelper.RunActionNotThrowEx(() =>
                 {
-                    List<BaseHouseInfo> houses = new List<BaseHouseInfo>();
+                    List<HouseInfo> houses = new List<HouseInfo>();
                     var confInfo = JsonConvert.DeserializeObject<dynamic>(crawlerConfiguration.ConfigurationValue);
                     for (var pageNum = 1; pageNum < confInfo.pagecount.Value; pageNum++)
                     {
@@ -55,9 +56,9 @@ namespace HouseMap.Crawler
         }
 
 
-        private static List<BaseHouseInfo> GetDataFromHMTL(string shortCutName, string cityName, string houseHTML)
+        private static List<HouseInfo> GetDataFromHMTL(string shortCutName, string cityName, string houseHTML)
         {
-            List<BaseHouseInfo> houseList = new List<BaseHouseInfo>();
+            List<HouseInfo> houseList = new List<HouseInfo>();
             if (string.IsNullOrEmpty(houseHTML))
                 return houseList;
             var htmlDoc = htmlParser.Parse(houseHTML);
@@ -88,7 +89,7 @@ namespace HouseMap.Crawler
                     localTitle.QuerySelector("time").Remove();
                 }
                 var houseLocation = localTitle.TextContent.Replace("来自：", "").Trim();
-                var houseInfo = new BaseHouseInfo
+                var houseInfo = new HouseInfo
                 {
                     HouseTitle = adTitle.TextContent + houseLocation,
                     HouseOnlineURL = adTitle.GetAttribute("href"),

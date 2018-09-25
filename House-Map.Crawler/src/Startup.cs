@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HouseMap.Crawler.Common;
-using HouseMap.Crawler.Dapper;
 using HouseMap.Crawler.Jobs;
 using HouseMap.Crawler.Service;
+using HouseMap.Dao;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -58,7 +58,6 @@ namespace HouseMap.Crawler
             services.AddSingleton<RefreshDashboardJob, RefreshDashboardJob>();
             services.AddSingleton<TodayHouseDashboardJob, TodayHouseDashboardJob>();
             services.AddSingleton<ZuberMoguJob, ZuberMoguJob>();
-            services.AddSingleton<SyncHousesToESJob, SyncHousesToESJob>();
             services.AddSingleton<RefreshHouseCacheJob, RefreshHouseCacheJob>();
             services.AddSingleton<RefreshHouseSourceJob, RefreshHouseSourceJob>();
 

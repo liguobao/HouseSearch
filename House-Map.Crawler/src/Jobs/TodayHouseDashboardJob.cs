@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Linq;
 using HouseMap.Crawler.Common;
-using HouseMap.Crawler.Dapper;
+using HouseMap.Dao;
+using HouseMap.Dao.DBEntity;
 using HouseMap.Crawler.Service;
 using Microsoft.Extensions.Options;
 using Pomelo.AspNetCore.TimedJob;
@@ -14,14 +15,14 @@ namespace HouseMap.Crawler.Jobs
 
         APPConfiguration configuration;
 
-        HouseDapper houseDapper;
+        HouseStatDapper _statDapper;
 
         public TodayHouseDashboardJob(EmailService emailService, IOptions<APPConfiguration> configuration,
-         HouseDapper houseDapper)
+         HouseStatDapper statDapper)
         {
             this.emailService = emailService;
             this.configuration = configuration.Value;
-            this.houseDapper = houseDapper;
+            this._statDapper = statDapper;
         }
 
         [Invoke(Begin = "2018-07-01 23:00", Interval = 1000 * 3600 *8, SkipWhileExecuting = true)]
@@ -32,7 +33,7 @@ namespace HouseMap.Crawler.Jobs
             email.Receiver = configuration.ReceiverAddress;
             email.ReceiverName = configuration.ReceiverName;
             email.Subject = $"地图搜租房每日数据汇总({today.ToString("yyyy-MM-dd")})";
-            var statList = houseDapper.GetHouseStatList();
+            var statList = _statDapper.GetHouseStatList();
             string bodyHTML = @"<table border='1' cellpadding='0' cellspacing='0' width='100%'> 
              <tr> 
              <td>来源</td>

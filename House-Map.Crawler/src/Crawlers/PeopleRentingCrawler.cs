@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using HouseMap.Crawler.Common;
-using HouseMap.Crawler.Dapper;
-using HouseMap.Crawler.DBEntity;
+using HouseMap.Dao;
+using HouseMap.Dao.DBEntity;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
+using HouseMap.Models;
 
 namespace HouseMap.Crawler
 {
@@ -34,7 +36,7 @@ namespace HouseMap.Crawler
                 ? JsonConvert.DeserializeObject<dynamic>(peopleRentingConf.ConfigurationValue).pagecount.Value
                 : 10;
             var hsHouseOnlineUrl = new HashSet<string>();
-            List<BaseHouseInfo> houses = new List<BaseHouseInfo>();
+            List<HouseInfo> houses = new List<HouseInfo>();
             for (var pageNum = 1; pageNum < pageCount; pageNum++)
             {
                 string result = getResultFromAPI(pageNum);
@@ -46,9 +48,9 @@ namespace HouseMap.Crawler
             LogHelper.Info($"PeopleRentingCrawler finish.本次共爬取到{captrueHouseCount}条数据，耗时{ (DateTime.Now - startTime).TotalSeconds}秒。");
 
         }
-        private static List<BaseHouseInfo> GetHouseData(string result)
+        private static List<HouseInfo> GetHouseData(string result)
         {
-            List<BaseHouseInfo> houseList = new List<BaseHouseInfo>();
+            List<HouseInfo> houseList = new List<HouseInfo>();
             var resultJObject = JsonConvert.DeserializeObject<JObject>(result);
             if (resultJObject == null || resultJObject["head"] == null || !resultJObject["head"]["success"].ToObject<Boolean>())
             {
@@ -56,7 +58,7 @@ namespace HouseMap.Crawler
             }
             foreach (var item in resultJObject["houseList"])
             {
-                BaseHouseInfo houseInfo = new BaseHouseInfo();
+                HouseInfo houseInfo = new HouseInfo();
                 var houseDesc = item["houseDescript"].ToObject<string>().Replace("😄", "");
                 var houseURL = $"http://www.huzhumaifang.com/Renting/house_detail/id/{item["houseId"]}.html";
                 houseInfo.HouseOnlineURL = houseURL;

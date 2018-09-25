@@ -9,10 +9,12 @@ using MySql.Data.MySqlClient;
 using System.Data.SqlClient;
 using Dapper;
 using AngleSharp.Dom;
-using HouseMap.Crawler.Dapper;
+using HouseMap.Dao;
+using HouseMap.Dao.DBEntity;
 using HouseMap.Crawler.Common;
-using HouseMap.Crawler.DBEntity;
+
 using Newtonsoft.Json.Linq;
+using HouseMap.Models;
 
 namespace HouseMap.Crawler
 {
@@ -48,9 +50,9 @@ namespace HouseMap.Crawler
             return response.Content;
         }
 
-        public override List<BaseHouseInfo> ParseHouses(JToken config, string jsonOrHTML)
+        public override List<HouseInfo> ParseHouses(JToken config, string jsonOrHTML)
         {
-            var houseList = new List<BaseHouseInfo>();
+            var houseList = new List<HouseInfo>();
             if (string.IsNullOrEmpty(jsonOrHTML))
                 return houseList;
             var htmlDoc = htmlParser.Parse(jsonOrHTML);
@@ -82,7 +84,7 @@ namespace HouseMap.Crawler
                     localTitle.QuerySelector("time").Remove();
                 }
                 var houseLocation = localTitle.TextContent.Replace("来自：", "").Trim();
-                var houseInfo = new BaseHouseInfo
+                var houseInfo = new HouseInfo
                 {
                     HouseTitle = adTitle.TextContent + houseLocation,
                     HouseOnlineURL = adTitle.GetAttribute("href"),

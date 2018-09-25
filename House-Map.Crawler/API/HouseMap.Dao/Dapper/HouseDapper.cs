@@ -73,5 +73,40 @@ namespace HouseMap.Dao
             }
         }
 
+
+
+
+        public void BulkInsertHouses(List<HouseInfo> list)
+        {
+            if (list == null || list.Count == 0)
+            {
+                return;
+            }
+            var tableName = ConstConfigName.GetTableName(list.FirstOrDefault().Source);
+            using (IDbConnection dbConnection = GetConnection())
+            {
+                dbConnection.Open();
+                IDbTransaction transaction = dbConnection.BeginTransaction();
+                var result = dbConnection.Execute("INSERT INTO " + tableName + @" (`HouseTitle`, `HouseOnlineURL`, 
+                                    `HouseLocation`, `DisPlayPrice`, 
+                                    `PubTime`, `HousePrice`, 
+                                    `LocationCityName`,
+                                    `Source`,
+                                    `HouseText`, 
+                                    `IsAnalyzed`, 
+                                    `Status`,`PicURLs`) 
+                                     VALUES (@HouseTitle, @HouseOnlineURL,
+                                            @HouseLocation, @DisPlayPrice,
+                                            @PubTime, @HousePrice,
+                                            @LocationCityName,
+                                            @Source,
+                                            @HouseText,
+                                            @IsAnalyzed,
+                                            @Status,@PicURLs)  ON DUPLICATE KEY UPDATE DataChange_LastTime=now();",
+                                     list, transaction: transaction);
+                transaction.Commit();
+            }
+
+        }
     }
 }

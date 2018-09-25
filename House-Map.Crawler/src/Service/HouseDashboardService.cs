@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using HouseMap.Crawler.Dapper;
-using HouseMap.Crawler.Models;
+using HouseMap.Models;
+using HouseMap.Dao;
 
 namespace HouseMap.Crawler.Service
 {
@@ -11,12 +11,12 @@ namespace HouseMap.Crawler.Service
 
         private RedisService redis;
 
-        private HouseDapper houseDapper;
+        private HouseStatDapper _statDapper;
 
-        public HouseDashboardService(RedisService redis, HouseDapper houseDapper)
+        public HouseDashboardService(RedisService redis, HouseStatDapper statDapper)
         {
             this.redis = redis;
-            this.houseDapper =  houseDapper;
+            this._statDapper =  statDapper;
         }
 
 
@@ -25,7 +25,7 @@ namespace HouseMap.Crawler.Service
             string houseDashboardJson = redis.ReadCache("HouseDashboard");
             if (string.IsNullOrEmpty(houseDashboardJson))
             {
-                List<HouseDashboard> dashboards = houseDapper.GetHouseDashboard();
+                List<HouseDashboard> dashboards = _statDapper.GetHouseDashboard();
                 redis.WriteCache("HouseDashboard", Newtonsoft.Json.JsonConvert.SerializeObject(dashboards));
                 return dashboards;
             }

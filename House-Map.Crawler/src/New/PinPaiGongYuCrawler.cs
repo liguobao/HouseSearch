@@ -9,10 +9,12 @@ using MySql.Data.MySqlClient;
 using System.Data.SqlClient;
 using Dapper;
 using AngleSharp.Dom;
-using HouseMap.Crawler.Dapper;
+using HouseMap.Dao;
+using HouseMap.Dao.DBEntity;
 using HouseMap.Crawler.Common;
-using HouseMap.Crawler.DBEntity;
+
 using Newtonsoft.Json.Linq;
+using HouseMap.Models;
 
 namespace HouseMap.Crawler
 {
@@ -32,9 +34,9 @@ namespace HouseMap.Crawler
             return GetDataFromAPI(shortCutName, page);
         }
 
-        public override List<BaseHouseInfo> ParseHouses(JToken config, string data)
+        public override List<HouseInfo> ParseHouses(JToken config, string data)
         {
-            List<BaseHouseInfo> houseList = new List<BaseHouseInfo>();
+            List<HouseInfo> houseList = new List<HouseInfo>();
             var shortCutName = config["shortcutname"].ToString();
             var cityName = config["cityname"].ToString();
 
@@ -47,11 +49,11 @@ namespace HouseMap.Crawler
             return houseList;
         }
 
-        private static BaseHouseInfo ConvertToHouse(string shortCutName, string cityName, JToken info)
+        private static HouseInfo ConvertToHouse(string shortCutName, string cityName, JToken info)
         {
             var onlineUrl = $"https://{shortCutName}.58.com/pinpaigongyu/{info["infoID"].ToString()}x.shtml";
             var housePrice = decimal.Parse(info["minPrice"].ToString());
-            var houseInfo = new BaseHouseInfo
+            var houseInfo = new HouseInfo
             {
                 HouseTitle = $"{info["title"].ToString()}-{info["layout"].ToString()}",
                 HouseOnlineURL = onlineUrl,

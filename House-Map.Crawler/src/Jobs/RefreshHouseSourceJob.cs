@@ -1,5 +1,6 @@
 ﻿using HouseMap.Crawler.Common;
-using HouseMap.Crawler.Dapper;
+using HouseMap.Dao;
+using HouseMap.Dao.DBEntity;
 using HouseMap.Crawler.Service;
 using Microsoft.Extensions.Options;
 using Pomelo.AspNetCore.TimedJob;
@@ -16,14 +17,17 @@ namespace HouseMap.Crawler.Jobs
 
         private RedisService redis;
 
-        private HouseDapper houseDapper;
+        private readonly HouseDapper _houseDapper;
+
+        private readonly HouseStatDapper _statDapper;
 
 
-        public RefreshHouseSourceJob(HouseDapper houseDapper, RedisService redis)
+        public RefreshHouseSourceJob(HouseDapper houseDapper, RedisService redis, HouseStatDapper statDapper)
         {
             //this.configuration = configuration.Value;
-            this.houseDapper = houseDapper;
+            this._houseDapper = houseDapper;
             this.redis = redis;
+            _statDapper = statDapper;
         }
 
         [Invoke(Begin = "2018-07-01 00:30", Interval = 1000 * 3500, SkipWhileExecuting = true)]
@@ -32,20 +36,20 @@ namespace HouseMap.Crawler.Jobs
             LogHelper.Info("开始RefreshHouseSourceJob...");
             var sw = new System.Diagnostics.Stopwatch();
             sw.Start();
-            var cityDashboards = houseDapper.GetHouseDashboard().GroupBy(d => d.CityName);
+            var cityDashboards = _statDapper.GetHouseDashboard().GroupBy(d => d.CityName);
             foreach (var item in cityDashboards)
             {
                 LogHelper.RunActionNotThrowEx(() =>
                 {
                     //聚合房源的缓存,前600条数据
-                    var search = new HouseSearchCondition() { CityName = item.Key, HouseCount = 600, IntervalDay = 14, Refresh = true };
-                    houseDapper.SearchHouses(search);
+                    var search = new HouseCondition() { CityName = item.Key, HouseCount = 600, IntervalDay = 14, Refresh = true };
+                    _houseDapper.SearchHouses(search);
                     foreach (var dashbord in item)
                     {
                         //每类房源的默认缓存,前600条数据
                         search.HouseCount = 600;
                         search.Source = dashbord.Source;
-                        houseDapper.SearchHouses(search);
+                        _houseDapper.SearchHouses(search);
                     }
                 }, "RefreshHouse");
             }

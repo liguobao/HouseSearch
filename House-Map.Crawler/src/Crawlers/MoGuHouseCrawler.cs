@@ -7,9 +7,11 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using HouseMap.Crawler.Dapper;
+using HouseMap.Dao;
+using HouseMap.Dao.DBEntity;
 using HouseMap.Crawler.Common;
-using HouseMap.Crawler.DBEntity;
+
+using HouseMap.Models;
 
 namespace HouseMap.Crawler
 {
@@ -30,7 +32,7 @@ namespace HouseMap.Crawler
             {
                 LogHelper.RunActionNotThrowEx(() =>
                 {
-                    List<BaseHouseInfo> houses = new List<BaseHouseInfo>();
+                    List<HouseInfo> houses = new List<HouseInfo>();
                     var confInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(conf.ConfigurationValue);
                     var cityName = confInfo.cityname.Value;
                     var cityId = (int)confInfo.cityid.Value;
@@ -49,9 +51,9 @@ namespace HouseMap.Crawler
             }
         }
 
-        public static List<BaseHouseInfo> GetHouseData(string cityName, int cityID, int currentPage, int rentTypes = 2)
+        public static List<HouseInfo> GetHouseData(string cityName, int cityID, int currentPage, int rentTypes = 2)
         {
-            List<BaseHouseInfo> lstHouse = new List<BaseHouseInfo>();
+            List<HouseInfo> lstHouse = new List<HouseInfo>();
             var result = GetAPIResult(cityID, currentPage, rentTypes);
             if (string.IsNullOrEmpty(result))
             {
@@ -73,7 +75,7 @@ namespace HouseMap.Crawler
 
                     var lastPublishTime = GetPublishTime(room);
                     string location = room["address"] != null ? room["address"].ToString() : room["title"].ToString();
-                    var house = new BaseHouseInfo()
+                    var house = new HouseInfo()
                     {
                         HouseLocation = location,
                         HouseTitle = $"{room["title"].ToString()}【{room["subtitleNew"].ToString()}】",

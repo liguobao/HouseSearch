@@ -9,10 +9,12 @@ using MySql.Data.MySqlClient;
 using System.Data.SqlClient;
 using Dapper;
 using AngleSharp.Dom;
-using HouseMap.Crawler.Dapper;
+using HouseMap.Dao;
+using HouseMap.Dao.DBEntity;
 using HouseMap.Crawler.Common;
-using HouseMap.Crawler.DBEntity;
+
 using Newtonsoft.Json.Linq;
+using HouseMap.Models;
 
 namespace HouseMap.Crawler
 {
@@ -33,10 +35,10 @@ namespace HouseMap.Crawler
             return GetHouseHTML(url);
         }
 
-        public override List<BaseHouseInfo> ParseHouses(JToken config, string data)
+        public override List<HouseInfo> ParseHouses(JToken config, string data)
         {
             var cityName = config["cityname"]?.ToString();
-            List<BaseHouseInfo> houseList = new List<BaseHouseInfo>();
+            List<HouseInfo> houseList = new List<HouseInfo>();
             if (string.IsNullOrEmpty(data))
                 return houseList;
             var htmlDoc = htmlParser.Parse(data);
@@ -45,20 +47,20 @@ namespace HouseMap.Crawler
                 return houseList;
             foreach (var item in houseItems)
             {
-                BaseHouseInfo houseInfo = ConvertToHouse(cityName, item);
+                HouseInfo houseInfo = ConvertToHouse(cityName, item);
                 houseList.Add(houseInfo);
             }
             return houseList;
         }
 
-        private static BaseHouseInfo ConvertToHouse(string cityName, IElement item)
+        private static HouseInfo ConvertToHouse(string cityName, IElement item)
         {
             int housePrice = GetHousePrice(item);
             string houseLocation = GetLocation(item);
             var titleItem = item.QuerySelector("h2");
             var pubTime = GetPubTime(item);
             string houseURL = GetHouseURL(titleItem);
-            var houseInfo = new BaseHouseInfo
+            var houseInfo = new HouseInfo
             {
                 HouseTitle = titleItem.TextContent.Replace("\n", "").Trim() + houseLocation,
                 HouseOnlineURL = "http://zf.cdfgj.gov.cn" + houseURL,

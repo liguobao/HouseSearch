@@ -69,5 +69,36 @@ namespace HouseMap.Dao
             return dashboards;
         }
 
+
+        public List<CrawlerConfig> GetList(string configurationName)
+        {
+
+
+            using (IDbConnection dbConnection = GetConnection())
+            {
+                dbConnection.Open();
+
+
+                return dbConnection.Query<CrawlerConfig>(@"SELECT * FROM housecrawler.CrawlerConfigurations 
+                where ConfigurationName=@ConfigurationName;", new
+                {
+                    ConfigurationName = configurationName
+                }).ToList();
+            }
+        }
+
+        public void BulkInsertConfig(List<CrawlerConfig> configs)
+        {
+            using (IDbConnection dbConnection = GetConnection())
+            {
+                dbConnection.Open();
+                IDbTransaction transaction = dbConnection.BeginTransaction();
+                var result = dbConnection.Execute(@"INSERT INTO `housecrawler`.`CrawlerConfigurations` (`ConfigurationName`, `ConfigurationValue`) 
+                VALUES (@ConfigurationName, @ConfigurationValue) ON DUPLICATE KEY UPDATE DataChange_LastTime=now();",
+                 configs, transaction: transaction);
+                transaction.Commit();
+            }
+        }
+
     }
 }

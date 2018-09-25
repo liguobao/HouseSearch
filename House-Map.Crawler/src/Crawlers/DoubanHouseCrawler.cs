@@ -4,9 +4,11 @@ using System.Linq;
 using RestSharp;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using HouseMap.Crawler.Dapper;
+using HouseMap.Dao;
+using HouseMap.Dao.DBEntity;
 using HouseMap.Crawler.Common;
-using HouseMap.Crawler.DBEntity;
+
+using HouseMap.Models;
 
 namespace HouseMap.Crawler
 {
@@ -31,7 +33,7 @@ namespace HouseMap.Crawler
                 {
                     LogHelper.RunActionNotThrowEx(() =>
                     {
-                        List<BaseHouseInfo> houses = new List<BaseHouseInfo>();
+                        List<HouseInfo> houses = new List<HouseInfo>();
                         var confInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(doubanConf.ConfigurationValue);
                         for (var pageIndex = 0; pageIndex < confInfo.pagecount.Value; pageIndex++)
                         {
@@ -51,9 +53,9 @@ namespace HouseMap.Crawler
             }
         }
 
-        public static List<BaseHouseInfo> GetHouseData(string groupID, string cityName, int pageIndex)
+        public static List<HouseInfo> GetHouseData(string groupID, string cityName, int pageIndex)
         {
-            List<BaseHouseInfo> lstHouseInfo = new List<BaseHouseInfo>();
+            List<HouseInfo> lstHouseInfo = new List<HouseInfo>();
             var apiURL = $"https://api.douban.com/v2/group/{groupID}/topics?start={pageIndex * 50}&count=50";
             LogHelper.Debug($"url:{apiURL},groupID:{groupID}, city:{cityName}");
             var result = GetAPIResult(apiURL);
@@ -66,7 +68,7 @@ namespace HouseMap.Crawler
             {
                 var housePrice = JiebaTools.GetHousePrice(topic["content"].ToString());
                 var photos = topic["photos"]?.Select(photo => photo["alt"].ToString()).ToList();
-                var house = new BaseHouseInfo()
+                var house = new HouseInfo()
                 {
                     HouseLocation = topic["title"].ToString(),
                     HouseTitle = topic["title"].ToString(),

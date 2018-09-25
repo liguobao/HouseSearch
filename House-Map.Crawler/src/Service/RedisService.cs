@@ -1,5 +1,6 @@
 using HouseMap.Crawler.Common;
-using HouseMap.Crawler.DBEntity;
+
+using HouseMap.Models;
 using Microsoft.Extensions.Options;
 using StackExchange.Redis;
 using System;
@@ -22,7 +23,7 @@ namespace HouseMap.Crawler.Service
             options.SyncTimeout = 10 * 1000;
             return options;
         }
-        public List<BaseHouseInfo> ReadSearchCache(string key)
+        public List<HouseInfo> ReadSearchCache(string key)
         {
             try
             {
@@ -32,7 +33,7 @@ namespace HouseMap.Crawler.Service
                     if (db.KeyExists(key))
                     {
                         string houseJson = db.StringGet(key);
-                        return Newtonsoft.Json.JsonConvert.DeserializeObject<List<BaseHouseInfo>>(houseJson);
+                        return Newtonsoft.Json.JsonConvert.DeserializeObject<List<HouseInfo>>(houseJson);
                     }
                     else
                     {
@@ -49,7 +50,7 @@ namespace HouseMap.Crawler.Service
 
         }
 
-        public void WriteSearchCache(string key, List<BaseHouseInfo> house)
+        public void WriteSearchCache(string key, List<HouseInfo> house)
         {
             try
             {

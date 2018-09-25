@@ -1,13 +1,15 @@
 ﻿using AngleSharp.Parser.Html;
 using HouseMap.Crawler.Common;
-using HouseMap.Crawler.Dapper;
-using HouseMap.Crawler.DBEntity;
+using HouseMap.Dao;
+using HouseMap.Dao.DBEntity;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using HouseMap.Models;
 
 
 namespace HouseMap.Crawler
@@ -34,7 +36,7 @@ namespace HouseMap.Crawler
         private int CaptureHouse()
         {
             int captrueHouseCount = 0;
-            List<BaseHouseInfo> houses = new List<BaseHouseInfo>();
+            List<HouseInfo> houses = new List<HouseInfo>();
             for (var pageNum = 1; pageNum < 20; pageNum++)
             {
                 var result = GetHTML(pageNum);
@@ -45,9 +47,9 @@ namespace HouseMap.Crawler
             return captrueHouseCount;
         }
 
-        private static List<BaseHouseInfo> GetHouseDataFromHTML(string result)
+        private static List<HouseInfo> GetHouseDataFromHTML(string result)
         {
-            var houseList = new List<BaseHouseInfo>();
+            var houseList = new List<HouseInfo>();
             if (string.IsNullOrEmpty(result))
             {
                 return houseList;
@@ -89,7 +91,7 @@ namespace HouseMap.Crawler
                 var onlineUrl = "https://www.spacious.hk" + element.QuerySelectorAll("a")
                 .Where(item => item.ClassList.Contains("GTM-tracking-full-listing"))
                 .FirstOrDefault()?.GetAttribute("href");
-                var houseInfo = new BaseHouseInfo
+                var houseInfo = new HouseInfo
                 {
                     HouseTitle = houseTitle,
                     HouseOnlineURL = onlineUrl,

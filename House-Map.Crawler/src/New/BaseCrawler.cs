@@ -6,10 +6,12 @@ using Newtonsoft.Json;
 using RestSharp;
 using System.Data;
 using AngleSharp.Dom;
-using HouseMap.Crawler.Dapper;
+using HouseMap.Dao;
+using HouseMap.Dao.DBEntity;
 using HouseMap.Crawler.Common;
-using HouseMap.Crawler.DBEntity;
+
 using Newtonsoft.Json.Linq;
+using HouseMap.Models;
 
 namespace HouseMap.Crawler
 {
@@ -32,7 +34,7 @@ namespace HouseMap.Crawler
             throw new NotImplementedException();
         }
 
-        public virtual List<BaseHouseInfo> ParseHouses(JToken config, string data)
+        public virtual List<HouseInfo> ParseHouses(JToken config, string data)
         {
             throw new NotImplementedException();
         }

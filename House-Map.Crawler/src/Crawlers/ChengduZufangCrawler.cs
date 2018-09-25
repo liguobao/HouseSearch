@@ -8,9 +8,11 @@ using System.Data;
 using MySql.Data.MySqlClient;
 using Dapper;
 using AngleSharp.Dom;
-using HouseMap.Crawler.Dapper;
+using HouseMap.Dao;
+using HouseMap.Dao.DBEntity;
 using HouseMap.Crawler.Common;
-using HouseMap.Crawler.DBEntity;
+
+using HouseMap.Models;
 
 namespace HouseMap.Crawler
 {
@@ -37,7 +39,7 @@ namespace HouseMap.Crawler
             {
                 LogHelper.RunActionNotThrowEx(() =>
                 {
-                    List<BaseHouseInfo> houses = new List<BaseHouseInfo>();
+                    List<HouseInfo> houses = new List<HouseInfo>();
                     var confInfo = JsonConvert.DeserializeObject<dynamic>(crawlerConfiguration.ConfigurationValue);
                     for (var pageNum = 1; pageNum < confInfo.pagecount.Value; pageNum++)
                     {
@@ -52,9 +54,9 @@ namespace HouseMap.Crawler
             LogHelper.Info($"ChengduZufangCrawler finish.本次共爬取到{captrueHouseCount}条数据，耗时{ (DateTime.Now - startTime).TotalSeconds}秒。");
         }
 
-        private static List<BaseHouseInfo> GetDataFromHMTL(string cityName, string houseHTML)
+        private static List<HouseInfo> GetDataFromHMTL(string cityName, string houseHTML)
         {
-            List<BaseHouseInfo> houseList = new List<BaseHouseInfo>();
+            List<HouseInfo> houseList = new List<HouseInfo>();
             if (string.IsNullOrEmpty(houseHTML))
                 return houseList;
             var htmlDoc = htmlParser.Parse(houseHTML);
@@ -68,7 +70,7 @@ namespace HouseMap.Crawler
                 var titleItem = item.QuerySelector("h2");
                 var pubTime = GetPubTime(item);
                 string houseURL = GetHouseURL(titleItem);
-                var houseInfo = new BaseHouseInfo
+                var houseInfo = new HouseInfo
                 {
                     HouseTitle = titleItem.TextContent.Replace("\n", "").Trim() + houseLocation,
                     HouseOnlineURL = "http://zf.cdfgj.gov.cn" + houseURL,

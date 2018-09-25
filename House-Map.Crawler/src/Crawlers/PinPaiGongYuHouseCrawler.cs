@@ -6,9 +6,11 @@ using Newtonsoft.Json;
 using RestSharp;
 using AngleSharp.Dom;
 using Newtonsoft.Json.Linq;
-using HouseMap.Crawler.Dapper;
+using HouseMap.Dao;
+using HouseMap.Dao.DBEntity;
 using HouseMap.Crawler.Common;
-using HouseMap.Crawler.DBEntity;
+
+using HouseMap.Models;
 
 namespace HouseMap.Crawler
 {
@@ -36,7 +38,7 @@ namespace HouseMap.Crawler
             {
                 LogHelper.RunActionNotThrowEx(() =>
                 {
-                    List<BaseHouseInfo> houses = new List<BaseHouseInfo>();
+                    List<HouseInfo> houses = new List<HouseInfo>();
                     var confInfo = JsonConvert.DeserializeObject<dynamic>(crawlerConfiguration.ConfigurationValue);
                     for (var page = 0; page < confInfo.pagecount.Value; page++)
                     {
@@ -51,16 +53,16 @@ namespace HouseMap.Crawler
             LogHelper.Info($"PinPaiGongYuHouseCrawler finish.本次共爬取到{captrueHouseCount}条数据，耗时{ (DateTime.Now - startTime).TotalSeconds}秒。");
         }
 
-        private static List<BaseHouseInfo> GetHouses(string shortCutName, string cityName, string json)
+        private static List<HouseInfo> GetHouses(string shortCutName, string cityName, string json)
         {
-            List<BaseHouseInfo> houseList = new List<BaseHouseInfo>();
+            List<HouseInfo> houseList = new List<HouseInfo>();
             var resultJObject = JsonConvert.DeserializeObject<JObject>(json);
             foreach (var info in resultJObject["result"]["getListInfo"]["infolist"])
             {
 
                 var onlineUrl = $"https://{shortCutName}.58.com/pinpaigongyu/{info["infoID"].ToString()}x.shtml";
                 var housePrice = decimal.Parse(info["minPrice"].ToString());
-                var houseInfo = new BaseHouseInfo
+                var houseInfo = new HouseInfo
                 {
                     HouseTitle = $"{info["title"].ToString()}-{info["layout"].ToString()}",
                     HouseOnlineURL = onlineUrl,

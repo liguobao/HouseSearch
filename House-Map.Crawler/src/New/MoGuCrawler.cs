@@ -9,10 +9,12 @@ using MySql.Data.MySqlClient;
 using System.Data.SqlClient;
 using Dapper;
 using AngleSharp.Dom;
-using HouseMap.Crawler.Dapper;
+using HouseMap.Dao;
+using HouseMap.Dao.DBEntity;
 using HouseMap.Crawler.Common;
-using HouseMap.Crawler.DBEntity;
+
 using Newtonsoft.Json.Linq;
+using HouseMap.Models;
 
 namespace HouseMap.Crawler
 {
@@ -32,9 +34,9 @@ namespace HouseMap.Crawler
             return GetAPIResult(cityId, page, rentType);
         }
 
-        public override List<BaseHouseInfo> ParseHouses(JToken config, string data)
+        public override List<HouseInfo> ParseHouses(JToken config, string data)
         {
-            var lstHouse = new List<BaseHouseInfo>();
+            var lstHouse = new List<HouseInfo>();
             var resultJObject = JsonConvert.DeserializeObject<JObject>(data);
 
             if (resultJObject["message"].ToString() != "success"
@@ -53,7 +55,7 @@ namespace HouseMap.Crawler
 
                     var lastPublishTime = GetPublishTime(room);
                     string location = room["address"] != null ? room["address"].ToString() : room["title"].ToString();
-                    var house = new BaseHouseInfo()
+                    var house = new HouseInfo()
                     {
                         HouseLocation = location,
                         HouseTitle = $"{room["title"].ToString()}【{room["subtitleNew"].ToString()}】",

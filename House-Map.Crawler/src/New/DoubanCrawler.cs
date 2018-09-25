@@ -9,10 +9,12 @@ using MySql.Data.MySqlClient;
 using System.Data.SqlClient;
 using Dapper;
 using AngleSharp.Dom;
-using HouseMap.Crawler.Dapper;
+using HouseMap.Dao;
+using HouseMap.Dao.DBEntity;
 using HouseMap.Crawler.Common;
-using HouseMap.Crawler.DBEntity;
+
 using Newtonsoft.Json.Linq;
+using HouseMap.Models;
 
 namespace HouseMap.Crawler
 {
@@ -33,16 +35,16 @@ namespace HouseMap.Crawler
 
         }
 
-        public override List<BaseHouseInfo> ParseHouses(JToken config, string data)
+        public override List<HouseInfo> ParseHouses(JToken config, string data)
         {
-            var houses = new List<BaseHouseInfo>();
+            var houses = new List<HouseInfo>();
             var resultJObject = JsonConvert.DeserializeObject<JObject>(data);
             var cityName = config["cityname"].ToString();
             foreach (var topic in resultJObject["topics"])
             {
                 var housePrice = JiebaTools.GetHousePrice(topic["content"].ToString());
                 var photos = topic["photos"]?.Select(photo => photo["alt"].ToString()).ToList();
-                var house = new BaseHouseInfo()
+                var house = new HouseInfo()
                 {
                     HouseLocation = topic["title"].ToString(),
                     HouseTitle = topic["title"].ToString(),

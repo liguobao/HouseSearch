@@ -7,9 +7,11 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using HouseMap.Crawler.Dapper;
-using HouseMap.Crawler.DBEntity;
+using HouseMap.Dao;
+using HouseMap.Dao.DBEntity;
+
 using HouseMap.Crawler.Common;
+using HouseMap.Models;
 
 namespace HouseMap.Crawler
 {
@@ -33,7 +35,7 @@ namespace HouseMap.Crawler
             {
                 LogHelper.RunActionNotThrowEx(() =>
                 {
-                    List<BaseHouseInfo> houses = new List<BaseHouseInfo>();
+                    List<HouseInfo> houses = new List<HouseInfo>();
                     var confInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(doubanConf.ConfigurationValue);
                     var cityName = confInfo.cityname.Value;
                     var sequence = "";
@@ -49,14 +51,14 @@ namespace HouseMap.Crawler
         }
 
 
-        private static Tuple<List<BaseHouseInfo>, string> GetHouseData(string cityName, string sequence)
+        private static Tuple<List<HouseInfo>, string> GetHouseData(string cityName, string sequence)
         {
-            List<BaseHouseInfo> lstHouse = new List<BaseHouseInfo>();
+            List<HouseInfo> lstHouse = new List<HouseInfo>();
             LogHelper.Debug($"city:{cityName},sequence:{sequence}");
             var result = GetAPIResult(cityName, sequence);
             if (string.IsNullOrEmpty(result))
             {
-                return Tuple.Create<List<BaseHouseInfo>, string>(lstHouse, "");
+                return Tuple.Create<List<HouseInfo>, string>(lstHouse, "");
             }
             var nextSequence = "";
             var resultJObject = JsonConvert.DeserializeObject<JObject>(result);
@@ -70,7 +72,7 @@ namespace HouseMap.Crawler
                 {
                     var room = item["room"];
                     var housePrice = room["cost1"].ToObject<decimal>();
-                    var house = new BaseHouseInfo()
+                    var house = new HouseInfo()
                     {
                         HouseLocation = room["address"].ToString(),
                         HouseTitle = room["summary"].ToString(),
@@ -89,7 +91,7 @@ namespace HouseMap.Crawler
                 }
             }
 
-            return Tuple.Create<List<BaseHouseInfo>, string>(lstHouse, nextSequence);
+            return Tuple.Create<List<HouseInfo>, string>(lstHouse, nextSequence);
         }
 
         private static string GetPhotos(JToken room)

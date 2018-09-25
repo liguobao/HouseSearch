@@ -3,7 +3,8 @@ using StackExchange.Redis;
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using HouseMap.Crawler.Dapper;
+using HouseMap.Dao;
+using HouseMap.Dao.DBEntity;
 using HouseMap.Crawler;
 using HouseMap.Crawler.Service;
 using HouseMap.Crawler.Common;
@@ -18,7 +19,6 @@ namespace HouseMap.Crawler.Controllers
 
         private TodayHouseDashboardJob houseDashboardJob;
 
-        private SyncHousesToESJob syncHousesToESJob;
 
         private HouseDashboardService houseDashboardService;
 
@@ -36,7 +36,6 @@ namespace HouseMap.Crawler.Controllers
         private BaiXingHouseCrawler baixing;
 
         private ChengduZufangCrawler chengdu;
-        private ElasticsearchService elasticsearchService;
 
         private RefreshHouseCacheJob refreshHouseCacheJob;
 
@@ -54,8 +53,6 @@ namespace HouseMap.Crawler.Controllers
                               HKSpaciousCrawler hkSpacious,
                               BaiXingHouseCrawler baixing,
                               ChengduZufangCrawler chengdu,
-                              SyncHousesToESJob syncHousesToESJob,
-                              ElasticsearchService elasticsearchService,
                               RefreshHouseCacheJob refreshHouseCacheJob,
                               RefreshHouseSourceJob refreshHouseSourceJob,
                               BeikeHouseCrawler beike)
@@ -71,8 +68,6 @@ namespace HouseMap.Crawler.Controllers
             this.mogu = mogu;
             this.hkSpacious = hkSpacious;
             this.baixing = baixing;
-            this.syncHousesToESJob = syncHousesToESJob;
-            this.elasticsearchService = elasticsearchService;
             this.refreshHouseCacheJob = refreshHouseCacheJob;
             this.refreshHouseSourceJob = refreshHouseSourceJob;
             this.beike = beike;

@@ -5,9 +5,11 @@ using System.Linq;
 using RestSharp;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using HouseMap.Crawler.Dapper;
+using HouseMap.Dao;
+using HouseMap.Dao.DBEntity;
 using HouseMap.Crawler.Common;
-using HouseMap.Crawler.DBEntity;
+
+using HouseMap.Models;
 
 namespace HouseMap.Crawler
 {
@@ -33,7 +35,7 @@ namespace HouseMap.Crawler
                 {
                     LogHelper.RunActionNotThrowEx(() =>
                     {
-                        List<BaseHouseInfo> houses = new List<BaseHouseInfo>();
+                        List<HouseInfo> houses = new List<HouseInfo>();
                         var confInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(config.ConfigurationValue);
                         for (var pageIndex = 0; pageIndex < confInfo.pagecount.Value; pageIndex++)
                         {
@@ -53,9 +55,9 @@ namespace HouseMap.Crawler
             }
         }
 
-        public static List<BaseHouseInfo> GetHouseData(string citySortName, string cityID, string cityName, int pageIndex)
+        public static List<HouseInfo> GetHouseData(string citySortName, string cityID, string cityName, int pageIndex)
         {
-            List<BaseHouseInfo> lstHouseInfo = new List<BaseHouseInfo>();
+            List<HouseInfo> lstHouseInfo = new List<HouseInfo>();
             var apiURL = $"https://app.api.ke.com/Rentplat/v1/house/list?city_id={cityID}&offset={pageIndex * 30}&limit=30";
             var result = GetAPIResult(apiURL, cityID);
             if (string.IsNullOrEmpty(result))
@@ -67,7 +69,7 @@ namespace HouseMap.Crawler
             {
                 var housePrice = GetPrice(rentHouse);
 
-                var house = new BaseHouseInfo()
+                var house = new HouseInfo()
                 {
                     HouseLocation = rentHouse["house_title"].ToString(),
                     HouseTitle = rentHouse["house_title"].ToString() + rentHouse["desc"].ToString(),
@@ -191,7 +193,7 @@ namespace HouseMap.Crawler
 
 
             }
-            configDapper.BulkInsertConfig(configs);
+           // configDapper.BulkInsertConfig(configs);
 
         }
 
