@@ -34,7 +34,7 @@ namespace HouseMap.Dao
                     {
                         continue;
                     }
-                    condition.Source = houseSource.Value;
+                    condition.Source = houseSource.Key;
                     condition.HouseCount = limitCount;
                     houseList.AddRange(Search(condition));
                 }
