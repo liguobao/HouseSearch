@@ -678,7 +678,7 @@
         }
         return await this.$ajax.post('/houses', {
           ...this.$route.query,
-          cityName: this.cityName,
+          cityname: this.cityName,
           houseCount
         });
       },
