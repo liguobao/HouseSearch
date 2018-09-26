@@ -36,5 +36,27 @@ namespace HouseCrawler.Web.API.Controllers
             var newOne = _userHouseService.AddOne(userHouse);
             return Ok(new { success = true, data = newOne });
         }
+
+
+        [EnableCors("APICors")]
+        [HttpPut("v1/users/{userId}/houses/{id}", Name = "ModifyOne")]
+        [ServiceFilter(typeof(UserTokenFilter))]
+        public IActionResult ModifyOne(long userId, string id, [FromBody] UserHouse userHouse)
+        {
+            userHouse.Id = id;
+            var update = _userHouseService.Modify(userId, userHouse);
+            return Ok(new { success = true, data = update });
+        }
+
+        [EnableCors("APICors")]
+        [HttpGet("v1/users/{userId}/houses", Name = "GetList")]
+        public IActionResult GetList(long userId)
+        {
+            return Ok(new
+            {
+                success = true,
+                data = _userHouseService.GetUserHouses(userId)
+            });
+        }
     }
 }

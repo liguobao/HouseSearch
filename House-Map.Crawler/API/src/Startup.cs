@@ -54,12 +54,12 @@ namespace HouseMapAPI
         public void InitDI(IServiceCollection services)
         {
             #region Dapper
-            services.AddSingleton<HouseDapper, HouseDapper>();
-            services.AddSingleton<ConfigDapper, ConfigDapper>();
-            services.AddSingleton<UserCollectionDapper, UserCollectionDapper>();
-            services.AddSingleton<UserDapper, UserDapper>();
-            services.AddSingleton<BaseDapper, BaseDapper>();
-            services.AddSingleton<NoticeDapper, NoticeDapper>();
+            services.AddScoped<HouseDapper, HouseDapper>();
+            services.AddScoped<ConfigDapper, ConfigDapper>();
+            services.AddScoped<UserCollectionDapper, UserCollectionDapper>();
+            services.AddScoped<UserDapper, UserDapper>();
+            services.AddScoped<BaseDapper, BaseDapper>();
+            services.AddScoped<NoticeDapper, NoticeDapper>();
 
 
             #endregion
@@ -68,15 +68,16 @@ namespace HouseMapAPI
             //services.AddSingleton<EncryptionTools, EncryptionTools>();
 
             #region Service
-            services.AddSingleton<EmailService, EmailService>();
-            services.AddSingleton<RedisTool, RedisTool>();
-            services.AddSingleton<DashboardService, DashboardService>();
-            services.AddSingleton<UserService, UserService>();
-            services.AddSingleton<ConfigService, ConfigService>();
-            services.AddSingleton<HouseService, HouseService>();
-            services.AddSingleton<UserCollectionService, UserCollectionService>();
-            services.AddSingleton<QQOAuthClient, QQOAuthClient>();
-            services.AddSingleton<WeChatAppDecrypt, WeChatAppDecrypt>();
+            services.AddScoped<EmailService, EmailService>();
+            services.AddScoped<RedisTool, RedisTool>();
+            services.AddScoped<DashboardService, DashboardService>();
+            services.AddScoped<UserService, UserService>();
+            services.AddScoped<UserHouseService,UserHouseService>();
+            services.AddScoped<ConfigService, ConfigService>();
+            services.AddScoped<HouseService, HouseService>();
+            services.AddScoped<UserCollectionService, UserCollectionService>();
+            services.AddScoped<QQOAuthClient, QQOAuthClient>();
+            services.AddScoped<WeChatAppDecrypt, WeChatAppDecrypt>();
             services.AddScoped<UserTokenFilter, UserTokenFilter>();
 
             #endregion

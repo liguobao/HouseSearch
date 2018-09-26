@@ -46,7 +46,7 @@ namespace HouseMapAPI.Service
             {
                 id = id++,
                 cityName = i.Key,
-                sources = i.ToList()
+                sources = i.GroupBy(d =>d.Source).Select(item =>item.FirstOrDefault()).ToList()
             });
             return dashboards;
         }

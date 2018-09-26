@@ -14,8 +14,8 @@ namespace HouseMap.Dao.DBEntity
     {
         public string Id { get; set; }
 
-        public DateTime DataCreateTime { get; set; }
+        public DateTime CreateTime { get; set; }
 
-        public DateTime DataChangeLastTime { get; set; } = DateTime.Now;
+        public DateTime UpdateTime { get; set; } = DateTime.Now;
     }
 }
