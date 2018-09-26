@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using NLog.Web;
 
 namespace HouseMap.Crawler
 {
@@ -31,7 +32,7 @@ namespace HouseMap.Crawler
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-             services.AddOptions().Configure<AppSettings>(Configuration);
+            services.AddOptions().Configure<AppSettings>(Configuration);
             InitDI(services);
         }
 
@@ -40,7 +41,7 @@ namespace HouseMap.Crawler
             #region Mapper
             services.AddSingleton<HouseDapper, HouseDapper>();
             services.AddSingleton<ConfigDapper, ConfigDapper>();
-            services.AddSingleton<HouseStatDapper,HouseStatDapper>();
+            services.AddSingleton<HouseStatDapper, HouseStatDapper>();
             #endregion Service
 
             #region Service
@@ -101,7 +102,7 @@ namespace HouseMap.Crawler
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-          
+            env.ConfigureNLog("nlog.config");
             app.UseMvc(routes =>
            {
                routes.MapRoute(

@@ -42,7 +42,7 @@ namespace HouseMap.Crawler.Common
             }
         }
 
-        
+
         public static void RunActionTaskNotThrowEx(Action action, string functionName = "default", Object oj = null)
         {
             Task.Factory.StartNew(() =>
@@ -58,6 +58,7 @@ namespace HouseMap.Crawler.Common
                         Logger.Info("关键数据:" + Newtonsoft.Json.JsonConvert.SerializeObject(oj));
                     }
                     Error(functionName, ex);
+                    Console.WriteLine($"{functionName} error,ex:{ex.Message}");
                 }
             });
         }
