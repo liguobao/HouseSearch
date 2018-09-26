@@ -442,6 +442,8 @@
         display: block;
         padding: 0 10px;
         cursor: pointer;
+        background: #F56C6C;
+        color: #fff;
       }
       &.slide-up {
         max-height: 25px;
@@ -698,6 +700,7 @@
         this.transferFn.search([this.myPosition.lng, this.myPosition.lat], [position.lng, position.lat], function (status, result) {
           self.transferWays = true;
           let panelHandle = document.querySelector('.panel-handle');
+          self.toggleUp = false;
           if (!panelHandle) {
             const panelComponent = Vue.extend({
               render(h) {
@@ -708,7 +711,7 @@
                       self.toggleUp = !self.toggleUp
                     }
                   }
-                }, self.toggleUp ? '收起' : '展开')
+                }, !self.toggleUp ? '收起' : '展开')
               }
             });
 
