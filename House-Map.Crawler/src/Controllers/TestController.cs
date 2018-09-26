@@ -16,14 +16,18 @@ namespace HouseMap.Crawler.Controllers
     {
         private ZuberCrawler _zuber;
 
-        public TestController(ZuberCrawler zuber)
+        private HouseDataContext _context;
+
+
+        public TestController(ZuberCrawler zuber, HouseDataContext context)
         {
             _zuber = zuber;
+            _context = context;
         }
 
         public IActionResult Index(string source)
         {
-            //_zuber.Run();
+
             return Json(new { success = true });
         }
 

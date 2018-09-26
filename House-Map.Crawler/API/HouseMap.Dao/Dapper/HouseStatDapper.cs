@@ -18,27 +18,7 @@ namespace HouseMap.Dao
         {
         }
 
-        public List<HouseDashboard> GetHouseDashboard()
-        {
-            using (IDbConnection dbConnection = GetConnection())
-            {
-                dbConnection.Open();
-                var list = new List<HouseDashboard>();
-                foreach (var key in ConstConfigName.HouseTableNameDic.Keys)
-                {
-                    var tableName = ConstConfigName.GetTableName(key);
-                    var dashboards = dbConnection.Query<HouseDashboard>(@"SELECT 
-                                LocationCityName AS CityName,
-                                Source, COUNT(id) AS HouseSum, 
-                                MAX(PubTime) AS LastRecordPubTime
-                            FROM 
-                                " + tableName + $" GROUP BY LocationCityName, Source ORDER BY HouseSum desc;");
-                    list.AddRange(dashboards);
-                }
-                return list.Where(dash => dash.LastRecordPubTime.CompareTo(DateTime.Now.AddDays(-30)) > 0 && dash.HouseSum > 100)
-                .ToList();
-            }
-        }
+       
 
 
         public List<HouseStat> GetHouseStatList(int intervalDay = 1)

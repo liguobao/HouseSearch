@@ -17,15 +17,15 @@ namespace HouseMap.Crawler.Jobs
 
         private HouseService _houseService;
 
-        private readonly HouseStatDapper _statDapper;
+        private readonly ConfigDapper _configDapper;
 
 
 
 
-        public RefreshHouseCacheJob(HouseService houseService, HouseStatDapper statDapper)
+        public RefreshHouseCacheJob(HouseService houseService, ConfigDapper configDapper)
         {
             _houseService = houseService;
-            _statDapper = statDapper;
+            _configDapper = configDapper;
         }
 
         [Invoke(Begin = "2018-07-01 00:30", Interval = 1000 * 3500, SkipWhileExecuting = true)]
@@ -35,7 +35,7 @@ namespace HouseMap.Crawler.Jobs
             var sw = new System.Diagnostics.Stopwatch();
             sw.Start();
 
-            var cityDashboards = _statDapper.GetHouseDashboard().GroupBy(d => d.CityName);
+            var cityDashboards = _configDapper.GetDashboards().GroupBy(d => d.CityName);
             foreach (var item in cityDashboards)
             {
                 LogHelper.RunActionNotThrowEx(() =>

@@ -20,8 +20,6 @@ namespace HouseMap.Crawler.Controllers
         private TodayHouseDashboardJob houseDashboardJob;
 
 
-        private HouseDashboardService houseDashboardService;
-
 
         private PinPaiGongYuHouseCrawler pinpai;
         private PeopleRentingCrawler people;
@@ -43,7 +41,6 @@ namespace HouseMap.Crawler.Controllers
 
         public JobsController(TodayHouseDashboardJob houseDashboardJob,
                               HouseDapper houseDapper,
-                              HouseDashboardService houseDashboardService,
                               PinPaiGongYuHouseCrawler pinpai,
                               PeopleRentingCrawler people,
                               DoubanHouseCrawler douban,
@@ -59,7 +56,6 @@ namespace HouseMap.Crawler.Controllers
         {
             this.houseDashboardJob = houseDashboardJob;
             this.houseDapper = houseDapper;
-            this.houseDashboardService = houseDashboardService;
             this.pinpai = pinpai;
             this.people = people;
             this.douban = douban;

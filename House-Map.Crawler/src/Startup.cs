@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -34,66 +35,76 @@ namespace HouseMap.Crawler
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddOptions().Configure<AppSettings>(Configuration);
             InitDI(services);
+            InitDB(services);
+        }
+
+         private void InitDB(IServiceCollection services)
+        {
+            services.AddDbContext<HouseDataContext>(options =>
+            {
+                var loggerFactory = new LoggerFactory();
+                loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+                options.UseLoggerFactory(loggerFactory);
+                options.UseMySql(Configuration["MySQLConnectionString"].ToString());
+            });
         }
 
         public void InitDI(IServiceCollection services)
         {
             #region Mapper
-            services.AddSingleton<HouseDapper, HouseDapper>();
-            services.AddSingleton<ConfigDapper, ConfigDapper>();
-            services.AddSingleton<HouseStatDapper, HouseStatDapper>();
+            services.AddScoped<HouseDapper, HouseDapper>();
+            services.AddScoped<ConfigDapper, ConfigDapper>();
+            services.AddScoped<HouseStatDapper, HouseStatDapper>();
             #endregion Service
 
             #region Service
-            services.AddSingleton<EmailService, EmailService>();
-            services.AddSingleton<RedisTool, RedisTool>();
-            services.AddSingleton<HouseService, HouseService>();
-            services.AddSingleton<HouseDashboardService, HouseDashboardService>();
-            services.AddSingleton<ElasticsearchService, ElasticsearchService>();
+            services.AddScoped<EmailService, EmailService>();
+            services.AddScoped<RedisTool, RedisTool>();
+            services.AddScoped<HouseService, HouseService>();
+            services.AddScoped<ElasticsearchService, ElasticsearchService>();
 
 
             #endregion
 
             #region Jobs
-            services.AddSingleton<BaiXingJob, BaiXingJob>();
-            services.AddSingleton<DoubanCCBJob, DoubanCCBJob>();
-            services.AddSingleton<GCJob, GCJob>();
-            services.AddSingleton<HKSpaciousJob, HKSpaciousJob>();
-            services.AddSingleton<PingPaiPeopleJob, PingPaiPeopleJob>();
-            services.AddSingleton<RefreshDashboardJob, RefreshDashboardJob>();
-            services.AddSingleton<TodayHouseDashboardJob, TodayHouseDashboardJob>();
-            services.AddSingleton<ZuberMoguJob, ZuberMoguJob>();
-            services.AddSingleton<RefreshHouseCacheJob, RefreshHouseCacheJob>();
-            services.AddSingleton<RefreshHouseSourceJob, RefreshHouseSourceJob>();
+            services.AddScoped<BaiXingJob, BaiXingJob>();
+            services.AddScoped<DoubanCCBJob, DoubanCCBJob>();
+            services.AddScoped<GCJob, GCJob>();
+            services.AddScoped<HKSpaciousJob, HKSpaciousJob>();
+            services.AddScoped<PingPaiPeopleJob, PingPaiPeopleJob>();
+            services.AddScoped<TodayHouseDashboardJob, TodayHouseDashboardJob>();
+            services.AddScoped<ZuberMoguJob, ZuberMoguJob>();
+            services.AddScoped<RefreshHouseCacheJob, RefreshHouseCacheJob>();
+            services.AddScoped<RefreshHouseSourceJob, RefreshHouseSourceJob>();
 
 
             #endregion
 
             #region Crawler
-            services.AddSingleton<CCBHouesCrawler, CCBHouesCrawler>();
-            services.AddSingleton<DoubanHouseCrawler, DoubanHouseCrawler>();
-            services.AddSingleton<DoubanHouseCrawler, DoubanHouseCrawler>();
-            services.AddSingleton<HKSpaciousCrawler, HKSpaciousCrawler>();
-            services.AddSingleton<MoGuHouseCrawler, MoGuHouseCrawler>();
-            services.AddSingleton<PeopleRentingCrawler, PeopleRentingCrawler>();
-            services.AddSingleton<PinPaiGongYuHouseCrawler, PinPaiGongYuHouseCrawler>();
-            services.AddSingleton<ZuberHouseCrawler, ZuberHouseCrawler>();
-            services.AddSingleton<BaiXingHouseCrawler, BaiXingHouseCrawler>();
-            services.AddSingleton<BeikeHouseCrawler, BeikeHouseCrawler>();
-            services.AddSingleton<ChengduZufangCrawler, ChengduZufangCrawler>();
+            services.AddScoped<CCBHouesCrawler, CCBHouesCrawler>();
+            services.AddScoped<DoubanHouseCrawler, DoubanHouseCrawler>();
+            services.AddScoped<DoubanHouseCrawler, DoubanHouseCrawler>();
+            services.AddScoped<HKSpaciousCrawler, HKSpaciousCrawler>();
+            services.AddScoped<MoGuHouseCrawler, MoGuHouseCrawler>();
+            services.AddScoped<PeopleRentingCrawler, PeopleRentingCrawler>();
+            services.AddScoped<PinPaiGongYuHouseCrawler, PinPaiGongYuHouseCrawler>();
+            services.AddScoped<ZuberHouseCrawler, ZuberHouseCrawler>();
+            services.AddScoped<BaiXingHouseCrawler, BaiXingHouseCrawler>();
+            services.AddScoped<BeikeHouseCrawler, BeikeHouseCrawler>();
+            services.AddScoped<ChengduZufangCrawler, ChengduZufangCrawler>();
 
 
-            services.AddSingleton<BaseCrawler, BaseCrawler>();
-            services.AddSingleton<DoubanCrawler, DoubanCrawler>();
-            services.AddSingleton<DoubanCrawler, DoubanCrawler>();
-            services.AddSingleton<SpaciousCrawler, SpaciousCrawler>();
-            services.AddSingleton<MoGuCrawler, MoGuCrawler>();
-            services.AddSingleton<HuzhuCrawler, HuzhuCrawler>();
-            services.AddSingleton<PinPaiGongYuCrawler, PinPaiGongYuCrawler>();
-            services.AddSingleton<ZuberCrawler, ZuberCrawler>();
-            services.AddSingleton<BaixingCrawler, BaixingCrawler>();
-            services.AddSingleton<BeikeCrawler, BeikeCrawler>();
-            services.AddSingleton<ChengdufgjCrawler, ChengdufgjCrawler>();
+            services.AddScoped<BaseCrawler, BaseCrawler>();
+            services.AddScoped<DoubanCrawler, DoubanCrawler>();
+            services.AddScoped<DoubanCrawler, DoubanCrawler>();
+            services.AddScoped<SpaciousCrawler, SpaciousCrawler>();
+            services.AddScoped<MoGuCrawler, MoGuCrawler>();
+            services.AddScoped<HuzhuCrawler, HuzhuCrawler>();
+            services.AddScoped<PinPaiGongYuCrawler, PinPaiGongYuCrawler>();
+            services.AddScoped<ZuberCrawler, ZuberCrawler>();
+            services.AddScoped<BaixingCrawler, BaixingCrawler>();
+            services.AddScoped<BeikeCrawler, BeikeCrawler>();
+            services.AddScoped<ChengdufgjCrawler, ChengdufgjCrawler>();
 
             #endregion
         }
