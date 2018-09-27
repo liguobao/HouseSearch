@@ -106,15 +106,9 @@
             <i class="el-icon-location"></i>
             我在哪
         </span>
-    <el-dialog
-        title="地图搜租房"
-        :width="isMobile ? '100%' : '700px'"
-        center
-        :visible="loginVisible"
-        :before-close="() => {toggleDialog('loginVisible')}"
-    >
-      <login ref="login" @close="toggleDialog" :done="done" :login-type="loginType"></login>
-    </el-dialog>
+
+    <component v-if="view" :is="view"></component>
+
 
     <!--<div class="right" :class="{'show-right' : showRight}">-->
     <!--<section class="link">-->
@@ -456,19 +450,17 @@
 </style>
 <script>
   import Vue from 'vue'
-  import Login from './../components/login';
   import userInfo from './../components/user-info';
+
   export default {
-    components: {
-      Login
-    },
+    components: {},
     data() {
       return {
         zoom: 12,
         info: undefined,
         markers: [],
         loading: true,
-        cityName: '广州',
+        cityName: '',
         myPosition: undefined,
         transferFn: undefined,
         iconTips: [
@@ -557,7 +549,8 @@
         loginType: undefined,
         done: null,
         collection: false,
-        makerInfo: undefined
+        makerInfo: undefined,
+        view: undefined
       }
     },
     computed: {
@@ -606,10 +599,22 @@
       async collect(item) {
         let self = this;
         if (!self.user) {
-          await new Promise(async (resolve1, reject1) => {
-            self.loginVisible = true;
-            self.done = resolve1;
-          });
+          const asyncComponent = require('./../components/async-component.js').default;
+          let com = require('./../components/login-dialog').default;
+          try {
+            await asyncComponent(com, {
+              props: {
+                loginVisible: true,
+                isMobile: self.isMobile
+              }
+            }, (template) => {
+              this.view = template;
+            });
+            this.view = undefined;
+          }catch (e) {
+            this.view = undefined;
+            return
+          }
         }
         if (this.collection) {
           return
@@ -956,7 +961,7 @@
           // placeSearch.search(e.poi.name);  //关键字查询查询
         }
       },
-      getCityCenter(positionPicker, code, self,name,cb) {
+      getCityCenter(positionPicker, code, self, name, cb) {
         let location = undefined;
         return new Promise((resolve, reject) => {
           code.getLocation(name, (status, result) => { // 城市中心点
@@ -967,9 +972,9 @@
               // self.keyword = result.geocodes[0].formattedAddress;
             } else {
 
-              if(cb) {
+              if (cb) {
                 cb();
-              }else {
+              } else {
                 location = self.map.getBounds().getSouthWest();
                 self.lnglat = location;
                 // self.keyword = self.cityName;
@@ -1014,26 +1019,25 @@
           });
 
 
-
-          if(this.$store.state.userInfo && this.$store.state.userInfo.workAddress) {
-            await this.getCityCenter(positionPicker, code, self,this.$store.state.userInfo.workAddress,async () => {
-              await this.getCityCenter(positionPicker, code, self,this.cityName);
+          if (this.$store.state.userInfo && this.$store.state.userInfo.workAddress) {
+            await this.getCityCenter(positionPicker, code, self, this.$store.state.userInfo.workAddress, async () => {
+              await this.getCityCenter(positionPicker, code, self, this.cityName);
             });
-          }else {
-            await this.getCityCenter(positionPicker, code, self,this.cityName);
+          } else {
+            await this.getCityCenter(positionPicker, code, self, this.cityName);
           }
 
           this.keywordSelect(map, positionPicker);
 
           let info = await this.getList();
           let data = info.data;
-          // data.length = 20;
+          data.length = 20;
           // this.showRight = true;
 
 
           setTimeout(() => {
             loading.close();
-          },1000 * 20);
+          }, 1000 * 20);
           await this.addMaker(map, data, code, self);
           loading.close();
           this.loading = false;

@@ -54,10 +54,10 @@
                   <el-dropdown-item><a :href="oauthUrl ? oauthUrl : 'javascript:'" class="link-to">QQ登录</a>
                   </el-dropdown-item>
                   <el-dropdown-item><a href="javascript:" class="link-to"
-                                       @click="toggleDialog('loginVisible',true,'login')">邮箱登录</a>
+                                       @click="login('login')">邮箱登录</a>
                   </el-dropdown-item>
                   <el-dropdown-item><a href="javascript:" class="link-to"
-                                       @click="toggleDialog('loginVisible',true,'register')">注册账号</a>
+                                       @click="login('register')">注册账号</a>
                   </el-dropdown-item>
                 </template>
               </el-dropdown-menu>
@@ -100,6 +100,8 @@
         </el-collapse>
       </div>
     </el-dialog>
+
+    <component v-if="view" :is="view"></component>
   </div>
 </template>
 <style lang="scss" scoped>
@@ -147,7 +149,7 @@
     > ul {
       display: flex;
       li {
-        max-width: 240px;
+        max-width: 260px;
       }
       .dropdown {
         width: 100%;
@@ -249,6 +251,24 @@
         const time = this.$transformData(item.dataCreateTime, 'yyyy-MM-dd hh:mm:ss')
         return `${name}... (${time})`
       },
+      async login(type) {
+        const asyncComponent = require('./../components/async-component.js').default;
+        let com = require('./../components/login-dialog').default;
+        try {
+          await asyncComponent(com, {
+            props: {
+              loginType: type,
+              appendToBody: true,
+              isMobile: this.isMobile
+            }
+          }, (template) => {
+            this.view = template;
+          });
+          this.view = undefined;
+        }catch (e) {
+          this.view = undefined;
+        }
+      },
       logOut() {
         this.$store.dispatch('UserLogout');
       },
@@ -294,7 +314,8 @@
         ],
         oauthUrl: undefined,
         noticesVisible: false,
-        historyNotices: []
+        historyNotices: [],
+        view: undefined
       }
     },
     async created() {
