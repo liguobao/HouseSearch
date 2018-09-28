@@ -681,7 +681,7 @@
       async getList() {
         let houseCount = undefined;
         if (this.isMobile) {
-          houseCount = 100;
+          houseCount = 180;
         }
         return await this.$ajax.post('/houses', {
           ...this.$route.query,
