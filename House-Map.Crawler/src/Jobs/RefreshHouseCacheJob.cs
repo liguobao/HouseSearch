@@ -60,8 +60,8 @@ namespace HouseMap.Crawler.Jobs
                             _houseService.Search(search);
                         }
                     }
-                    //为移动端做的缓存,每次拉180条,一共5页
-                    for (var page = 0; page <= 5; page++)
+                    //为移动端做的缓存,每次拉180条,一共10页
+                    for (var page = 0; page <= 10; page++)
                     {
                         search.Source = "";
                         search.HouseCount = 180;

@@ -30,7 +30,7 @@ namespace HouseMap.Dao
                 foreach (var houseSource in ConstConfigName.HouseTableNameDic)
                 {
                     //建荣家园数据质量比较差,默认不出
-                    if (houseSource.Key == ConstConfigName.CCBHouse)
+                    if (houseSource.Key == ConstConfigName.CCBHouse || houseSource.Key == ConstConfigName.Chengdufgj)
                     {
                         continue;
                     }

@@ -29,7 +29,7 @@ namespace HouseMap.Dao
 
         public IEnumerable<HouseInfo> Search(HouseCondition condition)
         {
-            LogHelper.Info($"Search start,key:{condition.RedisKey}");
+            // LogHelper.Info($"Search start,key:{condition.RedisKey}");
             if (condition == null || condition.CityName == null)
             {
                 throw new Exception("查询条件不能为null");
