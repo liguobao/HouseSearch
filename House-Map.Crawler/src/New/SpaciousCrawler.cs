@@ -19,7 +19,7 @@ using HouseMap.Models;
 namespace HouseMap.Crawler
 {
 
-    public class SpaciousCrawler : BaseCrawler
+    public class SpaciousCrawler : BaseCrawler,ICrawler
     {
 
         private static HtmlParser htmlParser = new HtmlParser();

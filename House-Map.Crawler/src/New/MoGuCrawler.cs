@@ -19,7 +19,7 @@ using HouseMap.Common;
 namespace HouseMap.Crawler
 {
 
-    public class MoGuCrawler : BaseCrawler
+    public class MoGuCrawler : BaseCrawler,ICrawler
     {
 
         public MoGuCrawler(HouseDapper houseDapper, ConfigService configService) : base(houseDapper, configService)

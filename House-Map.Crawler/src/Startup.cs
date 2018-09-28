@@ -79,7 +79,24 @@ namespace HouseMap.Crawler
             services.AddScoped<BeikeCrawler, BeikeCrawler>();
             services.AddScoped<ChengdufgjCrawler, ChengdufgjCrawler>();
 
+            services.AddScoped<ICrawler, DoubanCrawler>();
+            services.AddScoped<ICrawler, DoubanCrawler>();
+            services.AddScoped<ICrawler, SpaciousCrawler>();
+            services.AddScoped<ICrawler, MoGuCrawler>();
+            services.AddScoped<ICrawler, HuzhuCrawler>();
+            services.AddScoped<ICrawler, PinPaiGongYuCrawler>();
+            services.AddScoped<ICrawler, ZuberCrawler>();
+            services.AddScoped<ICrawler, BaixingCrawler>();
+            services.AddScoped<ICrawler, BeikeCrawler>();
+            services.AddScoped<ICrawler, ChengdufgjCrawler>();
             #endregion
+
+            services.AddScoped<TodayHouseDashboardJob, TodayHouseDashboardJob>();
+
+            services.AddScoped<RefreshHouseCacheJob, RefreshHouseCacheJob>();
+            services.AddScoped<RefreshHouseSourceJob, RefreshHouseSourceJob>();
+
+
         }
 
 

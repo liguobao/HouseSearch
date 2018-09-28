@@ -20,7 +20,7 @@ using HouseMap.Common;
 namespace HouseMap.Crawler
 {
 
-    public class DoubanCrawler : BaseCrawler
+    public class DoubanCrawler : BaseCrawler,ICrawler
     {
 
         public DoubanCrawler( HouseDapper houseDapper, ConfigService configService) : base(houseDapper, configService)

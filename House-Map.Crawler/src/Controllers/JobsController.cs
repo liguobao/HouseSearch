@@ -10,63 +10,31 @@ using HouseMap.Crawler.Service;
 using HouseMap.Crawler.Common;
 using HouseMap.Crawler.Jobs;
 using HouseMap.Common;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace HouseMap.Crawler.Controllers
 {
     public class JobsController : Controller
     {
 
-        private HouseDapper houseDapper;
+        private TodayHouseDashboardJob _dashboardJob;
 
-        private TodayHouseDashboardJob houseDashboardJob;
 
-        private PinPaiGongYuCrawler pinpai;
-        private HuzhuCrawler people;
-        private DoubanCrawler douban;
-        private CCBCrawler ccbHouse;
-        private ZuberCrawler zuber;
-        private MoGuCrawler mogu;
+        private readonly IServiceProvider _serviceProvider;
 
-        private BeikeCrawler beike;
-        private SpaciousCrawler hkSpacious;
+        private RefreshHouseCacheJob _refreshHouseCacheJob;
 
-        private BaixingCrawler baixing;
-
-        private ChengdufgjCrawler chengdu;
-
-        private RefreshHouseCacheJob refreshHouseCacheJob;
-
-        private RefreshHouseSourceJob refreshHouseSourceJob;
+        private RefreshHouseSourceJob _refreshHouseSourceJob;
 
         public JobsController(TodayHouseDashboardJob houseDashboardJob,
-                              HouseDapper houseDapper,
-                              PinPaiGongYuCrawler pinpai,
-                              HuzhuCrawler people,
-                              DoubanCrawler douban,
-                              CCBCrawler ccbHouse,
-                              ZuberCrawler zuber,
-                              MoGuCrawler mogu,
-                              SpaciousCrawler hkSpacious,
-                              BaixingCrawler baixing,
-                              ChengdufgjCrawler chengdu,
                               RefreshHouseCacheJob refreshHouseCacheJob,
                               RefreshHouseSourceJob refreshHouseSourceJob,
-                              BeikeCrawler beike)
+                             IServiceProvider serviceProvider)
         {
-            this.houseDashboardJob = houseDashboardJob;
-            this.houseDapper = houseDapper;
-            this.pinpai = pinpai;
-            this.people = people;
-            this.douban = douban;
-            this.ccbHouse = ccbHouse;
-            this.zuber = zuber;
-            this.mogu = mogu;
-            this.hkSpacious = hkSpacious;
-            this.baixing = baixing;
-            this.refreshHouseCacheJob = refreshHouseCacheJob;
-            this.refreshHouseSourceJob = refreshHouseSourceJob;
-            this.beike = beike;
-            this.chengdu = chengdu;
+            _dashboardJob = houseDashboardJob;
+            _refreshHouseCacheJob = refreshHouseCacheJob;
+            _refreshHouseSourceJob = refreshHouseSourceJob;
+            _serviceProvider = serviceProvider;
         }
 
 
@@ -75,41 +43,10 @@ namespace HouseMap.Crawler.Controllers
 
             try
             {
+                var crawlers = _serviceProvider.GetServices<ICrawler>();
                 LogHelper.RunActionTaskNotThrowEx(() =>
                 {
-                    switch (source)
-                    {
-                        case "baixing":
-                            baixing.Run();
-                            break;
-                        case "douban":
-                            douban.Run();
-                            break;
-                        case "zuber":
-                            zuber.Run();
-                            break;
-                        case "huzhuzufang":
-                            people.Run();
-                            break;
-                        case "ccbhouse":
-                            ccbHouse.Run();
-                            break;
-                        case "mogu":
-                            mogu.Run();
-                            break;
-                        case "hkspacious":
-                            hkSpacious.Run();
-                            break;
-                        case "pinpaigongyu":
-                            pinpai.Run();
-                            break;
-                        case "beike":
-                            beike.Run();
-                            break;
-                        case "chengdufgj":
-                            chengdu.Run();
-                            break;
-                    }
+
                 }, source);
 
                 return Json(new { success = true });
@@ -121,23 +58,21 @@ namespace HouseMap.Crawler.Controllers
 
         }
 
-
-
         public IActionResult TodayDashboard()
         {
-            LogHelper.RunActionTaskNotThrowEx(houseDashboardJob.Run, "TodayDashboard");
+            LogHelper.RunActionTaskNotThrowEx(_dashboardJob.Run, "TodayDashboard");
             return Json(new { success = true });
         }
 
         public IActionResult RefreshHouseCache()
         {
-            LogHelper.RunActionTaskNotThrowEx(refreshHouseCacheJob.Run, "RefreshHouseCache");
+            LogHelper.RunActionTaskNotThrowEx(_refreshHouseCacheJob.Run, "RefreshHouseCache");
             return Json(new { success = true });
         }
 
         public IActionResult RefreshHouseSource()
         {
-            LogHelper.RunActionTaskNotThrowEx(refreshHouseSourceJob.Run, "RefreshHouseSource");
+            LogHelper.RunActionTaskNotThrowEx(_refreshHouseSourceJob.Run, "RefreshHouseSource");
             return Json(new { success = true });
         }
 

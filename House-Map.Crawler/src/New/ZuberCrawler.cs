@@ -22,7 +22,7 @@ using HouseMap.Common;
 namespace HouseMap.Crawler
 {
 
-    public class ZuberCrawler : BaseCrawler
+    public class ZuberCrawler : BaseCrawler,ICrawler
     {
 
         static string API_VERSION = "v3/";

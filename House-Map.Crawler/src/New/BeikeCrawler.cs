@@ -20,7 +20,7 @@ using HouseMap.Common;
 namespace HouseMap.Crawler
 {
 
-    public class BeikeCrawler : BaseCrawler
+    public class BeikeCrawler : BaseCrawler,ICrawler
     {
 
         public BeikeCrawler(HouseDapper houseDapper, ConfigService configService) : base(houseDapper, configService)

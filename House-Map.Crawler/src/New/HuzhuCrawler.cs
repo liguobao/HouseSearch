@@ -19,7 +19,7 @@ using HouseMap.Models;
 namespace HouseMap.Crawler
 {
 
-    public class HuzhuCrawler : BaseCrawler
+    public class HuzhuCrawler : BaseCrawler,ICrawler
     {
 
         public HuzhuCrawler(HouseDapper houseDapper, ConfigService configService) : base(houseDapper, configService)

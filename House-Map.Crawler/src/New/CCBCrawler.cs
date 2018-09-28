@@ -21,7 +21,7 @@ using HouseMap.Common;
 namespace HouseMap.Crawler
 {
 
-    public class CCBCrawler : BaseCrawler
+    public class CCBCrawler : BaseCrawler,ICrawler
     {
         private readonly AppSettings _configuration;
         public CCBCrawler(IOptions<AppSettings> configuration, HouseDapper houseDapper, ConfigService configService)

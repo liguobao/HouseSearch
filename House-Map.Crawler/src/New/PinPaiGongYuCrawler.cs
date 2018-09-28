@@ -19,7 +19,7 @@ using HouseMap.Models;
 namespace HouseMap.Crawler
 {
 
-    public class PinPaiGongYuCrawler : BaseCrawler
+    public class PinPaiGongYuCrawler : BaseCrawler,ICrawler
     {
 
         public PinPaiGongYuCrawler(HouseDapper houseDapper, ConfigService configService) : base(houseDapper, configService)
