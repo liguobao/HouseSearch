@@ -1,4 +1,5 @@
-﻿using HouseMap.Crawler.Common;
+﻿using HouseMap.Common;
+using HouseMap.Crawler.Common;
 using Pomelo.AspNetCore.TimedJob;
 
 namespace HouseMap.Crawler.Jobs
@@ -10,7 +11,7 @@ namespace HouseMap.Crawler.Jobs
 
         DoubanHouseCrawler douban;
 
-        CCBHouesCrawler ccbHouse;
+        CCBHouseCrawler ccbHouse;
 
         ZuberHouseCrawler zuber;
 
@@ -19,7 +20,7 @@ namespace HouseMap.Crawler.Jobs
         public DoubanCCBJob(PinPaiGongYuHouseCrawler pinpai,
         PeopleRentingCrawler people,
         DoubanHouseCrawler douban,
-        CCBHouesCrawler ccbHouse,
+        CCBHouseCrawler ccbHouse,
         ZuberHouseCrawler zuber,
         MoGuHouseCrawler mogu)
         {

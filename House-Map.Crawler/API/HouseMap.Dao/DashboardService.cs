@@ -9,14 +9,14 @@ using Newtonsoft.Json.Linq;
 
 namespace HouseMap.Dao
 {
-    public class DashboardService
+    public class HouseDashboardService
     {
         private RedisTool _redisTool;
 
 
         private ConfigDapper _configDapper;
 
-        public DashboardService(RedisTool RedisTool, ConfigDapper configDapper)
+        public HouseDashboardService(RedisTool RedisTool, ConfigDapper configDapper)
         {
             this._redisTool = RedisTool;
             _configDapper = configDapper;

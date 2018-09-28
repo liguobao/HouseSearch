@@ -1,4 +1,5 @@
-﻿using HouseMap.Crawler.Common;
+﻿using HouseMap.Common;
+using HouseMap.Crawler.Common;
 using Pomelo.AspNetCore.TimedJob;
 
 namespace HouseMap.Crawler.Jobs

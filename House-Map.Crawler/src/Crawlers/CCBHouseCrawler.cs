@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace HouseMap.Crawler
 {
-    public class CCBHouesCrawler
+    public class CCBHouseCrawler
     {
 
         private HouseDapper houseDapper;
@@ -24,7 +24,7 @@ namespace HouseMap.Crawler
 
         private ConfigDapper configDapper;
 
-        public CCBHouesCrawler(HouseDapper houseDapper, IOptions<AppSettings> configuration,
+        public CCBHouseCrawler(HouseDapper houseDapper, IOptions<AppSettings> configuration,
         ConfigDapper configDapper)
         {
             this.houseDapper = houseDapper;

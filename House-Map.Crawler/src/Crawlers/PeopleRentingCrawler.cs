@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using HouseMap.Models;
+using HouseMap.Common;
 
 namespace HouseMap.Crawler
 {

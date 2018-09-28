@@ -12,9 +12,9 @@ using AngleSharp.Dom;
 using HouseMap.Dao;
 using HouseMap.Dao.DBEntity;
 using HouseMap.Crawler.Common;
-
 using Newtonsoft.Json.Linq;
 using HouseMap.Models;
+using HouseMap.Common;
 
 namespace HouseMap.Crawler
 {

@@ -10,6 +10,7 @@ using HouseMap.Dao.DBEntity;
 using HouseMap.Crawler.Common;
 
 using HouseMap.Models;
+using HouseMap.Common;
 
 namespace HouseMap.Crawler
 {

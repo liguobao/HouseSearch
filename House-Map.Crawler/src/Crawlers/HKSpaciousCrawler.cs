@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using HouseMap.Models;
-
+using HouseMap.Common;
 
 namespace HouseMap.Crawler
 {

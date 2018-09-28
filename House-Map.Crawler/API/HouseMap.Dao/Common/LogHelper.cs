@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace HouseMap.Crawler.Common
+namespace HouseMap.Common
 {
     public static class LogHelper
     {

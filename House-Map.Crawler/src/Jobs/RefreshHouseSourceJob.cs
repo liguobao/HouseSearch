@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using HouseMap.Common;
 
 namespace HouseMap.Crawler.Jobs
 {
@@ -40,11 +41,11 @@ namespace HouseMap.Crawler.Jobs
                     //聚合房源的缓存,前600条数据
                     var search = new HouseCondition() { CityName = item.Key, HouseCount = 600, IntervalDay = 14, Refresh = true };
                     _houseService.Search(search);
-                    foreach (var dashbord in item)
+                    foreach (var dashboard in item)
                     {
                         //每类房源的默认缓存,前600条数据
                         search.HouseCount = 600;
-                        search.Source = dashbord.Source;
+                        search.Source = dashboard.Source;
                         _houseService.Search(search);
                     }
                 }, "RefreshHouse");

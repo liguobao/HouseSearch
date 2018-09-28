@@ -81,7 +81,7 @@ namespace HouseMap.Crawler
             #endregion
 
             #region Crawler
-            services.AddScoped<CCBHouesCrawler, CCBHouesCrawler>();
+            services.AddScoped<CCBHouseCrawler, CCBHouseCrawler>();
             services.AddScoped<DoubanHouseCrawler, DoubanHouseCrawler>();
             services.AddScoped<DoubanHouseCrawler, DoubanHouseCrawler>();
             services.AddScoped<HKSpaciousCrawler, HKSpaciousCrawler>();

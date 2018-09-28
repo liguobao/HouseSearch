@@ -9,6 +9,7 @@ using HouseMap.Crawler;
 using HouseMap.Crawler.Service;
 using HouseMap.Crawler.Common;
 using HouseMap.Crawler.Jobs;
+using HouseMap.Common;
 
 namespace HouseMap.Crawler.Controllers
 {
@@ -24,7 +25,7 @@ namespace HouseMap.Crawler.Controllers
         private PinPaiGongYuHouseCrawler pinpai;
         private PeopleRentingCrawler people;
         private DoubanHouseCrawler douban;
-        private CCBHouesCrawler ccbHouse;
+        private CCBHouseCrawler ccbHouse;
         private ZuberHouseCrawler zuber;
         private MoGuHouseCrawler mogu;
 
@@ -44,7 +45,7 @@ namespace HouseMap.Crawler.Controllers
                               PinPaiGongYuHouseCrawler pinpai,
                               PeopleRentingCrawler people,
                               DoubanHouseCrawler douban,
-                              CCBHouesCrawler ccbHouse,
+                              CCBHouseCrawler ccbHouse,
                               ZuberHouseCrawler zuber,
                               MoGuHouseCrawler mogu,
                               HKSpaciousCrawler hkSpacious,
