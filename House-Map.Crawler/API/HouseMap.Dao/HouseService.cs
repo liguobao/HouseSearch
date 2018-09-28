@@ -34,7 +34,7 @@ namespace HouseMap.Dao
                 throw new Exception("查询条件不能为null");
             }
             var houses = _redisTool.ReadCache<List<HouseInfo>>(condition.RedisKey, RedisKey.Houses.DBName);
-            if (houses == null || houses.Count == 0)
+            if (houses == null || houses.Count == 0 || condition.Refresh)
             {
                 houses = houseDapper.SearchHouses(condition).ToList();
                 if (houses != null && houses.Count > 0)
