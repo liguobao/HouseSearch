@@ -87,7 +87,7 @@
   export default {
     watch: {
       '$route'() {
-        this.czc();
+        // this.czc();
       },
     },
     methods: {
@@ -106,14 +106,14 @@
       }
     },
     mounted() {
-        let self = this;
-        const script = document.createElement('script')
-        script.src = 'https://s95.cnzz.com/z_stat.php?id=1260881876&web_id=1260881876'
-        script.language = 'JavaScript'
-        document.body.appendChild(script);
-        script.onload = function(){
-         self.czc();
-        }
+        // let self = this;
+        // const script = document.createElement('script')
+        // script.src = 'https://s95.cnzz.com/z_stat.php?id=1260881876&web_id=1260881876'
+        // script.language = 'JavaScript'
+        // document.body.appendChild(script);
+        // script.onload = function(){
+        //  self.czc();
+        // }
     }
   }
 </script>

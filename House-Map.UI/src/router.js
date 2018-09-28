@@ -35,6 +35,14 @@ const router = new Router({
   ]
 });
 
+router.beforeEach((to, from, next) => {
+  // 统计代码
+  if (to.path) {
+    _hmt.push(['_trackPageview', '/#' + to.fullPath]);
+  }
+  next();
+});
+
 router.afterEach((to, from) => {
   if(to.meta.title) {
     document.title = to.meta.title
