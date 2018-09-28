@@ -23,7 +23,7 @@ namespace HouseMap.Crawler
     {
 
         private static HtmlParser htmlParser = new HtmlParser();
-        public SpaciousCrawler(HouseDapper houseDapper, ConfigService configService) : base(houseDapper, configService)
+        public SpaciousCrawler(HouseDapper houseDapper, ConfigDapper configDapper) : base(houseDapper, configDapper)
         {
             this.Source = ConstConfigName.HKSpacious;
         }

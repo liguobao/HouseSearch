@@ -17,14 +17,16 @@ namespace HouseMap.Crawler.Controllers
     public class JobsController : Controller
     {
 
-        private TodayHouseDashboardJob _dashboardJob;
+        private readonly TodayHouseDashboardJob _dashboardJob;
 
 
         private readonly IServiceProvider _serviceProvider;
 
-        private RefreshHouseCacheJob _refreshHouseCacheJob;
+        private readonly RefreshHouseCacheJob _refreshHouseCacheJob;
 
-        private RefreshHouseSourceJob _refreshHouseSourceJob;
+        private readonly RefreshHouseSourceJob _refreshHouseSourceJob;
+
+
 
         public JobsController(TodayHouseDashboardJob houseDashboardJob,
                               RefreshHouseCacheJob refreshHouseCacheJob,
@@ -43,10 +45,13 @@ namespace HouseMap.Crawler.Controllers
 
             try
             {
-                var crawlers = _serviceProvider.GetServices<ICrawler>();
+                var crawler = _serviceProvider.GetServices<ICrawler>().FirstOrDefault(c => c.GetSource() == source);
                 LogHelper.RunActionTaskNotThrowEx(() =>
                 {
-
+                    if (crawler != null)
+                    {
+                        crawler.Run();
+                    }
                 }, source);
 
                 return Json(new { success = true });

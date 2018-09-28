@@ -24,8 +24,8 @@ namespace HouseMap.Crawler
     public class CCBCrawler : BaseCrawler,ICrawler
     {
         private readonly AppSettings _configuration;
-        public CCBCrawler(IOptions<AppSettings> configuration, HouseDapper houseDapper, ConfigService configService)
-         : base(houseDapper, configService)
+        public CCBCrawler(IOptions<AppSettings> configuration, HouseDapper houseDapper, ConfigDapper configDapper)
+         : base(houseDapper, configDapper)
         {
             this.Source = ConstConfigName.CCBHouse;
             _configuration = configuration.Value;

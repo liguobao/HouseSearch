@@ -22,9 +22,9 @@ namespace HouseMap.Crawler
     public class SampleCrawler : BaseCrawler,ICrawler
     {
 
-        public SampleCrawler(HouseDapper houseDapper, ConfigService configService) : base(houseDapper, configService)
+        public SampleCrawler(HouseDapper houseDapper,ConfigDapper configDapper) : base(houseDapper, configDapper)
         {
-            this.Source = ConstConfigName.Beike;
+            this.Source = "Test";
         }
 
         public override string GetJsonOrHTML(JToken config, int page)

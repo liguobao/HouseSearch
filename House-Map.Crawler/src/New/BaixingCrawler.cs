@@ -22,7 +22,7 @@ namespace HouseMap.Crawler
     public class BaixingCrawler : BaseCrawler,ICrawler
     {
         private static HtmlParser htmlParser = new HtmlParser();
-        public BaixingCrawler(HouseDapper houseDapper, ConfigService configService) : base(houseDapper, configService)
+        public BaixingCrawler(HouseDapper houseDapper, ConfigDapper configDapper) : base(houseDapper, configDapper)
         {
             this.Source = ConstConfigName.BaiXing;
         }

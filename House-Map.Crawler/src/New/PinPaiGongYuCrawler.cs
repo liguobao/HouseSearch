@@ -22,7 +22,7 @@ namespace HouseMap.Crawler
     public class PinPaiGongYuCrawler : BaseCrawler,ICrawler
     {
 
-        public PinPaiGongYuCrawler(HouseDapper houseDapper, ConfigService configService) : base(houseDapper, configService)
+        public PinPaiGongYuCrawler(HouseDapper houseDapper,ConfigDapper configDapper) : base(houseDapper, configDapper)
         {
             this.Source = ConstConfigName.PinPaiGongYu;
         }

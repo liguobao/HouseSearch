@@ -15,19 +15,19 @@ using HouseMap.Models;
 
 namespace HouseMap.Crawler
 {
-    public class BaseCrawler
+    public class BaseCrawler : ICrawler
     {
 
         protected string Source;
 
-        private readonly ConfigService _configService;
+        private readonly ConfigDapper _configDapper;
 
         private HouseDapper _houseDapper;
 
-        public BaseCrawler(HouseDapper houseDapper, ConfigService configService)
+        public BaseCrawler(HouseDapper houseDapper, ConfigDapper configDapper)
         {
             this._houseDapper = houseDapper;
-            this._configService = configService;
+            this._configDapper = configDapper;
         }
 
         public virtual string GetJsonOrHTML(JToken config, int page)
@@ -45,7 +45,7 @@ namespace HouseMap.Crawler
         public void Run()
         {
 
-            foreach (var config in _configService.LoadBySource(Source))
+            foreach (var config in _configDapper.LoadBySource(Source))
             {
                 var confInfo = JsonConvert.DeserializeObject<JToken>(config.Json);
                 for (var pageNum = 1; pageNum < confInfo["pagecount"].ToObject<int>(); pageNum++)
@@ -55,6 +55,11 @@ namespace HouseMap.Crawler
                     _houseDapper.BulkInsertHouses(houses);
                 }
             }
+        }
+
+        public string GetSource()
+        {
+            return Source;
         }
     }
 }

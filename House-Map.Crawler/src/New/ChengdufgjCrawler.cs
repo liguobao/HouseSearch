@@ -23,7 +23,7 @@ namespace HouseMap.Crawler
     public class ChengdufgjCrawler : BaseCrawler,ICrawler
     {
         private static HtmlParser htmlParser = new HtmlParser();
-        public ChengdufgjCrawler( HouseDapper houseDapper, ConfigService configService) : base(houseDapper, configService)
+        public ChengdufgjCrawler( HouseDapper houseDapper, ConfigDapper configDapper) : base(houseDapper, configDapper)
         {
             this.Source = ConstConfigName.Chengdufgj;
         }
