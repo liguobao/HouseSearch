@@ -66,7 +66,7 @@ namespace HouseMap.Dao
                 };
                 dashboards.Add(dash);
             }
-            return dashboards;
+            return dashboards.GroupBy(d => d.CityName + d.Source).Select(item => item.First()).ToList();
         }
 
 
