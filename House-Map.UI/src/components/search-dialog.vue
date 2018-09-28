@@ -235,7 +235,7 @@
         }
       },
       async getCities() {
-        const data = await this.$ajax.get('/houses/citys');
+        const data = await this.$ajax.get('/houses/cities');
         this.cities = data.data;
       }
     },
