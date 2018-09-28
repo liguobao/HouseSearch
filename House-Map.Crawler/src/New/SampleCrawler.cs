@@ -22,7 +22,7 @@ namespace HouseMap.Crawler
     public class SampleCrawler : BaseCrawler
     {
 
-        public SampleCrawler(HouseDapper houseDapper, ConfigDapper configDapper) : base(houseDapper, configDapper)
+        public SampleCrawler(HouseDapper houseDapper, ConfigService configService) : base(houseDapper, configService)
         {
             this.Source = ConstConfigName.Beike;
         }

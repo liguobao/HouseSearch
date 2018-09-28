@@ -18,17 +18,14 @@ namespace HouseMap.Crawler.Controllers
     {
         private ZuberCrawler _zuber;
 
-        private readonly ConfigDapper _configDapper;
 
         private HouseDataContext _context;
 
 
-        public TestController(ZuberCrawler zuber, HouseDataContext context,
-        ConfigDapper configDapper)
+        public TestController(ZuberCrawler zuber, HouseDataContext context)
         {
             _zuber = zuber;
             _context = context;
-            _configDapper = configDapper;
         }
 
         public IActionResult Index(string source)

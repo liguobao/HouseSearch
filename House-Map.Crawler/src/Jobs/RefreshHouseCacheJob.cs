@@ -18,15 +18,15 @@ namespace HouseMap.Crawler.Jobs
 
         private HouseService _houseService;
 
-        private readonly ConfigDapper _configDapper;
+        private ConfigService _configService;
 
 
 
 
-        public RefreshHouseCacheJob(HouseService houseService, ConfigDapper configDapper)
+        public RefreshHouseCacheJob(HouseService houseService,ConfigService configService)
         {
             _houseService = houseService;
-            _configDapper = configDapper;
+            _configService = configService;
         }
 
         [Invoke(Begin = "2018-07-01 00:30", Interval = 1000 * 3500, SkipWhileExecuting = true)]
@@ -36,7 +36,7 @@ namespace HouseMap.Crawler.Jobs
             var sw = new System.Diagnostics.Stopwatch();
             sw.Start();
 
-            var cityDashboards = _configDapper.GetDashboards().GroupBy(d => d.CityName);
+            var cityDashboards = _configService.LoadCitySources();
             foreach (var item in cityDashboards)
             {
                 LogHelper.RunActionNotThrowEx(() =>
@@ -44,7 +44,7 @@ namespace HouseMap.Crawler.Jobs
                     //聚合房源的缓存,前600条数据
                     var search = new HouseCondition() { CityName = item.Key, HouseCount = 600, IntervalDay = 14, Refresh = true };
                     _houseService.Search(search);
-                    foreach (var dashboard in item)
+                    foreach (var dashboard in item.Value)
                     {
                         //每类房源的默认缓存,前600条数据
                         search.HouseCount = 600;

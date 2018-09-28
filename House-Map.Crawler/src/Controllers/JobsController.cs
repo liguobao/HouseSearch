@@ -20,21 +20,19 @@ namespace HouseMap.Crawler.Controllers
 
         private TodayHouseDashboardJob houseDashboardJob;
 
+        private PinPaiGongYuCrawler pinpai;
+        private HuzhuCrawler people;
+        private DoubanCrawler douban;
+        private CCBCrawler ccbHouse;
+        private ZuberCrawler zuber;
+        private MoGuCrawler mogu;
 
+        private BeikeCrawler beike;
+        private SpaciousCrawler hkSpacious;
 
-        private PinPaiGongYuHouseCrawler pinpai;
-        private PeopleRentingCrawler people;
-        private DoubanHouseCrawler douban;
-        private CCBHouseCrawler ccbHouse;
-        private ZuberHouseCrawler zuber;
-        private MoGuHouseCrawler mogu;
+        private BaixingCrawler baixing;
 
-        private BeikeHouseCrawler beike;
-        private HKSpaciousCrawler hkSpacious;
-
-        private BaiXingHouseCrawler baixing;
-
-        private ChengduZufangCrawler chengdu;
+        private ChengdufgjCrawler chengdu;
 
         private RefreshHouseCacheJob refreshHouseCacheJob;
 
@@ -42,18 +40,18 @@ namespace HouseMap.Crawler.Controllers
 
         public JobsController(TodayHouseDashboardJob houseDashboardJob,
                               HouseDapper houseDapper,
-                              PinPaiGongYuHouseCrawler pinpai,
-                              PeopleRentingCrawler people,
-                              DoubanHouseCrawler douban,
-                              CCBHouseCrawler ccbHouse,
-                              ZuberHouseCrawler zuber,
-                              MoGuHouseCrawler mogu,
-                              HKSpaciousCrawler hkSpacious,
-                              BaiXingHouseCrawler baixing,
-                              ChengduZufangCrawler chengdu,
+                              PinPaiGongYuCrawler pinpai,
+                              HuzhuCrawler people,
+                              DoubanCrawler douban,
+                              CCBCrawler ccbHouse,
+                              ZuberCrawler zuber,
+                              MoGuCrawler mogu,
+                              SpaciousCrawler hkSpacious,
+                              BaixingCrawler baixing,
+                              ChengdufgjCrawler chengdu,
                               RefreshHouseCacheJob refreshHouseCacheJob,
                               RefreshHouseSourceJob refreshHouseSourceJob,
-                              BeikeHouseCrawler beike)
+                              BeikeCrawler beike)
         {
             this.houseDashboardJob = houseDashboardJob;
             this.houseDapper = houseDapper;
@@ -145,7 +143,6 @@ namespace HouseMap.Crawler.Controllers
 
         public IActionResult InitBeike()
         {
-            beike.InitCityData();
             return Json(new { success = true });
         }
     }

@@ -22,7 +22,7 @@ namespace HouseMap.Crawler
     public class HuzhuCrawler : BaseCrawler
     {
 
-        public HuzhuCrawler(HouseDapper houseDapper, ConfigDapper configDapper) : base(houseDapper, configDapper)
+        public HuzhuCrawler(HouseDapper houseDapper, ConfigService configService) : base(houseDapper, configService)
         {
             this.Source = ConstConfigName.HuZhuZuFang;
         }

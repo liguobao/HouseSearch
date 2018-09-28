@@ -21,7 +21,5 @@ namespace HouseMap.Dao
         public DbSet<DbConfig> Configs { get; set; }
 
 
-        public DbSet<CrawlerConfig> CrawlerConfigs { get; set; }
-
     }
 }

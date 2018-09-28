@@ -23,7 +23,7 @@ namespace HouseMap.Crawler
     public class DoubanCrawler : BaseCrawler
     {
 
-        public DoubanCrawler(HouseDapper houseDapper, ConfigDapper configDapper) : base(houseDapper, configDapper)
+        public DoubanCrawler( HouseDapper houseDapper, ConfigService configService) : base(houseDapper, configService)
         {
             this.Source = ConstConfigName.Douban;
         }

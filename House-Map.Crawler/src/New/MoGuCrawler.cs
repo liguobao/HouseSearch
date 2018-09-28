@@ -22,7 +22,7 @@ namespace HouseMap.Crawler
     public class MoGuCrawler : BaseCrawler
     {
 
-        public MoGuCrawler(HouseDapper houseDapper, ConfigDapper configDapper) : base(houseDapper, configDapper)
+        public MoGuCrawler(HouseDapper houseDapper, ConfigService configService) : base(houseDapper, configService)
         {
             this.Source = ConstConfigName.MoguHouse;
         }

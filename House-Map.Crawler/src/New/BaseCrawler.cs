@@ -19,14 +19,15 @@ namespace HouseMap.Crawler
     {
 
         protected string Source;
-        private ConfigDapper _configDapper;
+
+        private readonly ConfigService _configService;
 
         private HouseDapper _houseDapper;
 
-        public BaseCrawler(HouseDapper houseDapper, ConfigDapper configDapper)
+        public BaseCrawler(HouseDapper houseDapper, ConfigService configService)
         {
             this._houseDapper = houseDapper;
-            this._configDapper = configDapper;
+            this._configService = configService;
         }
 
         public virtual string GetJsonOrHTML(JToken config, int page)
@@ -44,9 +45,9 @@ namespace HouseMap.Crawler
         public void Run()
         {
 
-            foreach (var config in _configDapper.GetList(Source))
+            foreach (var config in _configService.LoadBySource(Source))
             {
-                var confInfo = JsonConvert.DeserializeObject<JToken>(config.ConfigurationValue);
+                var confInfo = JsonConvert.DeserializeObject<JToken>(config.Json);
                 for (var pageNum = 1; pageNum < confInfo["pagecount"].ToObject<int>(); pageNum++)
                 {
                     var htmlOrJson = GetJsonOrHTML(confInfo, pageNum);

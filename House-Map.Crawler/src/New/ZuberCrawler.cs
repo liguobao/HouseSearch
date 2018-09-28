@@ -27,7 +27,7 @@ namespace HouseMap.Crawler
 
         static string API_VERSION = "v3/";
         static string SCENE = "2567a5ec9705eb7ac2c984033e06189d";
-        public ZuberCrawler(HouseDapper houseDapper, ConfigDapper configDapper) : base(houseDapper, configDapper)
+        public ZuberCrawler(HouseDapper houseDapper, ConfigService configService) : base(houseDapper, configService)
         {
             this.Source = ConstConfigName.Zuber;
         }

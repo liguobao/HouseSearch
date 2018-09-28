@@ -51,7 +51,12 @@ namespace HouseMap.Dao
             .ToDictionary(item => item.Key, items => items.GroupBy(c => c.Source).Select(i => i.First()).ToList());
         }
 
-         //待废弃
+        public List<DbConfig> LoadBySource(string source)
+        {
+            return _dataContext.Configs.AsNoTracking().Where(c =>c.Source == source).ToList();
+        }
+
+        //待废弃
         public dynamic LoadDashboard()
         {
             var dashboards = _redisTool.ReadCache<dynamic>(RedisKey.CityDashboards.Key,
