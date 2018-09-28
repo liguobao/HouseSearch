@@ -834,7 +834,8 @@
 
                     map.add(marker);
 
-                    let displayMoney = item.DisPlayPrice ? "  租金：" + item.DisPlayPrice : "";
+                    let displayMoney = item.disPlayPrice ? "  租金：" + item.disPlayPrice : "";
+
                     let sourceContent = item.displaySource ? " 来源：" + item.displaySource : "";
                     let title = item.houseTitle;
                     if (title) {
