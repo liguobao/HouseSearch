@@ -38,7 +38,7 @@ namespace HouseMap.Crawler
             InitDB(services);
         }
 
-         private void InitDB(IServiceCollection services)
+        private void InitDB(IServiceCollection services)
         {
             services.AddDbContext<HouseDataContext>(options =>
             {
@@ -62,7 +62,7 @@ namespace HouseMap.Crawler
             services.AddScoped<RedisTool, RedisTool>();
             services.AddScoped<HouseService, HouseService>();
             services.AddScoped<ElasticsearchService, ElasticsearchService>();
-
+            services.AddScoped<ConfigService, ConfigService>();
 
             #endregion
 

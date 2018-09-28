@@ -70,15 +70,15 @@ namespace HouseMapAPI
             #region Service
             services.AddScoped<EmailService, EmailService>();
             services.AddScoped<RedisTool, RedisTool>();
-            services.AddScoped<DashboardService, DashboardService>();
             services.AddScoped<UserService, UserService>();
-            services.AddScoped<UserHouseService,UserHouseService>();
+            services.AddScoped<UserHouseService, UserHouseService>();
             services.AddScoped<ConfigService, ConfigService>();
             services.AddScoped<HouseService, HouseService>();
             services.AddScoped<UserCollectionService, UserCollectionService>();
             services.AddScoped<QQOAuthClient, QQOAuthClient>();
             services.AddScoped<WeChatAppDecrypt, WeChatAppDecrypt>();
             services.AddScoped<UserTokenFilter, UserTokenFilter>();
+            services.AddScoped<CrawlerConfigService, CrawlerConfigService>();
 
             #endregion
         }

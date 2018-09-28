@@ -14,8 +14,18 @@ namespace HouseMap.Dao.DBEntity
 
         public string Source { get; set; }
 
+        public string DisplaySource
+        {
+            get
+            {
+                return ConstConfigName.ConvertToDisPlayName(this.Source);
+            }
+        }
+
         public int PageCount { get; set; }
 
         public string Json { get; set; }
+
+        public int Score { get; set; }
     }
 }

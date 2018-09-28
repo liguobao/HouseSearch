@@ -15,13 +15,13 @@ using Talk.OAuthClient;
 namespace HouseMapAPI.Service
 {
 
-    public class ConfigService
+    public class CrawlerConfigService
     {
         private ConfigDapper _dapper;
 
 
 
-        public ConfigService(ConfigDapper dapper)
+        public CrawlerConfigService(ConfigDapper dapper)
         {
             _dapper = dapper;
 

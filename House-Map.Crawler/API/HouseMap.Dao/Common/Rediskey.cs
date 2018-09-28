@@ -40,11 +40,28 @@ namespace HouseMap.Common
             DBName = 1
         };
 
+
+        public static KeyConfig CityDashboards = new KeyConfig()
+        {
+            Key = "CityDashboards",
+            ExpireTime = new TimeSpan(TimeSpan.TicksPerMinute * 60 * 12),
+            DBName = 1
+        };
+
         public static KeyConfig CityHouseSource = new KeyConfig()
         {
             Key = "CitySource-",
             ExpireTime = new TimeSpan(TimeSpan.TicksPerMinute * 60 * 12),
             DBName = 1
+        };
+
+
+        public static KeyConfig CrawlerConfig = new KeyConfig()
+        {
+            Key = "SourceConfig-",
+            ExpireTime = new TimeSpan(TimeSpan.TicksPerMinute * 60 * 4),
+            DBName = 1,
+            Minutes = 4 * 60
         };
 
 
@@ -63,6 +80,8 @@ namespace HouseMap.Common
         public string Key { get; set; }
 
         public TimeSpan ExpireTime { get; set; }
+
+        public int Minutes { get; set; }
 
         public int DBName { get; set; } = 0;
     }

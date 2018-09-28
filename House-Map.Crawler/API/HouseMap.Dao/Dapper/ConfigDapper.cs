@@ -62,7 +62,6 @@ namespace HouseMap.Dao
                     ? configJson["cityname"].ToString()
                     : configJson["cityName"].ToString(),
                     HouseSum = 9999,
-                    LastRecordPubTime = DateTime.Now
                 };
                 dashboards.Add(dash);
             }

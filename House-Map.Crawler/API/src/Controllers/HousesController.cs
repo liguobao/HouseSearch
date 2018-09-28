@@ -17,21 +17,21 @@ namespace HouseCrawler.Web.API.Controllers
     public class HousesController : ControllerBase
     {
 
-        private DashboardService _dashboardService;
-
         private ConfigService _configService;
+
+        private CrawlerConfigService _crawlerConfigService;
 
         private HouseService _houseService;
 
 
 
         public HousesController(HouseService houseService,
-                              DashboardService dashboardService,
-                              ConfigService configService)
+                              ConfigService configService,
+                              CrawlerConfigService crawlerConfigService)
         {
             _houseService = houseService;
-            _dashboardService = dashboardService;
             _configService = configService;
+            _crawlerConfigService = crawlerConfigService;
         }
 
 
@@ -50,23 +50,44 @@ namespace HouseCrawler.Web.API.Controllers
             return Ok(new
             {
                 success = true,
-                data = _dashboardService.LoadCityDashboards()
+                data = _configService.LoadDashboard()
             });
         }
 
         [EnableCors("APICors")]
-        [HttpGet("citys")]
-        public IActionResult Citys()
+        [HttpGet("city-source")]
+        public IActionResult LoadDashboards()
         {
-            return Ok(new { success = true, data = _dashboardService.LoadCities() });
+            var id = 1;
+            return Ok(new
+            {
+                success = true,
+                data = _configService.LoadCitySources().Select(i => new
+                {
+                    id = id + 1,
+                    city = i.Key,
+                    sources = i.Value
+                })
+            });
         }
+
 
 
         [EnableCors("APICors")]
         [HttpGet("cities")]
         public IActionResult Cities()
         {
-            return Ok(new { success = true, data = _dashboardService.LoadCities() });
+            var id = 1;
+            return Ok(new
+            {
+                success = true,
+                data = _configService.LoadConfigs()
+                .GroupBy(c => c.City).Select(i => new
+                {
+                    id = id + 1,
+                    name = i.Key
+                })
+            });
         }
 
         [EnableCors("APICors")]
@@ -75,7 +96,7 @@ namespace HouseCrawler.Web.API.Controllers
         {
             string doubanGroup = model?["groupId"].ToString();
             string cityName = model?["cityName"].ToString();
-            _configService.AddDoubanConfig(doubanGroup, cityName);
+            _crawlerConfigService.AddDoubanConfig(doubanGroup, cityName);
             return Ok(new { success = true });
         }
 

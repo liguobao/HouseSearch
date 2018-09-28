@@ -22,8 +22,6 @@ namespace HouseMap.Models
             }
         }
 
-        public DateTime LastRecordPubTime { get; set; }
-
     }
 
 
