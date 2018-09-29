@@ -30,7 +30,7 @@ namespace HouseMap.Dao
                 var configQuery = _dataContext.Configs.AsNoTracking().AsQueryable();
                 if (!string.IsNullOrEmpty(city))
                 {
-                    configQuery.Where(c => c.City == city);
+                    configQuery = configQuery.Where(c => c.City == city);
                 }
                 configs = configQuery.OrderByDescending(c => c.Score).ToList();
                 _redisTool.WriteObject(RedisKey.CrawlerConfig.Key + city, configs,
@@ -53,7 +53,7 @@ namespace HouseMap.Dao
 
         public List<DbConfig> LoadBySource(string source)
         {
-            return _dataContext.Configs.AsNoTracking().Where(c =>c.Source == source).ToList();
+            return _dataContext.Configs.AsNoTracking().Where(c => c.Source == source).ToList();
         }
 
         //待废弃
