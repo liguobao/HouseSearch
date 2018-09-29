@@ -49,7 +49,7 @@ const baiduTongji = () => {
     let s = document.getElementsByTagName('script')[0];
     s.parentNode.insertBefore(hm, s);
     hm.onload = function () {
-      resolve()
+      resolve(window._hmt)
     };
     hm.onerror = function () {
       reject()
@@ -61,7 +61,11 @@ router.beforeEach(async (to, from, next) => {
   // 统计代码
   try {
     if(process.env.NODE_ENV === "production") {
-      await baiduTongji();
+      let _hmt = await baiduTongji();
+      if(_hmt) {
+        _hmt.push(['_trackPageview', '/#' + to.fullPath]);
+        _hmt.push(['_trackPageview', to.fullPath]);
+      }
     }
     next();
   }catch (e) {
