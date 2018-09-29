@@ -390,6 +390,11 @@
       height: 100%;
       flex: auto;
     }
+    .marker-info {
+      i {
+        margin-right: 4px;
+      }
+    }
     .marker-link {
       display: block;
       font-size: 12px;
@@ -451,6 +456,8 @@
 <script>
   import Vue from 'vue'
   import userInfo from './../components/user-info';
+
+  const asyncComponent = require('./../components/async-component.js').default;
 
   export default {
     components: {},
@@ -599,7 +606,7 @@
       async collect(item) {
         let self = this;
         if (!self.user) {
-          const asyncComponent = require('./../components/async-component.js').default;
+
           let com = require('./../components/login-dialog').default;
           try {
             await asyncComponent(com, {
@@ -611,7 +618,7 @@
               this.view = template;
             });
             this.view = undefined;
-          }catch (e) {
+          } catch (e) {
             this.view = undefined;
             return
           }
@@ -643,6 +650,23 @@
           }
         }
         this[key] = val || false;
+      },
+      async preview(item) {
+        let com = require('./../components/preview-iamge').default;
+        try {
+          await asyncComponent(com, {
+            props: {
+              images: item.pictures,
+              isMobile: self.isMobile
+            }
+          }, (template) => {
+            this.view = template;
+          });
+          this.view = undefined;
+        } catch (e) {
+          this.view = undefined;
+          return
+        }
       },
       search() {
         let self = this;
@@ -889,6 +913,22 @@
                                 }
                               }),
                               h('span', {
+                                style: {
+                                  display: item.pictures && item.pictures.length ? 'block' : 'none',
+                                },
+                                class: ['marker-info', 'marker-link'],
+                                on: {
+                                  click: async function (e) {
+                                    self.preview(item)
+                                  }
+                                }
+                              }, [
+                                h('i', {
+                                  class: ['el-icon-picture']
+                                }),
+                                '查看图片'
+                              ]),
+                              h('span', {
                                 class: ['marker-info', 'marker-link'],
                                 on: {
                                   click: async function (e) {
@@ -1032,7 +1072,11 @@
 
           let info = await this.getList();
           let data = info.data;
-          //data.length = 20;
+
+          if (process.env.NODE_ENV === "development") {
+            data.length = 20;
+          }
+
           // this.showRight = true;
 
 
@@ -1048,8 +1092,8 @@
         }
       },
 
-      appendScript(url, cb) {
-        return new Promise((resolve, reject) => {
+      appendScript(url) {
+        return new Promise((resolve) => {
           let jsapi = document.createElement('script');
           jsapi.charset = 'utf-8';
           jsapi.src = url;
@@ -1076,6 +1120,7 @@
 
 
       this.init();
+
     }
   }
 </script>

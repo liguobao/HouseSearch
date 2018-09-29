@@ -6,7 +6,7 @@
       center
       :visible="loginVisible"
       :append-to-body="appendToBody	"
-      :before-close="() => {close('loginVisible')}"
+      :before-close="() => {cancel('loginVisible')}"
   >
     <login @close="submit"></login>
   </el-dialog>
@@ -18,9 +18,6 @@
       appendToBody: {
         default: false
       },
-      loginVisible: {
-        default: true
-      },
       isMobile: {
         default: false
       }
@@ -31,11 +28,21 @@
     components: {
       login
     },
+    data() {
+      return {
+        loginVisible: true
+      }
+    },
     methods: {
-      close(){
+      close() {
+        this.loginVisible = false;
+      },
+      cancel(){
+        this.close();
         this.$emit('cancel',false);
       },
       submit(key,val) {
+        this.close();
         this.$emit('close',val);
       }
     }
