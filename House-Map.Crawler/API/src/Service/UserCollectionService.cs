@@ -40,7 +40,7 @@ namespace HouseMapAPI.Service
             .Select(i => new
             {
                 id = id++,
-                cityName = i.Key,
+                city = i.Key,
                 sources = i.ToList()
             });
             return list;

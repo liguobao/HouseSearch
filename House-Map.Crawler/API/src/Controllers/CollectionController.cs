@@ -26,7 +26,7 @@ namespace HouseCrawler.Web.API.Controllers
             _collectionService = collectionService;
         }
 
-        [HttpGet("{userId}/[controller]/dashboard", Name = "GetUserDashboard")]
+        [HttpGet("{userId}/[controller]/city-source", Name = "GetUserDashboard")]
         [EnableCors("APICors")]
         [ServiceFilter(typeof(UserTokenFilter))]
         public IActionResult GetUserDashboard(long userId, [FromHeader] string token)

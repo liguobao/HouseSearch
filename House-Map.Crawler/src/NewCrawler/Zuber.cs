@@ -51,16 +51,16 @@ namespace HouseMap.Crawler
                 json["sequence"] = resultJObject["result"]["sequence"].ToObject<string>();
                 config.Json = json.ToString();
             }
-            var cityName = config.City;
+            var city = config.City;
             foreach (var item in resultJObject["result"]["items"])
             {
-                var house = ConvertHouse(cityName, item);
+                var house = ConvertHouse(city, item);
                 houses.Add(house);
             }
             return houses;
         }
 
-        private static DBHouse ConvertHouse(string cityName, JToken item)
+        private static DBHouse ConvertHouse(string city, JToken item)
         {
             var room = item["room"];
             var housePrice = room["cost1"].ToObject<int>();
@@ -69,17 +69,31 @@ namespace HouseMap.Crawler
                 Location = room["address"].ToString(),
                 Title = room["summary"].ToString(),
                 OnlineURL = $"http://www.zuber.im/app/room/{room["id"].ToString()}",
-                Text = item.ToString(),
+                Text = room["content"]?.ToString(),
                 Price = housePrice,
                 Source = SourceEnum.Zuber.GetSourceName(),
-                City = cityName,
+                City = city,
+                RentType = ConvertToRentType(room["summary"]?.ToString()),
                 Longitude = room["longitude"].ToObject<decimal>(),
                 Latitude = room["latitude"].ToObject<decimal>(),
                 PicURLs = GetPhotos(room),
-                JsonData = room.ToString(),
-                PubTime = room["last_modify_time"].ToObject<DateTime>()
+                JsonData = item.ToString(),
+                Tags = $"{room["subway_line"]?.ToString()}|{room["room_type_affirm"]?.ToString()}| {room["region"]?.ToString()}",
+                PubTime = room["last_modify_time"].ToObject<DateTime>(),
+                Id = Tools.GetUUId()
             };
             return house;
+        }
+
+        private static int ConvertToRentType(string summary)
+        {
+            if (summary.Contains("整租"))
+                return (int)RentTypeEnum.AllInOne;
+            if (summary.Contains("一室户"))
+                return (int)RentTypeEnum.OneRoom;
+            if (summary.Contains("次卧")||summary.Contains("主卧") || summary.Contains("两室") || summary.Contains("三室")||summary.Contains("四室"))
+                return (int)RentTypeEnum.Shared;
+            return (int)RentTypeEnum.Undefined;
         }
 
         private static string GetPhotos(JToken room)
