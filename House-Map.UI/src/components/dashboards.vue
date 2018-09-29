@@ -6,14 +6,14 @@
             <ul v-if="cities && cities.length">
                 <li v-for="item in cities" :key="item.id" :class="{'is-mobile': isMobile}">
                     <a target="_blank"
-                       @click="navTo({cityname:item.cityName})"
+                       @click="navTo({cityname:item.city})"
                        href="javascript:;"
-                       :title="item.cityName" class="title highlight">{{item.cityName}}</a>
+                       :title="item.city" class="title highlight">{{item.city}}</a>
                     <div class="source-wrap">
                         <a target="_blank"
                            :key="source.id"
                            href="javascript:;"
-                           @click="navTo({cityname:item.cityName,source:source.source,intervalDay:14,houseCount:600})"
+                           @click="navTo({cityname:item.city,source:source.source,intervalDay:14,houseCount:600})"
                            class="highlight" v-for="source in item.sources" :title="source.displaySource">
                             {{source.displaySource}}
                             <template v-if="source.houseSum < 9999">
@@ -140,7 +140,7 @@
                     this.cities = data;
                 } else {
                     const userId = this.$store.state.userInfo.id;
-                    const res = await this.$ajax.get(`/users/${userId}/collections/dashboard`);
+                    const res = await this.$ajax.get(`/users/${userId}/collections/city-source`);
                     const data = res.data;
                     this.cities = data;
                 }

@@ -35,13 +35,41 @@ const router = new Router({
   ]
 });
 
-router.beforeEach((to, from, next) => {
+
+const baiduTongji = () => {
+  window._hmt = window._hmt || [];
+  let sc;
+  return new Promise((resolve, reject) => {
+    if ((sc = document.getElementById('baidu'))) {
+      document.head.removeChild(sc);
+    }
+    let hm = document.createElement('script');
+    hm.src = "https://hm.baidu.com/hm.js?a9c2d4398a08658288f9e13d2899545a";
+    hm.id = 'baidu';
+    let s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(hm, s);
+    hm.onload = function () {
+      resolve()
+    };
+    hm.onerror = function () {
+      reject()
+    }
+  });
+};
+
+router.beforeEach(async (to, from, next) => {
   // 统计代码
-  if (to.path) {
-    _hmt.push(['_trackPageview', '/#' + to.fullPath]);
+  try {
+    if(process.env.NODE_ENV === "production") {
+      await baiduTongji();
+    }
+    next();
+  }catch (e) {
+    next();
   }
-  next();
+
 });
+
 
 router.afterEach((to, from) => {
   if(to.meta.title) {
