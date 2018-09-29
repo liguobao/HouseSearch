@@ -54,7 +54,11 @@ namespace HouseMap.Crawler
             #region Mapper
             services.AddScoped<HouseDapper, HouseDapper>();
             services.AddScoped<HouseStatDapper, HouseStatDapper>();
-             services.AddScoped<ConfigDapper, ConfigDapper>();
+            services.AddScoped<ConfigDapper, ConfigDapper>();
+            services.AddScoped<NewBaseDapper, NewBaseDapper>();
+            services.AddScoped<BaseDapper, BaseDapper>();
+            services.AddScoped<NewHouseDapper, NewHouseDapper>();
+
             #endregion Service
 
             #region Service

@@ -8,6 +8,8 @@ namespace HouseMap.Common
 
         public string MySQLConnectionString { get; set; }
 
+        public string QCloudMySQL { get; set; }
+
         public string RedisConnectionString { get; set; }
 
         public string CCBHomeAPIKey { get; set; }

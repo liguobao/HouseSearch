@@ -36,7 +36,7 @@ namespace HouseMapAPI.Service
         {
             var id = 1;
             var list = _dapper.LoadUserHouseDashboard(userId)
-            .GroupBy(d => d.CityName)
+            .GroupBy(d => d.City)
             .Select(i => new
             {
                 id = id++,
@@ -64,7 +64,7 @@ namespace HouseMapAPI.Service
             _dapper.InsertUser(userCollection);
         }
 
-        public void RemoveOne(long userId,long collectionId)
+        public void RemoveOne(long userId, long collectionId)
         {
             var userCollection = _dapper.FindByIDAndUserID(collectionId, userId);
             if (userCollection == null)

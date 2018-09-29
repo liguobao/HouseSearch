@@ -44,7 +44,7 @@ namespace HouseMap.Dao.DBEntity
 
         public string OnlineURL { get; set; }
 
-
+        [JsonIgnore]
         public string JsonData { get; set; }
 
 

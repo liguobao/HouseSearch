@@ -1,4 +1,5 @@
 using System;
+using HouseMap.Dao.DBEntity;
 
 namespace HouseMap.Crawler
 {
@@ -7,5 +8,6 @@ namespace HouseMap.Crawler
         void Run();
 
         string GetSource();
+
     }
 }

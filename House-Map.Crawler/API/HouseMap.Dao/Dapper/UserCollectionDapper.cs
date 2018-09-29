@@ -127,16 +127,15 @@ namespace HouseMap.Dao
             return sqlText;
         }
 
-        public List<HouseDashboard> LoadUserHouseDashboard(long userID)
+        public List<DbConfig> LoadUserHouseDashboard(long userID)
         {
             using (IDbConnection dbConnection = GetConnection())
             {
                 dbConnection.Open();
-                return dbConnection.Query<HouseDashboard>(@"
+                return dbConnection.Query<DbConfig>(@"
                         SELECT 
-                            HouseCity AS CityName,
-                            Source,
-                            count(*) as HouseSum
+                            HouseCity AS City,
+                            Source
                         FROM
                             UserCollections where UserID = @UserID
                         GROUP BY HouseCity , source;", new { UserID = userID }).ToList();

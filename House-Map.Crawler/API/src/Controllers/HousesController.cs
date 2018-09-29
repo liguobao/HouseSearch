@@ -64,7 +64,7 @@ namespace HouseCrawler.Web.API.Controllers
                 success = true,
                 data = _configService.LoadCitySources().Select(i => new
                 {
-                    id = id + 1,
+                    id = id++,
                     city = i.Key,
                     sources = i.Value
                 })
