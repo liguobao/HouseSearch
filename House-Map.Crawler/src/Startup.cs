@@ -94,6 +94,12 @@ namespace HouseMap.Crawler
             services.AddScoped<ICrawler, BaixingCrawler>();
             services.AddScoped<ICrawler, BeikeCrawler>();
             services.AddScoped<ICrawler, ChengdufgjCrawler>();
+
+
+            services.AddScoped<NewBaseCrawler, NewBaseCrawler>();
+            services.AddScoped<INewCrawler, Zuber>();
+            services.AddScoped<INewCrawler, DoubanWechat>();
+
             #endregion
 
             services.AddScoped<TodayHouseDashboardJob, TodayHouseDashboardJob>();

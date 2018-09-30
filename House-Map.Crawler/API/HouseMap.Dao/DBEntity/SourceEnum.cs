@@ -13,6 +13,9 @@ namespace HouseMap.Dao.DBEntity
         [Source("douban", "DoubanHouse", "豆瓣小组")]
         Douban,
 
+        [Source("douban_wechat", "DoubanWechatHouse", "豆瓣租房")]
+        DoubanWechat,
+
         [Source("pinpaigongyu", "ApartmentHouse", "公寓")]
         PinPaiGongYu,
 

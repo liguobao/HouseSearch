@@ -67,18 +67,18 @@ namespace HouseMap.Crawler
             var house = new DBHouse()
             {
                 Location = room["address"].ToString(),
-                Title = room["summary"].ToString(),
+                Title = room["title"].ToString(),
                 OnlineURL = $"http://www.zuber.im/app/room/{room["id"].ToString()}",
                 Text = room["content"]?.ToString(),
                 Price = housePrice,
                 Source = SourceEnum.Zuber.GetSourceName(),
                 City = city,
                 RentType = ConvertToRentType(room["summary"]?.ToString()),
-                Longitude = room["longitude"].ToObject<decimal>(),
-                Latitude = room["latitude"].ToObject<decimal>(),
+                Longitude = room["longitude"]?.ToString(),
+                Latitude = room["latitude"]?.ToString(),
                 PicURLs = GetPhotos(room),
                 JsonData = item.ToString(),
-                Tags = $"{room["subway_line"]?.ToString()}|{room["room_type_affirm"]?.ToString()}| {room["region"]?.ToString()}",
+                Tags = $"{room["subway_line"]?.ToString()}|{room["room_type_affirm"]?.ToString()}|{room["region"]?.ToString()}",
                 PubTime = room["last_modify_time"].ToObject<DateTime>(),
                 Id = Tools.GetUUId()
             };
@@ -91,7 +91,7 @@ namespace HouseMap.Crawler
                 return (int)RentTypeEnum.AllInOne;
             if (summary.Contains("一室户"))
                 return (int)RentTypeEnum.OneRoom;
-            if (summary.Contains("次卧")||summary.Contains("主卧") || summary.Contains("两室") || summary.Contains("三室")||summary.Contains("四室"))
+            if (summary.Contains("次卧") || summary.Contains("主卧") || summary.Contains("两室") || summary.Contains("三室") || summary.Contains("四室"))
                 return (int)RentTypeEnum.Shared;
             return (int)RentTypeEnum.Undefined;
         }
