@@ -4,5 +4,8 @@ COPY package-lock.json package.json ./
 RUN npm install
 COPY . /app
 
+FROM gcr.io/distroless/nodejs
+COPY --from=build-env /app /app
 EXPOSE 3000
-CMD ["node","/app/app.js"]
+CMD ["/app/app.js"]
+
