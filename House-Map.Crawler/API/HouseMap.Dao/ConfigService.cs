@@ -12,14 +12,14 @@ namespace HouseMap.Dao
 {
     public class ConfigService
     {
-        private RedisTool _redisTool;
+        private readonly RedisTool _redisTool;
 
-        private HouseDataContext _dataContext;
+        private readonly ConfigDapper _configDapper;
 
-        public ConfigService(RedisTool RedisTool, HouseDataContext dataContext)
+        public ConfigService(RedisTool RedisTool, ConfigDapper configDapper)
         {
             this._redisTool = RedisTool;
-            _dataContext = dataContext;
+            _configDapper = configDapper;
         }
 
         public List<DbConfig> LoadConfigs(string city = "")
@@ -27,11 +27,7 @@ namespace HouseMap.Dao
             var configs = _redisTool.ReadCache<List<DbConfig>>(RedisKey.CrawlerConfig.Key + city, RedisKey.CrawlerConfig.DBName);
             if (configs == null)
             {
-                var configQuery = _dataContext.Configs.AsNoTracking().AsQueryable();
-                if (!string.IsNullOrEmpty(city))
-                {
-                    configQuery = configQuery.Where(c => c.City == city);
-                }
+                var configQuery = _configDapper.LoadAll(city);
                 configs = configQuery.OrderByDescending(c => c.Score).ToList();
                 _redisTool.WriteObject(RedisKey.CrawlerConfig.Key + city, configs,
                  RedisKey.CrawlerConfig.DBName, RedisKey.CrawlerConfig.Minutes);
@@ -53,7 +49,7 @@ namespace HouseMap.Dao
 
         public List<DbConfig> LoadBySource(string source)
         {
-            return _dataContext.Configs.AsNoTracking().Where(c => c.Source == source).ToList();
+            return _configDapper.LoadBySource(source);
         }
 
         //待废弃
