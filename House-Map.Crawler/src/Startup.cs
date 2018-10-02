@@ -98,6 +98,7 @@ namespace HouseMap.Crawler
 
             services.AddScoped<NewBaseCrawler, NewBaseCrawler>();
             services.AddScoped<INewCrawler, Zuber>();
+            services.AddScoped<INewCrawler, Beike>();
             services.AddScoped<INewCrawler, DoubanWechat>();
 
             #endregion
