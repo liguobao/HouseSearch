@@ -90,7 +90,7 @@
                     </section>
                     <section v-if="makerInfo.pictures && makerInfo.pictures.length">
                         <span class="content-name btn" @click="preview(makerInfo)"><i
-                                class="el-icon-star-on"></i>查看图片</span>
+                                class="el-icon-picture"></i>查看图片</span>
                     </section>
                     <section>
                         <span class="content-name btn" @click="collect(makerInfo)"><i
