@@ -481,7 +481,7 @@
             -webkit-overflow-scrolling: touch;
             transition: all 0.3s;
             &.is-mobile {
-                top: 12%;
+                top: 18%;
             }
             .panel-handle {
                 display: block;
