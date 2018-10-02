@@ -12,6 +12,7 @@
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
   }
   ul,li{
     list-style: none;
