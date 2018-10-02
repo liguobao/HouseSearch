@@ -36,7 +36,7 @@ namespace HouseMap.Dao.DBEntity
         [Source("baixing", "BaixingHouse", "百姓网")]
         BaiXing,
 
-        [Source("beike", "Beikehouse", "贝壳")]
+        [Source("beike", "BeikeHouse", "贝壳")]
         Beike,
         [Source("chengdufgj", "ChengduHouse", "成都房建局")]
         Chengdufgj
