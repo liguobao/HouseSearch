@@ -236,7 +236,8 @@
                         await asyncComponent(com, {
                             props: {
                                 list: data.data,
-                                appendToBody: true
+                                appendToBody: true,
+                                params
                             }
                         }, (template) => {
                             this.view = template;
@@ -246,7 +247,6 @@
                         this.view = undefined;
                     } catch (e) {
                         this.view = undefined;
-                        return
                     }
                 } else {
                     if (!type) {

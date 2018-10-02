@@ -10,12 +10,13 @@
             class="house-list"
     >
         <div class="">
-            <ul class="list">
-                <li v-for="item in list" :key="`${item.id}-${item.source}`">
+            <ul class="list" v-if="houseList && houseList.length" ref="list">
+                <li v-for="item in houseList" :key="`${item.id}-${item.source}`">
                     <div class="left">
                         <template v-if="item.pictures && item.pictures.length">
                             <transition name="el-fade-in">
-                                <i v-show="!imagesLoadingMap[item.pictures[0]]" class="el-icon-loading loading-icon"></i>
+                                <i v-show="!imagesLoadingMap[item.pictures[0]]"
+                                   class="el-icon-loading loading-icon"></i>
                             </transition>
                             <transition name="el-fade-in">
                                 <img :src="item.pictures[0]"
@@ -38,11 +39,26 @@
                         </div>
                     </div>
                 </li>
+                <li v-if="loading" class="text-center loading">
+                    <i class="el-icon-loading"></i>
+                </li>
             </ul>
+            <div v-else class="text-center">暂无数据</div>
         </div>
     </el-dialog>
 </template>
 <style lang="scss" scoped>
+    .loading {
+        background: transparent !important;
+        justify-content: center;
+        margin-bottom: 0 !important;
+    }
+
+    .text-center {
+        text-align: center;
+        padding: 5px 0;
+    }
+
     .house-list {
 
         /deep/ .el-dialog__body {
@@ -92,7 +108,7 @@
                     font-size: 12px;
                 }
             }
-            .source{
+            .source {
                 font-size: 10px;
                 color: #AAAAAA;
                 position: absolute;
@@ -116,15 +132,59 @@
                 default() {
                     return []
                 }
-            }
+            },
+            params: {}
         },
         data() {
             return {
                 imagesLoadingMap: {},
-                visible: true
+                visible: true,
+                houseList: this.list,
+                loading: false,
+                query: this.params
             }
         },
         methods: {
+            init() {
+                let list = this.$refs.list;
+                if (!list) {
+                    setTimeout(() => {
+                        this.init();
+                    }, 200)
+                } else {
+                    list.addEventListener('scroll', (e) => {
+                        this.lazyLoad(e);
+                    })
+                }
+            },
+            async lazyLoad(e) {
+                if (this.query && !this.loading) {
+                    let target = e.target;
+                    let scrollTop = target.scrollTop;
+                    let offsetHeight = target.offsetHeight;
+                    let scrollHeight = target.scrollHeight;
+                    if ((scrollTop + offsetHeight + 200) >= scrollHeight) {
+                        this.loading = true;
+                        this.getHouseList();
+                    }
+                }
+            },
+            async getHouseList() {
+                let params = this.query;
+                let page = params.page ? params.page : 1;
+                page += 1;
+                let query = {
+                    ...params,
+                    page
+                };
+                const data = await this.$ajax.post('/houses', query);
+                this.query = query;
+                let list = data.data;
+                if (list && list.length) {
+                    this.houseList.push(...list);
+                }
+                this.loading = false;
+            },
             close() {
                 this.visible = false;
             },
@@ -132,6 +192,12 @@
                 this.close();
                 this.$emit('cancel', false);
             }
+        },
+        created() {
+
+        },
+        mounted() {
+            this.init();
         }
     }
 </script>

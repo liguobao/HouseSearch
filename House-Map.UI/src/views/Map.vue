@@ -73,7 +73,8 @@
                 </div>
                 <div class="filter-item">
                     <el-button type="primary" size="mini" :loading="searching" @click="next">下一页</el-button>
-                    <el-button icon="el-icon-tickets" size="mini" type="text" @click="toList" class="to-list"></el-button>
+                    <el-button icon="el-icon-tickets" size="mini" type="text" @click="toList"
+                               class="to-list"></el-button>
                 </div>
             </div>
             <div class="mobile-bg" v-if="makerInfo" @click="handleMobileBg">
@@ -165,10 +166,11 @@
     </div>
 </template>
 <style scoped lang="scss">
-    .to-list{
+    .to-list {
         color: #fff;
         font-size: 18px;
     }
+
     .highlight-text {
         position: fixed;
         color: red;
@@ -591,11 +593,16 @@
         methods: {
             async toList() {
                 let com = require('./../components/mobile/house-list').default;
-                console.log(this.houseList)
                 try {
+                    let params = {
+                        ...this.$route.query,
+                        cityname: this.cityName,
+                        houseCount: 180
+                    };
                     await asyncComponent(com, {
                         props: {
-                            list: this.houseList
+                            list: this.houseList,
+                            params
                         }
                     }, (template) => {
                         this.view = template;
