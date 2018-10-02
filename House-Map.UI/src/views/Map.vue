@@ -507,7 +507,6 @@
     const asyncComponent = require('./../components/async-component.js').default;
 
     export default {
-        components: {},
         data() {
             return {
                 houseList: [],
