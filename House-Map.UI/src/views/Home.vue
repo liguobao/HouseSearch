@@ -184,6 +184,8 @@
             <house-search-list type="user" @close="toggleDialog" :house-list="userHouseList"
                                :token="token"></house-search-list>
         </el-dialog>
+
+        <component v-if="view" :is="view"></component>
     </div>
 </template>
 <style lang="scss" scoped>
@@ -577,6 +579,7 @@
         },
         data() {
             return {
+                view: undefined,
                 cities: [
                     {
                         name: '上海地区',

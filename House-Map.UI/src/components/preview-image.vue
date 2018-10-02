@@ -4,7 +4,7 @@
             :width="isMobile ? '100%' : '900px'"
             center
             :visible="visible"
-            :append-to-body="appendToBody	"
+            :append-to-body="appendToBody"
             :before-close="cancel"
     >
         <div class="preview">

@@ -73,6 +73,7 @@
                 </div>
                 <div class="filter-item">
                     <el-button type="primary" size="mini" :loading="searching" @click="next">下一页</el-button>
+                    <el-button icon="el-icon-tickets" size="mini" type="text" @click="toList" class="to-list"></el-button>
                 </div>
             </div>
             <div class="mobile-bg" v-if="makerInfo" @click="handleMobileBg">
@@ -164,6 +165,10 @@
     </div>
 </template>
 <style scoped lang="scss">
+    .to-list{
+        color: #fff;
+        font-size: 18px;
+    }
     .highlight-text {
         position: fixed;
         color: red;
@@ -449,6 +454,7 @@
                 color: #fff;
             }
             &.slide-up {
+                overflow: hidden;
                 max-height: 25px;
             }
             &:empty {
@@ -467,6 +473,7 @@
         components: {},
         data() {
             return {
+                houseList: [],
                 zoom: 12,
                 info: undefined,
                 markers: [],
@@ -582,6 +589,23 @@
             }
         },
         methods: {
+            async toList() {
+                let com = require('./../components/mobile/house-list').default;
+                console.log(this.houseList)
+                try {
+                    await asyncComponent(com, {
+                        props: {
+                            list: this.houseList
+                        }
+                    }, (template) => {
+                        this.view = template;
+                    });
+                    this.view = undefined;
+                } catch (e) {
+                    this.view = undefined;
+                    return
+                }
+            },
             whereAmI() {
                 this.positionPicker.start(this.lnglat)
             },
@@ -611,7 +635,7 @@
                 let self = this;
                 if (!self.user) {
 
-                    let com = require('./../components/login-dialog').default;
+                    let com = require('../components/login-dialog').default;
                     try {
                         await asyncComponent(com, {
                             props: {
@@ -657,7 +681,7 @@
             },
             async preview(item) {
                 let self = this;
-                let com = require('./../components/preview-iamge').default;
+                let com = require('../components/preview-image').default;
                 try {
                     await asyncComponent(com, {
                         props: {
@@ -712,11 +736,13 @@
                 if (this.isMobile) {
                     houseCount = 180;
                 }
-                return await this.$ajax.post('/houses', {
+                let data = await this.$ajax.post('/houses', {
                     ...this.$route.query,
                     cityname: this.cityName,
                     houseCount
                 });
+                this.houseList = data.data;
+                return data;
             },
             transfer(position, map, self) {
                 if (this.transferFn) {
@@ -1125,7 +1151,6 @@
 
 
             this.init();
-
         }
     }
 </script>

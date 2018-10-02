@@ -253,7 +253,7 @@
       },
       async login(type) {
         const asyncComponent = require('./../components/async-component.js').default;
-        let com = require('./../components/login-dialog').default;
+        let com = require('./login-dialog').default;
         try {
           await asyncComponent(com, {
             props: {
