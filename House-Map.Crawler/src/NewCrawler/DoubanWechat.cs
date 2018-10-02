@@ -18,6 +18,7 @@ using System.Text;
 using HouseMap.Models;
 using HouseMap.Common;
 using System.IO;
+using Microsoft.Extensions.Options;
 
 namespace HouseMap.Crawler
 {
@@ -25,23 +26,23 @@ namespace HouseMap.Crawler
     public class DoubanWechat : NewBaseCrawler
     {
         private readonly AppSettings _appSettings;
-        public DoubanWechat(NewHouseDapper houseDapper, ConfigDapper configDapper) : base(houseDapper, configDapper)
+        public DoubanWechat(NewHouseDapper houseDapper, ConfigDapper configDapper, IOptions<AppSettings> configuration) : base(houseDapper, configDapper)
         {
             this.Source = SourceEnum.DoubanWechat;
+            _appSettings = configuration.Value;
         }
 
 
         public override string GetJsonOrHTML(DbConfig config, int page)
         {
-            var content = GetTopics(config, page);
-            return content;
+            return GetTopics(config, page);
         }
 
         private string GetTopics(DbConfig config, int page)
         {
             try
             {
-                var client = new RestClient($"http://{_appSettings.NodeProxyHost}/topics?city={config.City}&page={page}&limit=30");
+                var client = new RestClient($"{_appSettings.NodeProxyHost}/topics?city={config.City}&page={page}&limit=30");
                 var request = new RestRequest(Method.GET);
                 IRestResponse response = client.Execute(request);
                 return response.Content;
@@ -57,7 +58,7 @@ namespace HouseMap.Crawler
         {
             try
             {
-                var client = new RestClient($"http://{_appSettings.NodeProxyHost}/topics/{topicId}");
+                var client = new RestClient($"{_appSettings.NodeProxyHost}/topics/{topicId}");
                 var request = new RestRequest(Method.GET);
                 IRestResponse response = client.Execute(request);
                 return response.Content;
@@ -95,13 +96,11 @@ namespace HouseMap.Crawler
                     house.JsonData = topicDetailJson;
                     house.City = config.City;
                     house.CreateTime = DateTime.Now;
-                }
-                else
-                {
-
+                    house.Tags = $"{topicDetail["house_type_display"]?.ToString()}|{topicDetail["direction_display"]?.ToString()}|{topicDetail["topic_kind_display"]?.ToString()}";
+                    house.PicURLs = JsonConvert.SerializeObject(topicDetail["photos"].Select(item => item["large_picture_url"].ToString()));
+                    houses.Add(house);
                 }
             }
-
             return houses;
 
         }
