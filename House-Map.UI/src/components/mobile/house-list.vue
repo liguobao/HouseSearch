@@ -55,6 +55,7 @@
         background: transparent !important;
         justify-content: center;
         margin-bottom: 0 !important;
+        min-height: auto !important;
     }
 
     .text-center {
@@ -84,6 +85,7 @@
                 margin-bottom: 10px;
                 border-radius: 4px;
                 padding: 6px;
+                min-height: 66px;
             }
         }
         .left {
