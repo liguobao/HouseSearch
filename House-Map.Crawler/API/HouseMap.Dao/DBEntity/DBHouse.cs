@@ -39,6 +39,8 @@ namespace HouseMap.Dao.DBEntity
 
         public string Tags { get; set; }
 
+        public string Labels { get; set; }
+
         public DateTime PubTime { get; set; }
 
 

@@ -84,7 +84,7 @@ namespace HouseCrawler.Web.API.Controllers
                 data = _configService.LoadConfigs()
                 .GroupBy(c => c.City).Select(i => new
                 {
-                    id = id + 1,
+                    id = id++,
                     name = i.Key
                 })
             });

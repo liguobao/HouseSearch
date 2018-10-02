@@ -34,7 +34,7 @@ namespace HouseMap.Dao
                                      `Longitude`, `Latitude`,
                                     `RentType`,`Tags`, 
                                     `PubTime`, `OnlineURL`,
-                                     `Price`,
+                                     `Price`,`Labels`,
                                     `Source`,`Id`) 
                                      VALUES (@Title, @Text,
                                             @PicURLs, @Location,
@@ -42,7 +42,7 @@ namespace HouseMap.Dao
                                             @Longitude,@Latitude,
                                             @RentType,@Tags,
                                             @PubTime,@OnlineURL,
-                                            @Price,
+                                            @Price,@Labels,
                                             @Source,@Id)  ON DUPLICATE KEY UPDATE UpdateTime=now();",
                                      houses, transaction: transaction);
                 result = dbConnection.Execute(@"INSERT INTO HouseData 

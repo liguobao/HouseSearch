@@ -24,8 +24,7 @@ namespace HouseMap.Crawler
 
     public class DoubanWechat : NewBaseCrawler
     {
-
-        private readonly string _key = "Ddg54q;sg]^3lka(72%2./as+d^823sD";
+        private readonly AppSettings _appSettings;
         public DoubanWechat(NewHouseDapper houseDapper, ConfigDapper configDapper) : base(houseDapper, configDapper)
         {
             this.Source = SourceEnum.DoubanWechat;
@@ -34,24 +33,16 @@ namespace HouseMap.Crawler
 
         public override string GetJsonOrHTML(DbConfig config, int page)
         {
-            var content = GetAPIResult(config, page);
-            Console.WriteLine(content);
+            var content = GetTopics(config, page);
             return content;
         }
 
-        private static string GetAPIResult(DbConfig config, int page)
+        private string GetTopics(DbConfig config, int page)
         {
             try
             {
-                var client = new RestClient($"https://fang.douban.com/api/topics?city={config.City}&district_tags=[]&subway_tags=[]&rent_type=&house_type=&bedroom_type=&rent_fee=[]&sort=&query_text=&page={page}&limit=50");
+                var client = new RestClient($"http://{_appSettings.NodeProxyHost}/topics?city={config.City}&page={page}&limit=30");
                 var request = new RestRequest(Method.GET);
-                request.AddHeader("host", "fang.douban.com");
-                request.AddHeader("user-agent", "Mozilla/5.0 (Linux; Android 8.0.0; MIX Build/OPR1.170623.032; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/69.0.3497.91 Mobile Safari/537.36 MicroMessenger/6.7.2.1340(0x26070233) NetType/WIFI Language/zh_CN");
-                request.AddHeader("content-type", "application/json");
-                request.AddHeader("cookie", "bid=");
-                request.AddHeader("referer", "https://servicewechat.com/wxaf9e2c0b8829cf6c/63/page-frame.html");
-                request.AddHeader("authorization", "Bearer ");
-                request.AddHeader("charset", "utf-8");
                 IRestResponse response = client.Execute(request);
                 return response.Content;
             }
@@ -61,24 +52,85 @@ namespace HouseMap.Crawler
                 return string.Empty;
             }
         }
+
+        private string GetTopicDetail(string topicId)
+        {
+            try
+            {
+                var client = new RestClient($"http://{_appSettings.NodeProxyHost}/topics/{topicId}");
+                var request = new RestRequest(Method.GET);
+                IRestResponse response = client.Execute(request);
+                return response.Content;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error("DoubanWechat", ex, topicId);
+                return string.Empty;
+            }
+        }
         public override List<DBHouse> ParseHouses(DbConfig config, string data)
         {
-            Console.WriteLine(data);
-            return new List<DBHouse>();
+            var houses = new List<DBHouse>();
+            var topics = JToken.Parse(data)?["topics"];
+            foreach (var topic in topics)
+            {
+                DBHouse house = new DBHouse();
+                var onlineURL = $"https://fang.douban.com/topics/{topic["id"].ToString()}/";
+                house.Id = Tools.GetUUId();
+                house.OnlineURL = onlineURL;
+                var topicDetailJson = GetTopicDetail(topic["id"].ToString());
+                if (!string.IsNullOrEmpty(topicDetailJson))
+                {
+                    var topicDetail = JToken.Parse(topicDetailJson)?["data"];
+                    house.Title = topicDetail["title"].ToString();
+                    house.Price = topicDetail["rent_fee"].ToObject<int>();
+                    house.Location = topicDetail["district_tag"]["name"].ToString();
+                    house.Latitude = topicDetail["district_tag"]["latitude"].ToString();
+                    house.Longitude = topicDetail["district_tag"]["longitude"].ToString();
+                    house.PubTime = topicDetail["create_time"].ToObject<DateTime>();
+                    house.RentType = ConvertRentType(topicDetail["rent_type"].ToObject<int>(), topicDetail["house_type_display"].ToString());
+                    house.Text = topicDetail["description"].ToString();
+                    house.Labels = string.Join("|", topicDetail["labels"].ToObject<List<string>>());
+                    house.Source = SourceEnum.DoubanWechat.GetSourceName();
+                    house.JsonData = topicDetailJson;
+                    house.City = config.City;
+                    house.CreateTime = DateTime.Now;
+                }
+                else
+                {
+
+                }
+            }
+
+            return houses;
+
+        }
+
+        private int ConvertRentType(int sourceRentType, string houseTypeDisplay)
+        {
+            if (houseTypeDisplay == "一居室")
+            {
+                return (int)RentTypeEnum.OneRoom;
+            }
+            if (sourceRentType == 2)
+            {
+                return (int)RentTypeEnum.Shared;
+            }
+            else if (sourceRentType == 1)
+            {
+                return (int)RentTypeEnum.AllInOne;
+            }
+            return (int)RentTypeEnum.Undefined;
         }
 
 
 
 
 
-        
 
 
-
-
-       
 
     }
 
-   
+
 }

@@ -53,5 +53,8 @@ namespace HouseMap.Common
         public string ESUserName { get; set; }
         public string ESPassword { get; set; }
         public string ESURL { get; set; }
+
+
+        public string NodeProxyHost { get; set; }
     }
 }

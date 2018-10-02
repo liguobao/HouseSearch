@@ -51,6 +51,10 @@ namespace HouseMap.Crawler
                 for (var pageNum = 1; pageNum < config.PageCount; pageNum++)
                 {
                     var htmlOrJson = GetJsonOrHTML(config, pageNum);
+                    if (string.IsNullOrEmpty(htmlOrJson))
+                    {
+                        continue;
+                    }
                     var houses = ParseHouses(config, htmlOrJson);
                     _houseDapper.BulkInsertHouses(houses);
                 }
