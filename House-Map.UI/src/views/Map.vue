@@ -62,59 +62,64 @@
                 <span @click="toMap" :class="{active: mobileType !== 'list'}">地图模式</span>
                 <span @click="toList" :class="{active: mobileType === 'list'}">列表模式</span>
             </div>
-            <div class="filter">
-                <div class="filter-item">
-                    <span>上班地点: </span>
-                    <el-input
-                            id="keyword"
-                            class="card-value"
-                            size="mini"
-                            placeholder="请输入内容"
-                            v-model="keyword"
-                            clearable>
-                    </el-input>
+            <template v-if="!inMap">
+                <div class="filter">
+                    <div class="filter-item">
+                        <span>上班地点: </span>
+                        <el-input
+                                id="keyword"
+                                class="card-value"
+                                size="mini"
+                                placeholder="请输入内容"
+                                v-model="keyword"
+                                clearable>
+                        </el-input>
+                    </div>
+                    <div class="filter-item">
+                        <el-button type="primary" size="mini" :loading="searching" @click="next">下一页</el-button>
+                        <!--<el-button icon="el-icon-tickets" size="mini" type="text" @click="toList"-->
+                        <!--class="to-list"></el-button>-->
+                    </div>
                 </div>
-                <div class="filter-item">
-                    <el-button type="primary" size="mini" :loading="searching" @click="next">下一页</el-button>
-                    <!--<el-button icon="el-icon-tickets" size="mini" type="text" @click="toList"-->
-                    <!--class="to-list"></el-button>-->
-                </div>
-            </div>
-            <div class="mobile-bg" v-if="makerInfo" @click="handleMobileBg">
-                <div class="content">
-                    <section>
-                        <span class="content-name">房源: </span>
-                        <a :href="makerInfo.houseOnlineURL" target="_blank"
-                           class="content-value">{{makerInfo.title}}</a>
-                    </section>
-                    <section v-if="makerInfo.displayMoney">
-                        <span class="content-value">{{makerInfo.displayMoney}}</span>
-                    </section>
-                    <section>
-                        <span class="content-value">{{makerInfo.sourceContent}}</span>
-                    </section>
-                    <section v-if="makerInfo.pictures && makerInfo.pictures.length">
+                <div class="mobile-bg" v-if="makerInfo" @click="handleMobileBg">
+                    <div class="content">
+                        <section>
+                            <span class="content-name">房源: </span>
+                            <a :href="makerInfo.houseOnlineURL" target="_blank"
+                               class="content-value">{{makerInfo.title}}</a>
+                        </section>
+                        <section v-if="makerInfo.displayMoney">
+                            <span class="content-value">{{makerInfo.displayMoney}}</span>
+                        </section>
+                        <section>
+                            <span class="content-value">{{makerInfo.sourceContent}}</span>
+                        </section>
+                        <section v-if="makerInfo.pictures && makerInfo.pictures.length">
                         <span class="content-name btn" @click="preview(makerInfo)"><i
                                 class="el-icon-picture"></i>查看图片</span>
-                    </section>
-                    <section>
+                        </section>
+                        <section>
                         <span class="content-name btn" @click="collect(makerInfo)"><i
                                 class="el-icon-star-on"></i>收藏</span>
-                    </section>
-                    <section>
+                        </section>
+                        <section>
                         <span class="content-name btn" @click="navTo(makerInfo)"><i
                                 class="el-icon-location"></i>开始导航</span>
-                    </section>
+                        </section>
+                    </div>
                 </div>
-            </div>
+            </template>
+
         </template>
-        <div id="panel" v-show="transferWays" :class="{'slide-up' : toggleUp,'is-mobile' : isMobile}">
-            <!--<span class="panel-handle" @click="toggleUp = !toggleUp">{{!toggleUp ? '收起' : '展开'}}</span>-->
-        </div>
-        <span @click="whereAmI" class="where-am-i" :class="{'is-mobile' : isMobile}">
+        <template v-if="!inMap">
+            <div id="panel" v-show="transferWays" :class="{'slide-up' : toggleUp,'is-mobile' : isMobile}">
+                <!--<span class="panel-handle" @click="toggleUp = !toggleUp">{{!toggleUp ? '收起' : '展开'}}</span>-->
+            </div>
+            <span @click="whereAmI" class="where-am-i" :class="{'is-mobile' : isMobile}">
             <i class="el-icon-location"></i>
             我在哪
         </span>
+        </template>
 
         <component v-if="view" :is="view"></component>
 
@@ -643,7 +648,8 @@
                 this.view = undefined;
                 this.changeQuery({
                     mobileType: undefined
-                })
+                });
+                this.inMap = false;
             },
             async toList() {
                 let com = require('./../components/mobile/house-list').default;
