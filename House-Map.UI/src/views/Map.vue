@@ -1,7 +1,6 @@
 <template>
     <div class="map">
-        <div class="container" id="map-container">
-        </div>
+        <div class="container" id="map-container"></div>
         <template v-if="!isMobile">
             <div class="card">
                 <h4>出行到达圈查询</h4>
@@ -59,6 +58,10 @@
             </div>
         </template>
         <template v-else>
+            <div class="mobile-type" :class="{'in-map' : inMap}">
+                <span @click="toMap" :class="{active: mobileType !== 'list'}">地图模式</span>
+                <span @click="toList" :class="{active: mobileType === 'list'}">列表模式</span>
+            </div>
             <div class="filter">
                 <div class="filter-item">
                     <span>上班地点: </span>
@@ -73,8 +76,8 @@
                 </div>
                 <div class="filter-item">
                     <el-button type="primary" size="mini" :loading="searching" @click="next">下一页</el-button>
-                    <el-button icon="el-icon-tickets" size="mini" type="text" @click="toList"
-                               class="to-list"></el-button>
+                    <!--<el-button icon="el-icon-tickets" size="mini" type="text" @click="toList"-->
+                    <!--class="to-list"></el-button>-->
                 </div>
             </div>
             <div class="mobile-bg" v-if="makerInfo" @click="handleMobileBg">
@@ -315,11 +318,38 @@
         }
     }
 
+    .mobile-type {
+        height: 40px;
+        position: fixed;
+        z-index: 41;
+        left: 0;
+        width: 100%;
+        background: #fff;
+        top: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        &.in-map {
+            z-index: 2555;
+        }
+        span {
+            font-size: 12px;
+            flex: 1;
+            &.active {
+                color: #409EFF;
+            }
+            &:first-of-type {
+                border-right: 1px solid #eee;
+            }
+        }
+    }
+
     .filter {
         position: fixed;
         z-index: 40;
         left: 0;
-        top: 0;
+        top: 40px;
         width: 100%;
         background: rgba(0, 0, 0, 0.7);
         padding: 10px;
@@ -527,6 +557,7 @@
                 ],
                 activeCityName: '',
                 showRight: true,
+                inMap: false,
                 rightLinks: [
                     {
                         text: '上海互助租房',
@@ -574,6 +605,14 @@
             }
         },
         computed: {
+            mobileType() {
+                let query = this.$route.query;
+                if (query.mobileType && query.mobileType === 'list') {
+                    return 'list'
+                } else {
+                    return undefined;
+                }
+            },
             keywordClean() {
                 return !!this.keyword
             },
@@ -586,30 +625,59 @@
         },
         watch: {
             '$route.query': function (params) {
-                this.loading = true;
-                this.init()
+                if (!params.mobileType || params.mobileType !== 'list') {
+                    this.loading = true;
+                    this.init();
+                }
             }
         },
         methods: {
+            changeQuery(q) {
+                const query = this.$route.query;
+                const params = Object.assign({}, query, q);
+                this.$router.push({
+                    query: params
+                })
+            },
+            toMap() {
+                this.view = undefined;
+                this.changeQuery({
+                    mobileType: undefined
+                })
+            },
             async toList() {
                 let com = require('./../components/mobile/house-list').default;
                 try {
                     let params = {
                         ...this.$route.query,
                         cityname: this.cityName,
-                        houseCount: 180
+                        houseCount: 180,
+                        page: 1
                     };
                     await asyncComponent(com, {
                         props: {
                             list: this.houseList,
+                            inMap: true,
                             params
                         }
                     }, (template) => {
+                        this.inMap = true;
                         this.view = template;
+                        this.changeQuery({
+                            mobileType: 'list'
+                        })
                     });
                     this.view = undefined;
+                    this.inMap = false;
+                    this.changeQuery({
+                        mobileType: undefined
+                    })
                 } catch (e) {
                     this.view = undefined;
+                    this.inMap = false;
+                    this.changeQuery({
+                        mobileType: undefined
+                    });
                     return
                 }
             },
@@ -690,6 +758,7 @@
                 let self = this;
                 let com = require('../components/preview-image').default;
                 try {
+
                     await asyncComponent(com, {
                         props: {
                             images: item.pictures,
@@ -1109,6 +1178,10 @@
                     this.keywordSelect(map, positionPicker);
 
                     let info = await this.getList();
+                    if (this.mobileType === 'list') {
+                        this.toList();
+                        return;
+                    }
                     let data = info.data;
 
                     if (process.env.NODE_ENV === "development") {
@@ -1145,6 +1218,9 @@
                 })
             }
         },
+        created() {
+            let query = this.$route.query;
+        },
         async mounted() {
             this.loading = true;
             let key = `8a971a2f88a0ec7458d43b8bc03b6462`;
@@ -1158,6 +1234,7 @@
 
 
             this.init();
+
         }
     }
 </script>

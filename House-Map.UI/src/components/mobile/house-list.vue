@@ -8,8 +8,11 @@
             :append-to-body="appendToBody"
             :before-close="cancel"
             class="house-list"
+            :show-close="!inMap"
+            :class="{'in-map' : inMap}"
     >
         <div class="">
+
             <ul class="list" v-if="houseList && houseList.length" ref="list">
                 <li v-for="item in houseList" :key="`${item.id}-${item.source}`">
                     <div class="left">
@@ -60,7 +63,12 @@
     }
 
     .house-list {
-
+        &.in-map{
+            margin-top: 40px;
+            .list{
+                max-height: 87vh;
+            }
+        }
         /deep/ .el-dialog__body {
             padding: 0;
             background: rgb(248, 248, 248);
@@ -126,6 +134,9 @@
                 default: false
             },
             isMobile: {
+                default: false
+            },
+            inMap: {
                 default: false
             },
             list: {
