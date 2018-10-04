@@ -58,9 +58,9 @@ namespace HouseMapAPI
             services.AddScoped<UserCollectionDapper, UserCollectionDapper>();
             services.AddScoped<UserDapper, UserDapper>();
             services.AddScoped<BaseDapper, BaseDapper>();
-             services.AddScoped<ConfigDapper, ConfigDapper>();
+            services.AddScoped<ConfigDapper, ConfigDapper>();
             services.AddScoped<NoticeDapper, NoticeDapper>();
-
+            services.AddScoped<NewHouseDapper, NewHouseDapper>();
 
             #endregion
 

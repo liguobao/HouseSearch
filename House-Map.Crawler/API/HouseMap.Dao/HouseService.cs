@@ -21,17 +21,20 @@ namespace HouseMap.Dao
 
         private HouseDapper _houseDapper;
 
+        private NewHouseDapper _newHouseDapper;
+
 
         private ConfigService _configService;
 
-        public HouseService(RedisTool RedisTool, HouseDapper houseDapper, ConfigService configService)
+        public HouseService(RedisTool RedisTool, HouseDapper houseDapper, ConfigService configService, NewHouseDapper newHouseDapper)
         {
             _redisTool = RedisTool;
             _houseDapper = houseDapper;
             _configService = configService;
+            _newHouseDapper= newHouseDapper;
         }
 
-        public IEnumerable<HouseInfo> DBSearch(HouseCondition condition)
+        private IEnumerable<HouseInfo> DBSearch(HouseCondition condition)
         {
             // LogHelper.Info($"Search start,key:{condition.RedisKey}");
             if (condition == null || condition.CityName == null)
@@ -78,6 +81,58 @@ namespace HouseMap.Dao
             }
         }
 
+
+
+
+        private List<DBHouse> NewDBSearch(NewHouseCondition condition)
+        {
+            // LogHelper.Info($"Search start,key:{condition.RedisKey}");
+            if (condition == null || condition.City == null)
+            {
+                throw new Exception("查询条件不能为null");
+            }
+            var houses = _redisTool.ReadCache<List<DBHouse>>(condition.RedisKey, RedisKey.NewHouses.DBName);
+            if (houses == null || houses.Count == 0 || condition.Refresh)
+            {
+                houses = _newHouseDapper.SearchHouses(condition);
+                if (houses != null && houses.Count > 0)
+                {
+                    _redisTool.WriteObject(condition.RedisKey, houses, RedisKey.NewHouses.DBName);
+                }
+            }
+            return houses;
+        }
+
+
+        public IEnumerable<DBHouse> NewSearch(NewHouseCondition condition)
+        {
+            if (string.IsNullOrEmpty(condition.Source))
+            {
+                var houseList = new List<DBHouse>();
+                // 获取当前城市的房源配置
+                var cityConfigs = _configService.LoadSources(condition.City);
+                var limitCount = condition.Size / cityConfigs.Count;
+                foreach (var config in cityConfigs)
+                {
+                    //建荣家园数据质量比较差,默认不出
+                    if (config.Source == ConstConfigName.CCBHouse)
+                    {
+                        continue;
+                    }
+                    condition.Source = config.Source;
+                    condition.Size = limitCount;
+                    houseList.AddRange(NewDBSearch(condition));
+                }
+                return houseList.OrderByDescending(h => h.PubTime);
+            }
+            else
+            {
+                return NewDBSearch(condition);
+            }
+        }
+
+
+    
     }
 
 }

@@ -45,14 +45,26 @@ namespace HouseMap.Dao
                                             @Price,@Labels,
                                             @Source,@Id)  ON DUPLICATE KEY UPDATE UpdateTime=now();",
                                      houses, transaction: transaction);
-                result = dbConnection.Execute(@"INSERT INTO HouseData 
-                        (`JsonData`,`Id`) 
-                        VALUES (@JsonData,@Id)  ON DUPLICATE KEY UPDATE UpdateTime=now();",
-                        houses, transaction: transaction);
+                // result = dbConnection.Execute(@"INSERT INTO HouseData 
+                //         (`JsonData`,`Id`) 
+                //         VALUES (@JsonData,@Id)  ON DUPLICATE KEY UPDATE UpdateTime=now();",
+                //         houses, transaction: transaction);
                 transaction.Commit();
             }
 
         }
 
+
+
+        public List<DBHouse> SearchHouses(NewHouseCondition condition)
+        {
+            var houses = new List<DBHouse>();
+            using (IDbConnection dbConnection = GetConnection())
+            {
+                dbConnection.Open();
+                houses = dbConnection.Query<DBHouse>(condition.QueryText, condition).ToList();
+                return houses;
+            }
+        }
     }
 }

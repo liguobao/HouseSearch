@@ -33,6 +33,13 @@ namespace HouseMap.Common
             DBName = 1
         };
 
+        public static KeyConfig NewHouses = new KeyConfig()
+        {
+            Key = null,
+            ExpireTime = new TimeSpan(TimeSpan.TicksPerMinute * 55),
+            DBName = 1
+        };
+
         public static KeyConfig HouseDashboard = new KeyConfig()
         {
             Key = "HouseDashboard",

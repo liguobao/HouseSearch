@@ -19,10 +19,10 @@ namespace HouseMap.Dao.DBEntity
         [Source("pinpaigongyu", "ApartmentHouse", "公寓")]
         PinPaiGongYu,
 
-        [Source("huzhuzufang", "MutualHouse", "互助租房")]
+        [Source("huzhuzufang", "HuzuHouse", "互助租房")]
         HuZhuZuFang,
 
-        [Source("ccbhouse", "CCBHouse", "互助租房")]
+        [Source("ccbhouse", "CCBHouse", "CCB建融")]
         CCBHouse,
 
         [Source("zuber", "ZuberHouse", "Zuber")]
