@@ -46,8 +46,10 @@ namespace HouseMap.Crawler
                 house.Title = houseDesc;
                 house.Location = houseDesc;
                 house.Text = houseDesc;
+                house.JsonData = item.ToString();
                 house.Price = item["houseRentPrice"].ToObject<Int32>();
                 house.City = "上海";
+                house.RentType = GetRentType(houseDesc);
                 house.PubTime = item["houseCreateTime"].ToObject<DateTime>();
                 house.PicURLs = item["bigPicUrls"].ToString();
                 house.Source = SourceEnum.HuZhuZuFang.GetSourceName();
@@ -56,6 +58,22 @@ namespace HouseMap.Crawler
             return houseList;
         }
 
+        private int GetRentType(string houseDesc)
+        {
+            if (houseDesc.Contains("一室一厅") || houseDesc.Contains("1室1厅") || houseDesc.Contains("一室户") || houseDesc.Contains("1室户"))
+            {
+                return (int)RentTypeEnum.OneRoom;
+            }
+            else if (houseDesc.Contains("整租"))
+            {
+                return (int)RentTypeEnum.AllInOne;
+            }
+            else if (houseDesc.Contains("合租"))
+            {
+                return (int)RentTypeEnum.Shared;
+            }
+            return (int)RentTypeEnum.Undefined;
+        }
 
         private static string getResultFromAPI(int pageNum)
         {
