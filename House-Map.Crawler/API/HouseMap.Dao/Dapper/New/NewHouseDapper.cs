@@ -45,10 +45,10 @@ namespace HouseMap.Dao
                                             @Price,@Labels,
                                             @Source,@Id)  ON DUPLICATE KEY UPDATE UpdateTime=now();",
                                      houses, transaction: transaction);
-                // result = dbConnection.Execute(@"INSERT INTO HouseData 
-                //         (`JsonData`,`Id`) 
-                //         VALUES (@JsonData,@Id)  ON DUPLICATE KEY UPDATE UpdateTime=now();",
-                //         houses, transaction: transaction);
+                result = dbConnection.Execute(@"INSERT INTO HouseData 
+                        (`JsonData`,`Id`,`OnlineURL`) 
+                        VALUES (@JsonData,@Id,@OnlineURL) ON DUPLICATE KEY UPDATE UpdateTime=now();",
+                        houses, transaction: transaction);
                 transaction.Commit();
             }
 
