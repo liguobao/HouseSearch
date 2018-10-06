@@ -31,7 +31,7 @@ namespace HouseMap.Crawler
         public override List<DBHouse> ParseHouses(DbConfig config, string data)
         {
             var houseList = new List<DBHouse>();
-            var resultJObject = JsonConvert.DeserializeObject<JObject>(data);
+            var resultJObject = JObject.Parse(data);
             if (resultJObject == null || resultJObject["head"] == null || !resultJObject["head"]["success"].ToObject<Boolean>())
             {
                 return houseList;
