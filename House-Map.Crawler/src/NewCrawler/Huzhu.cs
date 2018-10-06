@@ -48,7 +48,7 @@ namespace HouseMap.Crawler
                 house.Text = houseDesc;
                 house.JsonData = item.ToString();
                 house.Price = item["houseRentPrice"].ToObject<Int32>();
-                house.City = "上海";
+                house.City = config.City;
                 house.RentType = GetRentType(houseDesc);
                 house.PubTime = item["houseCreateTime"].ToObject<DateTime>();
                 house.PicURLs = item["bigPicUrls"].ToString();
@@ -72,7 +72,7 @@ namespace HouseMap.Crawler
             {
                 return (int)RentTypeEnum.Shared;
             }
-            return (int)RentTypeEnum.Undefined;
+            return (int)RentTypeEnum.AllInOne;
         }
 
         private static string getResultFromAPI(int pageNum)
