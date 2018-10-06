@@ -66,7 +66,7 @@ namespace HouseMap.Crawler
                 Id = Tools.GetUUId(),
                 Location = location,
                 Title = $"{room["title"].ToString()}【{room["subtitleNew"].ToString()}】",
-                OnlineURL = $"https://h5.mgzf.com/houseDetail/{room["roomId"].ToString()}",
+                OnlineURL = $"https://h5.mgzf.com/{GetRoomPath(room)}/{room["roomId"].ToString()}",
                 JsonData = room.ToString(),
                 Price = housePrice,
                 Source = SourceEnum.Mogu.GetSourceName(),
@@ -79,6 +79,11 @@ namespace HouseMap.Crawler
                 Latitude = room["lat"].ToString(),
                 Longitude = room["lng"].ToString()
             };
+        }
+
+        private static string GetRoomPath(JToken room)
+        {
+            return room["rentType"]["key"].ToObject<int>() == 2 ? "roomDetail" : "houseDetail";
         }
 
         private static int ConvertToRentType(JToken room)
