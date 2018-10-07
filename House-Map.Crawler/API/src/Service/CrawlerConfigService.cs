@@ -43,7 +43,7 @@ namespace HouseMapAPI.Service
             {
                 return;
             }
-            var config = new DbConfig()
+            var config = new DBConfig()
             {
                 Id = Tools.GetUUId(),
                 Json = json,

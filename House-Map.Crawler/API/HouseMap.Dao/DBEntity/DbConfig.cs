@@ -8,7 +8,7 @@ namespace HouseMap.Dao.DBEntity
 {
     [Serializable]
     [Table("Config")]
-    public class DbConfig : BaseEntity
+    public class DBConfig : BaseEntity
     {
         public string City { get; set; }
 

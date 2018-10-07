@@ -23,7 +23,7 @@ namespace HouseMap.Crawler
             this.Source = SourceEnum.Mogu;
         }
 
-        public override string GetJsonOrHTML(DbConfig config, int page)
+        public override string GetJsonOrHTML(DBConfig config, int page)
         {
             var jsonData = JToken.Parse(config.Json);
             var cityId = jsonData["cityid"].ToObject<int>();
@@ -31,7 +31,7 @@ namespace HouseMap.Crawler
             return GetAPIResult(cityId, page, rentType);
         }
 
-        public override List<DBHouse> ParseHouses(DbConfig config, string data)
+        public override List<DBHouse> ParseHouses(DBConfig config, string data)
         {
             var houses = new List<DBHouse>();
             var resultJObject = JObject.Parse(data);

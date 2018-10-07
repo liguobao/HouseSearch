@@ -22,9 +22,9 @@ namespace HouseMap.Dao
             _configDapper = configDapper;
         }
 
-        public List<DbConfig> LoadConfigs(string city = "")
+        public List<DBConfig> LoadConfigs(string city = "")
         {
-            var configs = _redisTool.ReadCache<List<DbConfig>>(RedisKey.CrawlerConfig.Key + city, RedisKey.CrawlerConfig.DBName);
+            var configs = _redisTool.ReadCache<List<DBConfig>>(RedisKey.CrawlerConfig.Key + city, RedisKey.CrawlerConfig.DBName);
             if (configs == null)
             {
                 var configQuery = _configDapper.LoadAll(city);
@@ -36,18 +36,18 @@ namespace HouseMap.Dao
         }
 
 
-        public List<DbConfig> LoadSources(string city)
+        public List<DBConfig> LoadSources(string city)
         {
             return LoadConfigs(city).GroupBy(c => c.Source).Select(i => i.First()).ToList();
         }
 
-        public Dictionary<string, List<DbConfig>> LoadCitySources()
+        public Dictionary<string, List<DBConfig>> LoadCitySources()
         {
             return LoadConfigs().GroupBy(c => c.City)
             .ToDictionary(item => item.Key, items => items.GroupBy(c => c.Source).Select(i => i.First()).ToList());
         }
 
-        public List<DbConfig> LoadBySource(string source)
+        public List<DBConfig> LoadBySource(string source)
         {
             return _configDapper.LoadBySource(source);
         }
@@ -76,6 +76,11 @@ namespace HouseMap.Dao
             }
             return dashboards;
 
+        }
+
+        public void BulkInsert(List<DBConfig> configs)
+        {
+            _configDapper.BulkInsert(configs);
         }
 
 

@@ -30,7 +30,7 @@ namespace HouseMap.Crawler
             this.Source = SourceEnum.CCBHouse;
         }
 
-        public override string GetJsonOrHTML(DbConfig config, int page)
+        public override string GetJsonOrHTML(DBConfig config, int page)
         {
             var jsonData = JToken.Parse(config.Json);
             string cityShortCutName = jsonData["shortcutname"]?.ToString();
@@ -38,7 +38,7 @@ namespace HouseMap.Crawler
             return GetResultByAPI(apiKey, cityShortCutName, page);
         }
 
-        public override List<DBHouse> ParseHouses(DbConfig config, string data)
+        public override List<DBHouse> ParseHouses(DBConfig config, string data)
         {
             var houseList = new List<DBHouse>();
 

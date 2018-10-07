@@ -32,13 +32,13 @@ namespace HouseMap.Crawler
         }
 
 
-        public override string GetJsonOrHTML(DbConfig config, int page)
+        public override string GetJsonOrHTML(DBConfig config, int page)
         {
             var cityId = JToken.Parse(config.Json)["cityID"].ToString();
             var apiURL = $"https://app.api.ke.com/Rentplat/v1/house/list?city_id={cityId}&offset={page * 30}&limit=30";
             return GetHouseResult(apiURL, cityId);
         }
-        public override List<DBHouse> ParseHouses(DbConfig config, string data)
+        public override List<DBHouse> ParseHouses(DBConfig config, string data)
         {
             var houses = new List<DBHouse>();
             var configJToken = JToken.Parse(config.Json);

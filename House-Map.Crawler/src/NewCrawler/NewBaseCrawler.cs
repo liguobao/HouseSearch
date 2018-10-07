@@ -31,12 +31,12 @@ namespace HouseMap.Crawler
             this._configDapper = configDapper;
         }
 
-        public virtual string GetJsonOrHTML(DbConfig config, int page)
+        public virtual string GetJsonOrHTML(DBConfig config, int page)
         {
             throw new NotImplementedException();
         }
 
-        public virtual List<DBHouse> ParseHouses(DbConfig config, string data)
+        public virtual List<DBHouse> ParseHouses(DBConfig config, string data)
         {
             throw new NotImplementedException();
         }

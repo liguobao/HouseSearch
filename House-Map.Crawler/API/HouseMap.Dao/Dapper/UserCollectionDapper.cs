@@ -127,12 +127,12 @@ namespace HouseMap.Dao
             return sqlText;
         }
 
-        public List<DbConfig> LoadUserHouseDashboard(long userID)
+        public List<DBConfig> LoadUserHouseDashboard(long userID)
         {
             using (IDbConnection dbConnection = GetConnection())
             {
                 dbConnection.Open();
-                return dbConnection.Query<DbConfig>(@"
+                return dbConnection.Query<DBConfig>(@"
                         SELECT 
                             HouseCity AS City,
                             Source

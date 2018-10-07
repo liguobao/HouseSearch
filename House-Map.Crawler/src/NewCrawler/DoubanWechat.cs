@@ -33,12 +33,12 @@ namespace HouseMap.Crawler
         }
 
 
-        public override string GetJsonOrHTML(DbConfig config, int page)
+        public override string GetJsonOrHTML(DBConfig config, int page)
         {
             return GetTopics(config, page);
         }
 
-        private string GetTopics(DbConfig config, int page)
+        private string GetTopics(DBConfig config, int page)
         {
             try
             {
@@ -69,7 +69,7 @@ namespace HouseMap.Crawler
                 return string.Empty;
             }
         }
-        public override List<DBHouse> ParseHouses(DbConfig config, string data)
+        public override List<DBHouse> ParseHouses(DBConfig config, string data)
         {
             var houses = new List<DBHouse>();
             var topics = JToken.Parse(data)?["topics"];

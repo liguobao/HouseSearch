@@ -32,14 +32,14 @@ namespace HouseMap.Crawler
             this.Source = SourceEnum.Zuber;
         }
 
-        public override string GetJsonOrHTML(DbConfig config, int page)
+        public override string GetJsonOrHTML(DBConfig config, int page)
         {
             var cityName = JToken.Parse(config.Json)["cityname"].ToString();
             var sequence = JToken.Parse(config.Json)["sequence"]?.ToString();
             return GetAPIResult(cityName, sequence); ;
         }
 
-        public override List<DBHouse> ParseHouses(DbConfig config, string data)
+        public override List<DBHouse> ParseHouses(DBConfig config, string data)
         {
             var houses = new List<DBHouse>();
             var resultJObject = JsonConvert.DeserializeObject<JObject>(data);

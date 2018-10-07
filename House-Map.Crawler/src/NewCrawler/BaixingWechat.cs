@@ -28,7 +28,7 @@ namespace HouseMap.Crawler
             this.Source = SourceEnum.BaixingWechat;
         }
 
-        public override string GetJsonOrHTML(DbConfig config, int page)
+        public override string GetJsonOrHTML(DBConfig config, int page)
         {
             var configJson = JToken.Parse(config.Json);
             return GetHouseListResult(configJson["areaId"].ToString(), page, configJson["session"].ToString());
@@ -83,7 +83,7 @@ namespace HouseMap.Crawler
 
         }
 
-        public override List<DBHouse> ParseHouses(DbConfig config, string jsonOrHTML)
+        public override List<DBHouse> ParseHouses(DBConfig config, string jsonOrHTML)
         {
             var houses = new List<DBHouse>();
             var result = JToken.Parse(jsonOrHTML);
@@ -197,10 +197,10 @@ namespace HouseMap.Crawler
             request.AddParameter("application/json", "{\"area.getHotCities\":{}}", ParameterType.RequestBody);
             IRestResponse response = client.Execute(request);
             var result = JToken.Parse(response.Content);
-            List<DbConfig> configs = new List<DbConfig>();
+            List<DBConfig> configs = new List<DBConfig>();
             foreach (var city in result["info"]["area"]["getHotCities"])
             {
-                DbConfig config = new DbConfig();
+                DBConfig config = new DBConfig();
                 config.City = city["name"].ToString();
                 config.Source = SourceEnum.BaixingWechat.GetSourceName();
                 config.PageCount = 30;

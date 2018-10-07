@@ -23,12 +23,12 @@ namespace HouseMap.Crawler
             this.Source = SourceEnum.HuZhuZuFang;
         }
 
-        public override string GetJsonOrHTML(DbConfig config, int page)
+        public override string GetJsonOrHTML(DBConfig config, int page)
         {
             return getResultFromAPI(page);
         }
 
-        public override List<DBHouse> ParseHouses(DbConfig config, string data)
+        public override List<DBHouse> ParseHouses(DBConfig config, string data)
         {
             var houseList = new List<DBHouse>();
             var resultJObject = JObject.Parse(data);

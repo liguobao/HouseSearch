@@ -1,0 +1,1486 @@
+[
+    {
+        "name": "北京",
+        "url": "http://bj.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "天津",
+        "url": "http://tj.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "上海",
+        "url": "http://sh.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "重庆",
+        "url": "http://cq.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "安庆",
+        "url": "http://aq.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "蚌埠",
+        "url": "http://bengbu.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "亳州",
+        "url": "http://bozhou.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "池州",
+        "url": "http://chizhou.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "滁州",
+        "url": "http://chuzhou.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "阜阳",
+        "url": "http://fy.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "合肥",
+        "url": "http://hf.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "淮南",
+        "url": "http://hn.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "淮北",
+        "url": "http://huaibei.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "黄山",
+        "url": "http://huangshan.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "六安",
+        "url": "http://la.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "马鞍山",
+        "url": "http://mas.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "宿州",
+        "url": "http://suzhouah.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "铜陵",
+        "url": "http://tongling.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "芜湖",
+        "url": "http://wuhu.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "宣城",
+        "url": "http://xuancheng.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "福州",
+        "url": "http://fz.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "龙岩",
+        "url": "http://longyan.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "宁德",
+        "url": "http://nd.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "南平",
+        "url": "http://np.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "莆田",
+        "url": "http://pt.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "泉州",
+        "url": "http://qz.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "三明",
+        "url": "http://sm.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "厦门",
+        "url": "http://xm.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "漳州",
+        "url": "http://zhangzhou.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "安顺",
+        "url": "http://anshun.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "毕节",
+        "url": "http://bijie.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "贵安新区",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "贵阳",
+        "url": "http://gy.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "六盘水",
+        "url": "http://lps.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "黔东南",
+        "url": "http://qdn.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "黔南",
+        "url": "http://qn.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "黔西南",
+        "url": "http://qxn.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "铜仁",
+        "url": "http://tr.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "遵义",
+        "url": "http://zy.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "百色",
+        "url": "http://baise.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "北海",
+        "url": "http://bh.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "崇左",
+        "url": "http://chongzuo.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "防城港",
+        "url": "http://fcg.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "贵港",
+        "url": "http://gg.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "桂林",
+        "url": "http://gl.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "河池",
+        "url": "http://hc.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "贺州",
+        "url": "http://hezhou.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "来宾",
+        "url": "http://lb.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "柳州",
+        "url": "http://liuzhou.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "南宁",
+        "url": "http://nn.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "钦州",
+        "url": "http://qinzhou.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "梧州",
+        "url": "http://wuzhou.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "玉林",
+        "url": "http://yulin.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "白银",
+        "url": "http://by.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "定西",
+        "url": "http://dx.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "甘南",
+        "url": "http://gn.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "金昌",
+        "url": "http://jinchang.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "酒泉",
+        "url": "http://jq.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "嘉峪关",
+        "url": "http://jyg.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "陇南",
+        "url": "http://ln.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "临夏",
+        "url": "http://lx.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "兰州",
+        "url": "http://lz.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "平凉",
+        "url": "http://pl.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "庆阳",
+        "url": "http://qingyang.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "天水",
+        "url": "http://tianshui.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "武威",
+        "url": "http://ww.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "张掖",
+        "url": "http://zhangye.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "潮州",
+        "url": "http://chaozhou.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "东莞",
+        "url": "http://dg.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "佛山",
+        "url": "http://fs.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "广州",
+        "url": "http://gz.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "河源",
+        "url": "http://heyuan.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "惠州",
+        "url": "http://huizhou.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "江门",
+        "url": "http://jm.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "揭阳",
+        "url": "http://jy.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "茂名",
+        "url": "http://mm.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "梅州",
+        "url": "http://mz.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "清远",
+        "url": "http://qy.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "韶关",
+        "url": "http://sg.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "汕头",
+        "url": "http://st.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "汕尾",
+        "url": "http://sw.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "深圳",
+        "url": "http://sz.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "云浮",
+        "url": "http://yf.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "阳江",
+        "url": "http://yj.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "珠海",
+        "url": "http://zh.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "中山",
+        "url": "http://zhongshan.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "湛江",
+        "url": "http://zj.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "肇庆",
+        "url": "http://zq.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "安阳",
+        "url": "http://ay.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "鹤壁",
+        "url": "http://hebi.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "焦作",
+        "url": "http://jiaozuo.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "济源",
+        "url": "http://jiyuan.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "开封",
+        "url": "http://kf.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "漯河",
+        "url": "http://lh.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "洛阳",
+        "url": "http://ly.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "南阳",
+        "url": "http://ny.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "平顶山",
+        "url": "http://pds.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "濮阳",
+        "url": "http://py.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "商丘",
+        "url": "http://shangqiu.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "三门峡",
+        "url": "http://smx.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "许昌",
+        "url": "http://xc.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "新乡",
+        "url": "http://xinxiang.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "信阳",
+        "url": "http://xinyang.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "周口",
+        "url": "http://zk.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "驻马店",
+        "url": "http://zmd.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "郑州",
+        "url": "http://zz.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "白沙",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "保亭",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "昌江",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "澄迈",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "定安",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "儋州",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "东方",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "海口",
+        "url": "http://hk.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "乐东",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "临高",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "陵水",
+        "url": "http://lingshui.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "琼海",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "琼中",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "三亚",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "三沙",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "屯昌",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "万宁",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "文昌",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "五指山",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "保定",
+        "url": "http://bd.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "沧州",
+        "url": "http://cangzhou.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "承德",
+        "url": "http://chengde.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "邯郸",
+        "url": "http://hd.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "衡水",
+        "url": "http://hengshui.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "廊坊",
+        "url": "http://lf.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "秦皇岛",
+        "url": "http://qhd.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "石家庄",
+        "url": "http://sj.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "唐山",
+        "url": "http://ts.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "雄安",
+        "url": "http://xiongan.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "邢台",
+        "url": "http://xt.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "张家口",
+        "url": "http://zjk.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "常德",
+        "url": "http://changde.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "郴州",
+        "url": "http://chenzhou.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "长沙",
+        "url": "http://cs.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "怀化",
+        "url": "http://huaihua.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "衡阳",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "娄底",
+        "url": "http://ld.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "邵阳",
+        "url": "http://shaoyang.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "湘潭",
+        "url": "http://xiangtan.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "湘西",
+        "url": "http://xx.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "益阳",
+        "url": "http://yiyang.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "永州",
+        "url": "http://yongzhou.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "岳阳",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "株洲",
+        "url": "http://zhuzhou.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "张家界",
+        "url": "http://zjj.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "大庆",
+        "url": "http://dq.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "大兴安岭",
+        "url": "http://dxal.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "哈尔滨",
+        "url": "http://hb.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "鹤岗",
+        "url": "http://hegang.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "黑河",
+        "url": "http://heihe.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "鸡西",
+        "url": "http://jixi.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "佳木斯",
+        "url": "http://jms.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "牡丹江",
+        "url": "http://mdj.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "齐齐哈尔",
+        "url": "http://qq.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "七台河",
+        "url": "http://qth.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "绥芬河",
+        "url": "http://sfh.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "绥化",
+        "url": "http://suihua.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "双鸭山",
+        "url": "http://sys.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "伊春",
+        "url": "http://yichun.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "恩施",
+        "url": "http://es.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "鄂州",
+        "url": "http://ez.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "黄冈",
+        "url": "http://hg.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "黄石",
+        "url": "http://hs.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "荆门",
+        "url": "http://jingmen.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "荆州",
+        "url": "http://jingzhou.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "潜江",
+        "url": "http://qianjiang.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "十堰",
+        "url": "http://shiyan.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "神农架",
+        "url": "http://snj.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "随州",
+        "url": "http://suizhou.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "天门",
+        "url": "http://tm.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "武汉",
+        "url": "http://wh.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "孝感",
+        "url": "http://xg.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "咸宁",
+        "url": "http://xianning.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "仙桃",
+        "url": "http://xiantao.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "襄阳",
+        "url": "http://xy.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "宜昌",
+        "url": "http://yichang.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "白山",
+        "url": "http://baishan.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "白城",
+        "url": "http://bc.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "长春",
+        "url": "http://cc.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "吉林",
+        "url": "http://jl.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "辽源",
+        "url": "http://liaoyuan.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "松原",
+        "url": "http://songyuan.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "四平",
+        "url": "http://sp.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "通化",
+        "url": "http://th.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "延边",
+        "url": "http://yanbian.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "常州",
+        "url": "http://cz.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "淮安",
+        "url": "http://ha.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "昆山",
+        "url": "http://kunshan.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "连云港",
+        "url": "http://lyg.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "南京",
+        "url": "http://nj.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "南通",
+        "url": "http://nt.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "宿迁",
+        "url": "http://sq.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "苏州",
+        "url": "http://su.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "泰州",
+        "url": "http://taizhoujs.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "无锡",
+        "url": "http://wuxi.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "徐州",
+        "url": "http://xz.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "盐城",
+        "url": "http://yancheng.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "扬州",
+        "url": "http://yz.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "镇江",
+        "url": "http://zhenjiang.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "抚州",
+        "url": "http://fuzhou.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "赣州",
+        "url": "http://ganzhou.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "吉安",
+        "url": "http://ja.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "景德镇",
+        "url": "http://jdz.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "九江",
+        "url": "http://jj.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "南昌",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "萍乡",
+        "url": "http://px.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "上饶",
+        "url": "http://sr.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "新余",
+        "url": "http://xinyu.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "宜春",
+        "url": "http://yichunjx.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "鹰潭",
+        "url": "http://yingtan.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "鞍山",
+        "url": "http://as.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "本溪",
+        "url": "http://bx.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "朝阳",
+        "url": "http://cy.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "丹东",
+        "url": "http://dd.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "大连",
+        "url": "http://dl.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "抚顺",
+        "url": "http://fushun.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "阜新",
+        "url": "http://fx.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "葫芦岛",
+        "url": "http://hld.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "锦州",
+        "url": "http://jz.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "辽阳",
+        "url": "http://liaoyang.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "盘锦",
+        "url": "http://pj.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "沈阳",
+        "url": "http://sy.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "铁岭",
+        "url": "http://tieling.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "营口",
+        "url": "http://yk.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "阿拉善",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "包头",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "巴彦淖尔",
+        "url": "http://byne.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "赤峰",
+        "url": "http://cf.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "鄂尔多斯",
+        "url": "http://eds.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "呼和浩特",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "呼伦贝尔",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "通辽",
+        "url": "http://tl.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "乌兰察布",
+        "url": "http://wlcb.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "乌海",
+        "url": "http://wuhai.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "兴安",
+        "url": "http://xingan.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "锡林郭勒",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "固原",
+        "url": "http://guyuan.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "石嘴山",
+        "url": "http://szs.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "吴忠",
+        "url": "http://wuzhong.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "银川",
+        "url": "http://yc.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "中卫",
+        "url": "http://zw.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "果洛",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "海北",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "海东",
+        "url": "http://haidong.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "海南州",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "黄南",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "海西",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "西宁",
+        "url": "http://xn.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "玉树",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "阿坝",
+        "url": "http://ab.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "巴中",
+        "url": "http://bazhong.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "成都",
+        "url": "http://cd.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "达州",
+        "url": "http://dazhou.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "德阳",
+        "url": "http://deyang.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "广安",
+        "url": "http://ga.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "甘孜",
+        "url": "http://ganzi.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "广元",
+        "url": "http://guangyuan.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "乐山",
+        "url": "http://leshan.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "凉山",
+        "url": "http://liangshan.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "泸州",
+        "url": "http://luzhou.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "眉山",
+        "url": "http://ms.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "绵阳",
+        "url": "http://my.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "南充",
+        "url": "http://nanchong.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "内江",
+        "url": "http://neijiang.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "攀枝花",
+        "url": "http://pzh.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "遂宁",
+        "url": "http://sn.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "雅安",
+        "url": "http://yaan.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "宜宾",
+        "url": "http://yb.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "自贡",
+        "url": "http://zg.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "资阳",
+        "url": "http://ziyang.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "安康",
+        "url": "http://ak.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "宝鸡",
+        "url": "http://baoji.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "汉中",
+        "url": "http://hanzhong.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "商洛",
+        "url": "http://sl.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "铜川",
+        "url": "http://tc.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "渭南",
+        "url": "http://wn.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "西安",
+        "url": "http://xa.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "咸阳",
+        "url": "http://xianyang.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "延安",
+        "url": "http://ya.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "榆林",
+        "url": "http://yl.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "滨州",
+        "url": "http://bz.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "东营",
+        "url": "http://dy.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "德州",
+        "url": "http://dz.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "菏泽",
+        "url": "http://heze.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "济宁",
+        "url": "http://jining.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "济南",
+        "url": "http://jn.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "聊城",
+        "url": "http://lc.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "临沂",
+        "url": "http://linyi.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "莱芜",
+        "url": "http://lw.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "青岛",
+        "url": "http://qd.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "日照",
+        "url": "http://rz.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "泰安",
+        "url": "http://taian.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "威海",
+        "url": "http://weihai.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "潍坊",
+        "url": "http://wf.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "烟台",
+        "url": "http://yt.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "枣庄",
+        "url": "http://zaozhuang.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "淄博",
+        "url": "http://zb.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "长治",
+        "url": "http://changzhi.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "大同",
+        "url": "http://dt.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "晋城",
+        "url": "http://jc.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "晋中",
+        "url": "http://jinzhong.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "临汾",
+        "url": "http://linfen.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "吕梁",
+        "url": "http://ll.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "朔州",
+        "url": "http://shuozhou.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "太原",
+        "url": "http://ty.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "忻州",
+        "url": "http://xinzhou.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "阳泉",
+        "url": "http://yq.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "运城",
+        "url": "http://yuncheng.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "阿克苏",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "阿拉尔",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "阿勒泰",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "巴州",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "北屯",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "博州",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "昌吉",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "哈密",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "和田",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "可克达拉",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "克拉玛依",
+        "url": "http://klmy.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "喀什",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "昆玉",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "克州",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "双河",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "石河子",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "塔城",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "吐鲁番",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "铁门关",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "图木舒克",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "五家渠",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "乌鲁木齐",
+        "url": "http://wl.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "伊犁",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "阿里",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "昌都",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "拉萨",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "林芝",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "那曲",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "日喀则",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "山南",
+        "url": "javascript:void(0)"
+    },
+    {
+        "name": "保山",
+        "url": "http://bs.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "楚雄",
+        "url": "http://cx.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "大理",
+        "url": "http://dali.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "德宏",
+        "url": "http://dh.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "迪庆",
+        "url": "http://diqing.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "红河",
+        "url": "http://honghe.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "昆明",
+        "url": "http://km.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "临沧",
+        "url": "http://lincang.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "丽江",
+        "url": "http://lj.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "怒江",
+        "url": "http://nujiang.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "普洱",
+        "url": "http://pe.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "曲靖",
+        "url": "http://qj.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "文山",
+        "url": "http://ws.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "西双版纳",
+        "url": "http://xsbn.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "玉溪",
+        "url": "http://yx.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "昭通",
+        "url": "http://zt.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "湖州",
+        "url": "http://huzhou.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "杭州",
+        "url": "http://hz.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "金华",
+        "url": "http://jh.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "嘉兴",
+        "url": "http://jx.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "丽水",
+        "url": "http://ls.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "宁波",
+        "url": "http://nb.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "衢州",
+        "url": "http://quzhou.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "绍兴",
+        "url": "http://sx.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "台州",
+        "url": "http://tz.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "温州",
+        "url": "http://wz.jiayuan.home.ccb.com"
+    },
+    {
+        "name": "舟山",
+        "url": "http://zs.jiayuan.home.ccb.com"
+    }
+]

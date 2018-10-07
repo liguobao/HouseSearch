@@ -18,7 +18,7 @@ namespace HouseMap.Dao
         public DbSet<UserHouse> UserHouses { get; set; }
 
 
-        public DbSet<DbConfig> Configs { get; set; }
+        public DbSet<DBConfig> Configs { get; set; }
 
 
     }
