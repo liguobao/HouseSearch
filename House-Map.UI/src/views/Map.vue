@@ -840,7 +840,7 @@
       },
       houseListClick(item) {
         if(item.geocodes && item.geocodes.location) {
-          this.map.setZoomAndCenter(13, item.geocodes.location);
+          this.map.setZoomAndCenter(16, item.geocodes.location);
           // this.positionPicker.start(item.geocodes.location)
         }
       },

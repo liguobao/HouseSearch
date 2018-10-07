@@ -2,20 +2,19 @@
   <div>
     <ul class="list" v-if="houseList && houseList.length" ref="list">
       <li @click="handleClick(item)" v-for="item in houseList" :key="`${item.id}-${item.source}`">
-        <div class="left">
-          <template v-if="item.pictures && item.pictures.length">
-            <transition name="el-fade-in">
-              <i v-show="!imagesLoadingMap[item.pictures[0]]"
-                 class="el-icon-loading loading-icon"></i>
-            </transition>
-            <transition name="el-fade-in">
-              <img :src="item.pictures[0]"
-                   v-show="imagesLoadingMap[item.pictures[0]]"
-                   @load="imageLoading(item.pictures[0],imagesLoadingMap)"/>
-            </transition>
-          </template>
-
-        </div>
+        <!--<div class="left">-->
+          <!--<template v-if="item.pictures && item.pictures.length">-->
+            <!--<transition name="el-fade-in">-->
+              <!--<i v-show="!imagesLoadingMap[item.pictures[0]]"-->
+                 <!--class="el-icon-loading loading-icon"></i>-->
+            <!--</transition>-->
+            <!--<transition name="el-fade-in">-->
+              <!--<img :src="item.pictures[0]"-->
+                   <!--v-show="imagesLoadingMap[item.pictures[0]]"-->
+                   <!--@load="imageLoading(item.pictures[0],imagesLoadingMap)"/>-->
+            <!--</transition>-->
+          <!--</template>-->
+        <!--</div>-->
         <div class="right">
           <div class="content">
             <a class="title" href="javascript:;"  :title="item.houseTitle ?
