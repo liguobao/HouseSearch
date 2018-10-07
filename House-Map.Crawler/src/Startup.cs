@@ -102,7 +102,7 @@ namespace HouseMap.Crawler
             services.AddScoped<INewCrawler, DoubanWechat>();
             services.AddScoped<INewCrawler, Huzhu>();
             services.AddScoped<INewCrawler, Mogu>();
-            services.AddScoped<INewCrawler, Baixing>();
+            services.AddScoped<INewCrawler, BaixingWechat>();
             #endregion
 
             services.AddScoped<TodayHouseDashboardJob, TodayHouseDashboardJob>();

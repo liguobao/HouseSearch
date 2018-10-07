@@ -1,0 +1,2034 @@
+{
+    "status": "success",
+    "message": "获取数据成功",
+    "info": {
+        "area": {
+            "getAllCities": [
+                {
+                    "id": "m28",
+                    "name": "北京",
+                    "englishName": "beijing"
+                },
+                {
+                    "id": "m32",
+                    "name": "重庆",
+                    "englishName": "chongqing"
+                },
+                {
+                    "id": "m30",
+                    "name": "上海",
+                    "englishName": "shanghai"
+                },
+                {
+                    "id": "m31",
+                    "name": "天津",
+                    "englishName": "tianjin"
+                },
+                {
+                    "id": "m27",
+                    "name": "广东",
+                    "englishName": "guangdong",
+                    "cities": [
+                        {
+                            "id": "m251",
+                            "name": "珠海",
+                            "englishName": "zhuhai"
+                        },
+                        {
+                            "id": "m255",
+                            "name": "中山",
+                            "englishName": "zhongshan"
+                        },
+                        {
+                            "id": "m253",
+                            "name": "肇庆",
+                            "englishName": "zhaoqing"
+                        },
+                        {
+                            "id": "m254",
+                            "name": "湛江",
+                            "englishName": "zhanjiang"
+                        },
+                        {
+                            "id": "m258",
+                            "name": "云浮",
+                            "englishName": "yunfu"
+                        },
+                        {
+                            "id": "m212",
+                            "name": "阳江",
+                            "englishName": "yangjiang"
+                        },
+                        {
+                            "id": "m250",
+                            "name": "深圳",
+                            "englishName": "shenzhen"
+                        },
+                        {
+                            "id": "m246",
+                            "name": "韶关",
+                            "englishName": "shaoguan"
+                        },
+                        {
+                            "id": "m211",
+                            "name": "汕尾",
+                            "englishName": "shanwei"
+                        },
+                        {
+                            "id": "m249",
+                            "name": "汕头",
+                            "englishName": "shantou"
+                        },
+                        {
+                            "id": "m257",
+                            "name": "清远",
+                            "englishName": "qingyuan"
+                        },
+                        {
+                            "id": "m248",
+                            "name": "梅州",
+                            "englishName": "meizhou"
+                        },
+                        {
+                            "id": "m214",
+                            "name": "茂名",
+                            "englishName": "maoming"
+                        },
+                        {
+                            "id": "m213",
+                            "name": "揭阳",
+                            "englishName": "jieyang"
+                        },
+                        {
+                            "id": "m245",
+                            "name": "江门",
+                            "englishName": "jiangmen"
+                        },
+                        {
+                            "id": "m247",
+                            "name": "惠州",
+                            "englishName": "huizhou"
+                        },
+                        {
+                            "id": "m256",
+                            "name": "河源",
+                            "englishName": "heyuan"
+                        },
+                        {
+                            "id": "m29",
+                            "name": "广州",
+                            "englishName": "guangzhou"
+                        },
+                        {
+                            "id": "m252",
+                            "name": "佛山",
+                            "englishName": "foshan"
+                        },
+                        {
+                            "id": "m260",
+                            "name": "东莞",
+                            "englishName": "dongguan"
+                        },
+                        {
+                            "id": "m259",
+                            "name": "潮州",
+                            "englishName": "chaozhou"
+                        }
+                    ]
+                },
+                {
+                    "id": "m26",
+                    "name": "辽宁",
+                    "englishName": "liaoning",
+                    "cities": [
+                        {
+                            "id": "m113",
+                            "name": "营口",
+                            "englishName": "yingkou"
+                        },
+                        {
+                            "id": "m106",
+                            "name": "铁岭",
+                            "englishName": "tieling"
+                        },
+                        {
+                            "id": "m33",
+                            "name": "沈阳",
+                            "englishName": "shenyang"
+                        },
+                        {
+                            "id": "m117",
+                            "name": "盘锦",
+                            "englishName": "panjin"
+                        },
+                        {
+                            "id": "m115",
+                            "name": "辽阳",
+                            "englishName": "liaoyang"
+                        },
+                        {
+                            "id": "m112",
+                            "name": "锦州",
+                            "englishName": "jinzhou"
+                        },
+                        {
+                            "id": "m118",
+                            "name": "葫芦岛",
+                            "englishName": "huludao"
+                        },
+                        {
+                            "id": "m114",
+                            "name": "阜新",
+                            "englishName": "fuxin"
+                        },
+                        {
+                            "id": "m109",
+                            "name": "抚顺",
+                            "englishName": "fushun"
+                        },
+                        {
+                            "id": "m111",
+                            "name": "丹东",
+                            "englishName": "dandong"
+                        },
+                        {
+                            "id": "m107",
+                            "name": "大连",
+                            "englishName": "dalian"
+                        },
+                        {
+                            "id": "m116",
+                            "name": "朝阳",
+                            "englishName": "chaoyang"
+                        },
+                        {
+                            "id": "m110",
+                            "name": "本溪",
+                            "englishName": "benxi"
+                        },
+                        {
+                            "id": "m108",
+                            "name": "鞍山",
+                            "englishName": "anshan"
+                        }
+                    ]
+                },
+                {
+                    "id": "m25",
+                    "name": "江苏",
+                    "englishName": "jiangsu",
+                    "cities": [
+                        {
+                            "id": "m148",
+                            "name": "镇江",
+                            "englishName": "zhenjiang"
+                        },
+                        {
+                            "id": "m151",
+                            "name": "扬州",
+                            "englishName": "yangzhou"
+                        },
+                        {
+                            "id": "m152",
+                            "name": "盐城",
+                            "englishName": "yancheng"
+                        },
+                        {
+                            "id": "m153",
+                            "name": "徐州",
+                            "englishName": "xuzhou"
+                        },
+                        {
+                            "id": "m147",
+                            "name": "无锡",
+                            "englishName": "wuxi"
+                        },
+                        {
+                            "id": "m157",
+                            "name": "泰州",
+                            "englishName": "tz"
+                        },
+                        {
+                            "id": "m149",
+                            "name": "苏州",
+                            "englishName": "suzhou"
+                        },
+                        {
+                            "id": "m158",
+                            "name": "宿迁",
+                            "englishName": "suqian"
+                        },
+                        {
+                            "id": "m150",
+                            "name": "南通",
+                            "englishName": "nantong"
+                        },
+                        {
+                            "id": "m34",
+                            "name": "南京",
+                            "englishName": "nanjing"
+                        },
+                        {
+                            "id": "m155",
+                            "name": "连云港",
+                            "englishName": "lianyungang"
+                        },
+                        {
+                            "id": "m154",
+                            "name": "淮安",
+                            "englishName": "huaian"
+                        },
+                        {
+                            "id": "m156",
+                            "name": "常州",
+                            "englishName": "changzhou"
+                        },
+                        {
+                            "id": "m6016",
+                            "name": "昆山",
+                            "englishName": "kunshan"
+                        },
+                        {
+                            "id": "m6015",
+                            "name": "常熟",
+                            "englishName": "changshu"
+                        },
+                        {
+                            "id": "m6013",
+                            "name": "张家港",
+                            "englishName": "zhangjiagang"
+                        },
+                        {
+                            "id": "m6014",
+                            "name": "太仓",
+                            "englishName": "taicang"
+                        }
+                    ]
+                },
+                {
+                    "id": "m24",
+                    "name": "湖北",
+                    "englishName": "hubei",
+                    "cities": [
+                        {
+                            "id": "m225",
+                            "name": "宜昌",
+                            "englishName": "yichang"
+                        },
+                        {
+                            "id": "m220",
+                            "name": "孝感",
+                            "englishName": "xiaogan"
+                        },
+                        {
+                            "id": "m56",
+                            "name": "仙桃",
+                            "englishName": "xiantao"
+                        },
+                        {
+                            "id": "m223",
+                            "name": "咸宁",
+                            "englishName": "xianning"
+                        },
+                        {
+                            "id": "m218",
+                            "name": "襄阳",
+                            "englishName": "xiangfan"
+                        },
+                        {
+                            "id": "m35",
+                            "name": "武汉",
+                            "englishName": "wuhan"
+                        },
+                        {
+                            "id": "m57",
+                            "name": "天门",
+                            "englishName": "tianmen"
+                        },
+                        {
+                            "id": "m227",
+                            "name": "随州",
+                            "englishName": "suizhou"
+                        },
+                        {
+                            "id": "m226",
+                            "name": "十堰",
+                            "englishName": "shiyan"
+                        },
+                        {
+                            "id": "m230",
+                            "name": "神农架",
+                            "englishName": "shennongjia"
+                        },
+                        {
+                            "id": "m58",
+                            "name": "潜江",
+                            "englishName": "qianjiang"
+                        },
+                        {
+                            "id": "m224",
+                            "name": "荆州",
+                            "englishName": "jingzhou"
+                        },
+                        {
+                            "id": "m228",
+                            "name": "荆门",
+                            "englishName": "jingmen"
+                        },
+                        {
+                            "id": "m222",
+                            "name": "黄石",
+                            "englishName": "huangshi"
+                        },
+                        {
+                            "id": "m221",
+                            "name": "黄冈",
+                            "englishName": "huanggang"
+                        },
+                        {
+                            "id": "m219",
+                            "name": "鄂州",
+                            "englishName": "ezhou"
+                        },
+                        {
+                            "id": "m229",
+                            "name": "恩施",
+                            "englishName": "enshi"
+                        }
+                    ]
+                },
+                {
+                    "id": "m23",
+                    "name": "四川",
+                    "englishName": "sichuan",
+                    "cities": [
+                        {
+                            "id": "m53",
+                            "name": "资阳",
+                            "englishName": "ziyang"
+                        },
+                        {
+                            "id": "m282",
+                            "name": "自贡",
+                            "englishName": "zigong"
+                        },
+                        {
+                            "id": "m290",
+                            "name": "宜宾",
+                            "englishName": "yibin"
+                        },
+                        {
+                            "id": "m294",
+                            "name": "雅安",
+                            "englishName": "yaan"
+                        },
+                        {
+                            "id": "m286",
+                            "name": "遂宁",
+                            "englishName": "suining"
+                        },
+                        {
+                            "id": "m281",
+                            "name": "攀枝花",
+                            "englishName": "panzhihua"
+                        },
+                        {
+                            "id": "m291",
+                            "name": "内江",
+                            "englishName": "neijiang"
+                        },
+                        {
+                            "id": "m284",
+                            "name": "南充",
+                            "englishName": "nanchong"
+                        },
+                        {
+                            "id": "m283",
+                            "name": "绵阳",
+                            "englishName": "mianyang"
+                        },
+                        {
+                            "id": "m45",
+                            "name": "眉山",
+                            "englishName": "meishan"
+                        },
+                        {
+                            "id": "m289",
+                            "name": "泸州",
+                            "englishName": "luzhou"
+                        },
+                        {
+                            "id": "m293",
+                            "name": "凉山",
+                            "englishName": "liangshan"
+                        },
+                        {
+                            "id": "m292",
+                            "name": "乐山",
+                            "englishName": "leshan"
+                        },
+                        {
+                            "id": "m298",
+                            "name": "广元",
+                            "englishName": "guangyuan"
+                        },
+                        {
+                            "id": "m287",
+                            "name": "广安",
+                            "englishName": "guangan"
+                        },
+                        {
+                            "id": "m295",
+                            "name": "甘孜",
+                            "englishName": "ganzi"
+                        },
+                        {
+                            "id": "m297",
+                            "name": "德阳",
+                            "englishName": "deyang"
+                        },
+                        {
+                            "id": "m285",
+                            "name": "达州",
+                            "englishName": "dazhou"
+                        },
+                        {
+                            "id": "m36",
+                            "name": "成都",
+                            "englishName": "chengdu"
+                        },
+                        {
+                            "id": "m288",
+                            "name": "巴中",
+                            "englishName": "bazhong"
+                        },
+                        {
+                            "id": "m296",
+                            "name": "阿坝",
+                            "englishName": "aba"
+                        }
+                    ]
+                },
+                {
+                    "id": "m22",
+                    "name": "陕西",
+                    "englishName": "shaanxi",
+                    "cities": [
+                        {
+                            "id": "m337",
+                            "name": "榆林",
+                            "englishName": "yulin"
+                        },
+                        {
+                            "id": "m336",
+                            "name": "延安",
+                            "englishName": "yanan"
+                        },
+                        {
+                            "id": "m335",
+                            "name": "咸阳",
+                            "englishName": "xianyang"
+                        },
+                        {
+                            "id": "m37",
+                            "name": "西安",
+                            "englishName": "xian"
+                        },
+                        {
+                            "id": "m338",
+                            "name": "渭南",
+                            "englishName": "weinan"
+                        },
+                        {
+                            "id": "m343",
+                            "name": "铜川",
+                            "englishName": "tongchuan"
+                        },
+                        {
+                            "id": "m339",
+                            "name": "商洛",
+                            "englishName": "shangluo"
+                        },
+                        {
+                            "id": "m341",
+                            "name": "汉中",
+                            "englishName": "hanzhong"
+                        },
+                        {
+                            "id": "m342",
+                            "name": "宝鸡",
+                            "englishName": "baoji"
+                        },
+                        {
+                            "id": "m340",
+                            "name": "安康",
+                            "englishName": "ankang"
+                        }
+                    ]
+                },
+                {
+                    "id": "m21",
+                    "name": "河北",
+                    "englishName": "hebei",
+                    "cities": [
+                        {
+                            "id": "m69",
+                            "name": "张家口",
+                            "englishName": "zhangjiakou"
+                        },
+                        {
+                            "id": "m75",
+                            "name": "邢台",
+                            "englishName": "xingtai"
+                        },
+                        {
+                            "id": "m71",
+                            "name": "唐山",
+                            "englishName": "tangshan"
+                        },
+                        {
+                            "id": "m67",
+                            "name": "石家庄",
+                            "englishName": "shijiazhuang"
+                        },
+                        {
+                            "id": "m76",
+                            "name": "秦皇岛",
+                            "englishName": "qinhuangdao"
+                        },
+                        {
+                            "id": "m72",
+                            "name": "廊坊",
+                            "englishName": "langfang"
+                        },
+                        {
+                            "id": "m74",
+                            "name": "衡水",
+                            "englishName": "hengshui"
+                        },
+                        {
+                            "id": "m66",
+                            "name": "邯郸",
+                            "englishName": "handan"
+                        },
+                        {
+                            "id": "m70",
+                            "name": "承德",
+                            "englishName": "chengde"
+                        },
+                        {
+                            "id": "m73",
+                            "name": "沧州",
+                            "englishName": "cangzhou"
+                        },
+                        {
+                            "id": "m68",
+                            "name": "保定",
+                            "englishName": "baoding"
+                        }
+                    ]
+                },
+                {
+                    "id": "m20",
+                    "name": "山西",
+                    "englishName": "shanxi",
+                    "cities": [
+                        {
+                            "id": "m87",
+                            "name": "运城",
+                            "englishName": "yuncheng"
+                        },
+                        {
+                            "id": "m81",
+                            "name": "阳泉",
+                            "englishName": "yangquan"
+                        },
+                        {
+                            "id": "m78",
+                            "name": "忻州",
+                            "englishName": "xinzhou"
+                        },
+                        {
+                            "id": "m79",
+                            "name": "太原",
+                            "englishName": "taiyuan"
+                        },
+                        {
+                            "id": "m77",
+                            "name": "朔州",
+                            "englishName": "shuozhou"
+                        },
+                        {
+                            "id": "m86",
+                            "name": "吕梁",
+                            "englishName": "lvliang"
+                        },
+                        {
+                            "id": "m85",
+                            "name": "临汾",
+                            "englishName": "linfen"
+                        },
+                        {
+                            "id": "m82",
+                            "name": "晋中",
+                            "englishName": "jinzhong"
+                        },
+                        {
+                            "id": "m84",
+                            "name": "晋城",
+                            "englishName": "jincheng"
+                        },
+                        {
+                            "id": "m80",
+                            "name": "大同",
+                            "englishName": "datong"
+                        },
+                        {
+                            "id": "m83",
+                            "name": "长治",
+                            "englishName": "changzhi"
+                        }
+                    ]
+                },
+                {
+                    "id": "m19",
+                    "name": "河南",
+                    "englishName": "henan",
+                    "cities": [
+                        {
+                            "id": "m103",
+                            "name": "驻马店",
+                            "englishName": "zhumadian"
+                        },
+                        {
+                            "id": "m101",
+                            "name": "周口",
+                            "englishName": "zhoukou"
+                        },
+                        {
+                            "id": "m89",
+                            "name": "郑州",
+                            "englishName": "zhengzhou"
+                        },
+                        {
+                            "id": "m92",
+                            "name": "许昌",
+                            "englishName": "xuchang"
+                        },
+                        {
+                            "id": "m94",
+                            "name": "信阳",
+                            "englishName": "xinyang"
+                        },
+                        {
+                            "id": "m91",
+                            "name": "新乡",
+                            "englishName": "xinxiang"
+                        },
+                        {
+                            "id": "m88",
+                            "name": "商丘",
+                            "englishName": "shangqiu"
+                        },
+                        {
+                            "id": "m104",
+                            "name": "三门峡",
+                            "englishName": "sanmenxia"
+                        },
+                        {
+                            "id": "m100",
+                            "name": "濮阳",
+                            "englishName": "puyang"
+                        },
+                        {
+                            "id": "m93",
+                            "name": "平顶山",
+                            "englishName": "pingdingshan"
+                        },
+                        {
+                            "id": "m95",
+                            "name": "南阳",
+                            "englishName": "nanyang"
+                        },
+                        {
+                            "id": "m97",
+                            "name": "洛阳",
+                            "englishName": "luoyang"
+                        },
+                        {
+                            "id": "m102",
+                            "name": "漯河",
+                            "englishName": "luohe"
+                        },
+                        {
+                            "id": "m96",
+                            "name": "开封",
+                            "englishName": "kaifeng"
+                        },
+                        {
+                            "id": "m105",
+                            "name": "济源",
+                            "englishName": "jiyuan"
+                        },
+                        {
+                            "id": "m98",
+                            "name": "焦作",
+                            "englishName": "jiaozuo"
+                        },
+                        {
+                            "id": "m99",
+                            "name": "鹤壁",
+                            "englishName": "hebi"
+                        },
+                        {
+                            "id": "m90",
+                            "name": "安阳",
+                            "englishName": "anyang"
+                        }
+                    ]
+                },
+                {
+                    "id": "m18",
+                    "name": "吉林",
+                    "englishName": "jilinn",
+                    "cities": [
+                        {
+                            "id": "m121",
+                            "name": "延边",
+                            "englishName": "yanbian"
+                        },
+                        {
+                            "id": "m123",
+                            "name": "通化",
+                            "englishName": "tonghua"
+                        },
+                        {
+                            "id": "m126",
+                            "name": "松原",
+                            "englishName": "songyuan"
+                        },
+                        {
+                            "id": "m122",
+                            "name": "四平",
+                            "englishName": "siping"
+                        },
+                        {
+                            "id": "m125",
+                            "name": "辽源",
+                            "englishName": "liaoyuan"
+                        },
+                        {
+                            "id": "m120",
+                            "name": "吉林",
+                            "englishName": "jilin"
+                        },
+                        {
+                            "id": "m119",
+                            "name": "长春",
+                            "englishName": "changchun"
+                        },
+                        {
+                            "id": "m127",
+                            "name": "白山",
+                            "englishName": "baishan"
+                        },
+                        {
+                            "id": "m124",
+                            "name": "白城",
+                            "englishName": "baicheng"
+                        }
+                    ]
+                },
+                {
+                    "id": "m17",
+                    "name": "黑龙江",
+                    "englishName": "heilongjiang",
+                    "cities": [
+                        {
+                            "id": "m51",
+                            "name": "伊春",
+                            "englishName": "yichun"
+                        },
+                        {
+                            "id": "m133",
+                            "name": "绥化",
+                            "englishName": "suihua"
+                        },
+                        {
+                            "id": "m41",
+                            "name": "双鸭山",
+                            "englishName": "shuangyashan"
+                        },
+                        {
+                            "id": "m39",
+                            "name": "七台河",
+                            "englishName": "qitaihe"
+                        },
+                        {
+                            "id": "m129",
+                            "name": "齐齐哈尔",
+                            "englishName": "qiqihaer"
+                        },
+                        {
+                            "id": "m130",
+                            "name": "牡丹江",
+                            "englishName": "mudanjiang"
+                        },
+                        {
+                            "id": "m38",
+                            "name": "鸡西",
+                            "englishName": "jixi"
+                        },
+                        {
+                            "id": "m131",
+                            "name": "佳木斯",
+                            "englishName": "jiamusi"
+                        },
+                        {
+                            "id": "m132",
+                            "name": "黑河",
+                            "englishName": "heihe"
+                        },
+                        {
+                            "id": "m40",
+                            "name": "鹤岗",
+                            "englishName": "hegang"
+                        },
+                        {
+                            "id": "m128",
+                            "name": "哈尔滨",
+                            "englishName": "haerbin"
+                        },
+                        {
+                            "id": "m134",
+                            "name": "大庆",
+                            "englishName": "daqing"
+                        },
+                        {
+                            "id": "m177413",
+                            "name": "大兴安岭",
+                            "englishName": "daxinganling"
+                        }
+                    ]
+                },
+                {
+                    "id": "m16",
+                    "name": "内蒙古",
+                    "englishName": "neimenggu",
+                    "cities": [
+                        {
+                            "id": "m145",
+                            "name": "兴安",
+                            "englishName": "xingan"
+                        },
+                        {
+                            "id": "m144",
+                            "name": "锡林郭勒",
+                            "englishName": "xilinguole"
+                        },
+                        {
+                            "id": "m139",
+                            "name": "乌兰察布",
+                            "englishName": "wulanchabu"
+                        },
+                        {
+                            "id": "m138",
+                            "name": "乌海",
+                            "englishName": "wuhai"
+                        },
+                        {
+                            "id": "m140",
+                            "name": "通辽",
+                            "englishName": "tongliao"
+                        },
+                        {
+                            "id": "m135",
+                            "name": "呼伦贝尔",
+                            "englishName": "hulunbeier"
+                        },
+                        {
+                            "id": "m136",
+                            "name": "呼和浩特",
+                            "englishName": "huhehaote"
+                        },
+                        {
+                            "id": "m142",
+                            "name": "鄂尔多斯",
+                            "englishName": "eerduosi"
+                        },
+                        {
+                            "id": "m141",
+                            "name": "赤峰",
+                            "englishName": "chifeng"
+                        },
+                        {
+                            "id": "m143",
+                            "name": "巴彦淖尔",
+                            "englishName": "bayannaoer"
+                        },
+                        {
+                            "id": "m137",
+                            "name": "包头",
+                            "englishName": "baotou"
+                        },
+                        {
+                            "id": "m146",
+                            "name": "阿拉善",
+                            "englishName": "alashan"
+                        }
+                    ]
+                },
+                {
+                    "id": "m15",
+                    "name": "山东",
+                    "englishName": "shandong",
+                    "cities": [
+                        {
+                            "id": "m162",
+                            "name": "淄博",
+                            "englishName": "zibo"
+                        },
+                        {
+                            "id": "m207",
+                            "name": "枣庄",
+                            "englishName": "zaozhuang"
+                        },
+                        {
+                            "id": "m164",
+                            "name": "烟台",
+                            "englishName": "yantai"
+                        },
+                        {
+                            "id": "m167",
+                            "name": "威海",
+                            "englishName": "weihai"
+                        },
+                        {
+                            "id": "m165",
+                            "name": "潍坊",
+                            "englishName": "weifang"
+                        },
+                        {
+                            "id": "m42",
+                            "name": "泰安",
+                            "englishName": "taian"
+                        },
+                        {
+                            "id": "m208",
+                            "name": "日照",
+                            "englishName": "rizhao"
+                        },
+                        {
+                            "id": "m161",
+                            "name": "青岛",
+                            "englishName": "qingdao"
+                        },
+                        {
+                            "id": "m168",
+                            "name": "临沂",
+                            "englishName": "linyi"
+                        },
+                        {
+                            "id": "m210",
+                            "name": "聊城",
+                            "englishName": "liaocheng"
+                        },
+                        {
+                            "id": "m209",
+                            "name": "莱芜",
+                            "englishName": "laiwu"
+                        },
+                        {
+                            "id": "m166",
+                            "name": "济宁",
+                            "englishName": "jining"
+                        },
+                        {
+                            "id": "m160",
+                            "name": "济南",
+                            "englishName": "jinan"
+                        },
+                        {
+                            "id": "m159",
+                            "name": "菏泽",
+                            "englishName": "heze"
+                        },
+                        {
+                            "id": "m170",
+                            "name": "东营",
+                            "englishName": "dongying"
+                        },
+                        {
+                            "id": "m163",
+                            "name": "德州",
+                            "englishName": "dezhou"
+                        },
+                        {
+                            "id": "m169",
+                            "name": "滨州",
+                            "englishName": "binzhou"
+                        }
+                    ]
+                },
+                {
+                    "id": "m14",
+                    "name": "安徽",
+                    "englishName": "anhui",
+                    "cities": [
+                        {
+                            "id": "m183",
+                            "name": "宣城",
+                            "englishName": "xuancheng"
+                        },
+                        {
+                            "id": "m174",
+                            "name": "芜湖",
+                            "englishName": "wuhu"
+                        },
+                        {
+                            "id": "m182",
+                            "name": "铜陵",
+                            "englishName": "tongling"
+                        },
+                        {
+                            "id": "m178",
+                            "name": "宿州",
+                            "englishName": "sz"
+                        },
+                        {
+                            "id": "m176",
+                            "name": "马鞍山",
+                            "englishName": "maanshan"
+                        },
+                        {
+                            "id": "m184",
+                            "name": "六安",
+                            "englishName": "luan"
+                        },
+                        {
+                            "id": "m180",
+                            "name": "黄山",
+                            "englishName": "huangshan"
+                        },
+                        {
+                            "id": "m175",
+                            "name": "淮南",
+                            "englishName": "huainan"
+                        },
+                        {
+                            "id": "m181",
+                            "name": "淮北",
+                            "englishName": "huaibei"
+                        },
+                        {
+                            "id": "m172",
+                            "name": "合肥",
+                            "englishName": "hefei"
+                        },
+                        {
+                            "id": "m171",
+                            "name": "阜阳",
+                            "englishName": "fuyang"
+                        },
+                        {
+                            "id": "m43",
+                            "name": "滁州",
+                            "englishName": "chuzhou"
+                        },
+                        {
+                            "id": "m186",
+                            "name": "池州",
+                            "englishName": "chizhou"
+                        },
+                        {
+                            "id": "m185",
+                            "name": "巢湖",
+                            "englishName": "chaohu"
+                        },
+                        {
+                            "id": "m179",
+                            "name": "亳州",
+                            "englishName": "bozhou"
+                        },
+                        {
+                            "id": "m173",
+                            "name": "蚌埠",
+                            "englishName": "bengbu"
+                        },
+                        {
+                            "id": "m177",
+                            "name": "安庆",
+                            "englishName": "anqing"
+                        }
+                    ]
+                },
+                {
+                    "id": "m13",
+                    "name": "浙江",
+                    "englishName": "zhejiang",
+                    "cities": [
+                        {
+                            "id": "m197",
+                            "name": "舟山",
+                            "englishName": "zhoushan"
+                        },
+                        {
+                            "id": "m194",
+                            "name": "温州",
+                            "englishName": "wenzhou"
+                        },
+                        {
+                            "id": "m193",
+                            "name": "台州",
+                            "englishName": "taizhou"
+                        },
+                        {
+                            "id": "m192",
+                            "name": "绍兴",
+                            "englishName": "shaoxing"
+                        },
+                        {
+                            "id": "m187",
+                            "name": "衢州",
+                            "englishName": "quzhou"
+                        },
+                        {
+                            "id": "m191",
+                            "name": "宁波",
+                            "englishName": "ningbo"
+                        },
+                        {
+                            "id": "m195",
+                            "name": "丽水",
+                            "englishName": "lishui"
+                        },
+                        {
+                            "id": "m196",
+                            "name": "金华",
+                            "englishName": "jinhua"
+                        },
+                        {
+                            "id": "m190",
+                            "name": "嘉兴",
+                            "englishName": "jiaxing"
+                        },
+                        {
+                            "id": "m189",
+                            "name": "湖州",
+                            "englishName": "huzhou"
+                        },
+                        {
+                            "id": "m188",
+                            "name": "杭州",
+                            "englishName": "hangzhou"
+                        }
+                    ]
+                },
+                {
+                    "id": "m12",
+                    "name": "福建",
+                    "englishName": "fujian",
+                    "cities": [
+                        {
+                            "id": "m203",
+                            "name": "漳州",
+                            "englishName": "zhangzhou"
+                        },
+                        {
+                            "id": "m199",
+                            "name": "厦门",
+                            "englishName": "xiamen"
+                        },
+                        {
+                            "id": "m205",
+                            "name": "三明",
+                            "englishName": "sanming"
+                        },
+                        {
+                            "id": "m202",
+                            "name": "泉州",
+                            "englishName": "quanzhou"
+                        },
+                        {
+                            "id": "m201",
+                            "name": "莆田",
+                            "englishName": "putian"
+                        },
+                        {
+                            "id": "m200",
+                            "name": "宁德",
+                            "englishName": "ningde"
+                        },
+                        {
+                            "id": "m206",
+                            "name": "南平",
+                            "englishName": "nanping"
+                        },
+                        {
+                            "id": "m204",
+                            "name": "龙岩",
+                            "englishName": "longyan"
+                        },
+                        {
+                            "id": "m198",
+                            "name": "福州",
+                            "englishName": "fuzhou"
+                        }
+                    ]
+                },
+                {
+                    "id": "m11",
+                    "name": "湖南",
+                    "englishName": "hunan",
+                    "cities": [
+                        {
+                            "id": "m234",
+                            "name": "株洲",
+                            "englishName": "zhuzhou"
+                        },
+                        {
+                            "id": "m242",
+                            "name": "张家界",
+                            "englishName": "zhangjiajie"
+                        },
+                        {
+                            "id": "m231",
+                            "name": "岳阳",
+                            "englishName": "yueyang"
+                        },
+                        {
+                            "id": "m244",
+                            "name": "永州",
+                            "englishName": "yongzhou"
+                        },
+                        {
+                            "id": "m238",
+                            "name": "益阳",
+                            "englishName": "yiyang"
+                        },
+                        {
+                            "id": "m241",
+                            "name": "湘西",
+                            "englishName": "xiangxi"
+                        },
+                        {
+                            "id": "m233",
+                            "name": "湘潭",
+                            "englishName": "xiangtan"
+                        },
+                        {
+                            "id": "m240",
+                            "name": "邵阳",
+                            "englishName": "shaoyang"
+                        },
+                        {
+                            "id": "m239",
+                            "name": "娄底",
+                            "englishName": "loudi"
+                        },
+                        {
+                            "id": "m243",
+                            "name": "怀化",
+                            "englishName": "huaihua"
+                        },
+                        {
+                            "id": "m235",
+                            "name": "衡阳",
+                            "englishName": "hengyang"
+                        },
+                        {
+                            "id": "m236",
+                            "name": "郴州",
+                            "englishName": "chenzhou"
+                        },
+                        {
+                            "id": "m232",
+                            "name": "长沙",
+                            "englishName": "changsha"
+                        },
+                        {
+                            "id": "m237",
+                            "name": "常德",
+                            "englishName": "changde"
+                        }
+                    ]
+                },
+                {
+                    "id": "m10",
+                    "name": "广西",
+                    "englishName": "guangxi",
+                    "cities": [
+                        {
+                            "id": "m65",
+                            "name": "玉林",
+                            "englishName": "yl"
+                        },
+                        {
+                            "id": "m265",
+                            "name": "梧州",
+                            "englishName": "wuzhou"
+                        },
+                        {
+                            "id": "m268",
+                            "name": "钦州",
+                            "englishName": "qinzhou"
+                        },
+                        {
+                            "id": "m262",
+                            "name": "南宁",
+                            "englishName": "nanning"
+                        },
+                        {
+                            "id": "m263",
+                            "name": "柳州",
+                            "englishName": "liuzhou"
+                        },
+                        {
+                            "id": "m44",
+                            "name": "来宾",
+                            "englishName": "laibin"
+                        },
+                        {
+                            "id": "m49",
+                            "name": "贺州",
+                            "englishName": "hezhou"
+                        },
+                        {
+                            "id": "m269",
+                            "name": "河池",
+                            "englishName": "hechi"
+                        },
+                        {
+                            "id": "m264",
+                            "name": "桂林",
+                            "englishName": "guilin"
+                        },
+                        {
+                            "id": "m266",
+                            "name": "贵港",
+                            "englishName": "guigang"
+                        },
+                        {
+                            "id": "m261",
+                            "name": "防城港",
+                            "englishName": "fangchenggang"
+                        },
+                        {
+                            "id": "m50",
+                            "name": "崇左",
+                            "englishName": "chongzuo"
+                        },
+                        {
+                            "id": "m267",
+                            "name": "百色",
+                            "englishName": "bose"
+                        },
+                        {
+                            "id": "m270",
+                            "name": "北海",
+                            "englishName": "beihai"
+                        }
+                    ]
+                },
+                {
+                    "id": "m9",
+                    "name": "江西",
+                    "englishName": "jiangxi",
+                    "cities": [
+                        {
+                            "id": "m217",
+                            "name": "鹰潭",
+                            "englishName": "yingtan"
+                        },
+                        {
+                            "id": "m276",
+                            "name": "宜春",
+                            "englishName": "yc"
+                        },
+                        {
+                            "id": "m271",
+                            "name": "新余",
+                            "englishName": "xinyu"
+                        },
+                        {
+                            "id": "m274",
+                            "name": "上饶",
+                            "englishName": "shangrao"
+                        },
+                        {
+                            "id": "m280",
+                            "name": "萍乡",
+                            "englishName": "pingxiang"
+                        },
+                        {
+                            "id": "m272",
+                            "name": "南昌",
+                            "englishName": "nanchang"
+                        },
+                        {
+                            "id": "m273",
+                            "name": "九江",
+                            "englishName": "jiujiang"
+                        },
+                        {
+                            "id": "m279",
+                            "name": "景德镇",
+                            "englishName": "jingdezhen"
+                        },
+                        {
+                            "id": "m277",
+                            "name": "吉安",
+                            "englishName": "jian"
+                        },
+                        {
+                            "id": "m278",
+                            "name": "赣州",
+                            "englishName": "ganzhou"
+                        },
+                        {
+                            "id": "m275",
+                            "name": "抚州",
+                            "englishName": "fz"
+                        }
+                    ]
+                },
+                {
+                    "id": "m8",
+                    "name": "贵州",
+                    "englishName": "guizhou",
+                    "cities": [
+                        {
+                            "id": "m300",
+                            "name": "遵义",
+                            "englishName": "zunyi"
+                        },
+                        {
+                            "id": "m304",
+                            "name": "铜仁",
+                            "englishName": "tongren"
+                        },
+                        {
+                            "id": "m307",
+                            "name": "黔西南",
+                            "englishName": "qianxinan"
+                        },
+                        {
+                            "id": "m302",
+                            "name": "黔南",
+                            "englishName": "qiannan"
+                        },
+                        {
+                            "id": "m303",
+                            "name": "黔东南",
+                            "englishName": "qiandongnan"
+                        },
+                        {
+                            "id": "m306",
+                            "name": "六盘水",
+                            "englishName": "liupanshui"
+                        },
+                        {
+                            "id": "m299",
+                            "name": "贵阳",
+                            "englishName": "guiyang"
+                        },
+                        {
+                            "id": "m305",
+                            "name": "毕节",
+                            "englishName": "bijie"
+                        },
+                        {
+                            "id": "m301",
+                            "name": "安顺",
+                            "englishName": "anshun"
+                        }
+                    ]
+                },
+                {
+                    "id": "m7",
+                    "name": "云南",
+                    "englishName": "yunnan",
+                    "cities": [
+                        {
+                            "id": "m308",
+                            "name": "昭通",
+                            "englishName": "zhaotong"
+                        },
+                        {
+                            "id": "m315",
+                            "name": "玉溪",
+                            "englishName": "yuxi"
+                        },
+                        {
+                            "id": "m215",
+                            "name": "西双版纳",
+                            "englishName": "xishuangbanna"
+                        },
+                        {
+                            "id": "m314",
+                            "name": "文山",
+                            "englishName": "wenshan"
+                        },
+                        {
+                            "id": "m312",
+                            "name": "曲靖",
+                            "englishName": "qujing"
+                        },
+                        {
+                            "id": "m317",
+                            "name": "普洱",
+                            "englishName": "puer"
+                        },
+                        {
+                            "id": "m319",
+                            "name": "怒江",
+                            "englishName": "nujiang"
+                        },
+                        {
+                            "id": "m318",
+                            "name": "临沧",
+                            "englishName": "lincang"
+                        },
+                        {
+                            "id": "m321",
+                            "name": "丽江",
+                            "englishName": "lijiang"
+                        },
+                        {
+                            "id": "m309",
+                            "name": "昆明",
+                            "englishName": "kunming"
+                        },
+                        {
+                            "id": "m311",
+                            "name": "红河",
+                            "englishName": "honghe"
+                        },
+                        {
+                            "id": "m320",
+                            "name": "迪庆",
+                            "englishName": "diqing"
+                        },
+                        {
+                            "id": "m216",
+                            "name": "德宏",
+                            "englishName": "dehong"
+                        },
+                        {
+                            "id": "m310",
+                            "name": "大理",
+                            "englishName": "dali"
+                        },
+                        {
+                            "id": "m316",
+                            "name": "楚雄",
+                            "englishName": "chuxiong"
+                        },
+                        {
+                            "id": "m313",
+                            "name": "保山",
+                            "englishName": "baoshan"
+                        }
+                    ]
+                },
+                {
+                    "id": "m6",
+                    "name": "西藏",
+                    "englishName": "xizang",
+                    "cities": [
+                        {
+                            "id": "m324",
+                            "name": "山南",
+                            "englishName": "shannan"
+                        },
+                        {
+                            "id": "m323",
+                            "name": "日喀则",
+                            "englishName": "rikaze"
+                        },
+                        {
+                            "id": "m327",
+                            "name": "那曲",
+                            "englishName": "naqu"
+                        },
+                        {
+                            "id": "m325",
+                            "name": "林芝",
+                            "englishName": "linzhi"
+                        },
+                        {
+                            "id": "m322",
+                            "name": "拉萨",
+                            "englishName": "lasa"
+                        },
+                        {
+                            "id": "m326",
+                            "name": "昌都",
+                            "englishName": "changdu"
+                        },
+                        {
+                            "id": "m328",
+                            "name": "阿里",
+                            "englishName": "ali"
+                        }
+                    ]
+                },
+                {
+                    "id": "m5",
+                    "name": "海南",
+                    "englishName": "hannan",
+                    "cities": [
+                        {
+                            "id": "m63",
+                            "name": "五指山",
+                            "englishName": "wuzhishan"
+                        },
+                        {
+                            "id": "m61",
+                            "name": "文昌",
+                            "englishName": "wenchang"
+                        },
+                        {
+                            "id": "m64",
+                            "name": "万宁",
+                            "englishName": "wanning"
+                        },
+                        {
+                            "id": "m55",
+                            "name": "三亚",
+                            "englishName": "sanya"
+                        },
+                        {
+                            "id": "m62",
+                            "name": "琼海",
+                            "englishName": "qionghai"
+                        },
+                        {
+                            "id": "m329",
+                            "name": "海口",
+                            "englishName": "haikou"
+                        },
+                        {
+                            "id": "m60",
+                            "name": "东方",
+                            "englishName": "dongfang"
+                        },
+                        {
+                            "id": "m59",
+                            "name": "儋州",
+                            "englishName": "danzhou"
+                        },
+                        {
+                            "id": "m177418",
+                            "name": "白沙",
+                            "englishName": "baisha"
+                        },
+                        {
+                            "id": "m177419",
+                            "name": "三沙",
+                            "englishName": "sansha"
+                        },
+                        {
+                            "id": "m177420",
+                            "name": "保亭",
+                            "englishName": "baoting"
+                        },
+                        {
+                            "id": "m177421",
+                            "name": "昌江",
+                            "englishName": "changjiang"
+                        },
+                        {
+                            "id": "m177422",
+                            "name": "澄迈",
+                            "englishName": "chengmai"
+                        },
+                        {
+                            "id": "m177423",
+                            "name": "定安",
+                            "englishName": "dingan"
+                        },
+                        {
+                            "id": "m177424",
+                            "name": "乐东",
+                            "englishName": "ledong"
+                        },
+                        {
+                            "id": "m177425",
+                            "name": "临高",
+                            "englishName": "lingao"
+                        },
+                        {
+                            "id": "m177426",
+                            "name": "陵水",
+                            "englishName": "lingshui"
+                        },
+                        {
+                            "id": "m177427",
+                            "name": "琼中",
+                            "englishName": "qiongzhong"
+                        },
+                        {
+                            "id": "m177428",
+                            "name": "屯昌",
+                            "englishName": "tunchang"
+                        }
+                    ]
+                },
+                {
+                    "id": "m4",
+                    "name": "甘肃",
+                    "englishName": "gansu",
+                    "cities": [
+                        {
+                            "id": "m350",
+                            "name": "张掖",
+                            "englishName": "zhangye"
+                        },
+                        {
+                            "id": "m47",
+                            "name": "武威",
+                            "englishName": "wuwei"
+                        },
+                        {
+                            "id": "m352",
+                            "name": "天水",
+                            "englishName": "tianshui"
+                        },
+                        {
+                            "id": "m348",
+                            "name": "庆阳",
+                            "englishName": "qingyang"
+                        },
+                        {
+                            "id": "m347",
+                            "name": "平凉",
+                            "englishName": "pingliang"
+                        },
+                        {
+                            "id": "m46",
+                            "name": "陇南",
+                            "englishName": "longnan"
+                        },
+                        {
+                            "id": "m344",
+                            "name": "临夏",
+                            "englishName": "linxia"
+                        },
+                        {
+                            "id": "m345",
+                            "name": "兰州",
+                            "englishName": "lanzhou"
+                        },
+                        {
+                            "id": "m351",
+                            "name": "酒泉",
+                            "englishName": "jiuquan"
+                        },
+                        {
+                            "id": "m349",
+                            "name": "金昌",
+                            "englishName": "jinchang"
+                        },
+                        {
+                            "id": "m48",
+                            "name": "嘉峪关",
+                            "englishName": "jiayuguan"
+                        },
+                        {
+                            "id": "m353",
+                            "name": "甘南",
+                            "englishName": "gannan"
+                        },
+                        {
+                            "id": "m346",
+                            "name": "定西",
+                            "englishName": "dingxi"
+                        },
+                        {
+                            "id": "m354",
+                            "name": "白银",
+                            "englishName": "baiyin"
+                        }
+                    ]
+                },
+                {
+                    "id": "m3",
+                    "name": "宁夏",
+                    "englishName": "ningxia",
+                    "cities": [
+                        {
+                            "id": "m54",
+                            "name": "中卫",
+                            "englishName": "zhongwei"
+                        },
+                        {
+                            "id": "m355",
+                            "name": "银川",
+                            "englishName": "yinchuan"
+                        },
+                        {
+                            "id": "m357",
+                            "name": "吴忠",
+                            "englishName": "wuzhong"
+                        },
+                        {
+                            "id": "m356",
+                            "name": "石嘴山",
+                            "englishName": "shizuishan"
+                        },
+                        {
+                            "id": "m358",
+                            "name": "固原",
+                            "englishName": "guyuan"
+                        }
+                    ]
+                },
+                {
+                    "id": "m2",
+                    "name": "青海",
+                    "englishName": "qinghai",
+                    "cities": [
+                        {
+                            "id": "m364",
+                            "name": "玉树",
+                            "englishName": "yushu"
+                        },
+                        {
+                            "id": "m360",
+                            "name": "西宁",
+                            "englishName": "xining"
+                        },
+                        {
+                            "id": "m362",
+                            "name": "黄南",
+                            "englishName": "huangnan"
+                        },
+                        {
+                            "id": "m365",
+                            "name": "海西",
+                            "englishName": "haixi"
+                        },
+                        {
+                            "id": "m366",
+                            "name": "海南",
+                            "englishName": "hainan"
+                        },
+                        {
+                            "id": "m361",
+                            "name": "海东",
+                            "englishName": "haidong"
+                        },
+                        {
+                            "id": "m359",
+                            "name": "海北",
+                            "englishName": "haibei"
+                        },
+                        {
+                            "id": "m363",
+                            "name": "果洛",
+                            "englishName": "guoluo"
+                        }
+                    ]
+                },
+                {
+                    "id": "m1",
+                    "name": "新疆",
+                    "englishName": "xinjiang",
+                    "cities": [
+                        {
+                            "id": "m52",
+                            "name": "伊犁",
+                            "englishName": "yili"
+                        },
+                        {
+                            "id": "m368",
+                            "name": "乌鲁木齐",
+                            "englishName": "wulumuqi"
+                        },
+                        {
+                            "id": "m371",
+                            "name": "吐鲁番",
+                            "englishName": "tulufan"
+                        },
+                        {
+                            "id": "m330",
+                            "name": "塔城",
+                            "englishName": "tacheng"
+                        },
+                        {
+                            "id": "m369",
+                            "name": "石河子",
+                            "englishName": "shihezi"
+                        },
+                        {
+                            "id": "m367",
+                            "name": "克拉玛依",
+                            "englishName": "kelamayi"
+                        },
+                        {
+                            "id": "m374",
+                            "name": "喀什",
+                            "englishName": "kashi"
+                        },
+                        {
+                            "id": "m332",
+                            "name": "和田",
+                            "englishName": "hetian"
+                        },
+                        {
+                            "id": "m331",
+                            "name": "哈密",
+                            "englishName": "hami"
+                        },
+                        {
+                            "id": "m370",
+                            "name": "昌吉",
+                            "englishName": "changji"
+                        },
+                        {
+                            "id": "m334",
+                            "name": "博尔塔拉",
+                            "englishName": "boertala"
+                        },
+                        {
+                            "id": "m372",
+                            "name": "巴音郭楞",
+                            "englishName": "bayinguoleng"
+                        },
+                        {
+                            "id": "m333",
+                            "name": "阿勒泰",
+                            "englishName": "aletai"
+                        },
+                        {
+                            "id": "m373",
+                            "name": "阿克苏",
+                            "englishName": "akesu"
+                        },
+                        {
+                            "id": "m177414",
+                            "name": "克孜勒苏",
+                            "englishName": "kezilesu"
+                        },
+                        {
+                            "id": "m177415",
+                            "name": "阿拉尔",
+                            "englishName": "alaer"
+                        },
+                        {
+                            "id": "m177416",
+                            "name": "五家渠",
+                            "englishName": "wujiaqu"
+                        },
+                        {
+                            "id": "m177417",
+                            "name": "图木舒克",
+                            "englishName": "tumushuke"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,45 @@
+{
+	"status": "success",
+	"message": "获取数据成功",
+	"info": {
+		"area": {
+			"getHotCities": [{
+				"id": "m30",
+				"name": "上海",
+				"englishName": "shanghai"
+			}, {
+				"id": "m28",
+				"name": "北京",
+				"englishName": "beijing"
+			}, {
+				"id": "m29",
+				"name": "广州",
+				"englishName": "guangzhou"
+			}, {
+				"id": "m250",
+				"name": "深圳",
+				"englishName": "shenzhen"
+			}, {
+				"id": "m188",
+				"name": "杭州",
+				"englishName": "hangzhou"
+			}, {
+				"id": "m37",
+				"name": "西安",
+				"englishName": "xian"
+			}, {
+				"id": "m36",
+				"name": "成都",
+				"englishName": "chengdu"
+			}, {
+				"id": "m33",
+				"name": "沈阳",
+				"englishName": "shenyang"
+			}, {
+				"id": "m149",
+				"name": "苏州",
+				"englishName": "suzhou"
+			}]
+		}
+	}
+}
