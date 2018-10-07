@@ -73,7 +73,7 @@ namespace HouseMap.Dao
                                    + $" from { ConstConfigName.GetTableName(this.Source)} where 1=1 ";
                 if (this.HouseId != 0)
                 {
-                    queryText = queryText + $" and Id = @HouseId s";
+                    queryText = queryText + $" and Id = @HouseId ";
                     return queryText;
                 }
                 queryText = queryText + $" and LocationCityName = @CityName and  PubTime >= @PubTime ";
