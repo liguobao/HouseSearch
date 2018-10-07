@@ -78,60 +78,10 @@
       padding: 0;
       background: rgb(248, 248, 248);
     }
-    .list {
-      max-height: 89vh;
-      overflow: auto;
-      -webkit-overflow-scrolling: touch;
-      padding: 10px;
-      li {
-        display: flex;
-        background: #fff;
-        margin-bottom: 10px;
-        border-radius: 4px;
-        padding: 6px;
-        min-height: 66px;
-      }
-    }
-    .left {
-      width: 100px;
-      flex: none;
-      img {
-        display: block;
-        max-width: 100%;
-        border-radius: 4px;
-      }
-    }
-    .right {
-      margin-left: 10px;
-      flex: 1;
-      width: 100%;
-      overflow: hidden;
-      position: relative;
-      .title {
-        color: #000000;
-        display: block;
-        overflow: hidden;
-        white-space: nowrap;
-        max-width: 100%;
-        text-overflow: ellipsis;
-      }
-      .price {
-        color: #E31818;
-        font-size: 16px;
-        span {
-          font-size: 12px;
-        }
-      }
-      .source {
-        font-size: 10px;
-        color: #AAAAAA;
-        position: absolute;
-        right: 6px;
-        bottom: 0px;
-        text-align: right;
-      }
-    }
   }
+</style>
+<style lang="scss" scoped>
+  @import "./../../scss/house-list";
 </style>
 <script>
   export default {
