@@ -40,19 +40,28 @@ namespace HouseMap.Crawler
 
         public override List<DBHouse> ParseHouses(DBConfig config, string data)
         {
-            var houseList = new List<DBHouse>();
+            var houses = new List<DBHouse>();
 
             var jsonData = JToken.Parse(config.Json);
             string cityShortCutName = jsonData["shortcutname"]?.ToString();
             var resultJObject = JsonConvert.DeserializeObject<JObject>(data);
+            if (resultJObject["items"] == null)
+            {
+                return houses;
+            }
             foreach (var item in resultJObject["items"])
             {
+                if (string.IsNullOrEmpty(item["address"]?.ToString()))
+                {
+                    continue;
+                }
                 DBHouse houseInfo = new DBHouse();
                 houseInfo.Id = Tools.GetUUId();
                 houseInfo.OnlineURL = GetHouseOnlineURL(cityShortCutName, item);
                 houseInfo.Location = item["address"].ToObject<string>();
                 houseInfo.Title = item["headline"].ToObject<string>();
                 houseInfo.City = item["cityName"].ToObject<string>();
+                houseInfo.Text = item["headline"].ToObject<string>();
                 houseInfo.Latitude = item["gps"]?.ToString().Split(",")[0];
                 houseInfo.Longitude = item["gps"]?.ToString().Split(",")[1];
                 houseInfo.JsonData = item.ToString();
@@ -60,11 +69,10 @@ namespace HouseMap.Crawler
                 houseInfo.PubTime = item["publishTime"].ToObject<DateTime>();
                 houseInfo.Source = SourceEnum.CCBHouse.GetSourceName();
                 houseInfo.RentType = ConvertToRentType(item["chummage"].ToString());
-                Console.WriteLine(item["chummage"].ToString());
-                houseList.Add(houseInfo);
+                houses.Add(houseInfo);
             }
 
-            return houseList;
+            return houses;
         }
 
         private int ConvertToRentType(string chummage)
@@ -103,8 +111,8 @@ namespace HouseMap.Crawler
         private string GetResultByAPI(string apiKey, string cityShortCutName, int page)
         {
             //                _reqParams=offer%3D0%26apiKey%3Dcef8222092f74b95a8b24bc4a9e694a0%26city%3Dsh%26saleOrLease%3Dlease%26pageSize%3D10%26page%3D1%26propType%3D11%26tmflags%3D3&_interfaceUrl=%2Fhlsp%2Fcityhouse%2Fdeal%2Fsearch&_reqMethod=GET
-                        //    _reqParams=offer%3D0%26apiKey%3Dcef8222092f74b95a8b24bc4a9e694a0%26city%3Dsh%26saleOrLease%3Dlease%26pageSize%3D10%26page%3D1%26propType%3D11%26tmflags%3D3&_interfaceUrl=%2Fhlsp%2Fcityhouse%2Fdeal%2Fsearch&_reqMethod=GET
-            string formBody =$"_reqParams=apiKey%3D{apiKey}%26city%3D{cityShortCutName}%26saleOrLease%3Dlease%26pageSize%3D50%26page%3D{page}%26propType%3D11%26tmflags%3D3&_interfaceUrl=%2Fhlsp%2Fcityhouse%2Fdeal%2Fsearch&_reqMethod=GET";
+            //    _reqParams=offer%3D0%26apiKey%3Dcef8222092f74b95a8b24bc4a9e694a0%26city%3Dsh%26saleOrLease%3Dlease%26pageSize%3D10%26page%3D1%26propType%3D11%26tmflags%3D3&_interfaceUrl=%2Fhlsp%2Fcityhouse%2Fdeal%2Fsearch&_reqMethod=GET
+            string formBody = $"_reqParams=apiKey%3D{apiKey}%26city%3D{cityShortCutName}%26saleOrLease%3Dlease%26pageSize%3D50%26page%3D{page}%26propType%3D11%26tmflags%3D3&_interfaceUrl=%2Fhlsp%2Fcityhouse%2Fdeal%2Fsearch&_reqMethod=GET";
             var client = new RestClient("http://bankservice.home.ccb.com/LHECISM/LanHaiHttpResfulReqServlet");
             var request = new RestRequest(Method.POST);
             request.AddHeader("content-type", "application/x-www-form-urlencoded");
