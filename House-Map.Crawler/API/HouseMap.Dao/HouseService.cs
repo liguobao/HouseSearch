@@ -31,7 +31,7 @@ namespace HouseMap.Dao
             _redisTool = RedisTool;
             _houseDapper = houseDapper;
             _configService = configService;
-            _newHouseDapper= newHouseDapper;
+            _newHouseDapper = newHouseDapper;
         }
 
         private IEnumerable<HouseInfo> DBSearch(HouseCondition condition)
@@ -132,7 +132,25 @@ namespace HouseMap.Dao
         }
 
 
-    
+        public DBHouse FindById(string houseId)
+        {
+            var redisKey = RedisKey.HouseDetail;
+            var house = _redisTool.ReadCache<DBHouse>(redisKey.Key + houseId, redisKey.DBName);
+            if (house == null)
+            {
+                house = _newHouseDapper.FindById(houseId);
+                if (house == null)
+                {
+                    return null;
+                }
+                _redisTool.WriteObject(redisKey.Key + houseId, house, redisKey.DBName, (int)redisKey.ExpireTime.TotalMinutes);
+
+            }
+            return house;
+        }
+
+
+
     }
 
 }

@@ -43,6 +43,13 @@ namespace HouseCrawler.Web.API.Controllers
             return Ok(new { success = true, data = _houseService.NewSearch(search) });
         }
 
+        [HttpGet("{houseId}")]
+        [EnableCors("APICors")]
+        public IActionResult FindById(string houseId)
+        {
+            return Ok(new { success = true, data = _houseService.FindById(houseId) });
+        }
+
 
         [EnableCors("APICors")]
         [HttpGet("city-source")]

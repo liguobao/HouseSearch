@@ -39,6 +39,12 @@ namespace HouseMap.Common
             ExpireTime = new TimeSpan(TimeSpan.TicksPerMinute * 55),
             DBName = 1
         };
+        public static KeyConfig HouseDetail = new KeyConfig()
+        {
+            Key = "House_",
+            ExpireTime = new TimeSpan(TimeSpan.TicksPerMinute * 60 * 12),
+            DBName = 2
+        };
 
         public static KeyConfig HouseDashboard = new KeyConfig()
         {
