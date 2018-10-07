@@ -21,11 +21,16 @@ namespace HouseMap.Dao
         public int FromPrice { get; set; } = 0;
         public int ToPrice { get; set; } = 0;
 
+        public long HouseId { get; set; } = 0;
+
         public string RedisKey
         {
             get
             {
-
+                if (this.HouseId != 0)
+                {
+                    return $"{this.CityName}-{this.Source}-{this.HouseId}";
+                }
                 var key = $"{this.CityName}-{this.Source}-{this.IntervalDay}-{this.HouseCount}-{this.Keyword}-{this.Page}";
                 if (this.FromPrice > 0 && this.ToPrice > 0 && this.FromPrice <= this.ToPrice)
                 {
@@ -65,8 +70,13 @@ namespace HouseMap.Dao
                                             PicURLs,
                                             IsAnalyzed,
                                             Status"
-                                   + $" from { ConstConfigName.GetTableName(this.Source)} where 1=1 "
-                                   + $" and LocationCityName = @CityName and  PubTime >= @PubTime ";
+                                   + $" from { ConstConfigName.GetTableName(this.Source)} where 1=1 ";
+                if (this.HouseId != 0)
+                {
+                    queryText = queryText + $" and Id = @HouseId s";
+                    return queryText;
+                }
+                queryText = queryText + $" and LocationCityName = @CityName and  PubTime >= @PubTime ";
                 if (!string.IsNullOrEmpty(this.Keyword))
                 {
                     queryText = queryText + " and (HouseText like @LikeKeyWord or HouseLocation like @LikeKeyWord) ";

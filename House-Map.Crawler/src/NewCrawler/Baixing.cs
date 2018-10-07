@@ -1,0 +1,129 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using AngleSharp.Parser.Html;
+using Newtonsoft.Json;
+using RestSharp;
+using System.Data;
+using MySql.Data.MySqlClient;
+using System.Data.SqlClient;
+using Dapper;
+using AngleSharp.Dom;
+using HouseMap.Dao;
+using HouseMap.Dao.DBEntity;
+using HouseMap.Crawler.Common;
+
+using Newtonsoft.Json.Linq;
+using HouseMap.Models;
+using HouseMap.Common;
+
+namespace HouseMap.Crawler
+{
+
+    public class Baixing : NewBaseCrawler
+    {
+        private static HtmlParser htmlParser = new HtmlParser();
+        public Baixing(NewHouseDapper houseDapper, ConfigDapper configDapper) : base(houseDapper, configDapper)
+        {
+            this.Source = SourceEnum.BaixingWechat;
+        }
+
+        public override string GetJsonOrHTML(DbConfig config, int page)
+        {
+            var configJson = JToken.Parse(config.Json);
+            return GetHouseListResult(configJson["areaId"].ToString(), page, configJson["session"].ToString());
+        }
+
+        private static string GetHouseListResult(string areaId, int page, string session)
+        {
+            var client = new RestClient("https://mpapi.baixing.com/v1.2.10/");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("host", "mpapi.baixing.com");
+            request.AddHeader("user-agent", "Mozilla/5.0 (Linux; Android 8.0.0; MIX Build/OPR1.170623.032; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/69.0.3497.100 Mobile Safari/537.36 MicroMessenger/6.7.3.1360(0x26070333) NetType/WIFI Language/zh_CN Process/toolsmp");
+            request.AddHeader("env_version", "6.7.3");
+            request.AddHeader("network_type", "wifi");
+            request.AddHeader("source_path", "pages/index");
+            request.AddHeader("content-type", "application/json");
+            request.AddHeader("model", "MIX");
+            request.AddHeader("source", "1001");
+            request.AddHeader("baixing-session", session);
+            request.AddHeader("os_version", "8.0.0");
+            request.AddHeader("os", "Android");
+            request.AddHeader("template_version", "Ver1.2.10");
+            request.AddHeader("referer", "https://servicewechat.com/wxd9808e2433a403ab/34/page-frame.html");
+            request.AddHeader("charset", "utf-8");
+            request.AddParameter("application/json",
+            "{\"listing.getAds\":{\"areaId\":\"" + areaId + "\",\"categoryId\":\"zhengzu\",\"page\":" + page + ",\"notAllowChatOnly\":1}}",
+            ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            return response.Content;
+        }
+
+        private static string GetHouseResult(string houseId, string session)
+        {
+            var client = new RestClient("https://mpapi.baixing.com/v1.2.10/");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("host", "mpapi.baixing.com");
+            request.AddHeader("user-agent", "Mozilla/5.0 (Linux; Android 8.0.0; MIX Build/OPR1.170623.032; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/69.0.3497.100 Mobile Safari/537.36 MicroMessenger/6.7.3.1360(0x26070333) NetType/WIFI Language/zh_CN Process/toolsmp");
+            request.AddHeader("env_version", "6.7.3");
+            request.AddHeader("network_type", "wifi");
+            request.AddHeader("source_path", "pages/index");
+            request.AddHeader("content-type", "application/json");
+            request.AddHeader("model", "MIX");
+            request.AddHeader("baixing-session", session);
+            request.AddHeader("os_version", "8.0.0");
+            request.AddHeader("os", "Android");
+            request.AddHeader("template_version", "Ver1.2.10");
+            request.AddHeader("referer", "https://servicewechat.com/wxd9808e2433a403ab/34/page-frame.html");
+            request.AddHeader("charset", "utf-8");
+            request.AddParameter("application/json", "{\"viewAd.getVad\":{\"adId\":\"" + houseId + "\"}}", ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+
+            return response.Content;
+
+        }
+
+        public override List<DBHouse> ParseHouses(DbConfig config, string jsonOrHTML)
+        {
+            var houses = new List<DBHouse>();
+            var result = JToken.Parse(jsonOrHTML);
+            if (result?["status"].ToString() != "success" || result?["info"]["listing"]["getAds"]["data"] == null)
+            {
+                return houses;
+            }
+            var configJson = JToken.Parse(config.Json);
+            foreach (var room in result?["info"]["listing"]["getAds"]["data"])
+            {
+                var roomId = room["id"].ToString();
+                var roomDetailResult = GetHouseResult(roomId, configJson["session"].ToString());
+                if (string.IsNullOrEmpty(roomDetailResult))
+                {
+                    continue;
+                }
+                var roomDetail = JToken.Parse(roomDetailResult)["info"]["viewAd"]["getVad"];
+                if (roomDetail["certifications"] == null
+                || !roomDetail["certifications"].Any(i => i["type"].ToString() == "idcard" && i["isBind"].ToObject<bool>()))
+                {
+                    continue;
+                }
+                var house = new DBHouse();
+                house.Id = Tools.GetUUId();
+                house.Title = roomDetail["title"]?.ToString();
+                house.Location = roomDetail["address"]?.ToString();
+                house.Text = roomDetail["description"]?.ToString();
+                house.PicURLs = roomDetail["bigImages"].ToString();
+                house.Price = int.Parse(roomDetail["highlightMeta"]?["value"].ToString().Replace("元", ""));
+                house.Source = SourceEnum.BaixingWechat.GetSourceName();
+                house.JsonData = roomDetailResult.ToString();
+                house.Labels = string.Join("|", roomDetail["labelMetas"].Select(l => l["value".ToString()]));
+                house.Tags = string.Join("|", roomDetail["metas"].Select(l => l["value"]?.ToString()).Where(v => !string.IsNullOrEmpty(v)));
+                house.City = roomDetail["cityCName"]?.ToString();
+                house.OnlineURL = $"http://{roomDetail["cityEnglishName"].ToString()}.baixing.com/zhengzu/a{room["id"].ToString()}.html";
+                houses.Add(house);
+            }
+            return houses;
+        }
+
+
+    }
+}
