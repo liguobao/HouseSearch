@@ -104,7 +104,7 @@ namespace HouseMap.Crawler
             services.AddScoped<INewCrawler, Mogu>();
             services.AddScoped<INewCrawler, BaixingWechat>();
             services.AddScoped<INewCrawler, Douban>();
-
+            services.AddScoped<INewCrawler, CCBHouse>();
             #endregion
 
             services.AddScoped<TodayHouseDashboardJob, TodayHouseDashboardJob>();

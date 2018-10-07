@@ -58,6 +58,7 @@ namespace HouseCrawler.Web.API.Controllers
         [HttpGet("city-source")]
         public IActionResult LoadDashboards()
         {
+            // TODO
             var id = 1;
             return Ok(new
             {
@@ -66,7 +67,7 @@ namespace HouseCrawler.Web.API.Controllers
                 {
                     id = id++,
                     city = i.Key,
-                    sources = i.Value
+                    sources = i.Value.Where(c => !string.IsNullOrEmpty(c.DisplaySource))
                 })
             });
         }

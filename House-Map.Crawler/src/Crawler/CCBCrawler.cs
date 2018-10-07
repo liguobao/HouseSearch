@@ -42,6 +42,8 @@ namespace HouseMap.Crawler
             throw new NotImplementedException();
         }
 
+        
+
 
         private string GetResultByAPI(string cityShortCutName, int page)
         {
