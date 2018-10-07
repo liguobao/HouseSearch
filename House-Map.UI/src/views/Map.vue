@@ -1194,6 +1194,7 @@
           }
           this.activeCityName = this.cityName = cityName;
 
+          this.mapHouseList = [];
           let map = new AMap.Map('map-container', {
             zoom: this.zoom,
             resizeEnable: true,
