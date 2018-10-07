@@ -103,6 +103,8 @@ namespace HouseMap.Crawler
             services.AddScoped<INewCrawler, Huzhu>();
             services.AddScoped<INewCrawler, Mogu>();
             services.AddScoped<INewCrawler, BaixingWechat>();
+            services.AddScoped<INewCrawler, Douban>();
+
             #endregion
 
             services.AddScoped<TodayHouseDashboardJob, TodayHouseDashboardJob>();

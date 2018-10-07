@@ -30,16 +30,16 @@ namespace HouseMap.Crawler.Controllers
 
             try
             {
-                var crawler = _serviceProvider.GetServices<INewCrawler>().FirstOrDefault(c => 
+                var crawler = _serviceProvider.GetServices<INewCrawler>().FirstOrDefault(c =>
                 c.GetSource().GetSourceName() == source);
+                if (crawler == null)
+                {
+                    return Json(new { success = true, error = $"{source} not found" });
+                }
                 LogHelper.RunActionTaskNotThrowEx(() =>
                 {
-                    if (crawler != null)
-                    {
-                        crawler.Run();
-                    }
+                    crawler.Run();
                 }, source);
-
                 return Json(new { success = true });
             }
             catch (Exception ex)
@@ -49,6 +49,6 @@ namespace HouseMap.Crawler.Controllers
 
         }
 
-       
+
     }
 }
