@@ -46,15 +46,17 @@
           label="标题"
           width="300">
         <template slot-scope="scope">
-          <el-popover
-              placement="top-start"
-              title=""
-              width="300"
-              trigger="hover"
-              :content="scope.row.houseTitle">
-            <a slot="reference" class="ellipsis text-left link" :href="scope.row.houseOnlineURL" target="_blank">{{
-              scope.row.houseTitle }}</a>
-          </el-popover>
+          <a slot="reference" class="ellipsis text-left link" :href="scope.row.houseOnlineURL" target="_blank">{{
+            scope.row.houseTitle }}</a>
+          <!--<el-popover-->
+              <!--placement="top-start"-->
+              <!--title=""-->
+              <!--width="300"-->
+              <!--trigger="hover"-->
+              <!--:content="scope.row.houseTitle">-->
+            <!--<a slot="reference" class="ellipsis text-left link" :href="scope.row.houseOnlineURL" target="_blank">{{-->
+              <!--scope.row.houseTitle }}</a>-->
+          <!--</el-popover>-->
         </template>
       </el-table-column>
       <el-table-column
@@ -108,6 +110,7 @@
     </el-table>
     <div class="pagination text-right" v-if="type === 'all' && !loading">
       <el-pagination
+          v-if="list && list.length"
           @current-change="currentChange"
           :current-page="currentPage"
           :page-size="100"
@@ -204,7 +207,7 @@
         this.loading = true;
         await this.getHousesList({
           ...this.options,
-          page
+          page: page - 1
         },'change');
         this.loading = false;
         this.currentPage = page;

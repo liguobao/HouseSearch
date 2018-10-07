@@ -63,8 +63,8 @@ router.beforeEach(async (to, from, next) => {
     if(process.env.NODE_ENV === "production") {
       let _hmt = await baiduTongji();
       if(_hmt) {
-        _hmt.push(['_trackPageview', '/#' + to.fullPath]);
-        _hmt.push(['_trackPageview', to.fullPath]);
+        window._hmt.push(['_trackPageview', '/#' + to.fullPath]);
+        window._hmt.push(['_trackPageview', to.fullPath]);
       }
     }
     next();
