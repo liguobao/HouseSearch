@@ -48,9 +48,9 @@ namespace HouseMap.Crawler
 
             foreach (var config in _configDapper.LoadBySource(Source.GetSourceName()))
             {
-                for (var pageNum = 0; pageNum < config.PageCount; pageNum++)
+                LogHelper.RunActionNotThrowEx(() =>
                 {
-                    LogHelper.RunActionNotThrowEx(() =>
+                    for (var pageNum = 0; pageNum < config.PageCount; pageNum++)
                     {
                         var htmlOrJson = GetJsonOrHTML(config, pageNum);
                         if (string.IsNullOrEmpty(htmlOrJson))
@@ -59,9 +59,8 @@ namespace HouseMap.Crawler
                         }
                         var houses = ParseHouses(config, htmlOrJson);
                         _houseDapper.BulkInsertHouses(houses);
-                    }, Source.GetSourceName(), config);
-
-                }
+                    }
+                }, this.GetSourceName(), config);
             }
         }
 
