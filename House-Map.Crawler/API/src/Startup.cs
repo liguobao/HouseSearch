@@ -70,6 +70,8 @@ namespace HouseMapAPI
             #region Service
             services.AddScoped<EmailService, EmailService>();
             services.AddScoped<RedisTool, RedisTool>();
+
+            services.AddScoped<CollectionService, CollectionService>();
             services.AddScoped<UserService, UserService>();
             services.AddScoped<UserHouseService, UserHouseService>();
             services.AddScoped<ConfigService, ConfigService>();

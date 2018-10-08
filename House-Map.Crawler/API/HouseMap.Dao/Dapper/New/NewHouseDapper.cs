@@ -89,7 +89,7 @@ namespace HouseMap.Dao
                                             Latitude,
                                             Longitude,
                                             Text "
-                                            + $" from { tableName } where id = @HouseId", new { HouseId = houseId })
+                                            + $" from { tableName } where Id = @HouseId", new { HouseId = houseId })
                                 .FirstOrDefault();
                     if (house != null)
                     {

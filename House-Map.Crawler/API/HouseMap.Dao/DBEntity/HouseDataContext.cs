@@ -20,6 +20,7 @@ namespace HouseMap.Dao
 
         public DbSet<DBConfig> Configs { get; set; }
 
+        public DbSet<DBUserCollection> UserCollections { get; set; }
 
     }
 }
