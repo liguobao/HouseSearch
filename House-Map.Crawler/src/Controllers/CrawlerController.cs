@@ -98,5 +98,65 @@ namespace HouseMap.Crawler.Controllers
         }
 
 
+        public IActionResult InitBaixingConfig()
+        {
+            var configDapper = _serviceProvider.GetServices<ConfigDapper>().FirstOrDefault();
+            var result = LoadJson("Resources/Baixing.json");
+            var configs = new List<DBConfig>();
+            foreach (var item in result["info"]["area"]["getAllCities"])
+            {
+                if (item["cities"] != null)
+                {
+                    foreach (var city in item["cities"])
+                    {
+                        var config = new DBConfig();
+                        config.City = city["name"].ToString();
+                        config.Id = Tools.GetUUId();
+                        config.Json = "{'areaId':'" + city["id"].ToString() + "','session':'$2y$10$Cz9H5ib/ZKh0UOZxVp2rCOeiBjK7Y7/ZmOuUipdZ65QPhms7DpGD2'}";
+                        config.PageCount = 30;
+                        config.Source = SourceEnum.BaixingWechat.GetSourceName();
+                        configs.Add(config);
+                    }
+                }
+                else
+                {
+                    var config = new DBConfig();
+                    config.City = item["name"].ToString();
+                    config.Id = Tools.GetUUId();
+                    config.Json = "{'areaId':'" + item["id"].ToString() + "','session':'$2y$10$Cz9H5ib/ZKh0UOZxVp2rCOeiBjK7Y7/ZmOuUipdZ65QPhms7DpGD2'}";
+                    config.PageCount = 30;
+                    config.Source = SourceEnum.BaixingWechat.GetSourceName();
+                    configs.Add(config);
+                }
+            }
+            configDapper.BulkInsert(configs);
+            return Json(new { success = true, data = configs });
+
+        }
+
+
+
+        private JToken LoadJson(string resourceName)
+        {
+            using (StreamReader sr = new StreamReader(Path.Combine(AppContext.BaseDirectory, resourceName)))
+            {
+                try
+                {
+                    JsonSerializer serializer = new JsonSerializer();
+                    serializer.Converters.Add(new JavaScriptDateTimeConverter());
+                    serializer.NullValueHandling = NullValueHandling.Ignore;
+                    //构建Json.net的读取流  
+                    JsonReader reader = new JsonTextReader(sr);
+                    //对读取出的Json.net的reader流进行反序列化，并装载到模型中
+                    return serializer.Deserialize<JToken>(reader);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.StackTrace);
+                }
+            }
+            return "";
+        }
+
     }
 }

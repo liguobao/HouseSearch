@@ -25,7 +25,6 @@ namespace HouseMap.Crawler
 
     public class Beike : NewBaseCrawler
     {
-        private readonly AppSettings _appSettings;
         public Beike(NewHouseDapper houseDapper, ConfigDapper configDapper) : base(houseDapper, configDapper)
         {
             this.Source = SourceEnum.Beike;

@@ -44,7 +44,10 @@
     <None Include="Resources\char_state_tab.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-        <None Include="Resources\CCBHouse.json">
+    <None Include="Resources\CCBHouse.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Baixing.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\pos_prob_emit.json">

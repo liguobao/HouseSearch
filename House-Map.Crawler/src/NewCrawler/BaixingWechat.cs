@@ -172,44 +172,5 @@ namespace HouseMap.Crawler
                             || !roomDetail["certifications"].Any(i => i["type"].ToString() == "idcard" && i["isBind"].ToObject<bool>());
         }
 
-        public void InitCityConfig()
-        {
-            var client = new RestClient("https://mpapi.baixing.com/v1.2.10/");
-            var request = new RestRequest(Method.POST);
-            request.AddHeader("host", "mpapi.baixing.com");
-            request.AddHeader("user-agent", "Mozilla/5.0 (Linux; Android 8.0.0; MIX Build/OPR1.170623.032; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/69.0.3497.100 Mobile Safari/537.36 MicroMessenger/6.7.3.1360(0x26070333) NetType/WIFI Language/zh_CN Process/toolsmp");
-            request.AddHeader("env_version", "6.7.3");
-            request.AddHeader("udid", "21e415a9-7c79-4316-ad8b-a29d813a15d2");
-            request.AddHeader("network_type", "wifi");
-            request.AddHeader("source_path", "pages/index");
-            request.AddHeader("content-type", "application/json");
-            request.AddHeader("model", "MIX");
-            request.AddHeader("rcselfid", "96d973ba876f514c_9410eb0");
-            request.AddHeader("track_id", "1538848240092-6710054-070da1ad6dde1d-24346547");
-            request.AddHeader("source", "1001");
-            request.AddHeader("baixing-session", "$2y$10$9VIhZ4buiMNL43sXvijO4.UlcTHMu7TTCUfMuuE3Qo2kwzs5OThmq");
-            request.AddHeader("os_version", "8.0.0");
-            request.AddHeader("rctoken", "dNI3NijPw5foZB0biUgxqUz6RcVi/QUvK23t2stkf1BSTfWU4HaaqHO2C2nuu0xOaDGU+JA0lM7odawsqkeCTaqTCn/Umb02SVYdohRuDBe8sITyJqQfWA==");
-            request.AddHeader("os", "Android");
-            request.AddHeader("template_version", "Ver1.2.10");
-            request.AddHeader("referer", "https://servicewechat.com/wxd9808e2433a403ab/34/page-frame.html");
-            request.AddHeader("charset", "utf-8");
-            request.AddParameter("application/json", "{\"area.getHotCities\":{}}", ParameterType.RequestBody);
-            IRestResponse response = client.Execute(request);
-            var result = JToken.Parse(response.Content);
-            List<DBConfig> configs = new List<DBConfig>();
-            foreach (var city in result["info"]["area"]["getHotCities"])
-            {
-                DBConfig config = new DBConfig();
-                config.City = city["name"].ToString();
-                config.Source = SourceEnum.BaixingWechat.GetSourceName();
-                config.PageCount = 30;
-                config.Json = "{'areaId':'" + city["id"].ToString() + "','session':'$2y$10$Cz9H5ib/ZKh0UOZxVp2rCOeiBjK7Y7/ZmOuUipdZ65QPhms7DpGD2'}";
-                config.Score = 0;
-                configs.Add(config);
-            }
-        }
-
-
     }
 }
