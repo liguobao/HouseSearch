@@ -46,7 +46,7 @@ namespace HouseMap.Crawler
             request.AddHeader("content-type", "application/json");
             request.AddHeader("model", "MIX");
             request.AddHeader("source", "1001");
-            request.AddHeader("baixing-session", session);
+            //request.AddHeader("baixing-session", session);
             request.AddHeader("os_version", "8.0.0");
             request.AddHeader("os", "Android");
             request.AddHeader("template_version", "Ver1.2.10");
@@ -86,6 +86,10 @@ namespace HouseMap.Crawler
         public override List<DBHouse> ParseHouses(DBConfig config, string jsonOrHTML)
         {
             var houses = new List<DBHouse>();
+            if (jsonOrHTML.Contains("html>"))
+            {
+                return houses;
+            }
             var result = JToken.Parse(jsonOrHTML);
             if (result?["status"].ToString() != "success" || result?["info"]["listing"]["getAds"]["data"] == null)
             {
