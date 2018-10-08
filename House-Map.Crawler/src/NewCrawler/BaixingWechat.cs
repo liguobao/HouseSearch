@@ -31,7 +31,8 @@ namespace HouseMap.Crawler
         public override string GetJsonOrHTML(DBConfig config, int page)
         {
             var configJson = JToken.Parse(config.Json);
-            return GetHouseListResult(configJson["areaId"].ToString(), page, configJson["session"].ToString());
+            var baixingPage = page + 1;
+            return GetHouseListResult(configJson["areaId"].ToString(), baixingPage, configJson["session"].ToString());
         }
 
         private static string GetHouseListResult(string areaId, int page, string session)
@@ -87,7 +88,7 @@ namespace HouseMap.Crawler
         public override List<DBHouse> ParseHouses(DBConfig config, string jsonOrHTML)
         {
             var houses = new List<DBHouse>();
-            if (jsonOrHTML.Contains("html>")|| jsonOrHTML.Contains("<script>"))
+            if (jsonOrHTML.Contains("html>") || jsonOrHTML.Contains("<script>"))
             {
                 return houses;
             }
@@ -105,9 +106,9 @@ namespace HouseMap.Crawler
                 {
                     continue;
                 }
-
+                //Console.WriteLine(room.ToString());
                 var roomDetail = JToken.Parse(roomDetailResult)["info"]["viewAd"]["getVad"];
-                Console.WriteLine(roomDetail["updateTimeString"].ToString());
+                //Console.WriteLine(roomDetail["updateTimeString"].ToString());
                 if (CheckRoom(roomDetail))
                 {
                     continue;
