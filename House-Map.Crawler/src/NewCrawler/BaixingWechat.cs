@@ -38,6 +38,8 @@ namespace HouseMap.Crawler
         {
             var client = new RestClient("https://mpapi.baixing.com/v1.2.10/");
             var request = new RestRequest(Method.POST);
+            request.AddHeader("postman-token", "ecffafaf-842f-3d09-1f03-f68ed0e47be5");
+            request.AddHeader("cache-control", "no-cache");
             request.AddHeader("host", "mpapi.baixing.com");
             request.AddHeader("user-agent", "Mozilla/5.0 (Linux; Android 8.0.0; MIX Build/OPR1.170623.032; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/69.0.3497.100 Mobile Safari/537.36 MicroMessenger/6.7.3.1360(0x26070333) NetType/WIFI Language/zh_CN Process/toolsmp");
             request.AddHeader("env_version", "6.7.3");
@@ -46,15 +48,14 @@ namespace HouseMap.Crawler
             request.AddHeader("content-type", "application/json");
             request.AddHeader("model", "MIX");
             request.AddHeader("source", "1001");
-            //request.AddHeader("baixing-session", session);
+            //request.AddHeader("baixing-session", "$2y$10$Cz9H5ib/ZKh0UOZxVp2rCOeiBjK7Y7/ZmOuUipdZ65QPhms7DpGD2");
+            request.AddHeader("baixing-session", session);
             request.AddHeader("os_version", "8.0.0");
             request.AddHeader("os", "Android");
             request.AddHeader("template_version", "Ver1.2.10");
             request.AddHeader("referer", "https://servicewechat.com/wxd9808e2433a403ab/34/page-frame.html");
             request.AddHeader("charset", "utf-8");
-            request.AddParameter("application/json",
-            "{\"listing.getAds\":{\"areaId\":\"" + areaId + "\",\"categoryId\":\"zhengzu\",\"page\":" + page + ",\"notAllowChatOnly\":1}}",
-            ParameterType.RequestBody);
+            request.AddParameter("application/json", "{\"listing.getAds\":{\"areaId\":\"" + areaId + "\",\"categoryId\":\"zhengzu\",\"page\":" + page + ",\"size\":500,\"notAllowChatOnly\":1}}", ParameterType.RequestBody);
             IRestResponse response = client.Execute(request);
             return response.Content;
         }
@@ -86,7 +87,7 @@ namespace HouseMap.Crawler
         public override List<DBHouse> ParseHouses(DBConfig config, string jsonOrHTML)
         {
             var houses = new List<DBHouse>();
-            if (jsonOrHTML.Contains("html>"))
+            if (jsonOrHTML.Contains("html>")|| jsonOrHTML.Contains("<script>"))
             {
                 return houses;
             }

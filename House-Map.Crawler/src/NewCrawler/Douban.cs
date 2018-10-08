@@ -35,7 +35,7 @@ namespace HouseMap.Crawler
         {
             var jsonData = JToken.Parse(config.Json);
             var groupID = jsonData["groupid"]?.ToString();
-            var apiURL = $"https://api.douban.com/v2/group/{groupID}/topics?start={page * 50}&count=50";
+            var apiURL = $"https://api.douban.com/v2/group/{groupID}/topics?start={page * 50}&count=100";
             return GetAPIResult(apiURL);
 
         }

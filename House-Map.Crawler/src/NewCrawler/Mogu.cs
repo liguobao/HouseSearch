@@ -140,14 +140,15 @@ namespace HouseMap.Crawler
                 request.AddHeader("channel", "9");
                 request.AddHeader("connection", "keep-alive");
                 request.AddHeader("userid", "0");
-                request.AddHeader("referer", "https://h5.mgzf.com/list?rentTypes%5B1%5D=2&currentPage=1");
+                var prePage = currentPage > 0 ? currentPage - 1 : 0;
+                request.AddHeader("referer", $"https://h5.mgzf.com/list?rentTypes%5B1%5D=2&currentPage={prePage}");
                 request.AddHeader("accept", "application/json, text/plain, */*");
                 request.AddHeader("content-type", "application/x-www-form-urlencoded");
                 request.AddHeader("user-agent", "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1");
                 request.AddHeader("accept-language", "zh-CN,zh;q=0.9,en;q=0.8,da;q=0.7");
                 request.AddHeader("accept-encoding", "gzip, deflate, br");
                 request.AddHeader("origin", "https://h5.mgzf.com");
-                string bodyParameters = $"payTypes=&houseType=&flatsTags=&rentTypes={rentTypes}&currentPage={currentPage}&cityId={cityID}&searchTimeStamp={Tools.GetSearchTimeStamp()}";
+                string bodyParameters = $"payTypes=&houseType=&flatsTags=&rentTypes={rentTypes}&currentPage={currentPage}&cityId={cityID}&pageSize=50&searchTimeStamp={Tools.GetSearchTimeStamp()}";
                 request.AddParameter("application/x-www-form-urlencoded", bodyParameters, ParameterType.RequestBody);
                 IRestResponse response = client.Execute(request);
                 return response.Content;

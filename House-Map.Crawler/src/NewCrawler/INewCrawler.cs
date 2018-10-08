@@ -7,6 +7,8 @@ namespace HouseMap.Crawler
     {
         void Run();
 
+        void SyncHouses();
+
 
         SourceEnum GetSource();
     }

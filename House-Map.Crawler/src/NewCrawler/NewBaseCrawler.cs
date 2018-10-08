@@ -68,5 +68,10 @@ namespace HouseMap.Crawler
         {
             return Source;
         }
+
+        public void SyncHouses()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
