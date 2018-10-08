@@ -60,7 +60,7 @@ namespace HouseMap.Crawler
                         var houses = ParseHouses(config, htmlOrJson);
                         _houseDapper.BulkInsertHouses(houses);
                     }
-                }, this.GetSourceName(), config);
+                }, Source.GetSourceName(), config);
             }
         }
 
