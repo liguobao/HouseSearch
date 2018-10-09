@@ -49,12 +49,28 @@ namespace HouseMap.Dao.DBEntity
         [JsonIgnore]
         public string JsonData { get; set; }
 
+        public List<string> Pictures
+        {
+            get
+            {
+                try
+                {
+                    if (string.IsNullOrEmpty(PicURLs))
+                    {
+                        return new List<string>();
+                    }
+                    return JsonConvert.DeserializeObject<List<String>>(PicURLs);
+                }
+                catch
+                {
+                    return new List<string>();
+                }
+            }
+        }
+
 
         public int Price { get; set; }
 
-        /// <summary>
-        /// 来源网站
-        /// </summary>
         public string Source { get; set; }
     }
 
