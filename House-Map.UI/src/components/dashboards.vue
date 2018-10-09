@@ -16,8 +16,8 @@
                            @click="navTo({cityname:item.city,source:source.source,intervalDay:14,houseCount:600})"
                            class="highlight" v-for="source in item.sources" :title="source.displaySource">
                             {{source.displaySource}}
-                            <template v-if="source.houseSum < 9999">
-                                ({{source.houseSum}})
+                            <template v-if="source.houseCount > 0">
+                                ({{source.houseCount}})
                             </template>
                             <template v-else>
                                 (9999+)
