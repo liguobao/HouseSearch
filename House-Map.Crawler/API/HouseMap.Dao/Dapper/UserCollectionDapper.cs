@@ -135,7 +135,9 @@ namespace HouseMap.Dao
                 return dbConnection.Query<DBConfig>(@"
                         SELECT 
                             HouseCity AS City,
-                            Source
+                            Source,
+                            Source as Id,
+                            count(*) as HouseCount
                         FROM
                             UserCollections where UserID = @UserID
                         GROUP BY HouseCity , source;", new { UserID = userID }).ToList();
