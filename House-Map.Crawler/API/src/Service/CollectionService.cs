@@ -37,7 +37,13 @@ namespace HouseMapAPI.Service
             {
                 city = item.Key,
                 id = item.First().Id,
-                sources = item.GroupBy(i => i.Source).Select(g => new { source = g.Key, count = g.Count() })
+                sources = item.GroupBy(i => i.Source).Select(g => new DBConfig()
+                {
+                    Id = g.First().Id,
+                    City = g.First().City,
+                    Source = g.Key,
+                    HouseCount = g.Count()
+                })
             });
             return list;
         }

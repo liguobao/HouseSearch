@@ -27,5 +27,7 @@ namespace HouseMap.Dao.DBEntity
         public string Json { get; set; }
 
         public int Score { get; set; }
+
+        public int HouseCount { get; set; }
     }
 }
