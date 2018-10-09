@@ -19,5 +19,10 @@ namespace HouseMap.Dao.DBEntity
 
         [JsonIgnore]
         public DateTime? UpdateTime { get; set; } = DateTime.Now;
+
+         public T ToModel<T>()
+        {
+            return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(this));
+        }
     }
 }

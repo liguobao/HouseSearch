@@ -13,6 +13,7 @@ using HouseMapAPI.Service;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Talk.OAuthClient;
+using HouseMapAPI.Models;
 
 namespace HouseMapAPI.Service
 {
@@ -31,7 +32,7 @@ namespace HouseMapAPI.Service
 
         public Object GetUserDashboards(long userId)
         {
-            var list = _context.UserCollections.Where(c => c.UserID == userId)
+            var list = _context.UserCollections.Where(c => c.UserID == userId && c.Deleted == 0)
             .GroupBy(c => c.City).Select(item => new
             {
                 city = item.Key,
@@ -41,9 +42,9 @@ namespace HouseMapAPI.Service
             return list;
         }
 
-        public List<DBUserCollection> FindUserCollections(long userId, string cityName = "", string source = "")
+        public List<DBUserCollection> FindUserCollections(long userId, string cityName = "", string source = "", string id = "")
         {
-            var collections = _context.UserCollections.AsQueryable();
+            var collections = _context.UserCollections.Where(c => c.UserID == userId).AsQueryable();
             if (!string.IsNullOrEmpty(cityName))
             {
                 collections = collections.Where(c => c.City == cityName);
@@ -52,24 +53,50 @@ namespace HouseMapAPI.Service
             {
                 collections = collections.Where(c => c.Source == source);
             }
-            return collections.ToList();
+            if (!string.IsNullOrEmpty(id))
+            {
+                collections = collections.Where(c => c.Id == id);
+            }
+
+            return collections.Where(c => c.Deleted == 0).ToList();
         }
 
-        public void AddOne(DBUserCollection collection)
+        public CollectionDetail FindUserCollection(long userId, string id)
         {
-            var house = _houseService.FindById(collection.HouseID);
+            var dbCollection = _context.UserCollections.Where(c => c.UserID == userId && c.Id == id).FirstOrDefault();
+            if (dbCollection == null)
+            {
+                throw new NotFoundException("房源收藏不存在.");
+
+            }
+            var collectionDetail = dbCollection.ToModel<CollectionDetail>();
+            var house = _houseService.FindById(dbCollection.HouseID);
+            collectionDetail.House = house;
+            return collectionDetail;
+        }
+
+
+        public DBUserCollection AddOne(long userId, string houseId)
+        {
+            var house = _houseService.FindById(houseId);
             if (house == null)
             {
                 throw new NotFoundException("房源信息不存在,请刷新页面后重试");
             }
-            if (_context.UserCollections.Any(c => c.HouseID == collection.HouseID && c.UserID == collection.UserID))
+            if (_context.UserCollections.Any(c => c.HouseID == houseId && c.UserID == userId))
             {
-                throw new NotFoundException("房源信息已收藏.");
+                throw new UnProcessableException("房源信息已收藏.");
             }
+            var collection = new DBUserCollection();
+            collection.Source = house.Source;
+            collection.Title = house.Title;
+            collection.OnlineURL = house.OnlineURL;
+            collection.City = house.City;
             collection.Id = Tools.GetUUId();
             collection.CreateTime = DateTime.Now;
             _context.UserCollections.Add(collection);
             _context.SaveChanges();
+            return collection;
         }
 
         public void RemoveOne(long userId, string collectionId)

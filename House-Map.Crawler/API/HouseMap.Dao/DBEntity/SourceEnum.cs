@@ -59,6 +59,16 @@ namespace HouseMap.Dao.DBEntity
             }
             return dic;
         }
+
+         public static Dictionary<string, string> GetDescriptionDic()
+        {
+            var dic = new Dictionary<string, string>();
+            foreach (SourceEnum sourceEnum in Enum.GetValues(typeof(SourceEnum)))
+            {
+                dic.Add(sourceEnum.GetSourceName(), sourceEnum.GetEnumDescription());
+            }
+            return dic;
+        }
     }
 
 }

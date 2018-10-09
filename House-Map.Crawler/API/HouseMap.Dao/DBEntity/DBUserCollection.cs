@@ -18,6 +18,8 @@ namespace HouseMap.Dao.DBEntity
 
         public string HouseID { get; set; }
 
+        public string OnlineURL {get;set;}
+
         public string Title { get; set; }
 
         public int Deleted { get; set; }

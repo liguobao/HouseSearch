@@ -11,6 +11,7 @@ using HouseMapAPI.Filters;
 using HouseMap.Dao;
 using HouseMap.Dao.DBEntity;
 using HouseMap.Models;
+using Newtonsoft.Json.Linq;
 
 namespace HouseCrawler.Web.API.Controllers
 {
@@ -48,18 +49,18 @@ namespace HouseCrawler.Web.API.Controllers
         [ServiceFilter(typeof(UserTokenFilter))]
         public IActionResult GetOne(long userId, string id)
         {
-            var houses = _collectionService.FindUserCollections(userId);
-            return Ok(new { success = true, data = houses.FirstOrDefault(h => h.Id == id) });
+            var collection = _collectionService.FindUserCollection(userId, id);
+            return Ok(new { success = true, data = collection });
         }
 
         [EnableCors("APICors")]
         [HttpPost("{userId}/collections/")]
         [ServiceFilter(typeof(UserTokenFilter))]
-        public IActionResult Create(long userId, [FromBody] DBUserCollection userCollection)
+        public IActionResult Create(long userId, [FromBody] JToken userCollection)
         {
-            userCollection.UserID = userId;
-            _collectionService.AddOne(userCollection);
-            return Ok(new { success = true, message = "收藏成功." }); ;
+            var houseId = userCollection?["houseId"]?.ToString();
+            var collection = _collectionService.AddOne(userId, houseId);
+            return Ok(new { success = true, message = "收藏成功.", data = collection });
         }
 
         [EnableCors("APICors")]
