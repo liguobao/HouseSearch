@@ -24,21 +24,35 @@ namespace HouseMapAPI.Filters
             if (context.HttpContext.Request.Query.ContainsKey("fields") && context.Result is ObjectResult)
             {
                 var fields = context.HttpContext.Request.Query["fields"].ToString();
-                var count = context.HttpContext.Request.Query["count"].ToString();
                 CheckFieldsStyle(fields);
                 var fieldList = fields.Split(",");
                 var objResult = (ObjectResult)context.Result;
-                var jToken = JToken.FromObject(objResult.Value,new JsonSerializer(){ ContractResolver = new CamelCasePropertyNamesContractResolver()});
+                var jToken = JToken.FromObject(objResult.Value, new JsonSerializer() { ContractResolver = new CamelCasePropertyNamesContractResolver() });
                 if (!jToken["data"].Any())
                 {
                     return;
                 }
                 ExceptObjectFields(jToken["data"], fieldList);
-                FillResultValues(fieldList, objResult, jToken, count);
+                FillResultValues(fieldList, objResult, jToken);
             }
+
+            if (context.HttpContext.Request.Query.ContainsKey("count") && context.Result is ObjectResult)
+            {
+                var index = context.HttpContext.Request.Query["index"];
+                var count = context.HttpContext.Request.Query["count"];
+                var objResult = (ObjectResult)context.Result;
+                var jToken = JToken.FromObject(objResult.Value, new JsonSerializer() { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+                if (!jToken["data"].Any())
+                {
+                    return;
+                }
+                CutValues(objResult, jToken, index, count);
+            }
+
+
         }
 
-        private static void FillResultValues(string[] fieldList, ObjectResult objResult, JToken jToken, string count)
+        private static void FillResultValues(string[] fieldList, ObjectResult objResult, JToken jToken)
         {
             if (!jToken["data"].Any())
             {
@@ -47,10 +61,6 @@ namespace HouseMapAPI.Filters
             if (jToken["data"].Type == JTokenType.Array)
             {
                 var data = jToken["data"].AsEnumerable();
-                if (!string.IsNullOrEmpty(count))
-                {
-                    data = data.Take(int.Parse(count));
-                }
                 var dataDic = new List<Dictionary<string, JToken>>();
                 foreach (var item in data)
                 {
@@ -64,6 +74,25 @@ namespace HouseMapAPI.Filters
                 jToken["data"] = JToken.FromObject(fieldList.ToDictionary(f => f, f => jToken["data"][f]));
             }
             objResult.Value = jToken;
+        }
+
+        private static void CutValues(ObjectResult objResult, JToken jToken, string index, string count)
+        {
+            if (!jToken["data"].Any())
+            {
+                return;
+            }
+            if (jToken["data"].Type == JTokenType.Array)
+            {
+                var data = jToken["data"].AsEnumerable();
+                if (!string.IsNullOrEmpty(count) && !string.IsNullOrEmpty(index))
+                {
+                    data = data.Skip(int.Parse(index)).Take(int.Parse(count));
+                }
+                jToken["data"] = JToken.FromObject(data);
+                objResult.Value = jToken;
+            }
+
         }
 
         private static void CheckFieldsStyle(string fields)
