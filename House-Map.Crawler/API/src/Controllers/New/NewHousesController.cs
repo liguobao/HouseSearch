@@ -41,6 +41,8 @@ namespace HouseCrawler.Web.API.Controllers
             condition.City = !string.IsNullOrEmpty(HttpContext.Request.Query["city"]) ? HttpContext.Request.Query["city"].ToString() : "上海";
             condition.Source = HttpContext.Request.Query["source"];
             condition.Keyword = HttpContext.Request.Query["keyword"];
+            condition.Page = !string.IsNullOrEmpty(HttpContext.Request.Query["page"]) ? int.Parse(HttpContext.Request.Query["page"]) : 0;
+            condition.Size = !string.IsNullOrEmpty(HttpContext.Request.Query["Size"]) ? int.Parse(HttpContext.Request.Query["Size"]) : 600;
             condition.IntervalDay = !string.IsNullOrEmpty(HttpContext.Request.Query["intervalDay"]) ? int.Parse(HttpContext.Request.Query["intervalDay"]) : 14;
             condition.RentType = !string.IsNullOrEmpty(HttpContext.Request.Query["rentType"]) ? int.Parse(HttpContext.Request.Query["RentType"]) : 0;
             condition.FromPrice = !string.IsNullOrEmpty(HttpContext.Request.Query["fromPrice"]) ? int.Parse(HttpContext.Request.Query["fromPrice"]) : 0;
