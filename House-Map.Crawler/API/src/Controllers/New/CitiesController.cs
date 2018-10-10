@@ -47,6 +47,17 @@ namespace HouseCrawler.Web.API.Controllers
                 })
             });
         }
+        
+        [EnableCors("APICors")]
+        [HttpGet("{city}")]
+        public IActionResult LoadSources(string city)
+        {
+            return Ok(new
+            {
+                success = true,
+                data = _configService.LoadCitySources(city).FirstOrDefault().Value
+            });
+        }
 
         [EnableCors("APICors")]
         [HttpPost("douban")]
