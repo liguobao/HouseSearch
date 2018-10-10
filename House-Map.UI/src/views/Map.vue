@@ -1180,12 +1180,12 @@
         })
       },
       async init() {
-        const loading = this.$loading({
-          lock: true,
-          text: '正在加载数据,若等待时间过长,请重新刷新页面',
-          spinner: 'el-icon-loading',
-          background: 'rgba(0, 0, 0, 0.7)'
-        });
+        // const loading = this.$loading({
+        //   lock: true,
+        //   text: '正在加载数据,若等待时间过长,请重新刷新页面',
+        //   spinner: 'el-icon-loading',
+        //   background: 'rgba(0, 0, 0, 0.7)'
+        // });
         try {
           const query = this.$route.query;
           let cityName = query.cityname;
@@ -1237,11 +1237,11 @@
           // this.showRight = true;
 
 
-          setTimeout(() => {
-            loading.close();
-          }, 1000 * 20);
+          // setTimeout(() => {
+          //   loading.close();
+          // }, 1000 * 20);
           await this.addMaker(map, data, code, self);
-          loading.close();
+          // loading.close();
           this.loading = false;
         } catch (e) {
           this.$message.error('初始化地图失败,请再次刷新');
