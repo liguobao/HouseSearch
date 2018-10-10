@@ -16,22 +16,11 @@ namespace HouseCrawler.Web.API.Controllers
     [Route("v2/houses/")]
     public class NewHousesController : ControllerBase
     {
-
-        private ConfigService _configService;
-
-        private CrawlerConfigService _crawlerConfigService;
-
         private HouseService _houseService;
 
-
-
-        public NewHousesController(HouseService houseService,
-                              ConfigService configService,
-                              CrawlerConfigService crawlerConfigService)
+        public NewHousesController(HouseService houseService)
         {
             _houseService = houseService;
-            _configService = configService;
-            _crawlerConfigService = crawlerConfigService;
         }
 
 
@@ -66,53 +55,6 @@ namespace HouseCrawler.Web.API.Controllers
             return Ok(new { success = true, data = _houseService.FindById(houseId) });
         }
 
-
-        [EnableCors("APICors")]
-        [HttpGet("sources")]
-        public IActionResult LoadDashboards()
-        {
-            var id = 1;
-            var city = HttpContext.Request.Query["city"];
-            return Ok(new
-            {
-                success = true,
-                data = _configService.LoadCitySources(city).Select(i => new
-                {
-                    id = id++,
-                    city = i.Key,
-                    sources = i.Value
-                })
-            });
-        }
-
-
-
-        [EnableCors("APICors")]
-        [HttpGet("cities")]
-        public IActionResult Cities()
-        {
-            var id = 1;
-            return Ok(new
-            {
-                success = true,
-                data = _configService.LoadConfigs()
-                .GroupBy(c => c.City).Select(i => new
-                {
-                    id = id++,
-                    name = i.Key
-                })
-            });
-        }
-
-        [EnableCors("APICors")]
-        [HttpPost("douban")]
-        public IActionResult AddDouBanGroup([FromBody]JToken model)
-        {
-            string doubanGroup = model?["groupId"].ToString();
-            string cityName = model?["cityName"].ToString();
-            _crawlerConfigService.AddDoubanConfig(doubanGroup, cityName);
-            return Ok(new { success = true });
-        }
 
     }
 }
