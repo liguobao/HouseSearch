@@ -111,6 +111,10 @@ namespace HouseMap.Dao
                 var houseList = new List<DBHouse>();
                 // 获取当前城市的房源配置
                 var cityConfigs = _configService.LoadSources(condition.City);
+                if (cityConfigs.Count == 0)
+                {
+                    return houseList;
+                }
                 var limitCount = condition.Size / cityConfigs.Count;
                 foreach (var config in cityConfigs)
                 {

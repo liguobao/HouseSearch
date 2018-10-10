@@ -31,7 +31,10 @@ namespace HouseMapAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(typeof(FieldsFilterAttribute)); // by type
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddOptions().Configure<AppSettings>(Configuration);
             InitDI(services);
             InitDB(services);
@@ -80,6 +83,7 @@ namespace HouseMapAPI
             services.AddScoped<QQOAuthClient, QQOAuthClient>();
             services.AddScoped<WeChatAppDecrypt, WeChatAppDecrypt>();
             services.AddScoped<UserTokenFilter, UserTokenFilter>();
+            services.AddScoped<FieldsFilterAttribute, FieldsFilterAttribute>();
             services.AddScoped<CrawlerConfigService, CrawlerConfigService>();
 
             #endregion

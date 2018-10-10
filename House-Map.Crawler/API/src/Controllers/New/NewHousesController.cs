@@ -43,6 +43,22 @@ namespace HouseCrawler.Web.API.Controllers
             return Ok(new { success = true, data = _houseService.NewSearch(search) });
         }
 
+
+        [HttpGet("")]
+        [EnableCors("APICors")]
+        public IActionResult GetHouse()
+        {
+            var condition = new NewHouseCondition();
+            condition.City = !string.IsNullOrEmpty(HttpContext.Request.Query["city"]) ? HttpContext.Request.Query["city"].ToString() : "上海";
+            condition.Source = HttpContext.Request.Query["source"];
+            condition.Keyword = HttpContext.Request.Query["keyword"];
+            condition.IntervalDay = !string.IsNullOrEmpty(HttpContext.Request.Query["intervalDay"]) ? int.Parse(HttpContext.Request.Query["intervalDay"]) : 14;
+            condition.RentType = !string.IsNullOrEmpty(HttpContext.Request.Query["rentType"]) ? int.Parse(HttpContext.Request.Query["RentType"]) : 0;
+            condition.FromPrice = !string.IsNullOrEmpty(HttpContext.Request.Query["fromPrice"]) ? int.Parse(HttpContext.Request.Query["fromPrice"]) : 0;
+            condition.ToPrice = !string.IsNullOrEmpty(HttpContext.Request.Query["toPrice"]) ? int.Parse(HttpContext.Request.Query["toPrice"]) : 0;
+            return Ok(new { success = true, data = _houseService.NewSearch(condition) });
+        }
+
         [HttpGet("{houseId}")]
         [EnableCors("APICors")]
         public IActionResult FindById(string houseId)
@@ -52,14 +68,15 @@ namespace HouseCrawler.Web.API.Controllers
 
 
         [EnableCors("APICors")]
-        [HttpGet("city-source")]
+        [HttpGet("sources")]
         public IActionResult LoadDashboards()
         {
             var id = 1;
+            var city = HttpContext.Request.Query["city"];
             return Ok(new
             {
                 success = true,
-                data = _configService.LoadCitySources().Select(i => new
+                data = _configService.LoadCitySources(city).Select(i => new
                 {
                     id = id++,
                     city = i.Key,

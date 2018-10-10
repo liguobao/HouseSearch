@@ -17,37 +17,54 @@ namespace HouseMap.Dao.DBEntity
     public class DBHouse : BaseEntity
     {
 
-
         public string Title { get; set; }
+
 
 
         public string Text { get; set; }
 
+
+
         public string PicURLs { get; set; }
+
 
         public string Location { get; set; }
 
+
+
         public string City { get; set; }
+
+
 
         public string Longitude { get; set; }
 
 
+
         public string Latitude { get; set; }
+
+
 
         public int RentType { get; set; }
 
 
         public string Tags { get; set; }
 
+
         public string Labels { get; set; }
 
+
+
         public DateTime PubTime { get; set; }
+
+
 
 
         public string OnlineURL { get; set; }
 
         [JsonIgnore]
         public string JsonData { get; set; }
+
+
 
         public List<string> Pictures
         {
@@ -70,6 +87,7 @@ namespace HouseMap.Dao.DBEntity
 
 
         public int Price { get; set; }
+
 
         public string Source { get; set; }
     }

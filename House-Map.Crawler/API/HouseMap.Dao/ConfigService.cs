@@ -41,9 +41,9 @@ namespace HouseMap.Dao
             return LoadConfigs(city).GroupBy(c => c.Source).Select(i => i.First()).ToList();
         }
 
-        public Dictionary<string, List<DBConfig>> LoadCitySources()
+        public Dictionary<string, List<DBConfig>> LoadCitySources(string city="")
         {
-            return LoadConfigs().GroupBy(c => c.City)
+            return LoadConfigs(city).GroupBy(c => c.City)
             .ToDictionary(item => item.Key, items => items.GroupBy(c => c.Source).Select(i => i.First()).ToList());
         }
 
