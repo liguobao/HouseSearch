@@ -47,7 +47,7 @@ namespace HouseCrawler.Web.API.Controllers
                 })
             });
         }
-        
+
         [EnableCors("APICors")]
         [HttpGet("{city}")]
         public IActionResult LoadSources(string city)
@@ -64,8 +64,8 @@ namespace HouseCrawler.Web.API.Controllers
         public IActionResult AddDouBanGroup([FromBody]JToken model)
         {
             string doubanGroup = model?["groupId"].ToString();
-            string cityName = model?["cityName"].ToString();
-            _crawlerConfigService.AddDoubanConfig(doubanGroup, cityName);
+            string city = model?["city"].ToString();
+            _crawlerConfigService.AddDoubanConfig(doubanGroup, city);
             return Ok(new { success = true });
         }
     }
