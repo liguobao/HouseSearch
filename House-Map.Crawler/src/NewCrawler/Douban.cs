@@ -47,7 +47,9 @@ namespace HouseMap.Crawler
             var city = config.City;
             foreach (var topic in resultJObject["topics"])
             {
-                var housePrice = JiebaTools.GetHousePrice(topic["content"].ToString());
+                // todo 
+                //var housePrice = JiebaTools.GetHousePrice(topic["content"].ToString());
+                var housePrice = -1;
                 var photos = topic["photos"]?.Select(photo => photo["alt"].ToString()).ToList();
                 var house = new DBHouse()
                 {
@@ -57,7 +59,7 @@ namespace HouseMap.Crawler
                     OnlineURL = topic["share_url"].ToString(),
                     Text = topic["content"].ToString(),
                     JsonData = topic.ToString(),
-                    Price = (int)housePrice,
+                    Price = housePrice,
                     Source = SourceEnum.Douban.GetSourceName(),
                     City = city,
                     RentType = GetRentType(topic["content"].ToString()),
