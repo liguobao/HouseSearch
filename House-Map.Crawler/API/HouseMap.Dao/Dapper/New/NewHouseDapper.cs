@@ -16,11 +16,11 @@ namespace HouseMap.Dao
         {
         }
 
-        public void BulkInsertHouses(List<DBHouse> houses)
+        public int BulkInsertHouses(List<DBHouse> houses)
         {
             if (houses == null || houses.Count == 0)
             {
-                return;
+                return 0;
             }
             var tableName = SourceTool.GetHouseTableNameDic()[houses.FirstOrDefault().Source];
             using (IDbConnection dbConnection = GetConnection())
@@ -45,11 +45,13 @@ namespace HouseMap.Dao
                                             @Price,@Labels,
                                             @Source,@Id)  ON DUPLICATE KEY UPDATE UpdateTime=now();",
                                      houses, transaction: transaction);
-                result = dbConnection.Execute(@"INSERT INTO HouseData 
+                dbConnection.Execute(@"INSERT INTO HouseData 
                         (`JsonData`,`Id`,`OnlineURL`) 
                         VALUES (@JsonData,@Id,@OnlineURL) ON DUPLICATE KEY UPDATE UpdateTime=now();",
-                        houses, transaction: transaction);
+                        houses.Where(h => !string.IsNullOrEmpty(h.JsonData)), transaction: transaction);
+
                 transaction.Commit();
+                return result;
             }
 
         }

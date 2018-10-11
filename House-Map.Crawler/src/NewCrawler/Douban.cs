@@ -108,15 +108,25 @@ namespace HouseMap.Crawler
                     var houses = new List<DBHouse>();
                     foreach (var house in oldHouses)
                     {
-                        if (string.IsNullOrEmpty(house.HouseText) || !house.HouseText.Contains("{"))
+                        var one = new DBHouse()
                         {
-                            continue;
-                        }
-                        var one = ConvertToHouse(house.LocationCityName, JToken.Parse(house.HouseText));
+                            Id = Tools.GetUUId(),
+                            Title = house.HouseTitle,
+                            Text = house.HouseText,
+                            Location = house.HouseLocation,
+                            City = house.LocationCityName,
+                            PicURLs = house.PicURLs,
+                            Price = (int)house.HousePrice,
+                            RentType = GetRentType(house.HouseText),
+                            PubTime = house.PubTime,
+                            CreateTime = house.DataCreateTime,
+                            Source = SourceEnum.Douban.GetSourceName(),
+                            OnlineURL = house.HouseOnlineURL,
+                        };
                         houses.Add(one);
                     }
-                    _houseDapper.BulkInsertHouses(houses);
-                    LogHelper.Info($"{config.Key} SyncHouse finish");
+                    var result = _houseDapper.BulkInsertHouses(houses);
+                    LogHelper.Info($"{config.Key} SyncHouse finish,result:{result}");
                 }, "SyncHouse", config.FirstOrDefault());
 
             }
