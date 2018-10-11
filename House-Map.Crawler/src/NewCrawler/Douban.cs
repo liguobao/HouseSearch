@@ -135,6 +135,10 @@ namespace HouseMap.Crawler
         }
         public int GetRentType(string content)
         {
+            if (content == null)
+            {
+                return (int)RentTypeEnum.Undefined;
+            }
             if (content.Contains("单间") || content.Contains("一室户") || content.Contains("1室户") || content.Contains("1室1厅"))
             {
                 return (int)RentTypeEnum.OneRoom;
