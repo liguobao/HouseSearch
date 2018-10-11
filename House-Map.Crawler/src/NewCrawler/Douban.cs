@@ -19,15 +19,24 @@ using HouseMap.Models;
 using HouseMap.Common;
 using System.IO;
 using Microsoft.Extensions.Options;
+using HouseMap.Crawler.Service;
 
 namespace HouseMap.Crawler
 {
 
     public class Douban : NewBaseCrawler
     {
-        public Douban(NewHouseDapper houseDapper, ConfigDapper configDapper, IOptions<AppSettings> configuration) : base(houseDapper, configDapper)
+        private readonly HouseDapper _oldHouseDapper;
+
+        private readonly ElasticsearchService _elasticsearch;
+
+        public Douban(NewHouseDapper houseDapper, ConfigDapper configDapper, IOptions<AppSettings> configuration,
+         HouseDapper oldHouseDapper, ElasticsearchService elasticsearch)
+        : base(houseDapper, configDapper)
         {
             this.Source = SourceEnum.Douban;
+            _oldHouseDapper = oldHouseDapper;
+            _elasticsearch = elasticsearch;
         }
 
 
@@ -49,28 +58,71 @@ namespace HouseMap.Crawler
             {
                 // todo 
                 //var housePrice = JiebaTools.GetHousePrice(topic["content"].ToString());
-                var housePrice = -1;
-                var photos = topic["photos"]?.Select(photo => photo["alt"].ToString()).ToList();
-                var house = new DBHouse()
-                {
-                    Id = Tools.GetUUId(),
-                    Location = topic["title"].ToString(),
-                    Title = topic["title"].ToString(),
-                    OnlineURL = topic["share_url"].ToString(),
-                    Text = topic["content"].ToString(),
-                    JsonData = topic.ToString(),
-                    Price = housePrice,
-                    Source = SourceEnum.Douban.GetSourceName(),
-                    City = city,
-                    RentType = GetRentType(topic["content"].ToString()),
-                    PicURLs = JsonConvert.SerializeObject(photos),
-                    PubTime = topic["created"].ToObject<DateTime>(),
-                };
+                DBHouse house = ConvertToHouse(city, topic);
                 houses.Add(house);
             }
             return houses;
         }
 
+        private DBHouse ConvertToHouse(string city, JToken topic)
+        {
+            var housePrice = -1;
+            var photos = topic["photos"]?.Select(photo => photo["alt"].ToString()).ToList();
+            var house = new DBHouse()
+            {
+                Id = Tools.GetUUId(),
+                Location = topic["title"].ToString(),
+                Title = topic["title"].ToString(),
+                OnlineURL = topic["share_url"].ToString(),
+                Text = topic["content"].ToString(),
+                JsonData = topic.ToString(),
+                Price = housePrice,
+                Source = SourceEnum.Douban.GetSourceName(),
+                City = city,
+                RentType = GetRentType(topic["content"].ToString()),
+                PicURLs = JsonConvert.SerializeObject(photos),
+                PubTime = topic["created"].ToObject<DateTime>(),
+            };
+            return house;
+        }
+
+        public override void SyncHouses()
+        {
+            foreach (var config in _configDapper.LoadBySource(SourceEnum.Douban.GetSourceName()).GroupBy(c => c.City))
+            {
+                LogHelper.RunActionNotThrowEx(() =>
+                {
+
+                    List<HouseInfo> oldHouses = _oldHouseDapper.SearchHouses(new HouseCondition()
+                    {
+                        Source = SourceEnum.Douban.GetSourceName(),
+                        IntervalDay = 1000,
+                        HouseCount = 300000,
+                        CityName = config.Key
+                    }).ToList();
+                    if (oldHouses == null)
+                    {
+                        return;
+                    }
+                    LogHelper.Info($"{config.Key} SyncHouse start,count={oldHouses.Count}");
+                    var houses = new List<DBHouse>();
+                    foreach (var house in oldHouses)
+                    {
+                        if (string.IsNullOrEmpty(house.HouseText) || !house.HouseText.Contains("{"))
+                        {
+                            continue;
+                        }
+                        var one = ConvertToHouse(house.LocationCityName, JToken.Parse(house.HouseText));
+                        houses.Add(one);
+                    }
+                    _houseDapper.BulkInsertHouses(houses);
+                    LogHelper.Info($"{config.Key} SyncHouse finish");
+                }, "SyncHouse", config.FirstOrDefault());
+
+            }
+
+
+        }
         public int GetRentType(string content)
         {
             if (content.Contains("单间") || content.Contains("一室户") || content.Contains("1室户") || content.Contains("1室1厅"))

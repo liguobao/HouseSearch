@@ -37,26 +37,25 @@ namespace HouseMap.Crawler.Service
             {
                 return;
             }
-            foreach (var groupitem in houses.GroupBy(h => h.PubTime.ToString("yyyy-MM-dd")))
+
+            var houseIndex = $"house-data";
+            var index = elasticClient.IndexExists(houseIndex);
+            if (!index.Exists && index.IsValid)//判断索引是否存在和有效
             {
-                var houseIndex = $"house-{groupitem.Key}";
-                var index = elasticClient.IndexExists(houseIndex);
-                if (!index.Exists && index.IsValid)//判断索引是否存在和有效
-                {
-                    //创建索引
-                    elasticClient.CreateIndex(houseIndex, i => i
-                       .Settings(s => s.NumberOfShards(2).NumberOfReplicas(0))// 2是常量，阿里云只买了两个片
-                       .Mappings(m => m.Map<HouseInfo>(mm => mm.AutoMap()))
-                       .Mappings(map => map.Map<HouseInfo>(mm => mm)));
-                }
-                //批量创建索引和文档
-                IBulkResponse bulkRs = elasticClient.IndexMany(groupitem, houseIndex);
-                if (bulkRs.Errors)//如果异常
-                {
-                    LogHelper.Info("SaveHouses finish,index:" + houseIndex + ",DebugInformation:" + bulkRs.DebugInformation);
-                    //TODO
-                }
-            };
+                //创建索引
+                elasticClient.CreateIndex(houseIndex, i => i
+                   .Settings(s => s.NumberOfShards(2).NumberOfReplicas(0))// 2是常量，阿里云只买了两个片
+                   .Mappings(m => m.Map<HouseInfo>(mm => mm.AutoMap()))
+                   .Mappings(map => map.Map<HouseInfo>(mm => mm)));
+            }
+            //批量创建索引和文档
+            IBulkResponse bulkRs = elasticClient.IndexMany(houses, houseIndex);
+            if (bulkRs.Errors)//如果异常
+            {
+                LogHelper.Info("SaveHouses finish,index:" + houseIndex + ",DebugInformation:" + bulkRs.DebugInformation);
+                //TODO
+            }
+
         }
     }
 

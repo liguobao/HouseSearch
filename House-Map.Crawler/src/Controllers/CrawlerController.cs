@@ -53,6 +53,30 @@ namespace HouseMap.Crawler.Controllers
 
         }
 
+         public IActionResult Sync(string source)
+        {
+
+            try
+            {
+                var crawler = _serviceProvider.GetServices<INewCrawler>().FirstOrDefault(c =>
+                c.GetSource().GetSourceName() == source);
+                if (crawler == null)
+                {
+                    return Json(new { success = true, error = $"{source} not found" });
+                }
+                LogHelper.RunActionTaskNotThrowEx(() =>
+                {
+                    crawler.SyncHouses();
+                }, source);
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = true, error = ex.ToString() });
+            }
+
+        }
+
         public IActionResult InitCCBConfig()
         {
             var configDapper = _serviceProvider.GetServices<ConfigDapper>().FirstOrDefault();

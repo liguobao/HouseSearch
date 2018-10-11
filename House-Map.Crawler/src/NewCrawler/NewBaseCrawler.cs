@@ -21,9 +21,10 @@ namespace HouseMap.Crawler
 
         protected SourceEnum Source;
 
-        private readonly ConfigDapper _configDapper;
+        protected readonly ConfigDapper _configDapper;
 
-        private NewHouseDapper _houseDapper;
+        protected NewHouseDapper _houseDapper;
+
 
         public NewBaseCrawler(NewHouseDapper houseDapper, ConfigDapper configDapper)
         {
@@ -69,7 +70,7 @@ namespace HouseMap.Crawler
             return Source;
         }
 
-        public void SyncHouses()
+        public virtual void SyncHouses()
         {
             throw new NotImplementedException();
         }
