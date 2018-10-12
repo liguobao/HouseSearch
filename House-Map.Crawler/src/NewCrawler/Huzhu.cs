@@ -18,9 +18,11 @@ namespace HouseMap.Crawler
     public class Huzhu : NewBaseCrawler
     {
 
-        public Huzhu(NewHouseDapper houseDapper, ConfigDapper configDapper) : base(houseDapper, configDapper)
+        private readonly HouseDapper _oldHouseDapper;
+        public Huzhu(NewHouseDapper houseDapper, ConfigDapper configDapper, HouseDapper oldHouseDapper) : base(houseDapper, configDapper)
         {
             this.Source = SourceEnum.HuZhuZuFang;
+            _oldHouseDapper = oldHouseDapper;
         }
 
         public override string GetJsonOrHTML(DBConfig config, int page)
@@ -57,6 +59,47 @@ namespace HouseMap.Crawler
             }
             return houseList;
         }
+
+        public override void SyncHouses()
+        {
+            List<HouseInfo> oldHouses = _oldHouseDapper.SearchHouses(new HouseCondition()
+            {
+                Source = SourceEnum.HuZhuZuFang.GetSourceName(),
+                IntervalDay = 1000,
+                HouseCount = 300000,
+                CityName = "上海"
+            }).ToList();
+            if (oldHouses == null)
+            {
+                return;
+            }
+            LogHelper.Info($"上海 SyncHouse start,count={oldHouses.Count}");
+            var houses = new List<DBHouse>();
+            foreach (var house in oldHouses)
+            {
+                var one = new DBHouse()
+                {
+                    Id = Tools.GetUUId(),
+                    Title = house.HouseTitle,
+                    Text = house.HouseLocation,
+                    Location = house.HouseLocation,
+                    City = house.LocationCityName,
+                    PicURLs = house.PicURLs,
+                    Price = (int)house.HousePrice,
+                    RentType = GetRentType(house.HouseLocation),
+                    PubTime = house.PubTime,
+                    CreateTime = house.DataCreateTime,
+                    Source = SourceEnum.HuZhuZuFang.GetSourceName(),
+                    OnlineURL = house.HouseOnlineURL,
+                };
+                houses.Add(one);
+            }
+            var result = _houseDapper.BulkInsertHouses(houses);
+            LogHelper.Info($"上海 SyncHouse finish,result:{result}");
+
+
+        }
+
 
         private int GetRentType(string houseDesc)
         {

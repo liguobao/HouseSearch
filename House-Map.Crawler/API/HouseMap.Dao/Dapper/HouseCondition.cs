@@ -66,6 +66,7 @@ namespace HouseMap.Dao
                                             PubTime,
                                             HousePrice,
                                             LocationCityName,
+                                            HouseText,
                                             Source,
                                             PicURLs,
                                             IsAnalyzed,
