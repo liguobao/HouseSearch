@@ -88,7 +88,7 @@ namespace HouseMap.Crawler
 
         public override void SyncHouses()
         {
-            foreach (var config in _configDapper.LoadBySource(SourceEnum.Douban.GetSourceName()).GroupBy(c => c.City))
+            foreach (var city in new List<string>() { "北京", "杭州" })
             {
                 LogHelper.RunActionNotThrowEx(() =>
                 {
@@ -98,13 +98,13 @@ namespace HouseMap.Crawler
                         Source = SourceEnum.Douban.GetSourceName(),
                         IntervalDay = 1000,
                         HouseCount = 300000,
-                        CityName = config.Key
+                        CityName = city
                     }).ToList();
                     if (oldHouses == null)
                     {
                         return;
                     }
-                    LogHelper.Info($"{config.Key} SyncHouse start,count={oldHouses.Count}");
+                    LogHelper.Info($"{city} SyncHouse start,count={oldHouses.Count}");
                     var houses = new List<DBHouse>();
                     foreach (var house in oldHouses)
                     {
@@ -126,8 +126,8 @@ namespace HouseMap.Crawler
                         houses.Add(one);
                     }
                     var result = _houseDapper.BulkInsertHouses(houses);
-                    LogHelper.Info($"{config.Key} SyncHouse finish,result:{result}");
-                }, "SyncHouse", config.FirstOrDefault());
+                    LogHelper.Info($"{city} SyncHouse finish,result:{result}");
+                }, "SyncHouse", city);
 
             }
 
