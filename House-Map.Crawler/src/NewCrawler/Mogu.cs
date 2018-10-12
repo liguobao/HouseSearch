@@ -18,9 +18,12 @@ namespace HouseMap.Crawler
     public class Mogu : NewBaseCrawler
     {
 
-        public Mogu(NewHouseDapper houseDapper, ConfigDapper configDapper) : base(houseDapper, configDapper)
+        private readonly HouseDapper _oldHouseDapper;
+
+        public Mogu(NewHouseDapper houseDapper, ConfigDapper configDapper, HouseDapper oldHouseDapper) : base(houseDapper, configDapper)
         {
             this.Source = SourceEnum.Mogu;
+            _oldHouseDapper = oldHouseDapper;
         }
 
         public override string GetJsonOrHTML(DBConfig config, int page)
@@ -45,10 +48,7 @@ namespace HouseMap.Crawler
             {
                 try
                 {
-                    var housePrice = room["maxShowPrice"].ToObject<int>();
-                    var lastPublishTime = GetPublishTime(room);
-                    string location = room["address"] != null ? room["address"].ToString() : room["title"].ToString();
-                    var house = GetHouse(config.City, room, housePrice, lastPublishTime, location);
+                    DBHouse house = ConvertHouse(config, room);
                     houses.Add(house);
                 }
                 catch (Exception ex)
@@ -57,6 +57,15 @@ namespace HouseMap.Crawler
                 }
             }
             return houses;
+        }
+
+        private static DBHouse ConvertHouse(DBConfig config, JToken room)
+        {
+            var housePrice = room["maxShowPrice"].ToObject<int>();
+            var lastPublishTime = GetPublishTime(room);
+            string location = room["address"] != null ? room["address"].ToString() : room["title"].ToString();
+            var house = GetHouse(config.City, room, housePrice, lastPublishTime, location);
+            return house;
         }
 
         private static DBHouse GetHouse(string city, JToken room, int housePrice, DateTime lastPublishTime, string location)
@@ -158,6 +167,40 @@ namespace HouseMap.Crawler
                 LogHelper.Error("GetAPIResult", ex);
                 return string.Empty;
             }
+
+        }
+
+        public override void SyncHouses()
+        {
+            foreach (var config in _configDapper.LoadBySource(SourceEnum.Mogu.GetSourceName()))
+            {
+                LogHelper.RunActionNotThrowEx(() =>
+                {
+
+                    List<HouseInfo> oldHouses = _oldHouseDapper.SearchHouses(new HouseCondition()
+                    {
+                        Source = SourceEnum.Mogu.GetSourceName(),
+                        IntervalDay = 1000,
+                        HouseCount = 300000,
+                        CityName = config.City
+                    }).ToList();
+                    if (oldHouses == null)
+                    {
+                        return;
+                    }
+                    LogHelper.Info($"Mogu {config.City} SyncHouse start,count={oldHouses.Count}");
+                    var houses = new List<DBHouse>();
+                    foreach (var house in oldHouses)
+                    {
+                        var newOne = ConvertHouse(config, JToken.Parse(house.HouseText));
+                        houses.Add(newOne);
+                    }
+                    var result = _houseDapper.BulkInsertHouses(houses);
+                    LogHelper.Info($"Mogu {config.City} SyncHouse finish,result:{result}");
+                }, "SyncHouse", config);
+
+            }
+
 
         }
 
