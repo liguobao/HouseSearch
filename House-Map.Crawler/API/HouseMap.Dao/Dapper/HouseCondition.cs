@@ -66,11 +66,8 @@ namespace HouseMap.Dao
                                             PubTime,
                                             HousePrice,
                                             LocationCityName,
-                                            HouseText,
                                             Source,
-                                            PicURLs,
-                                            IsAnalyzed,
-                                            Status"
+                                            PicURLs"
                                    + $" from { ConstConfigName.GetTableName(this.Source)} where 1=1 ";
                 if (this.HouseId != 0)
                 {
