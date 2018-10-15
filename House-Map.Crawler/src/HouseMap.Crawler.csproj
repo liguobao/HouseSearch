@@ -20,6 +20,11 @@
     <PackageReference Include="NEST" Version="6.3.0" />
     <PackageReference Include="AngleSharp" Version="0.9.10" />
     <PackageReference Include="Pomelo.AspNetCore.TimedJob" Version="2.0.0-rtm-10046" />
+    <PackageReference Include="SkyWalking.AspNetCore" Version="0.3.0"/>
+    <PackageReference Include="SkyWalking.Diagnostics.EntityFrameworkCore" Version="0.3.0"/>
+    <PackageReference Include="SkyWalking.Diagnostics.HttpClient" Version="0.3.0"/>
+    <PackageReference Include="SkyWalking.Diagnostics.EntityFrameworkCore.Npgsql" Version="0.3.0"/>
+    <PackageReference Include="SkyWalking.Diagnostics.EntityFrameworkCore.Pomelo.MySql" Version="0.3.0"/>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="JiebaNet.Analyser">

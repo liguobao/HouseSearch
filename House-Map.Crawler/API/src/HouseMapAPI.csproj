@@ -17,6 +17,11 @@
     <PackageReference Include="Talk.OAuthClient" Version="1.0.0" />
     <PackageReference Include="NLog.Extensions.Logging" Version="1.0.1" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.5.3" />
+    <PackageReference Include="SkyWalking.AspNetCore" Version="0.3.0"/>
+    <PackageReference Include="SkyWalking.Diagnostics.EntityFrameworkCore" Version="0.3.0"/>
+    <PackageReference Include="SkyWalking.Diagnostics.HttpClient" Version="0.3.0"/>
+    <PackageReference Include="SkyWalking.Diagnostics.EntityFrameworkCore.Npgsql" Version="0.3.0"/>
+    <PackageReference Include="SkyWalking.Diagnostics.EntityFrameworkCore.Pomelo.MySql" Version="0.3.0"/>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HouseMap.Dao\HouseMap.Dao.csproj" />

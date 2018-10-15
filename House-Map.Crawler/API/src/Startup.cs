@@ -38,6 +38,7 @@ namespace HouseMapAPI
             services.AddOptions().Configure<AppSettings>(Configuration);
             InitDI(services);
             InitDB(services);
+            InitSkyWalking(services);
             //添加cors 服务
             services.AddCors(o => o.AddPolicy("APICors", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
         }
@@ -51,6 +52,19 @@ namespace HouseMapAPI
                 options.UseLoggerFactory(loggerFactory);
                 options.UseMySql(Configuration["MySQLConnectionString"].ToString());
             });
+        }
+
+        private void InitSkyWalking(IServiceCollection services)
+        {
+            services.AddSkyWalking(option =>
+            {
+                option.ApplicationCode = Configuration["AppName"]?.ToString();
+                option.DirectServers = Configuration["SkyWalkingURL"]?.ToString();
+                // 每三秒采样的Trace数量,-1 为全部采集
+                option.SamplePer3Secs = -1;
+            }).AddEntityFrameworkCore(c => { c.AddPomeloMysql().AddNpgsql(); })
+            .AddSqlClient()
+            .AddHttpClient();
         }
 
 
