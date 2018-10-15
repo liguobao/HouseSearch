@@ -16,6 +16,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NLog.Web;
+using SkyWalking.AspNetCore;
+using SkyWalking.Diagnostics.EntityFrameworkCore;
+using SkyWalking.Diagnostics.HttpClient;
+using SkyWalking.Diagnostics.SqlClient;
 
 namespace HouseMapAPI
 {
