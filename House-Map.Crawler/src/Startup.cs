@@ -21,6 +21,7 @@ using SkyWalking.AspNetCore;
 using SkyWalking.Diagnostics.EntityFrameworkCore;
 using SkyWalking.Diagnostics.HttpClient;
 using SkyWalking.Diagnostics.SqlClient;
+using StackExchange.Redis;
 
 namespace HouseMap.Crawler
 {
@@ -38,10 +39,22 @@ namespace HouseMap.Crawler
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddOptions().Configure<AppSettings>(Configuration);
+            InitRedis(services);
             InitDI(services);
             InitDB(services);
             InitSkyWalking(services);
         }
+
+        private void InitRedis(IServiceCollection services)
+        {
+            services.AddScoped<ConnectionMultiplexer, ConnectionMultiplexer>(factory =>
+            {
+                ConfigurationOptions options = ConfigurationOptions.Parse(Configuration["RedisConnectionString"]);
+                options.SyncTimeout = 10 * 1000;
+                return ConnectionMultiplexer.Connect(options);
+            });
+        }
+
 
         private void InitDB(IServiceCollection services)
         {

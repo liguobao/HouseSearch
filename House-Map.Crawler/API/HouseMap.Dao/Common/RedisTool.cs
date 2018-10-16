@@ -7,18 +7,12 @@ namespace HouseMap.Common
 {
     public class RedisTool
     {
-        private ConfigurationOptions GetRedisOptions()
-        {
-            ConfigurationOptions options = ConfigurationOptions.Parse(configuration.RedisConnectionString);
-            options.SyncTimeout = 10 * 1000;
-            return options;
-        }
+        private readonly ConnectionMultiplexer _redisMultiplexer;
 
-        private AppSettings configuration;
 
-        public RedisTool(IOptions<AppSettings> configuration)
+        public RedisTool(ConnectionMultiplexer redisMultiplexer)
         {
-            this.configuration = configuration.Value;
+            _redisMultiplexer = redisMultiplexer;
         }
 
 
@@ -26,13 +20,11 @@ namespace HouseMap.Common
         {
             try
             {
-                using (ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(GetRedisOptions()))
-                {
-                    IDatabase db = redis.GetDatabase(dbName);
-                    var data = db.KeyExists(key) == true ? db.StringGet(key).ToString() : null;
-                    redis.Close();
-                    return data;
-                }
+
+                IDatabase db = _redisMultiplexer.GetDatabase(dbName);
+                var data = db.KeyExists(key) == true ? db.StringGet(key).ToString() : null;
+                return data;
+
             }
             catch (Exception ex)
             {
@@ -46,12 +38,10 @@ namespace HouseMap.Common
         {
             try
             {
-                using (ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(GetRedisOptions()))
-                {
-                    IDatabase db = redis.GetDatabase(dbName);
-                    db.StringSet(key, Newtonsoft.Json.JsonConvert.SerializeObject(value), new System.TimeSpan(0, minutes, 0));
-                    redis.Close();
-                }
+
+                IDatabase db = _redisMultiplexer.GetDatabase(dbName);
+                db.StringSet(key, Newtonsoft.Json.JsonConvert.SerializeObject(value), new System.TimeSpan(0, minutes, 0));
+
             }
             catch (Exception ex)
             {
@@ -65,13 +55,11 @@ namespace HouseMap.Common
         {
             try
             {
-                using (ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(GetRedisOptions()))
-                {
-                    IDatabase db = redis.GetDatabase(dbName);
-                    var data = db.KeyExists(key) == true ? Newtonsoft.Json.JsonConvert.DeserializeObject<T>(db.StringGet(key).ToString()) : default(T);
-                    redis.Close();
-                    return data;
-                }
+
+                IDatabase db = _redisMultiplexer.GetDatabase(dbName);
+                var data = db.KeyExists(key) == true ? Newtonsoft.Json.JsonConvert.DeserializeObject<T>(db.StringGet(key).ToString()) : default(T);
+                return data;
+
             }
             catch (Exception ex)
             {
@@ -88,13 +76,10 @@ namespace HouseMap.Common
         {
             try
             {
-                using (ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(GetRedisOptions()))
-                {
-                    IDatabase db = redis.GetDatabase(dbName);
-                    var result = db.KeyDelete(key);
-                    redis.Close();
-                    return result;
-                }
+                IDatabase db = _redisMultiplexer.GetDatabase(dbName);
+                var result = db.KeyDelete(key);
+                return result;
+
             }
             catch (Exception ex)
             {

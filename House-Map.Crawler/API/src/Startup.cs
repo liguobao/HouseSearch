@@ -20,6 +20,7 @@ using SkyWalking.AspNetCore;
 using SkyWalking.Diagnostics.EntityFrameworkCore;
 using SkyWalking.Diagnostics.HttpClient;
 using SkyWalking.Diagnostics.SqlClient;
+using StackExchange.Redis;
 
 namespace HouseMapAPI
 {
@@ -40,6 +41,7 @@ namespace HouseMapAPI
                 options.Filters.Add(typeof(FieldsFilterAttribute)); // by type
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddOptions().Configure<AppSettings>(Configuration);
+            InitRedis(services);
             InitDI(services);
             InitDB(services);
             InitSkyWalking(services);
@@ -57,6 +59,17 @@ namespace HouseMapAPI
                 options.UseMySql(Configuration["MySQLConnectionString"].ToString());
             });
         }
+
+        private void InitRedis(IServiceCollection services)
+        {
+            services.AddScoped<ConnectionMultiplexer, ConnectionMultiplexer>(factory =>
+            {
+                ConfigurationOptions options = ConfigurationOptions.Parse(Configuration["RedisConnectionString"]);
+                options.SyncTimeout = 10 * 1000;
+                return ConnectionMultiplexer.Connect(options);
+            });
+        }
+
 
         private void InitSkyWalking(IServiceCollection services)
         {

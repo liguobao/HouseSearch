@@ -11,44 +11,42 @@ using HouseMap.Crawler.Common;
 using HouseMap.Crawler.Jobs;
 using Newtonsoft.Json.Linq;
 using HouseMap.Common;
+using SkyWalking.Context;
+using SkyWalking.Context.Trace;
+using SkyWalking.NetworkProtocol.Trace;
+using SkyWalking.Context.Tag;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace HouseMap.Crawler.Controllers
 {
     public class TestController : Controller
     {
-        private ZuberCrawler _zuber;
+         private readonly RedisTool _redis;
 
+        private ZuberCrawler _zuber;
 
         private HouseDataContext _context;
 
 
-        public TestController(ZuberCrawler zuber, HouseDataContext context)
+        public TestController(ZuberCrawler zuber, HouseDataContext context,RedisTool redis)
         {
             _zuber = zuber;
             _context = context;
+            _redis = redis;
         }
 
         public IActionResult Index(string source)
         {
-            // if (source != "init")
-            // {
-            //     var configs = _configDapper.FindAll();
-            //     foreach (var config in configs)
-            //     {
-            //         var dbConfig = new DbConfig();
-            //         var configJson = JToken.Parse(config.ConfigurationValue);
-            //         dbConfig.City = configJson["cityname"] != null
-            //             ? configJson["cityname"].ToString()
-            //             : configJson["cityName"].ToString();
-            //         dbConfig.Source = config.ConfigurationName;
-            //         dbConfig.Json = config.ConfigurationValue;
-            //         dbConfig.PageCount = configJson["pagecount"] != null ? configJson["pagecount"].ToObject<int>() : 20;
-            //         dbConfig.CreateTime = DateTime.Now;
-            //         dbConfig.Id = Tools.GetUUId();
-            //         _context.Configs.Add(dbConfig);
-            //     }
-            //     _context.SaveChanges();
-            // }
+            var data = _redis.ReadCache("user_173",0);
+            var peer = "Action";
+            var span = ContextManager.CreateExitSpan("TestController", peer);
+            span.SetLayer(SpanLayer.CACHE);
+            span.SetComponent(ComponentsDefine.AspNetCore);
+            Tags.DbType.Set(span, "TestController");
+            Tags.Url.Set(span, HttpContext.Request.QueryString.ToString());
+
+            ContextManager.StopSpan();
+
             return Json(new { success = true });
         }
 
