@@ -62,7 +62,7 @@ namespace HouseMapAPI
 
         private void InitRedis(IServiceCollection services)
         {
-            services.AddScoped<ConnectionMultiplexer, ConnectionMultiplexer>(factory =>
+            services.AddSingleton<ConnectionMultiplexer, ConnectionMultiplexer>(factory =>
             {
                 ConfigurationOptions options = ConfigurationOptions.Parse(Configuration["RedisConnectionString"]);
                 options.SyncTimeout = 10 * 1000;

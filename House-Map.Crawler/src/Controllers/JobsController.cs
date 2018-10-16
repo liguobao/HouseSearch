@@ -8,7 +8,6 @@ using HouseMap.Dao.DBEntity;
 using HouseMap.Crawler;
 using HouseMap.Crawler.Service;
 using HouseMap.Crawler.Common;
-using HouseMap.Crawler.Jobs;
 using HouseMap.Common;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -17,25 +16,13 @@ namespace HouseMap.Crawler.Controllers
     public class JobsController : Controller
     {
 
-        private readonly TodayHouseDashboardJob _dashboardJob;
-
-
         private readonly IServiceProvider _serviceProvider;
 
-        private readonly RefreshHouseCacheJob _refreshHouseCacheJob;
 
-        private readonly RefreshHouseSourceJob _refreshHouseSourceJob;
+        public JobsController(
 
-
-
-        public JobsController(TodayHouseDashboardJob houseDashboardJob,
-                              RefreshHouseCacheJob refreshHouseCacheJob,
-                              RefreshHouseSourceJob refreshHouseSourceJob,
                              IServiceProvider serviceProvider)
         {
-            _dashboardJob = houseDashboardJob;
-            _refreshHouseCacheJob = refreshHouseCacheJob;
-            _refreshHouseSourceJob = refreshHouseSourceJob;
             _serviceProvider = serviceProvider;
         }
 
@@ -63,27 +50,21 @@ namespace HouseMap.Crawler.Controllers
 
         }
 
-        public IActionResult TodayDashboard()
-        {
-            LogHelper.RunActionTaskNotThrowEx(_dashboardJob.Run, "TodayDashboard");
-            return Json(new { success = true });
-        }
 
         public IActionResult RefreshHouseCache()
         {
-            LogHelper.RunActionTaskNotThrowEx(_refreshHouseCacheJob.Run, "RefreshHouseCache");
+            var houseService = _serviceProvider.GetServices<HouseService>().FirstOrDefault();
+            LogHelper.RunActionTaskNotThrowEx(houseService.RefreshHouse, "RefreshHouseCache");
             return Json(new { success = true });
         }
 
-        public IActionResult RefreshHouseSource()
+
+        public IActionResult RefreshHouseCacheV2()
         {
-            LogHelper.RunActionTaskNotThrowEx(_refreshHouseSourceJob.Run, "RefreshHouseSource");
+            var houseService = _serviceProvider.GetServices<HouseService>().FirstOrDefault();
+            LogHelper.RunActionTaskNotThrowEx(houseService.RefreshHouseV2, "RefreshHouseCacheV2");
             return Json(new { success = true });
         }
 
-        public IActionResult InitBeike()
-        {
-            return Json(new { success = true });
-        }
     }
 }

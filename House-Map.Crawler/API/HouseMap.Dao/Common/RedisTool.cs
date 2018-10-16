@@ -38,7 +38,7 @@ namespace HouseMap.Common
         {
             try
             {
-
+                
                 IDatabase db = _redisMultiplexer.GetDatabase(dbName);
                 db.StringSet(key, Newtonsoft.Json.JsonConvert.SerializeObject(value), new System.TimeSpan(0, minutes, 0));
 

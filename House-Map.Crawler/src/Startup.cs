@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using HouseMap.Common;
 using HouseMap.Crawler.Common;
-using HouseMap.Crawler.Jobs;
 using HouseMap.Crawler.Service;
 using HouseMap.Dao;
 using Microsoft.AspNetCore.Builder;
@@ -47,10 +46,10 @@ namespace HouseMap.Crawler
 
         private void InitRedis(IServiceCollection services)
         {
-            services.AddScoped<ConnectionMultiplexer, ConnectionMultiplexer>(factory =>
+            services.AddSingleton<ConnectionMultiplexer, ConnectionMultiplexer>(factory =>
             {
                 ConfigurationOptions options = ConfigurationOptions.Parse(Configuration["RedisConnectionString"]);
-                options.SyncTimeout = 10 * 1000;
+                options.SyncTimeout = 10 * 10000;
                 return ConnectionMultiplexer.Connect(options);
             });
         }
@@ -138,10 +137,6 @@ namespace HouseMap.Crawler
             services.AddScoped<INewCrawler, CCBHouse>();
             #endregion
 
-            services.AddScoped<TodayHouseDashboardJob, TodayHouseDashboardJob>();
-
-            services.AddScoped<RefreshHouseCacheJob, RefreshHouseCacheJob>();
-            services.AddScoped<RefreshHouseSourceJob, RefreshHouseSourceJob>();
 
 
         }

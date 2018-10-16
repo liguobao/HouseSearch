@@ -10,6 +10,7 @@ using HouseMap.Models;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Linq;
+using System.Globalization;
 
 namespace HouseMap.Dao
 {
@@ -151,6 +152,114 @@ namespace HouseMap.Dao
 
             }
             return house;
+        }
+
+
+
+        public void RefreshHouse()
+        {
+            LogHelper.Info("开始RefreshHouse...");
+            var sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            var cityDashboards = _configService.LoadCitySources();
+            foreach (var item in cityDashboards)
+            {
+                //聚合房源的缓存,前600条数据
+                var search = new HouseCondition() { CityName = item.Key, HouseCount = 600, IntervalDay = 14, Refresh = true };
+                Search(search);
+                foreach (var dashboard in item.Value)
+                {
+                    //每类房源的默认缓存,前600条数据
+                    search.HouseCount = 600;
+                    search.Source = dashboard.Source;
+                    this.Search(search);
+
+                    // 为小程序做的缓存,每次拉10条,一共20页
+                    for (var page = 0; page <= 30; page++)
+                    {
+                        search.HouseCount = 20;
+                        search.Source = dashboard.Source;
+                        search.Page = page;
+                        this.Search(search);
+                    }
+                }
+                //为移动端做的缓存,每次拉180条,一共10页
+                for (var page = 0; page <= 10; page++)
+                {
+                    search.Source = "";
+                    search.HouseCount = 180;
+                    search.Page = page;
+                    this.Search(search);
+                }
+
+                //为小程序做的缓存,每次拉20条,一共30页
+                for (var page = 0; page <= 30; page++)
+                {
+                    search.Source = "";
+                    search.HouseCount = 20;
+                    search.Page = page;
+                    this.Search(search);
+                }
+            }
+
+            sw.Stop();
+            string copyTime = sw.Elapsed.TotalSeconds.ToString(CultureInfo.InvariantCulture);
+            LogHelper.Info("RefreshHouse结束，花费时间：" + copyTime);
+        }
+
+
+
+        public void RefreshHouseV2()
+        {
+            LogHelper.Info("开始RefreshHouseV2...");
+            var sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            var cityDashboards = _configService.LoadCitySources();
+            foreach (var item in cityDashboards)
+            {
+                //聚合房源的缓存,前600条数据
+                var search = new NewHouseCondition() { City = item.Key, Size = 600, IntervalDay = 14, Refresh = true };
+                NewSearch(search);
+                foreach (var dashboard in item.Value)
+                {
+                    //每类房源的默认缓存,前600条数据
+                    search.Size = 600;
+                    search.Source = dashboard.Source;
+                    NewSearch(search);
+
+                    // 为小程序做的缓存,每次拉10条,一共20页
+                    for (var page = 0; page <= 30; page++)
+                    {
+                        search.Size = 20;
+                        search.Source = dashboard.Source;
+                        search.Page = page;
+                        this.NewSearch(search);
+                    }
+                }
+                //为移动端做的缓存,每次拉180条,一共10页
+                for (var page = 0; page <= 10; page++)
+                {
+                    search.Source = "";
+                    search.Size = 180;
+                    search.Page = page;
+                    this.NewSearch(search);
+                }
+
+                //为小程序做的缓存,每次拉20条,一共30页
+                for (var page = 0; page <= 30; page++)
+                {
+                    search.Source = "";
+                    search.Size = 20;
+                    search.Page = page;
+                    this.NewSearch(search);
+                }
+            }
+
+            sw.Stop();
+            string copyTime = sw.Elapsed.TotalSeconds.ToString(CultureInfo.InvariantCulture);
+            LogHelper.Info("RefreshHouseV2结束，花费时间：" + copyTime);
         }
 
 

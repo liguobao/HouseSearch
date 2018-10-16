@@ -8,7 +8,6 @@ using HouseMap.Dao.DBEntity;
 using HouseMap.Crawler;
 using HouseMap.Crawler.Service;
 using HouseMap.Crawler.Common;
-using HouseMap.Crawler.Jobs;
 using Newtonsoft.Json.Linq;
 using HouseMap.Common;
 using SkyWalking.Context;
