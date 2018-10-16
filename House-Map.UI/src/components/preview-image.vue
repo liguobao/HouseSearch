@@ -10,7 +10,9 @@
         <div class="preview">
             <el-carousel :interval="0" :height="isMobile ? '300px' : '600px'" :autoplay="false" arrow="always">
                 <el-carousel-item v-for="item in images" :key="item">
-                    <a :href="item" target="_blank" class="image" :style="{'background-image':`url(${item})`}"></a>
+                    <a :href="item" target="_blank" class="image" >
+                        <img :src="item"/>
+                    </a>
                 </el-carousel-item>
             </el-carousel>
         </div>
@@ -23,6 +25,13 @@
         background-position: center;
         background-repeat: no-repeat;
         background-size: contain;
+        img{
+            display: block;
+            object-fit: contain;
+            height: 100%;
+            max-width: 100%;
+            margin: auto;
+        }
     }
 </style>
 <script>
