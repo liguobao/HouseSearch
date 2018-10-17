@@ -64,6 +64,14 @@ namespace HouseMap.Crawler
                 options.UseLoggerFactory(loggerFactory);
                 options.UseMySql(Configuration["MySQLConnectionString"].ToString());
             });
+
+             services.AddDbContext<HouseMapContext>(options =>
+            {
+                var loggerFactory = new LoggerFactory();
+                loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+                options.UseLoggerFactory(loggerFactory);
+                options.UseMySql(Configuration["QCloudMySQL"].ToString());
+            });
         }
 
         private void InitSkyWalking(IServiceCollection services)

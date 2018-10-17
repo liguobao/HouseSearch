@@ -56,16 +56,16 @@ namespace HouseMap.Dao.DBEntity
 
         public DateTime PubTime { get; set; }
 
-
-
+        public int Status { get; set; } = 0;
 
         public string OnlineURL { get; set; }
 
         [JsonIgnore]
+        [NotMapped]
         public string JsonData { get; set; }
 
 
-
+        [NotMapped]
         public List<string> Pictures
         {
             get
@@ -109,6 +109,28 @@ namespace HouseMap.Dao.DBEntity
 
         [DescriptionAttribute("公寓")]
         Apartment = 4
+    }
+
+    public enum HouseStatusEnum
+    {
+        [DescriptionAttribute("已创建")]
+        Created = 0,
+
+        [DescriptionAttribute("已删除/废弃")]
+        Deleted = 1,
+
+        [DescriptionAttribute("已分析")]
+        Analyzed = 2,
+
+        [DescriptionAttribute("高品质")]
+        HighGrade = 3,
+
+
+        [DescriptionAttribute("一般")]
+        General = 4,
+
+        [DescriptionAttribute("低品质")]
+        LowGrade = 5
     }
 
 

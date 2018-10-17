@@ -8,21 +8,20 @@ namespace HouseMap.Crawler.Common
 {
     public class JiebaTools
     {
-        public static decimal GetHousePrice(string text)
+        public static int GetHousePrice(string text)
         {
-
-            //var seg = new JiebaSegmenter();
-            //var li = seg.Cut(text).ToList();
-
-            decimal housePrice = 0;
+            int housePrice = 0;
             var extractor = new TfidfExtractor();
             var keywords = extractor.ExtractTags(text, 20, new List<string>() { "m" });
             if (keywords != null)
             {
-
-                var lstProce = keywords.Distinct().Where(s => s.Length <= 5 && s.Length >= 3).OrderByDescending(s => s.Length);
-                var price = lstProce.FirstOrDefault();
-                decimal.TryParse(price, out housePrice);
+                var prices = keywords.Distinct().Select(p =>
+                {
+                    var price = 0;
+                    int.TryParse(p, out price);
+                    return price;
+                }).Where(p => p >= 500 && p <= 30000);
+                return prices.FirstOrDefault();
             }
             return housePrice;
         }

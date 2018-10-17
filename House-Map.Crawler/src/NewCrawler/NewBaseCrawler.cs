@@ -74,5 +74,10 @@ namespace HouseMap.Crawler
         {
             throw new NotImplementedException();
         }
+
+        public virtual void AnalyzeHouse(DateTime fromDate, DateTime toDate)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

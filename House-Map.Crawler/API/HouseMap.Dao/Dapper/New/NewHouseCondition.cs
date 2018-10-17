@@ -79,7 +79,7 @@ namespace HouseMap.Dao
                                             Longitude,
                                             Text"
                                    + $" from { tableName } where 1=1 "
-                                   + $" and City = @City and  PubTime >= @PubTime ";
+                                   + $" and City = @City and  PubTime >= @PubTime and Status !=1 ";
                 if (!string.IsNullOrEmpty(this.Keyword))
                 {
                     queryText = queryText + " and (Text like @LikeKeyWord or Title like @LikeKeyWord) ";

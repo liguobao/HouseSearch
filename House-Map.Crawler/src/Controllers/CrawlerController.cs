@@ -52,7 +52,7 @@ namespace HouseMap.Crawler.Controllers
 
         }
 
-         public IActionResult Sync(string source)
+        public IActionResult Sync(string source)
         {
 
             try
@@ -75,6 +75,50 @@ namespace HouseMap.Crawler.Controllers
             }
 
         }
+
+        public IActionResult Analyze(string source, string fromDate, string toDate)
+        {
+
+            try
+            {
+                var crawler = _serviceProvider.GetServices<INewCrawler>().FirstOrDefault(c =>
+                c.GetSource().GetSourceName() == source);
+                if (crawler == null)
+                {
+                    return Json(new { success = true, error = $"{source} not found" });
+                }
+                crawler.AnalyzeHouse(DateTime.Parse(fromDate), DateTime.Parse(toDate));
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, error = ex.ToString() });
+            }
+
+        }
+
+
+        public IActionResult AnalyzeHouse(string source = "douban", int day = 1)
+        {
+
+            try
+            {
+                var crawler = _serviceProvider.GetServices<INewCrawler>().FirstOrDefault(c =>
+                c.GetSource().GetSourceName() == source);
+                if (crawler == null)
+                {
+                    return Json(new { success = true, error = $"{source} not found" });
+                }
+                crawler.AnalyzeHouse(DateTime.Now.Date.AddDays(-day), DateTime.Now.Date.AddDays(1));
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, error = ex.ToString() });
+            }
+
+        }
+
 
         public IActionResult InitCCBConfig()
         {

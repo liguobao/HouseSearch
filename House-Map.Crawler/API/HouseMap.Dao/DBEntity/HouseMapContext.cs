@@ -9,18 +9,15 @@ using HouseMap.Dao.DBEntity;
 
 namespace HouseMap.Dao
 {
-    public class HouseDataContext : DbContext
+    public class HouseMapContext : DbContext
     {
-        public HouseDataContext(DbContextOptions<HouseDataContext> options)
+        public HouseMapContext(DbContextOptions<HouseMapContext> options)
             : base(options)
         {
         }
         public DbSet<UserHouse> UserHouses { get; set; }
 
          public DbSet<DoubanHouse> DoubanHouses { get; set; }
-
-
-        public DbSet<DBConfig> Configs { get; set; }
 
         public DbSet<DBUserCollection> UserCollections { get; set; }
 

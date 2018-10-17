@@ -90,7 +90,8 @@ namespace HouseMap.Dao
                                             RentType,
                                             Latitude,
                                             Longitude,
-                                            Text "
+                                            Text,
+                                            Status"
                                             + $" from { tableName } where Id = @HouseId", new { HouseId = houseId })
                                 .FirstOrDefault();
                     if (house != null)

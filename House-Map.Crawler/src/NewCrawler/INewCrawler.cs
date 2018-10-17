@@ -9,6 +9,8 @@ namespace HouseMap.Crawler
 
         void SyncHouses();
 
+        void AnalyzeHouse(DateTime fromDate, DateTime toDate);
+
 
         SourceEnum GetSource();
     }
