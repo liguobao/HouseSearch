@@ -31,7 +31,7 @@ namespace HouseMap.Crawler.Service
             {
                 var connSettings = new ConnectionSettings(new Uri(configuration.ESURL));
                 var elasticClient = new ElasticClient(connSettings);
-                if (houses == null)
+                if (houses == null || !houses.Any())
                 {
                     return;
                 }
