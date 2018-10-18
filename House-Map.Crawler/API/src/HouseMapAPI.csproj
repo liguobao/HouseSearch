@@ -12,16 +12,11 @@
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.2" />
     <PackageReference Include="Dapper" Version="1.50.5" />
     <PackageReference Include="Talk.OAuthClient" Version="1.0.0" />
-    <PackageReference Include="SkyWalking.AspNetCore" Version="0.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.5" />
     <PackageReference Include="RestSharp" Version="106.5.4" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.5.0" />
     <PackageReference Include="NLog.Extensions.Logging" Version="1.3.0" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.7.0" />
-    <PackageReference Include="SkyWalking.Diagnostics.EntityFrameworkCore" Version="0.6.0" />
-    <PackageReference Include="SkyWalking.Diagnostics.HttpClient" Version="0.6.0" />
-    <PackageReference Include="SkyWalking.Diagnostics.EntityFrameworkCore.Npgsql" Version="0.6.0" />
-    <PackageReference Include="SkyWalking.Diagnostics.EntityFrameworkCore.Pomelo.MySql" Version="0.6.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HouseMap.Dao\HouseMap.Dao.csproj" />
