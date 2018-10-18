@@ -19,6 +19,7 @@ using HouseMap.Models;
 using HouseMap.Common;
 using System.IO;
 using Microsoft.Extensions.Options;
+using HouseMap.Crawler.Service;
 
 namespace HouseMap.Crawler
 {
@@ -26,7 +27,8 @@ namespace HouseMap.Crawler
     public class DoubanWechat : NewBaseCrawler
     {
         private readonly AppSettings _appSettings;
-        public DoubanWechat(NewHouseDapper houseDapper, ConfigDapper configDapper, IOptions<AppSettings> configuration) : base(houseDapper, configDapper)
+        public DoubanWechat(NewHouseDapper houseDapper, ConfigDapper configDapper, IOptions<AppSettings> configuration,ElasticService elasticsearch) 
+        : base(houseDapper, configDapper,elasticsearch)
         {
             this.Source = SourceEnum.DoubanWechat;
             _appSettings = configuration.Value;

@@ -18,6 +18,7 @@ using System.Security.Cryptography;
 using System.Text;
 using HouseMap.Models;
 using HouseMap.Common;
+using HouseMap.Crawler.Service;
 
 namespace HouseMap.Crawler
 {
@@ -28,7 +29,8 @@ namespace HouseMap.Crawler
         private readonly HouseDapper _oldHouseDapper;
         static string API_VERSION = "v3/";
         static string SCENE = "2567a5ec9705eb7ac2c984033e06189d";
-        public Zuber(NewHouseDapper houseDapper, ConfigDapper configDapper, HouseDapper oldHouseDapper) : base(houseDapper, configDapper)
+        public Zuber(NewHouseDapper houseDapper, ConfigDapper configDapper, HouseDapper oldHouseDapper, ElasticService elasticService)
+        : base(houseDapper, configDapper, elasticService)
         {
             this.Source = SourceEnum.Zuber;
             _oldHouseDapper = oldHouseDapper;

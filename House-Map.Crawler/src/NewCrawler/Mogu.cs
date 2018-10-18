@@ -11,6 +11,7 @@ using HouseMap.Crawler.Common;
 using HouseMap.Common;
 using Newtonsoft.Json.Linq;
 using HouseMap.Models;
+using HouseMap.Crawler.Service;
 
 namespace HouseMap.Crawler
 {
@@ -20,7 +21,8 @@ namespace HouseMap.Crawler
 
         private readonly HouseDapper _oldHouseDapper;
 
-        public Mogu(NewHouseDapper houseDapper, ConfigDapper configDapper, HouseDapper oldHouseDapper) : base(houseDapper, configDapper)
+        public Mogu(NewHouseDapper houseDapper, ConfigDapper configDapper, HouseDapper oldHouseDapper,
+         ElasticService elastic) : base(houseDapper, configDapper,elastic)
         {
             this.Source = SourceEnum.Mogu;
             _oldHouseDapper = oldHouseDapper;

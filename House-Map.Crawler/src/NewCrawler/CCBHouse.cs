@@ -17,6 +17,7 @@ using Newtonsoft.Json.Linq;
 using Microsoft.Extensions.Options;
 using HouseMap.Models;
 using HouseMap.Common;
+using HouseMap.Crawler.Service;
 
 namespace HouseMap.Crawler
 {
@@ -24,8 +25,8 @@ namespace HouseMap.Crawler
     public class CCBHouse : NewBaseCrawler
     {
 
-        public CCBHouse(NewHouseDapper houseDapper, ConfigDapper configDapper)
-         : base(houseDapper, configDapper)
+        public CCBHouse(NewHouseDapper houseDapper, ConfigDapper configDapper, ElasticService elasticService)
+        : base(houseDapper, configDapper, elasticService)
         {
             this.Source = SourceEnum.CCBHouse;
         }

@@ -16,6 +16,7 @@ using HouseMap.Crawler.Common;
 using Newtonsoft.Json.Linq;
 using HouseMap.Models;
 using HouseMap.Common;
+using HouseMap.Crawler.Service;
 
 namespace HouseMap.Crawler
 {
@@ -23,7 +24,8 @@ namespace HouseMap.Crawler
     public class BaixingWechat : NewBaseCrawler
     {
         private static HtmlParser htmlParser = new HtmlParser();
-        public BaixingWechat(NewHouseDapper houseDapper, ConfigDapper configDapper) : base(houseDapper, configDapper)
+        public BaixingWechat(NewHouseDapper houseDapper, ConfigDapper configDapper, ElasticService elasticService)
+        : base(houseDapper, configDapper, elasticService)
         {
             this.Source = SourceEnum.BaixingWechat;
         }

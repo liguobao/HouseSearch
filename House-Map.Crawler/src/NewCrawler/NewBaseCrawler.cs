@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AngleSharp.Parser.Html;
 using Newtonsoft.Json;
 using RestSharp;
 using System.Data;
@@ -9,10 +8,10 @@ using AngleSharp.Dom;
 using HouseMap.Dao;
 using HouseMap.Dao.DBEntity;
 using HouseMap.Crawler.Common;
-
 using Newtonsoft.Json.Linq;
 using HouseMap.Models;
 using HouseMap.Common;
+using HouseMap.Crawler.Service;
 
 namespace HouseMap.Crawler
 {
@@ -25,11 +24,14 @@ namespace HouseMap.Crawler
 
         protected NewHouseDapper _houseDapper;
 
+        protected ElasticService _elasticService;
 
-        public NewBaseCrawler(NewHouseDapper houseDapper, ConfigDapper configDapper)
+
+        public NewBaseCrawler(NewHouseDapper houseDapper, ConfigDapper configDapper,ElasticService elasticService)
         {
             this._houseDapper = houseDapper;
             this._configDapper = configDapper;
+            _elasticService = elasticService;
         }
 
         public virtual string GetJsonOrHTML(DBConfig config, int page)
@@ -60,6 +62,7 @@ namespace HouseMap.Crawler
                         }
                         var houses = ParseHouses(config, htmlOrJson);
                         _houseDapper.BulkInsertHouses(houses);
+                        _elasticService.SaveHouses(houses);
                     }
                 }, Source.GetSourceName(), config);
             }

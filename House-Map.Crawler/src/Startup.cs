@@ -99,7 +99,7 @@ namespace HouseMap.Crawler
             services.AddScoped<EmailService, EmailService>();
             services.AddScoped<RedisTool, RedisTool>();
             services.AddScoped<HouseService, HouseService>();
-            services.AddScoped<ElasticsearchService, ElasticsearchService>();
+            services.AddScoped<ElasticService, ElasticService>();
             services.AddScoped<ConfigService, ConfigService>();
 
             #endregion
@@ -139,6 +139,7 @@ namespace HouseMap.Crawler
             services.AddScoped<INewCrawler, BaixingWechat>();
             services.AddScoped<INewCrawler, Douban>();
             services.AddScoped<INewCrawler, CCBHouse>();
+            services.AddScoped<INewCrawler,PinPaiGongYu>();
             #endregion
 
 

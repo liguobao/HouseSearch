@@ -19,13 +19,15 @@ using HouseMap.Models;
 using HouseMap.Common;
 using System.IO;
 using Microsoft.Extensions.Options;
+using HouseMap.Crawler.Service;
 
 namespace HouseMap.Crawler
 {
 
     public class Beike : NewBaseCrawler
     {
-        public Beike(NewHouseDapper houseDapper, ConfigDapper configDapper) : base(houseDapper, configDapper)
+        public Beike(NewHouseDapper houseDapper, ConfigDapper configDapper, ElasticService elasticService)
+        : base(houseDapper, configDapper, elasticService)
         {
             this.Source = SourceEnum.Beike;
         }
