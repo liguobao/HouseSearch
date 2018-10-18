@@ -9,11 +9,13 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using HouseMap.Common;
+using Nest;
 using Newtonsoft.Json;
 
 namespace HouseMap.Dao.DBEntity
 {
 
+    [ElasticsearchType(IdProperty = "OnlineURL")]
     public class DBHouse : BaseEntity
     {
 
