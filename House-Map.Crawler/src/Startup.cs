@@ -16,10 +16,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NLog.Web;
-using SkyWalking.AspNetCore;
-using SkyWalking.Diagnostics.EntityFrameworkCore;
-using SkyWalking.Diagnostics.HttpClient;
-using SkyWalking.Diagnostics.SqlClient;
 using StackExchange.Redis;
 
 namespace HouseMap.Crawler
@@ -76,15 +72,15 @@ namespace HouseMap.Crawler
 
         private void InitSkyWalking(IServiceCollection services)
         {
-            services.AddSkyWalking(option =>
-            {
-                option.ApplicationCode = Configuration["AppName"]?.ToString();
-                option.DirectServers = Configuration["SkyWalkingURL"]?.ToString();
-                // 每三秒采样的Trace数量,-1 为全部采集
-                option.SamplePer3Secs = -1;
-            }).AddEntityFrameworkCore(c => { c.AddPomeloMysql().AddNpgsql(); })
-            .AddSqlClient()
-            .AddHttpClient();
+            //services.AddSkyWalking(option =>
+            //{
+            //    option.ApplicationCode = Configuration["AppName"]?.ToString();
+            //    option.DirectServers = Configuration["SkyWalkingURL"]?.ToString();
+            //    // 每三秒采样的Trace数量,-1 为全部采集
+            //    option.SamplePer3Secs = -1;
+            //}).AddEntityFrameworkCore(c => { c.AddPomeloMysql().AddNpgsql(); })
+            //.AddSqlClient()
+            //.AddHttpClient();
         }
 
         public void InitDI(IServiceCollection services)

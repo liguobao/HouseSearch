@@ -1,0 +1,29 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2017
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HouseMap.Crawler", "src\HouseMap.Crawler.csproj", "{23BEB612-5B9D-4A7A-B02E-836D049CAEF7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HouseMapAPI", "API\src\HouseMapAPI.csproj", "{3493E6C9-5756-417A-82E7-A29DDB107F98}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HouseMap.Dao", "API\HouseMap.Dao\HouseMap.Dao.csproj", "{A8733144-D26C-40A1-AD15-1ADBED66E1B0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{23BEB612-5B9D-4A7A-B02E-836D049CAEF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23BEB612-5B9D-4A7A-B02E-836D049CAEF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23BEB612-5B9D-4A7A-B02E-836D049CAEF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23BEB612-5B9D-4A7A-B02E-836D049CAEF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3493E6C9-5756-417A-82E7-A29DDB107F98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3493E6C9-5756-417A-82E7-A29DDB107F98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3493E6C9-5756-417A-82E7-A29DDB107F98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3493E6C9-5756-417A-82E7-A29DDB107F98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8733144-D26C-40A1-AD15-1ADBED66E1B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8733144-D26C-40A1-AD15-1ADBED66E1B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8733144-D26C-40A1-AD15-1ADBED66E1B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8733144-D26C-40A1-AD15-1ADBED66E1B0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

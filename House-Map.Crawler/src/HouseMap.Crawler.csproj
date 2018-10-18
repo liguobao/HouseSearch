@@ -4,27 +4,22 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="wwwroot\"/>
+    <Folder Include="wwwroot\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App"/>
-    <PackageReference Include="RestSharp" Version="106.3.1"/>
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2"/>
-    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0-preview1-35029"/>
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.5.0-beta1"/>
-    <PackageReference Include="StackExchange.Redis.StrongName" Version="1.2.7-alpha-00002"/>
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.2"/>
-    <PackageReference Include="Dapper" Version="1.50.5"/>
-    <PackageReference Include="NLog.Extensions.Logging" Version="1.0.1"/>
-    <PackageReference Include="NLog.Web.AspNetCore" Version="4.5.3"/>
-    <PackageReference Include="NEST" Version="6.3.0"/>
-    <PackageReference Include="AngleSharp" Version="0.9.10"/>
-    <PackageReference Include="Pomelo.AspNetCore.TimedJob" Version="2.0.0-rtm-10046"/>
-    <PackageReference Include="SkyWalking.AspNetCore" Version="0.3.0"/>
-    <PackageReference Include="SkyWalking.Diagnostics.EntityFrameworkCore" Version="0.3.0"/>
-    <PackageReference Include="SkyWalking.Diagnostics.HttpClient" Version="0.3.0"/>
-    <PackageReference Include="SkyWalking.Diagnostics.EntityFrameworkCore.Npgsql" Version="0.3.0"/>
-    <PackageReference Include="SkyWalking.Diagnostics.EntityFrameworkCore.Pomelo.MySql" Version="0.3.0"/>
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0-preview1-35029" />
+    <PackageReference Include="StackExchange.Redis.StrongName" Version="1.2.7-alpha-00002" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.2" />
+    <PackageReference Include="Dapper" Version="1.50.5" />
+    <PackageReference Include="AngleSharp" Version="0.9.10" />
+    <PackageReference Include="Pomelo.AspNetCore.TimedJob" Version="2.0.0-rtm-10046" />
+    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.1" />
+    <PackageReference Include="RestSharp" Version="106.5.4" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.5.0" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="1.3.0" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.7.0" />
+    <PackageReference Include="NEST" Version="6.4.0" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="JiebaNet.Analyser">
@@ -72,6 +67,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\API\HouseMap.Dao\HouseMap.Dao.csproj"/>
+    <ProjectReference Include="..\API\HouseMap.Dao\HouseMap.Dao.csproj" />
   </ItemGroup>
 </Project>
