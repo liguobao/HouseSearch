@@ -1,0 +1,116 @@
+{
+    "properties": {
+        "city": {
+            "type": "text"
+        },
+        "createTime": {
+            "type": "date"
+        },
+        "id": {
+            "type": "text"
+        },
+        "jsonData": {
+            "type": "text",
+            "analyzer": "ik_max_word",
+            "search_analyzer": "ik_max_word"
+        },
+        "labels": {
+            "type": "text",
+            "analyzer": "ik_max_word",
+            "search_analyzer": "ik_max_word"
+        },
+        "latitude": {
+            "type": "text"
+        },
+        "location": {
+            "type": "text"
+        },
+        "longitude": {
+            "type": "text"
+        },
+        "onlineURL": {
+            "type": "text",
+            "fields": {
+                "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                }
+            }
+        },
+        "picURLs": {
+            "type": "text",
+            "fields": {
+                "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                }
+            }
+        },
+        "pictures": {
+            "type": "text",
+            "fields": {
+                "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                }
+            }
+        },
+        "price": {
+            "type": "long"
+        },
+        "pubTime": {
+            "type": "date"
+        },
+        "rentType": {
+            "type": "long"
+        },
+        "source": {
+            "type": "text",
+            "fields": {
+                "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                }
+            }
+        },
+        "status": {
+            "type": "long"
+        },
+        "tags": {
+            "type": "text",
+            "fields": {
+                "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                }
+            },
+            "analyzer": "ik_max_word",
+            "search_analyzer": "ik_max_word"
+        },
+        "text": {
+            "type": "text",
+            "fields": {
+                "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                }
+            },
+            "analyzer": "ik_max_word",
+            "search_analyzer": "ik_max_word"
+        },
+        "title": {
+            "type": "text",
+            "fields": {
+                "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                }
+            },
+            "analyzer": "ik_max_word",
+            "search_analyzer": "ik_max_word"
+        },
+        "updateTime": {
+            "type": "date"
+        }
+    }
+}
