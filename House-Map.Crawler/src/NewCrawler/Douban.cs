@@ -286,7 +286,7 @@ namespace HouseMap.Crawler
             var client = new RestClient($"https://restapi.amap.com/v3/geocode/geo?address={address}&output=json&key=fed53efe358677305ad9a9cad2b93b8b&city={city}&batch=true");
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
-            if (!string.IsNullOrEmpty(response.Content))
+            if (string.IsNullOrEmpty(response.Content))
             {
                 LogHelper.Info("GetGeocodes error,response:" + response.ErrorMessage);
                 return null;
