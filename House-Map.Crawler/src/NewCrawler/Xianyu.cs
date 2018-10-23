@@ -62,7 +62,7 @@ namespace HouseMap.Crawler
                 }
                 house.Id = Tools.GetUUId();
                 var price = 0;
-                int.TryParse( card["cardData"]["price"]?.ToString(), out price);
+                int.TryParse(card["cardData"]["price"]?.ToString(), out price);
                 house.Price = price;
                 house.OnlineURL = card["cardData"]?["shortUrl"].ToString();
                 house.PubTime = card["cardData"]["firstModified"].ToObject<DateTime>();
@@ -78,7 +78,7 @@ namespace HouseMap.Crawler
         private string GetDataFromAPI(DBConfig config, int page, string token, string cookie)
         {
             var fishpoolId = "624597";
-            var data = "{\"topicSeq\":\"2\",\"topicCreateType\":\"0\",\"fishpoolTopicName\":\"出租\",\"fishpoolTopicId\":\"2479350\",\"fishpoolId\":\""+fishpoolId+"\",\"topicRule\":\"{\\\"fishpoolId\\\":"+fishpoolId+",\\\"keyWords\\\":[\\\"出租\\\"]}\",\"pageNumber\":"+page+"}";
+            var data = "{\"topicSeq\":\"2\",\"topicCreateType\":\"0\",\"fishpoolTopicName\":\"出租\",\"fishpoolTopicId\":\"2479350\",\"fishpoolId\":\"" + fishpoolId + "\",\"topicRule\":\"{\\\"fishpoolId\\\":" + fishpoolId + ",\\\"keyWords\\\":[\\\"出租\\\"]}\",\"pageNumber\":" + page + "}";
             var time = Tools.GetMillisecondTimestamp();
             var sign = Tools.GetMD5($"{token}&{time}&{APP_KEY}&" + data);
             var client = new RestClient($"http://h5api.m.taobao.com/h5/mtop.taobao.idle.fishpool.item.list/6.0/?jsv=2.4.2&appKey={APP_KEY}&t={time}&sign={sign}&api=mtop.taobao.idle.fishpool.item.list&v=6.0&dataType=json&AniCreep=true&AntiFlool=true"
@@ -109,6 +109,11 @@ namespace HouseMap.Crawler
             request.AddHeader("referer", "http://g.tbcdn.cn/idleFish-F2e/app-basic/fishpool.html?id=624597&ut_sk=1.W3D9dDwZ1BoDAHWNnmC0v4dS_21407387_1540215181688.Copy.fishpool.624597.557644361&forceFlush=1");
             request.AddHeader("accept", "application/json");
             IRestResponse response = client.Execute(request);
+            if (string.IsNullOrEmpty(response.Content))
+            {
+                LogHelper.Info("response:" + JsonConvert.SerializeObject(response));
+                return "{}";
+            }
             if (JToken.Parse(response.Content)["c"]?.ToString() != null)
             {
                 return GetDataFromAPI(config, page, GetToken(response), JToken.Parse(response.Content)["c"]?.ToString());
