@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NLog.Web;
+using RestSharp;
 using StackExchange.Redis;
 
 namespace HouseMap.Crawler
@@ -61,13 +62,13 @@ namespace HouseMap.Crawler
                 options.UseMySql(Configuration["MySQLConnectionString"].ToString());
             });
 
-             services.AddDbContext<HouseMapContext>(options =>
-            {
-                var loggerFactory = new LoggerFactory();
-                loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-                options.UseLoggerFactory(loggerFactory);
-                options.UseMySql(Configuration["QCloudMySQL"].ToString());
-            });
+            services.AddDbContext<HouseMapContext>(options =>
+           {
+               var loggerFactory = new LoggerFactory();
+               loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+               options.UseLoggerFactory(loggerFactory);
+               options.UseMySql(Configuration["QCloudMySQL"].ToString());
+           });
         }
 
         private void InitSkyWalking(IServiceCollection services)
@@ -139,7 +140,9 @@ namespace HouseMap.Crawler
             services.AddScoped<INewCrawler, BaixingWechat>();
             services.AddScoped<INewCrawler, Douban>();
             services.AddScoped<INewCrawler, CCBHouse>();
-            services.AddScoped<INewCrawler,PinPaiGongYu>();
+            services.AddScoped<INewCrawler, PinPaiGongYu>();
+            services.AddScoped<INewCrawler, Xianyu>();
+            
             #endregion
 
 
@@ -150,6 +153,7 @@ namespace HouseMap.Crawler
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+
             env.ConfigureNLog("nlog.config");
             app.UseMvc(routes =>
            {
