@@ -50,7 +50,7 @@ namespace HouseMap.Crawler
             {
                 var house = new DBHouse();
                 house.JsonData = card.ToString();
-                house.City = config.City;
+                house.City = card["cardData"]["city"].ToString();
                 house.Title = card["cardData"]["title"].ToString();
                 house.Text = card["cardData"]["description"].ToString();
                 if (!string.IsNullOrEmpty(card["cardData"]?["attributesMap"]?["dstPos"]?.ToString()))
@@ -61,7 +61,9 @@ namespace HouseMap.Crawler
                     house.Longitude = dstPos.Split(",")[1];
                 }
                 house.Id = Tools.GetUUId();
-                house.Price = card["cardData"]["price"].ToObject<int>();
+                var price = 0;
+                int.TryParse( card["cardData"]["price"]?.ToString(), out price);
+                house.Price = price;
                 house.OnlineURL = card["cardData"]?["shortUrl"].ToString();
                 house.PubTime = card["cardData"]["firstModified"].ToObject<DateTime>();
                 house.PicURLs = card["cardData"]?["imageUrls"].ToString(); ;
@@ -75,19 +77,19 @@ namespace HouseMap.Crawler
 
         private string GetDataFromAPI(DBConfig config, int page, string token, string cookie)
         {
-            var dataEncode = WebUtility.UrlEncode(config.Json);
+            var fishpoolId = "624597";
+            var data = "{\"topicSeq\":\"2\",\"topicCreateType\":\"0\",\"fishpoolTopicName\":\"出租\",\"fishpoolTopicId\":\"2479350\",\"fishpoolId\":\""+fishpoolId+"\",\"topicRule\":\"{\\\"fishpoolId\\\":"+fishpoolId+",\\\"keyWords\\\":[\\\"出租\\\"]}\",\"pageNumber\":"+page+"}";
             var time = Tools.GetMillisecondTimestamp();
-            var sign = Tools.GetMD5($"{token}&{time}&{APP_KEY}&{config.Json}");
+            var sign = Tools.GetMD5($"{token}&{time}&{APP_KEY}&" + data);
             var client = new RestClient($"http://h5api.m.taobao.com/h5/mtop.taobao.idle.fishpool.item.list/6.0/?jsv=2.4.2&appKey={APP_KEY}&t={time}&sign={sign}&api=mtop.taobao.idle.fishpool.item.list&v=6.0&dataType=json&AniCreep=true&AntiFlool=true"
-             + $"&jsonpIncPrefix=weexcb&ttid=2018%40weex_h5_0.12.11&type=originaljson&c={WebUtility.UrlEncode(cookie)}&data=" + dataEncode);
+             + $"&jsonpIncPrefix=weexcb&ttid=2018%40weex_h5_0.12.11&type=originaljson&c={WebUtility.UrlEncode(cookie)}&data=" + WebUtility.UrlEncode(data));
             var request = new RestRequest(Method.GET);
             request.AddHeader("content-type", "application/x-www-form-urlencoded");
             request.AddHeader("user-agent", "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1");
             request.AddHeader("origin", "http://g.tbcdn.cn");
-            request.AddHeader("referer", "http://g.tbcdn.cn/idleFish-F2e/app-basic/fishpool.html?id=624597&ut_sk=1.W3D9dDwZ1BoDAHWNnmC0v4dS_21407387_1540215181688.Copy.fishpool.624597.557644361&forceFlush=1");
+            //request.AddHeader("referer", "http://g.tbcdn.cn/idleFish-F2e/app-basic/fishpool.html?id=624597&ut_sk=1.W3D9dDwZ1BoDAHWNnmC0v4dS_21407387_1540215181688.Copy.fishpool.624597.557644361&forceFlush=1");
             request.AddHeader("accept", "application/json");
             IRestResponse response = client.Execute(request);
-            Console.WriteLine(response.Content);
             return response.Content;
 
 
