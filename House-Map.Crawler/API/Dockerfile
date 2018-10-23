@@ -11,7 +11,7 @@ COPY . .
 RUN dotnet publish src -c Release -o out
 
 # build runtime image
-FROM microsoft/dotnet:2.1.3-aspnetcore-runtime
+FROM microsoft/dotnet:2.1.5-aspnetcore-runtime
 WORKDIR /app
 COPY --from=build-env /app/src/out .
 ENV ASPNETCORE_HOSTINGSTARTUPASSEMBLIES SkyWalking.Agent.AspNetCore
