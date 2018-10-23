@@ -30,7 +30,7 @@ namespace HouseMap.Crawler
 
         public Douban(NewHouseDapper houseDapper, ConfigDapper configDapper, IOptions<AppSettings> configuration,
          HouseMapContext houseDataContext, ElasticService elasticsearch)
-        : base(houseDapper, configDapper,elasticsearch)
+        : base(houseDapper, configDapper, elasticsearch)
         {
             this.Source = SourceEnum.Douban;
             _houseDataContext = houseDataContext;
@@ -286,6 +286,11 @@ namespace HouseMap.Crawler
             var client = new RestClient($"https://restapi.amap.com/v3/geocode/geo?address={address}&output=json&key=fed53efe358677305ad9a9cad2b93b8b&city={city}&batch=true");
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
+            if (!string.IsNullOrEmpty(response.Content))
+            {
+                LogHelper.Info("GetGeocodes error,response:" + response.ErrorMessage);
+                return null;
+            }
             var geocodes = JToken.Parse(response.Content)?["geocodes"];
             return geocodes;
         }

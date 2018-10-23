@@ -111,7 +111,7 @@ namespace HouseMap.Crawler
             IRestResponse response = client.Execute(request);
             if (string.IsNullOrEmpty(response.Content))
             {
-                LogHelper.Info("response:" + JsonConvert.SerializeObject(response));
+                LogHelper.Info("response:" + response.ErrorMessage);
                 return "{}";
             }
             if (JToken.Parse(response.Content)["c"]?.ToString() != null)
