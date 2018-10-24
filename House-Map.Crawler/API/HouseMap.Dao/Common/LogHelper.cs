@@ -58,7 +58,7 @@ namespace HouseMap.Common
                         Logger.Info("关键数据:" + Newtonsoft.Json.JsonConvert.SerializeObject(oj));
                     }
                     Error(functionName, ex);
-                    Console.WriteLine($"{functionName} error,ex:{ex.Message}");
+                    Console.WriteLine($"{functionName} error,ex:{ex.StackTrace}");
                 }
             });
         }

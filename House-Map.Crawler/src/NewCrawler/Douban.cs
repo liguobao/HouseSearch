@@ -59,7 +59,7 @@ namespace HouseMap.Crawler
 
         private static void FillGoodHouseLocation(string city, List<DBHouse> goodHouses)
         {
-            for (int page = 0; page < goodHouses.Count / 10; page++)
+            for (int page = 0; page <= goodHouses.Count / 10; page++)
             {
                 var dhHouses = goodHouses.Skip(page * 10).Take(10).ToList();
                 try
