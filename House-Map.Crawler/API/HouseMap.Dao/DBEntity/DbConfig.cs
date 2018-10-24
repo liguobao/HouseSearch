@@ -22,7 +22,7 @@ namespace HouseMap.Dao.DBEntity
         {
             get
             {
-                return ConstConfigName.ConvertToDisPlayName(this.Source);
+                return SourceTool.GetDisplayName(this.Source);
             }
         }
 

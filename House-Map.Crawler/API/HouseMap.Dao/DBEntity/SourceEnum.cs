@@ -73,6 +73,17 @@ namespace HouseMap.Dao.DBEntity
             }
             return dic;
         }
+
+        public static string GetDisplayName(string source)
+        {
+            var displayName = "";
+            var descriptionDic = GetDescriptionDic();
+            if(descriptionDic.ContainsKey(source))
+            {
+                return descriptionDic[source];
+            }
+            return displayName;
+        }
     }
 
 }
