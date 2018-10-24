@@ -69,7 +69,7 @@ namespace HouseMap.Crawler
                         break;
                     }
                     JToken geocodes = GetGeocodes(city, dhHouses);
-                    if (geocodes == null || geocodes.Count() == 0)
+                    if (geocodes == null || geocodes.Count() == 0 || geocodes.Count() != dhHouses.Count())
                     {
                         continue;
                     }
