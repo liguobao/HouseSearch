@@ -62,7 +62,7 @@ namespace HouseMap.Dao
                 {
                     return "";
                 }
-                var tableName = SourceTool.GetHouseTableNameDic()[this.Source];
+                var tableName = SourceTool.GetHouseTableName(this.Source);
                 string queryText = @"SELECT Id,
                                             OnlineURL,
                                             Title,

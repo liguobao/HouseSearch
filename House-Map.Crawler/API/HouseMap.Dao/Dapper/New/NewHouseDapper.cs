@@ -22,7 +22,7 @@ namespace HouseMap.Dao
             {
                 return 0;
             }
-            var tableName = SourceTool.GetHouseTableNameDic()[houses.FirstOrDefault().Source];
+            var tableName = SourceTool.GetHouseTableName(houses.FirstOrDefault().Source);
             using (IDbConnection dbConnection = GetConnection())
             {
                 dbConnection.Open();

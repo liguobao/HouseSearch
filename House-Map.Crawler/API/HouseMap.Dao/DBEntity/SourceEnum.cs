@@ -64,7 +64,19 @@ namespace HouseMap.Dao.DBEntity
             return dic;
         }
 
-         public static Dictionary<string, string> GetDescriptionDic()
+        public static string GetHouseTableName(string source)
+        {
+            string tableName = "doubanhouse";
+            var dic = GetHouseTableNameDic();
+            if (dic.ContainsKey(source))
+            {
+                return dic[source];
+            }
+            return tableName;
+
+        }
+
+        public static Dictionary<string, string> GetDescriptionDic()
         {
             var dic = new Dictionary<string, string>();
             foreach (SourceEnum sourceEnum in Enum.GetValues(typeof(SourceEnum)))
@@ -78,7 +90,7 @@ namespace HouseMap.Dao.DBEntity
         {
             var displayName = "";
             var descriptionDic = GetDescriptionDic();
-            if(descriptionDic.ContainsKey(source))
+            if (descriptionDic.ContainsKey(source))
             {
                 return descriptionDic[source];
             }
