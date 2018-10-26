@@ -205,7 +205,7 @@ namespace HouseMap.Crawler
                             break;
                         }
                         JToken geocodes = GetGeocodes(city, houses);
-                        if (geocodes == null || geocodes.Count() == 0)
+                        if (geocodes == null || geocodes.Count() == 0 && geocodes.Count() != houses.Count)
                         {
                             continue;
                         }
