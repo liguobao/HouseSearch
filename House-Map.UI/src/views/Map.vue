@@ -1009,7 +1009,7 @@
 
                     map.add(marker);
 
-                    let displayMoney = item.price > 0 ? "  租金：" + item.disPlayPrice : "";
+                    let displayMoney = item.price > 0 ? "  租金：" + item.price : "";
 
                     let sourceContent = item.source ? " 来源：" + item.source : "";
                     let title = item.title;
