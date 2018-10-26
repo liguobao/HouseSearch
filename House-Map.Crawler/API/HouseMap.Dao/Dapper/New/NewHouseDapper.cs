@@ -76,7 +76,7 @@ namespace HouseMap.Dao
                 dbConnection.Open();
                 foreach (var tableName in SourceTool.GetHouseTableNameDic().Values)
                 {
-                    var house = dbConnection.Query<DBHouse>(@"SELECT Id,
+                    var house = dbConnection.QueryFirstOrDefault<DBHouse>(@"SELECT Id,
                                             OnlineURL,
                                             Title,
                                             Location,
@@ -92,8 +92,7 @@ namespace HouseMap.Dao
                                             Longitude,
                                             Text,
                                             Status"
-                                            + $" from { tableName } where Id = @HouseId", new { HouseId = houseId })
-                                .FirstOrDefault();
+                                            + $" from { tableName } where Id = @HouseId", new { HouseId = houseId });
                     if (house != null)
                     {
                         return house;

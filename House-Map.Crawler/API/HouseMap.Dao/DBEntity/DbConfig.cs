@@ -18,6 +18,7 @@ namespace HouseMap.Dao.DBEntity
         public string Source { get; set; }
 
         [JsonProperty(PropertyName = "displaySource")]
+        [NotMapped]
         public string DisplaySource
         {
             get
@@ -36,7 +37,6 @@ namespace HouseMap.Dao.DBEntity
         public int Score { get; set; }
 
         [NotMapped]
-        [JsonProperty(PropertyName = "houseCount")]
         public int HouseCount { get; set; }
     }
 }
