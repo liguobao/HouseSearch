@@ -36,53 +36,69 @@
       </el-table-column>
       <el-table-column
           align="center"
-          prop="locationCityName"
+          prop="city"
           label="城市"
           width="80">
       </el-table-column>
       <el-table-column
           align="center"
-          prop="houseTitle"
+          prop="title"
           label="标题"
           width="300">
         <template slot-scope="scope">
-          <a slot="reference" class="ellipsis text-left link" :href="scope.row.houseOnlineURL" target="_blank">{{
-            scope.row.houseTitle }}</a>
+          <a slot="reference" class="ellipsis text-left link" :href="scope.row.onlineURL" target="_blank">{{
+            scope.row.title }}</a>
           <!--<el-popover-->
-              <!--placement="top-start"-->
-              <!--title=""-->
-              <!--width="300"-->
-              <!--trigger="hover"-->
-              <!--:content="scope.row.houseTitle">-->
-            <!--<a slot="reference" class="ellipsis text-left link" :href="scope.row.houseOnlineURL" target="_blank">{{-->
-              <!--scope.row.houseTitle }}</a>-->
+          <!--placement="top-start"-->
+          <!--title=""-->
+          <!--width="300"-->
+          <!--trigger="hover"-->
+          <!--:content="scope.row.houseTitle">-->
+          <!--<a slot="reference" class="ellipsis text-left link" :href="scope.row.houseOnlineURL" target="_blank">{{-->
+          <!--scope.row.houseTitle }}</a>-->
           <!--</el-popover>-->
         </template>
       </el-table-column>
       <el-table-column
           align="center"
-          prop="houseLocation"
+          prop="location"
           width="150"
           label="坐标">
         <template slot-scope="scope">
-          <el-popover
-              placement="top-start"
-              title=""
-              width="300"
-              trigger="hover"
-              :content="scope.row.houseLocation">
-            <span slot="reference" class="ellipsis text-left">{{ scope.row.houseLocation }}</span>
-          </el-popover>
+          <span class="ellipsis text-left">{{ scope.row.location }}</span>
+          <!--<el-popover-->
+          <!--placement="top-start"-->
+          <!--title=""-->
+          <!--width="300"-->
+          <!--trigger="hover"-->
+          <!--:content="scope.row.houseLocation">-->
+          <!--<span slot="reference" class="ellipsis text-left">{{ scope.row.houseLocation }}</span>-->
+          <!--</el-popover>-->
         </template>
       </el-table-column>
       <el-table-column
           align="center"
           width="150"
           sortable
-          prop="housePrice"
+          prop="price"
           label="价格(元)">
+        <template slot-scope="scope">
+          <span class="" v-if="scope.row.price >= 0">{{ scope.row.price }}</span>
+        </template>
       </el-table-column>
       <el-table-column
+          align="center"
+          width="180"
+          prop="labels"
+          label="标签">
+        <template slot-scope="scope">
+          <template v-if="scope.row.labels">
+            <span v-html="labels(scope.row.labels)"></span>
+          </template>
+        </template>
+      </el-table-column>
+      <el-table-column
+          v-if="type !== 'user'"
           align="center"
           prop="pubTime"
           width="180"
@@ -92,12 +108,12 @@
           <i class="el-icon-time"></i> <span class="pub-time">{{ $transformData(scope.row.pubTime,'yyyy-MM-dd hh:mm:ss') }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-          align="center"
-          sortable
-          prop="displaySource"
-          label="来源">
-      </el-table-column>
+      <!--<el-table-column-->
+      <!--align="center"-->
+      <!--sortable-->
+      <!--prop="displaySource"-->
+      <!--label="来源">-->
+      <!--</el-table-column>-->
       <el-table-column
           v-if="type === 'user'"
           width="120"
@@ -105,6 +121,15 @@
           label="操作">
         <template slot-scope="scope">
           <el-button type="danger" size="small" @click="del(scope.row,scope.$index)" :loading="loading">删除</el-button>
+        </template>
+      </el-table-column>
+      <el-table-column
+          v-else
+          width="120"
+          align="center"
+          label="操作">
+        <template slot-scope="scope">
+          <el-button type="info" size="small" @click="collect(scope.row,scope.$index)" :loading="loading">收藏</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -163,7 +188,8 @@
 
     }
   }
-  .pagination{
+
+  .pagination {
     margin-top: 20px;
   }
 </style>
@@ -208,7 +234,7 @@
         await this.getHousesList({
           ...this.options,
           page: page - 1
-        },'change');
+        }, 'change');
         this.loading = false;
         this.currentPage = page;
       },
@@ -231,10 +257,34 @@
       async del(row, index) {
         this.loading = true;
         const userId = this.$store.state.userInfo.id;
-        const data = await this.$ajax.delete(`/users/${userId}/collections/${row.id}`);
+        const data = await this.$v2.delete(`/users/${userId}/collections/${row.id}`);
         this.list.splice(index, 1);
         this.loading = false;
         this.$message.success(data.message ? data.message : '删除成功')
+      },
+      async collect(row, index) {
+        const userId = this.$store.state.userInfo.id;
+        this.loading = true;
+        const data = await this.$v2.post(`/users/${userId}/collections`, {
+          // userId,
+          houseID: row.id,
+          // source: item.source
+        });
+        this.loading = false;
+        this.$message.success(data.message ? data.message : '收藏成功')
+      },
+      labels(label) {
+        let html = '';
+        if(label) {
+          let words = label.split('|');
+          if (words.length > 1) {
+            html += `${words[0]}<br>`;
+            words.shift();
+          }
+
+          html += `${words.join(',')}`;
+        }
+        return html
       }
     },
     created() {

@@ -21,14 +21,14 @@
                          ref="search-list"></house-search-list>
     </el-dialog>
     <el-form ref="form" :model="form" :label-width="isMobile ? '0px' : '130px'" class="form" :rules="rules">
-      <el-form-item :label="isMobile ? '' : '地区'" prop="cityName">
-        <el-select v-model="form.cityName" placeholder="请选择地区" style="width: 100%" filterable allow-create>
+      <el-form-item :label="isMobile ? '' : '地区'" prop="city">
+        <el-select v-model="form.city" placeholder="请选择地区" style="width: 100%"  @change="cityChange" filterable allow-create>
           <!--<el-option label="全部" value=""></el-option>-->
           <el-option
               v-for="item in cities"
               :key="item.id"
-              :label="item.name"
-              :value="item.name"
+              :label="item.city"
+              :value="item.city"
           ></el-option>
         </el-select>
       </el-form-item>
@@ -46,9 +46,9 @@
           <el-option label="全部" value=""></el-option>
           <el-option
               v-for="item in source"
-              :label="item.label"
-              :value="item.value"
-              :key="item.value"
+              :label="item.displaySource"
+              :value="item.source"
+              :key="item.id"
           >
           </el-option>
         </el-select>
@@ -116,7 +116,7 @@
       return {
         view: undefined,
         form: {
-          cityName: '上海',
+          city: '上海',
           intervalDay: 14,
           source: '',
           type: '0',
@@ -140,7 +140,7 @@
             }
           };
           return {
-            cityName: [
+            city: [
               {required: true, message: '请选择地区', trigger: 'change'},
             ],
             price: [
@@ -193,15 +193,20 @@
       close() {
         this.$emit('close', 'searchVisible', false)
       },
+      async cityChange(cityName) {
+        const data = await this.$v2.get(`/cities/${cityName}`);
+        this.source = data.data;
+        this.form.source = '';
+      },
       async toMap() {
         try {
 
           await this.$refs.form.validate();
           const params = Object.assign({}, this.form);
           delete params.type;
-          params.cityname = params.cityName;
-          // params.token = this.token;
-          delete params.cityName;
+          // params.cityname = params.cityName;
+          // // params.token = this.token;
+          // delete params.cityName;
           // window.open(`https://api.house-map.cn/Home/HouseList?${this.$qs.stringify(params)}`);
           let {href} = this.$router.resolve({path: `/Map?${this.$qs.stringify(params)}`});
           window.open(href, '_blank');
@@ -214,8 +219,8 @@
           await this.$refs.form.validate();
           let params = Object.assign({}, this.form);
           delete params.type;
-          params.cityname = params.cityName;
-          delete params.cityName;
+          // params.city = params.cityName;
+          // delete params.cityName;
           this.getHousesList(params)
         } catch (e) {
           this.loading = false;
@@ -223,14 +228,18 @@
       },
       async getHousesList(options, type) {
         let params = Object.assign({
-          houseCount: 100,
+          size: 100,
           page: 0
         }, options);
         if (!type) {
           this.loading = true;
         }
+        // if (!params.city) {
+        //   params.city = params.cityName;
+        // }
+        // delete params.cityName;
 
-        const data = await this.$ajax.post('/houses', {
+        const data = await this.$v2.post('/houses', {
           ...params
         });
 
@@ -264,8 +273,9 @@
 
       },
       async getCities() {
-        const data = await this.$ajax.get('/houses/cities');
+        const data = await this.$v2.get('/cities?fields=id,city');
         this.cities = data.data;
+        this.cityChange(this.form.city)
       }
     },
     created() {

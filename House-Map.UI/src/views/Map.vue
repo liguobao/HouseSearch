@@ -59,7 +59,8 @@
       <div class="map-house-list">
         <span class="toggleHouseList" @click="toggleHouseListUp = !toggleHouseListUp">{{toggleHouseListUp ? '收起' : '展开'}}</span>
         <el-collapse-transition>
-          <house-list v-show="toggleHouseListUp" :house-list="mapHouseList" @click="houseListClick" v-if="mapHouseList && mapHouseList.length"></house-list>
+          <house-list v-show="toggleHouseListUp" :house-list="mapHouseList" @click="houseListClick"
+                      v-if="mapHouseList && mapHouseList.length"></house-list>
         </el-collapse-transition>
 
       </div>
@@ -434,7 +435,8 @@
       display: block;
     }
   }
-  .map-house-list{
+
+  .map-house-list {
     position: fixed;
     z-index: 67;
     width: 260px;
@@ -442,7 +444,7 @@
     right: 178px;
     background: #fff;
     border-radius: 5px;
-    .toggleHouseList{
+    .toggleHouseList {
       cursor: pointer;
       display: block;
       padding: 2px 10px;
@@ -684,7 +686,7 @@
         try {
           let params = {
             ...this.$route.query,
-            cityname: this.cityName,
+            city: this.cityName,
             houseCount: 180,
             page: 1
           };
@@ -720,9 +722,9 @@
       },
       next() {
         const query = this.$route.query;
-        let page = 1;
+        let page = 0;
         if (!query.page) {
-          page = 2;
+          page = 1;
         } else {
           page = (+query.page) + 1;
         }
@@ -765,10 +767,10 @@
         }
         this.collection = true;
         const userId = this.$store.state.userInfo.id;
-        const data = await this.$ajax.post(`/users/${userId}/collections`, {
-          userId,
+        const data = await this.$v2.post(`/users/${userId}/collections`, {
+          // userId,
           houseID: item.id,
-          source: item.source
+          // source: item.source
         });
         this.collection = false;
         this.makerInfo = undefined;
@@ -839,7 +841,7 @@
         });
       },
       houseListClick(item) {
-        if(item.geocodes && item.geocodes.location) {
+        if (item.geocodes && item.geocodes.location) {
           this.map.setZoomAndCenter(16, item.geocodes.location);
           // this.positionPicker.start(item.geocodes.location)
         }
@@ -852,11 +854,13 @@
         if (this.isMobile) {
           houseCount = 180;
         }
-        let data = await this.$ajax.post('/houses', {
+        let params = {
           ...this.$route.query,
-          cityname: this.cityName,
+          city: this.cityName.replace(/市/ig,''),
           houseCount
-        });
+        };
+        delete params.cityname;
+        let data = await this.$v2.post('/houses', params);
         this.houseList = data.data;
         return data;
       },
@@ -987,17 +991,17 @@
                 reject(item)
               }
               try {
-                code.getLocation(item.houseLocation, (status, result) => {
+                code.getLocation(item.location, (status, result) => {
                   if (status === "complete" && result.info === 'OK') {
 
                     let icon = 'https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png';
-                    if (item.locationMarkBG) {
-                      icon = require('./../images/' + (item.locationMarkBG));
+                    if (item.icon) {
+                      icon = require('./../images/' + (item.icon));
                     }
 
                     let marker = new AMap.Marker({
                       map: map,
-                      title: item.houseLocation,
+                      title: item.title,
                       icon,
                       position: [result.geocodes[0].location.lng, result.geocodes[0].location.lat]
                     });
@@ -1005,12 +1009,12 @@
 
                     map.add(marker);
 
-                    let displayMoney = item.disPlayPrice ? "  租金：" + item.disPlayPrice : "";
+                    let displayMoney = item.price > 0 ? "  租金：" + item.disPlayPrice : "";
 
-                    let sourceContent = item.displaySource ? " 来源：" + item.displaySource : "";
-                    let title = item.houseTitle;
+                    let sourceContent = item.source ? " 来源：" + item.source : "";
+                    let title = item.title;
                     if (title) {
-                      title = item.houseLocation;
+                      title = item.location;
                     }
 
                     let params = {
@@ -1018,7 +1022,8 @@
                       displayMoney,
                       sourceContent,
                       title,
-                      geocodes: result.geocodes[0]
+                      geocodes: result.geocodes[0],
+                      marker
                     };
 
                     self.mapHouseList.push(params);
@@ -1036,7 +1041,7 @@
                               h('a', {
                                 attrs: {
                                   target: '_blank',
-                                  href: item.houseOnlineURL
+                                  href: item.onlineURL
                                 },
                                 class: ['marker-link'],
                                 domProps: {
@@ -1046,7 +1051,7 @@
                               h('a', {
                                 attrs: {
                                   target: '_blank',
-                                  href: item.houseOnlineURL
+                                  href: item.onlineURL
                                 },
                                 class: ['marker-link'],
                                 domProps: {
@@ -1056,7 +1061,7 @@
                               h('a', {
                                 attrs: {
                                   target: '_blank',
-                                  href: item.houseOnlineURL
+                                  href: item.onlineURL
                                 },
                                 class: ['marker-link'],
                                 domProps: {
@@ -1188,7 +1193,7 @@
         // });
         try {
           const query = this.$route.query;
-          let cityName = query.cityname;
+          let cityName = query.city;
           if (!cityName) {
             cityName = await this.getActiveCityName(this);
           }

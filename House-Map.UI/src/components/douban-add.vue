@@ -5,8 +5,8 @@
       <a href="https://www.douban.com/group/XMhouse/" target="_blank" class="highlight-name">www.douban.com/group/XMhouse</a>
     </div>
     <el-form ref="form" :model="form" label-width="0px" class="form" :rules="rules">
-      <el-form-item label="" prop="cityName">
-        <el-input v-model="form.cityName" placeholder="（如：厦门）"></el-input>
+      <el-form-item label="" prop="city">
+        <el-input v-model="form.city" placeholder="（如：厦门）"></el-input>
       </el-form-item>
       <el-form-item label="" prop="groupId">
         <el-input v-model="form.groupId" placeholder="（豆瓣小组GroupID,如：XMhouse）"></el-input>
@@ -44,7 +44,7 @@
       return {
         form: {},
         rules: {
-          cityName: [
+          city: [
             {required: true, message: '请输入名称', trigger: 'change'},
           ],
           groupId: [
@@ -59,7 +59,7 @@
         try {
           await this.$refs.form.validate();
           this.loading = true;
-          await this.$ajax.post(`/houses/douban`,{
+          await this.$v2.post(`/cities/douban`,{
             ...this.form
           });
           this.$message.success('添加成功');

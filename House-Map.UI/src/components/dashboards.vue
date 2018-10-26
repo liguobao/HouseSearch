@@ -140,7 +140,7 @@
                     this.cities = data;
                 } else {
                     const userId = this.$store.state.userInfo.id;
-                    const res = await this.$ajax.get(`/users/${userId}/collections/city-source`);
+                    const res = await this.$v2.get(`/users/${userId}/collections/city-source`);
                     const data = res.data;
                     this.cities = data;
                 }

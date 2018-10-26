@@ -17,16 +17,16 @@
         <!--</div>-->
         <div class="right">
           <div class="content">
-            <a class="title" href="javascript:;"  :title="item.houseTitle ?
-              item.houseTitle : item.houseLocation">{{item.houseTitle ?
-              item.houseTitle : item.houseLocation}}</a>
-            <div class="price" v-if="item.disPlayPrice">
-              {{item.disPlayPrice}}<span> /月</span>
+            <a class="title" href="javascript:;"  :title="item.title ?
+              item.title : item.location">{{item.title ?
+              item.title : item.location}}</a>
+            <div class="price" v-if="item.price > 0">
+              {{item.price}}<span> /月</span>
             </div>
           </div>
-          <div class="source">
-            来源: {{item.displaySource}}
-          </div>
+          <!--<div class="source">-->
+            <!--来源: {{item.displaySource}}-->
+          <!--</div>-->
         </div>
       </li>
       <li v-if="loading" class="text-center loading">

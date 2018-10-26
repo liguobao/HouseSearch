@@ -31,14 +31,17 @@
           </div>
           <div class="right">
             <div class="content">
-              <a class="title" :href="item.houseOnlineURL" target="_blank">{{item.houseTitle ?
-                item.houseTitle : item.houseLocation}}</a>
-              <div class="price" v-if="item.disPlayPrice">
-                {{item.disPlayPrice}}<span> /月</span>
+              <a class="title" :href="item.onlineURL" target="_blank">{{item.title ?
+                item.title : item.location}}</a>
+              <div class="price" v-if="item.price > 0">
+                {{item.price}}<span> /月</span>
+              </div>
+              <div class="labels" v-html="labels(item.labels)">
+
               </div>
             </div>
             <div class="source">
-              来源: {{item.displaySource}}
+              来源: {{item.source}}
             </div>
           </div>
         </li>
@@ -78,6 +81,10 @@
       padding: 0;
       background: rgb(248, 248, 248);
     }
+  }
+  .labels{
+    font-size: 12px;
+    padding-bottom: 15px;
   }
 </style>
 <style lang="scss" scoped>
@@ -139,13 +146,13 @@
       },
       async getHouseList() {
         let params = this.query;
-        let page = params.page ? params.page : 1;
+        let page = params.page ? params.page : 0;
         page += 1;
         let query = {
           ...params,
           page
         };
-        const data = await this.$ajax.post('/houses', query);
+        const data = await this.$v2.post('/houses', query);
         this.query = query;
         let list = data.data;
         this.loading = false;
@@ -161,6 +168,19 @@
       cancel() {
         this.close();
         this.$emit('cancel', false);
+      },
+      labels(label) {
+        let html = '';
+        if(label) {
+          let words = label.split('|');
+          if (words.length > 1) {
+            html += `${words[0]}<br>`;
+            words.shift();
+          }
+
+          html += `${words.join(',')}`;
+        }
+        return html
       }
     },
     created() {

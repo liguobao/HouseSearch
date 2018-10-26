@@ -691,7 +691,7 @@
             async getUserHouseList() {
                 this.$store.dispatch('UpdateFullscreenLoading', true);
                 const userId = this.$store.state.userInfo.id;
-                const data = await this.$ajax.get(`/users/${userId}/collections`);
+                const data = await this.$v2.get(`/users/${userId}/collections`);
                 this.userHouseList = data.data;
                 this.userHouseVisible = true;
                 this.$store.dispatch('UpdateFullscreenLoading', false);

@@ -241,7 +241,7 @@
     methods: {
       navTo(item) {
         const params = {
-          cityname: item
+          city: item
         };
         let {href} = this.$router.resolve({path: `/Map?${this.$qs.stringify(params)}`});
         window.open(href, '_blank');
