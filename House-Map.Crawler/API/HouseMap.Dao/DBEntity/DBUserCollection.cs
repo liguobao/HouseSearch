@@ -32,6 +32,9 @@ namespace HouseMap.Dao.DBEntity
         [JsonProperty(PropertyName = "title")]
         public string Title { get; set; }
 
+        [JsonProperty(PropertyName = "houseJson")]
+        public string HouseJson{get;set;}
+
 
         [JsonProperty(PropertyName = "deleted")]
         public int Deleted { get; set; }

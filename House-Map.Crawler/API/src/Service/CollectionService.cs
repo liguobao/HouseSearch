@@ -48,7 +48,7 @@ namespace HouseMapAPI.Service
             return list;
         }
 
-        public List<DBUserCollection> FindUserCollections(long userId, string cityName = "", string source = "", string id = "")
+        public List<DBHouse> FindUserCollections(long userId, string cityName = "", string source = "", string id = "")
         {
             var collections = _context.UserCollections.Where(c => c.UserID == userId).AsQueryable();
             if (!string.IsNullOrEmpty(cityName))
@@ -63,8 +63,9 @@ namespace HouseMapAPI.Service
             {
                 collections = collections.Where(c => c.Id == id);
             }
-
-            return collections.Where(c => c.Deleted == 0).ToList();
+            return collections.Where(c => c.Deleted == 0)
+            .Select(c => JsonConvert.DeserializeObject<DBHouse>(c.HouseJson))
+            .ToList();
         }
 
         public CollectionDetail FindUserCollection(long userId, string id)
@@ -102,9 +103,23 @@ namespace HouseMapAPI.Service
             collection.HouseID = houseID;
             collection.UserID = userId;
             collection.CreateTime = DateTime.Now;
+            collection.HouseJson = JsonConvert.SerializeObject(house);
             _context.UserCollections.Add(collection);
             _context.SaveChanges();
             return collection;
+        }
+
+        public void MigrationUserCollectionsData()
+        {
+            foreach(var c in  _context.UserCollections)
+            {
+                if(string.IsNullOrEmpty(c.HouseJson))
+                {
+                    var house = _houseService.FindById(c.HouseID);
+                    c.HouseJson = JsonConvert.SerializeObject(house);
+                }
+            }
+            _context.SaveChanges();
         }
 
         public void RemoveOne(long userId, string collectionId)
