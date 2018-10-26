@@ -99,6 +99,7 @@ namespace HouseMapAPI.Service
             collection.OnlineURL = house.OnlineURL;
             collection.City = house.City;
             collection.Id = Tools.GetUUId();
+            collection.HouseID = houseID;
             collection.CreateTime = DateTime.Now;
             _context.UserCollections.Add(collection);
             _context.SaveChanges();
