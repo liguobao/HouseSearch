@@ -37,8 +37,8 @@ namespace HouseCrawler.Web.API.Controllers
 
         [EnableCors("APICors")]
         [HttpGet("{userId}/collections/")]
-        //[ServiceFilter(typeof(UserTokenFilter))]
-        public IActionResult List(long userId, string cityName, string source = "")
+        [ServiceFilter(typeof(UserTokenFilter))]
+        public IActionResult List(long userId, string cityName="", string source = "")
         {
             var rooms = _collectionService.FindUserCollections(userId, cityName, source);
             return Ok(new { success = true, data = rooms });

@@ -111,9 +111,9 @@ namespace HouseMapAPI.Service
 
         public void MigrationUserCollectionsData()
         {
-            foreach(var c in  _context.UserCollections)
+            foreach (var c in _context.UserCollections)
             {
-                if(string.IsNullOrEmpty(c.HouseJson))
+                if (string.IsNullOrEmpty(c.HouseJson))
                 {
                     var house = _houseService.FindById(c.HouseID);
                     c.HouseJson = JsonConvert.SerializeObject(house);
