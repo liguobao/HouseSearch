@@ -100,6 +100,7 @@ namespace HouseMapAPI.Service
             collection.City = house.City;
             collection.Id = Tools.GetUUId();
             collection.HouseID = houseID;
+            collection.UserID = userId;
             collection.CreateTime = DateTime.Now;
             _context.UserCollections.Add(collection);
             _context.SaveChanges();
