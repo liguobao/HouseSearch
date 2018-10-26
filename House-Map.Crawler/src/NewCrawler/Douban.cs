@@ -115,7 +115,6 @@ namespace HouseMap.Crawler
 
         private DBHouse ConvertToHouse(string city, JToken topic)
         {
-            var housePrice = -1;
             var photos = topic["photos"]?.Select(photo => photo["alt"].ToString()).ToList();
             var house = new DBHouse()
             {
@@ -125,13 +124,13 @@ namespace HouseMap.Crawler
                 OnlineURL = topic["share_url"].ToString(),
                 Text = topic["content"]?.ToString(),
                 JsonData = topic.ToString(),
-                Price = housePrice,
                 Source = SourceEnum.Douban.GetSourceName(),
                 City = city,
                 RentType = GetRentType(topic["content"].ToString()),
                 PicURLs = JsonConvert.SerializeObject(photos),
                 PubTime = topic["created"].ToObject<DateTime>(),
             };
+            house.Price = GetHousePrice(house);
             return house;
         }
 
@@ -256,7 +255,6 @@ namespace HouseMap.Crawler
                 house.Tags = geocode["district"].ToString();
             }
             house.Text = RemoveImgLabels(house.Text, house.Pictures.Count);
-            house.Price = GetHousePrice(house);
             house.UpdateTime = DateTime.Now;
             if (geocode["location"].ToString().Split(",").Count() < 2 && house.Price == 0)
             {
