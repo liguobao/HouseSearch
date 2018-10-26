@@ -82,14 +82,14 @@ namespace HouseMapAPI.Service
         }
 
 
-        public DBUserCollection AddOne(long userId, string houseId)
+        public DBUserCollection AddOne(long userId, string houseID)
         {
-            var house = _houseService.FindById(houseId);
+            var house = _houseService.FindById(houseID);
             if (house == null)
             {
                 throw new NotFoundException("房源信息不存在,请刷新页面后重试");
             }
-            if (_context.UserCollections.Any(c => c.HouseID == houseId && c.UserID == userId))
+            if (_context.UserCollections.Any(c => c.HouseID == houseID && c.UserID == userId))
             {
                 throw new UnProcessableException("房源信息已收藏.");
             }

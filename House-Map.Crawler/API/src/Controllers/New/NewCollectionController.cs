@@ -58,8 +58,8 @@ namespace HouseCrawler.Web.API.Controllers
         [ServiceFilter(typeof(UserTokenFilter))]
         public IActionResult Create(long userId, [FromBody] JToken userCollection)
         {
-            var houseId = userCollection?["houseId"]?.ToString();
-            var collection = _collectionService.AddOne(userId, houseId);
+            var houseID = userCollection?["houseID"]?.ToString();
+            var collection = _collectionService.AddOne(userId, houseID);
             return Ok(new { success = true, message = "收藏成功.", data = collection });
         }
 
