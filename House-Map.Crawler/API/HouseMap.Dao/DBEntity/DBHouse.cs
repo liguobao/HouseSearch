@@ -66,6 +66,21 @@ namespace HouseMap.Dao.DBEntity
         public string JsonData { get; set; }
 
 
+
+        [NotMapped]
+        public string Icon
+        {
+            get
+            {
+                if (this.Price > 0)
+                {
+                    return LocationMarkBGType.SelectColor(this.Price / 1000);
+                }
+                return "";
+            }
+        }
+
+        
         [NotMapped]
         public List<string> Pictures
         {
