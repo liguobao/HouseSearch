@@ -24,5 +24,8 @@ namespace HouseMap.Dao
 
         public DbSet<DBUserCollection> UserCollections { get; set; }
 
+
+        public DbSet<UserInfo> Users { get; set; }
+
     }
 }

@@ -101,5 +101,39 @@ namespace HouseMap.Dao
                 return null;
             }
         }
+
+
+        public DBHouse FindByOnlineURL(string onlineURL)
+        {
+            using (IDbConnection dbConnection = GetConnection())
+            {
+                dbConnection.Open();
+                foreach (var tableName in SourceTool.GetHouseTableNameDic().Values)
+                {
+                    var house = dbConnection.QueryFirstOrDefault<DBHouse>(@"SELECT Id,
+                                            OnlineURL,
+                                            Title,
+                                            Location,
+                                            Price,
+                                            PubTime,
+                                            City,
+                                            Source,
+                                            PicURLs,
+                                            Labels,
+                                            Tags,
+                                            RentType,
+                                            Latitude,
+                                            Longitude,
+                                            Text,
+                                            Status"
+                                            + $" from { tableName } where OnlineURL = @OnlineURL", new { OnlineURL = onlineURL });
+                    if (house != null)
+                    {
+                        return house;
+                    }
+                }
+                return null;
+            }
+        }
     }
 }

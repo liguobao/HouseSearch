@@ -24,10 +24,19 @@ namespace HouseMapAPI.Service
 
         private readonly HouseService _houseService;
 
-        public CollectionService(HouseDataContext context, HouseService houseService)
+
+        private readonly NewHouseDapper _newHouseDapper;
+
+        private readonly UserCollectionService _userCollectionService;
+
+        public CollectionService(HouseDataContext context, HouseService houseService, UserCollectionService userCollectionService,
+        NewHouseDapper newHouseDapper)
         {
             _context = context;
             _houseService = houseService;
+            _newHouseDapper = newHouseDapper;
+            _userCollectionService = userCollectionService;
+
         }
 
         public Object GetUserDashboards(long userId)
@@ -109,14 +118,31 @@ namespace HouseMapAPI.Service
             return collection;
         }
 
+
+
         public void MigrationUserCollectionsData()
         {
-            foreach (var c in _context.UserCollections)
+            foreach (var user in _context.Users)
             {
-                if (string.IsNullOrEmpty(c.HouseJson))
+                var collections = _userCollectionService.FindUserCollections(user.ID);
+                foreach (var house in collections)
                 {
-                    var house = _houseService.FindById(c.HouseID);
-                    c.HouseJson = JsonConvert.SerializeObject(house);
+                    var newHouse = _newHouseDapper.FindByOnlineURL(house.HouseOnlineURL);
+                    if (newHouse == null)
+                    {
+                        continue;
+                    }
+                    var collection = new DBUserCollection();
+                    collection.Source = house.Source;
+                    collection.Title = newHouse.Title;
+                    collection.OnlineURL = newHouse.OnlineURL;
+                    collection.City = newHouse.City;
+                    collection.Id = Tools.GetUUId();
+                    collection.HouseID = newHouse.Id;
+                    collection.UserID = user.ID;
+                    collection.CreateTime = DateTime.Now;
+                    collection.HouseJson = JsonConvert.SerializeObject(house);
+                    _context.UserCollections.Add(collection);
                 }
             }
             _context.SaveChanges();

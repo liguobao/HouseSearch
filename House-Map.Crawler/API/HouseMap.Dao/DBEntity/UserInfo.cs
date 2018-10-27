@@ -1,10 +1,13 @@
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using HouseMap.Common;
 using Newtonsoft.Json;
 
 namespace HouseMap.Dao.DBEntity
 {
 
+    [Serializable]
+    [Table("userinfos")]
     public class UserInfo
     {
         public long ID { get; set; }
@@ -15,7 +18,7 @@ namespace HouseMap.Dao.DBEntity
         public string ActivatedCode { get; set; }
 
         [JsonIgnore]
-        public string ActivatedTime { get; set; }
+        public DateTime? ActivatedTime { get; set; }
 
         public string Email { get; set; }
 
@@ -23,17 +26,16 @@ namespace HouseMap.Dao.DBEntity
         public string Password { get; set; }
 
         [JsonIgnore]
-        public DateTime DataCreateTime { get; set; } = DateTime.Now;
+        public DateTime? DataCreateTime { get; set; } = DateTime.Now;
 
         [JsonIgnore]
-        public DateTime DataChange_LastTime { get; set; } = DateTime.Now;
+        public DateTime? DataChange_LastTime { get; set; } = DateTime.Now;
 
 
         [JsonIgnore]
         public string RetrievePasswordToken { get; set; }
 
-        [JsonIgnore]
-        public DateTime TokenTime { get; set; }
+
         ///0:未激活 1:已激活 2:已禁用
         public int Status { get; set; }
 

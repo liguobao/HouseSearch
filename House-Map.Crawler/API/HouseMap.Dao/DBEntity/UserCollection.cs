@@ -1,8 +1,11 @@
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HouseMap.Dao.DBEntity
 {
 
+    [Serializable]
+    [Table("UserCollections")]
     public class UserCollection
     {
         public long ID { get; set; }
