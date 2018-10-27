@@ -30,11 +30,11 @@
                 </p>
                 <div class="cities">
                     <div class="city-item" v-for="item in cities" :key="item.name">
-                        <a target="_blank" @click="navTo({cityname:item.cityname})" href="javascript:;"
+                        <a target="_blank" @click="navTo({city:item.cityname})" href="javascript:;"
                            class="highlight-name">{{item.name}}</a>
                         <div class="form" v-if="item.form && item.form.length">
                             <a target="_blank"
-                               @click="navTo({cityname: item.cityname,source: where.source})" href="javascript:;"
+                               @click="navTo({city: item.cityname,source: where.source})" href="javascript:;"
                                class="highlight-name" v-for="(where,index) in item.form" :key="where.name">
                                 {{where.name}}
                                 <template v-if="index < item.form.length - 1">、</template>
@@ -45,12 +45,12 @@
                         <a target="_blank" href="javascript:;" class="highlight-name" @click="showDashboards('all')">更多城市</a>
                         <div class="form">
                             <a target="_blank"
-                               @click="navTo({cityname:`成都`})" href="javascript:;"
+                               @click="navTo({city:`成都`})" href="javascript:;"
                                class="highlight-name">
                                 成都、
                             </a>
                             <a target="_blank"
-                               @click="navTo({cityname:`杭州`})" href="javascript:;"
+                               @click="navTo({city:`杭州`})" href="javascript:;"
                                class="highlight-name">
                                 杭州、
                             </a>

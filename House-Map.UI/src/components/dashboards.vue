@@ -6,14 +6,14 @@
             <ul v-if="cities && cities.length">
                 <li v-for="item in cities" :key="item.id" :class="{'is-mobile': isMobile}">
                     <a target="_blank"
-                       @click="navTo({cityname:item.city})"
+                       @click="navTo({city:item.city})"
                        href="javascript:;"
                        :title="item.city" class="title highlight">{{item.city}}</a>
                     <div class="source-wrap">
                         <a target="_blank"
                            :key="source.id"
                            href="javascript:;"
-                           @click="navTo({cityname:item.city,source:source.source,intervalDay:14,houseCount:600})"
+                           @click="navTo({city:item.city,source:source.source,intervalDay:14,houseCount:600})"
                            class="highlight" v-for="source in item.sources" :title="source.displaySource">
                             {{source.displaySource}}
                             <template v-if="source.houseCount > 0">
