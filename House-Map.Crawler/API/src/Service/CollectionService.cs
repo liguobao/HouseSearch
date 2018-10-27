@@ -141,7 +141,7 @@ namespace HouseMapAPI.Service
                     collection.HouseID = newHouse.Id;
                     collection.UserID = user.ID;
                     collection.CreateTime = DateTime.Now;
-                    collection.HouseJson = JsonConvert.SerializeObject(house);
+                    collection.HouseJson = JsonConvert.SerializeObject(newHouse);
                     _context.UserCollections.Add(collection);
                 }
             }
