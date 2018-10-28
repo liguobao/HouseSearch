@@ -30,11 +30,14 @@
                 </p>
                 <div class="cities">
                     <div class="city-item" v-for="item in cities" :key="item.name">
-                        <a target="_blank" @click="navTo({city:item.cityname})" href="javascript:;"
+                        <!--<a target="_blank" @click="navTo({city:item.cityname})" href="javascript:;"-->
+                           <!--class="highlight-name">{{item.name}}</a>-->
+                        <a target="_blank" @click="showDashboards('all')" href="javascript:;"
                            class="highlight-name">{{item.name}}</a>
                         <div class="form" v-if="item.form && item.form.length">
                             <a target="_blank"
-                               @click="navTo({city: item.cityname,source: where.source})" href="javascript:;"
+                               @click="navTo({city: item.cityname,source: where.source})"
+                               href="javascript:;"
                                class="highlight-name" v-for="(where,index) in item.form" :key="where.name">
                                 {{where.name}}
                                 <template v-if="index < item.form.length - 1">、</template>
@@ -55,7 +58,7 @@
                                 杭州、
                             </a>
                             <a target="_blank"
-                               @click="navTo({cityname:`厦门`})" href="javascript:;"
+                               @click="navTo({city:`厦门`})" href="javascript:;"
                                class="highlight-name">
                                 厦门...
                             </a>
