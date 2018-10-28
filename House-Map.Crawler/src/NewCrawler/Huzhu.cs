@@ -12,6 +12,7 @@ using HouseMap.Common;
 using Newtonsoft.Json.Linq;
 using HouseMap.Models;
 using HouseMap.Crawler.Service;
+using System.Net;
 
 namespace HouseMap.Crawler
 {
@@ -20,8 +21,8 @@ namespace HouseMap.Crawler
     {
 
         private readonly HouseDapper _oldHouseDapper;
-        public Huzhu(NewHouseDapper houseDapper, ConfigDapper configDapper, HouseDapper oldHouseDapper,ElasticService elastic) 
-        : base(houseDapper, configDapper,elastic)
+        public Huzhu(NewHouseDapper houseDapper, ConfigDapper configDapper, HouseDapper oldHouseDapper, ElasticService elastic)
+        : base(houseDapper, configDapper, elastic)
         {
             this.Source = SourceEnum.HuZhuZuFang;
             _oldHouseDapper = oldHouseDapper;
@@ -122,23 +123,19 @@ namespace HouseMap.Crawler
 
         private static string getResultFromAPI(int pageNum)
         {
-            var dicParameter = new JObject()
-            {
-                {"uid","" },
-                {"pageNum",$"{pageNum}" },
-                {"sortType","1" },
-                {"sellRentType","2" },
-                {"searchCondition","{}" }
-            };
+            var page = pageNum + 1;
             var client = new RestClient("http://www.huzhumaifang.com:8080/hzmf-integration/getHouseList.action");
             var request = new RestRequest(Method.POST);
-            request.AddHeader("content-type", "application/x-www-form-urlencoded");
+            request.AddHeader("postman-token", "1e596557-c9e1-aa61-1d32-321e1a786303");
+            request.AddHeader("cache-control", "no-cache");
             request.AddHeader("user-agent", "Apache-HttpClient/UNAVAILABLE (java 1.4)");
+            request.AddHeader("connection", "Keep-Alive");
             request.AddHeader("host", "www.huzhumaifang.com:8080");
-            request.AddParameter("application/x-www-form-urlencoded", $"content={JsonConvert.SerializeObject(dicParameter)}", ParameterType.RequestBody);
+            request.AddHeader("content-type", "application/x-www-form-urlencoded");
+            request.AddParameter("application/x-www-form-urlencoded", "content=%7B%22searchCondition%22%3A%22%7B%7D%22%2C%22pageNum%22%3A%22"
+            + page + "%22%2C%22sellRentType%22%3A%222%22%2C%22sortType%22%3A%221%22%2C%22uid%22%3A%22%22%7D", ParameterType.RequestBody);
             IRestResponse response = client.Execute(request);
-            string result = response.Content;
-            return result;
+            return response.Content;
         }
     }
 }
