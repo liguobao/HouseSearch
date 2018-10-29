@@ -1,1 +1,3 @@
+{\"topicSeq\":\"0\",\"topicCreateType\":\"0\",\"fishpoolTopicName\":\"租房信息\",\"fishpoolTopicId\":\"2072168\",\"fishpoolId\":\"625945\",\"topicRule\":\"{\\\"fishpoolId\\\":625945,\\\"keyWords\\\":[\\\"租房 OR 转租 OR 找房子 OR 房子 OR 房屋 OR 小窝\\\"]}\",\"pageNumber\":3}
+
 {\"topicSeq\":\"2\",\"topicCreateType\":\"0\",\"fishpoolTopicName\":\"出租\",\"fishpoolTopicId\":\"2479350\",\"fishpoolId\":\"624597\",\"topicRule\":\"{\\\"fishpoolId\\\":624597,\\\"keyWords\\\":[\\\"出租\\\"]}\",\"pageNumber\":2}

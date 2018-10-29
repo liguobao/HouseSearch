@@ -150,7 +150,7 @@ namespace HouseMapAPI.Service
 
         public void RemoveOne(long userId, string collectionId)
         {
-            var userCollection = _context.UserCollections.FirstOrDefault(c => c.UserID == userId && c.Id == collectionId);
+            var userCollection = _context.UserCollections.FirstOrDefault(c => c.UserID == userId && (c.Id == collectionId || c.HouseID == collectionId));
             if (userCollection == null)
             {
                 throw new NotFoundException("收藏信息不存在,请重试.");
