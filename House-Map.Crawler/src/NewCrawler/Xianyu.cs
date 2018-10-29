@@ -57,8 +57,12 @@ namespace HouseMap.Crawler
                 {
                     house.Location = card["cardData"]?["attributesMap"]?["location"]?.ToString();
                     var dstPos = card["cardData"]?["attributesMap"]?["dstPos"]?.ToString();
-                    house.Location = dstPos.Split(",")[0];
+                    house.Latitude = dstPos.Split(",")[0];
                     house.Longitude = dstPos.Split(",")[1];
+                }
+                else
+                {
+                    house.Location = card["cardData"]?["title"]?.ToString();
                 }
                 house.Id = Tools.GetUUId();
                 var price = 0;
