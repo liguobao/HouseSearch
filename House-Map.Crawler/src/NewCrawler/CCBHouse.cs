@@ -18,6 +18,7 @@ using Microsoft.Extensions.Options;
 using HouseMap.Models;
 using HouseMap.Common;
 using HouseMap.Crawler.Service;
+using System.Net;
 
 namespace HouseMap.Crawler
 {
@@ -52,14 +53,14 @@ namespace HouseMap.Crawler
             }
             foreach (var item in resultJObject["items"])
             {
-                if (string.IsNullOrEmpty(item["address"]?.ToString()))
+                if (string.IsNullOrEmpty(item?["address"]?.ToString()) && string.IsNullOrEmpty(item?["haName"]?.ToString()))
                 {
                     continue;
                 }
                 DBHouse houseInfo = new DBHouse();
                 houseInfo.Id = Tools.GetUUId();
                 houseInfo.OnlineURL = GetHouseOnlineURL(cityShortCutName, item);
-                houseInfo.Location = item["address"].ToObject<string>();
+                houseInfo.Location = !string.IsNullOrEmpty(item?["address"]?.ToString()) ? item?["address"]?.ToString() : item?["haName"]?.ToString();
                 houseInfo.Title = item["headline"].ToObject<string>();
                 houseInfo.City = item["cityName"].ToObject<string>();
                 houseInfo.Text = item["headline"].ToObject<string>();
@@ -111,9 +112,10 @@ namespace HouseMap.Crawler
 
         private string GetResultByAPI(string apiKey, string cityShortCutName, int page)
         {
-            //                _reqParams=offer%3D0%26apiKey%3Dcef8222092f74b95a8b24bc4a9e694a0%26city%3Dsh%26saleOrLease%3Dlease%26pageSize%3D10%26page%3D1%26propType%3D11%26tmflags%3D3&_interfaceUrl=%2Fhlsp%2Fcityhouse%2Fdeal%2Fsearch&_reqMethod=GET
-            //    _reqParams=offer%3D0%26apiKey%3Dcef8222092f74b95a8b24bc4a9e694a0%26city%3Dsh%26saleOrLease%3Dlease%26pageSize%3D10%26page%3D1%26propType%3D11%26tmflags%3D3&_interfaceUrl=%2Fhlsp%2Fcityhouse%2Fdeal%2Fsearch&_reqMethod=GET
-            string formBody = $"_reqParams=apiKey%3D{apiKey}%26city%3D{cityShortCutName}%26saleOrLease%3Dlease%26pageSize%3D50%26page%3D{page}%26propType%3D11%26tmflags%3D3&_interfaceUrl=%2Fhlsp%2Fcityhouse%2Fdeal%2Fsearch&_reqMethod=GET";
+            //var queryText = "offer=0&apiKey=cef8222092f74b95a8b24bc4a9e694a0&city=sh&saleOrLease=lease&pageSize=10&page=2&propType=11&tmflags=3&_interfaceUrl=/hlsp/cityhouse/deal/search";
+
+            // var queryText = $"offer=0&apiKey={apiKey}&city={cityShortCutName}&saleOrLease=lease&pageSize=100&page={page}&propType=11&tmflags=3&_interfaceUrl=/hlsp/cityhouse/deal/search";
+            var body = "_reqParams=offer%3D" + page * 100 + "%26apiKey%3D" + apiKey + "%26city%3D" + cityShortCutName + "%26saleOrLease%3Dlease%26pageSize%3D100%26page%3D%" + page + "26propType%3D11%26tmflags%3D3&_interfaceUrl=%2Fhlsp%2Fcityhouse%2Fdeal%2Fsearch&_reqMethod=GET";
             var client = new RestClient("http://bankservice.home.ccb.com/LHECISM/LanHaiHttpResfulReqServlet");
             var request = new RestRequest(Method.POST);
             request.AddHeader("content-type", "application/x-www-form-urlencoded");
@@ -121,7 +123,7 @@ namespace HouseMap.Crawler
             request.AddHeader("cookie2", "$Version=1");
             request.AddHeader("cookie", "BIGipServerccvcc_jt_197.1_80_web_pool=1277362954.20480.0000");
             request.AddHeader("host", "bankservice.home.ccb.com");
-            request.AddParameter("application/x-www-form-urlencoded", formBody, ParameterType.RequestBody);
+            request.AddParameter("application/x-www-form-urlencoded", body, ParameterType.RequestBody);
             IRestResponse response = client.Execute(request);
             if (response.IsSuccessful)
             {
@@ -129,5 +131,8 @@ namespace HouseMap.Crawler
             }
             return "";
         }
+
+
+
     }
 }
