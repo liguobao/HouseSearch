@@ -94,7 +94,7 @@ namespace HouseMapAPI
             services.AddScoped<WeChatAppDecrypt, WeChatAppDecrypt>();
             services.AddScoped<UserTokenFilter, UserTokenFilter>();
             services.AddScoped<FieldsFilterAttribute, FieldsFilterAttribute>();
-            services.AddScoped<CrawlerConfigService, CrawlerConfigService>();
+            services.AddScoped<DBGroupService, DBGroupService>();
 
             #endregion
         }

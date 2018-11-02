@@ -7,23 +7,27 @@ using HouseMap.Dao;
 using HouseMap.Dao.DBEntity;
 
 using HouseMap.Common;
+using System.Linq;
+using HouseMapAPI.CommonException;
 
 namespace HouseMapAPI.Service
 {
-    public class DoubanService
+    public class DBGroupService
     {
 
-        public static bool CheckDBGroupData (string groupID, string cityName, int pageIndex)
+        private readonly HouseMapContext _dataContext;
+
+        public DBGroupService(HouseMapContext dataContext)
         {
-            List<DBHouse> lstHouseInfo = new List<DBHouse>();
+            _dataContext = dataContext;
+
+        }
+
+        private bool CheckDBGroupData(string groupID, string cityName, int pageIndex)
+        {
             var apiURL = $"https://api.douban.com/v2/group/{groupID}/topics?start={pageIndex * 50}";
-            //LogHelper.Info($"url:{apiURL},groupID:{groupID}, city:{cityName}");
             var result = GetAPIResult(apiURL);
-            if (string.IsNullOrEmpty(result))
-            {
-                return false;
-            }
-            return !string.IsNullOrEmpty(JToken.Parse(result)?["topics"]?.ToString());
+            return !string.IsNullOrEmpty(result) && !string.IsNullOrEmpty(JToken.Parse(result)?["topics"]?.ToString());
         }
 
         private static string GetAPIResult(string apiURL)
@@ -49,5 +53,47 @@ namespace HouseMapAPI.Service
 
         }
 
+
+
+        public bool AddGroupConfig(string groupId, string city)
+        {
+            string json = PreDataCheck(groupId, city);
+            var config = new DBConfig()
+            {
+                Id = Tools.GetUUId(),
+                Json = json,
+                City = city,
+                Source = SourceEnum.Douban.GetSourceName(),
+                CreateTime = DateTime.Now,
+                PageCount = 10
+            };
+            _dataContext.Configs.Add(config);
+            _dataContext.SaveChanges();
+            return true;
+        }
+
+        private string PreDataCheck(string groupId, string city)
+        {
+            if (string.IsNullOrEmpty(groupId) || string.IsNullOrEmpty(city))
+            {
+                throw new UnProcessableException("请输入豆瓣小组Id和城市。");
+            }
+            var result = CheckDBGroupData(groupId, city, 1);
+            if (!result)
+            {
+                throw new UnProcessableException("保存失败！请检查豆瓣小组ID或者城市名是否准确。");
+            }
+            var json = $"{{'groupid':'{groupId}','cityname':'{city}','pagecount':5}}";
+            if (!_dataContext.Configs.Any(c => c.City == city))
+            {
+                throw new UnProcessableException($"暂不支持当前城市【{city}】或者城市名称不正确，如需添加请邮件联系管理员codelover@qq.com。");
+            }
+            if (_dataContext.Configs.Any(c => c.City == city && c.Source == SourceEnum.Douban.GetSourceName() && c.Json == json))
+            {
+                throw new UnProcessableException("保存失败！已存在当前豆瓣小组配置啦。");
+            }
+
+            return json;
+        }
     }
 }

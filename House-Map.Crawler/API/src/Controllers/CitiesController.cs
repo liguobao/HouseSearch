@@ -17,16 +17,17 @@ namespace HouseCrawler.Web.API.Controllers
     public class CitiesController : ControllerBase
     {
 
-        private ConfigService _configService;
+        private readonly ConfigService _configService;
 
-        private CrawlerConfigService _crawlerConfigService;
+        private readonly DBGroupService _groupService;
+
 
         public CitiesController(
                               ConfigService configService,
-                              CrawlerConfigService crawlerConfigService)
+                              DBGroupService groupService)
         {
             _configService = configService;
-            _crawlerConfigService = crawlerConfigService;
+            _groupService = groupService;
         }
 
 
@@ -61,12 +62,11 @@ namespace HouseCrawler.Web.API.Controllers
 
         [EnableCors("APICors")]
         [HttpPost("douban")]
-        public IActionResult AddDouBanGroup([FromBody]JToken model)
+        public IActionResult AddGroup([FromBody]JToken model)
         {
-            string doubanGroup = model?["groupId"].ToString();
+            string groupId = model?["groupId"].ToString();
             string city = model?["city"].ToString();
-            _crawlerConfigService.AddDoubanConfig(doubanGroup, city);
-            return Ok(new { success = true });
+            return Ok(new { success = _groupService.AddGroupConfig(groupId, city) });
         }
     }
 }
