@@ -44,7 +44,7 @@ namespace HouseMapAPI.Controllers
         {
 
             var result = _userService.Login(loginUser);
-            return Ok(new { success = true, message = "注册成功!", token = result.Item1, data = result.Item2 });
+            return Ok(new { success = true, message = "登录成功!", token = result.Item1, data = result.Item2 });
         }
 
 

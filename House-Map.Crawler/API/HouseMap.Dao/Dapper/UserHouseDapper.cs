@@ -21,7 +21,7 @@ namespace HouseMap.Dao
         {
             using (IDbConnection dbConnection = GetConnection())
             {
-                var collection = dbConnection.Query<UserHouse>(@"INSERT INTO `housecrawler`.`UserHouses`
+                var collection = dbConnection.Query<UserHouse>(@"INSERT INTO `UserHouse`
                                     (
                                     `UserId`,
                                     `HouseTitle`,

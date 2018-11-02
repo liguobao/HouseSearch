@@ -11,6 +11,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Talk.OAuthClient;
 using HouseMapAPI.Models;
+using System.Linq;
 
 namespace HouseMapAPI.Service
 {
@@ -18,9 +19,9 @@ namespace HouseMapAPI.Service
     public class UserService
     {
 
-        private RedisTool _RedisTool;
+        private readonly RedisTool _RedisTool;
 
-        private UserDapper _userDapper;
+        private readonly HouseMapContext _context;
 
         private EmailService _emailService;
 
@@ -28,13 +29,13 @@ namespace HouseMapAPI.Service
 
         private WeChatAppDecrypt _weChatAppDecrypt;
 
-        public UserService(RedisTool RedisTool, UserDapper userDapper,
+        public UserService(RedisTool RedisTool, HouseMapContext context,
          EmailService emailService, QQOAuthClient authClient,
           WeChatAppDecrypt weChatAppDecrypt)
         {
 
             _RedisTool = RedisTool;
-            _userDapper = userDapper;
+            _context = context;
             _emailService = emailService;
             _authClient = authClient.GetAPIOAuthClient();
             _weChatAppDecrypt = weChatAppDecrypt;
@@ -46,7 +47,7 @@ namespace HouseMapAPI.Service
             string activatecode = Tools.GetSha256(registerUser.UserName + registerUser.Email + DateTime.Now);
             SendActivateEmail(registerUser, activatecode);
             UserInfo insertUser = AddUser(registerUser, activatecode);
-            var userInfo = _userDapper.FindUser(insertUser.UserName);
+            var userInfo = _context.Users.FirstOrDefault(u => u.UserName == registerUser.UserName);
             string token = userInfo.NewLoginToken;
             WriteUserToken(userInfo, token);
             return Tuple.Create<string, UserInfo>(token, userInfo);
@@ -59,7 +60,7 @@ namespace HouseMapAPI.Service
             {
                 throw new Exception("用户名/用户邮箱不能为空.");
             }
-            var userInfo = _userDapper.FindUser(loginUser.UserName);
+            var userInfo = _context.Users.FirstOrDefault(u => u.UserName == loginUser.UserName);
             CheckLogin(loginUser, userInfo);
             string token = userInfo.NewLoginToken;
             WriteUserToken(userInfo, token);
@@ -77,18 +78,20 @@ namespace HouseMapAPI.Service
             var accessToken = _authClient.GetAccessToken(code).Result;
             var qqUser = _authClient.GetUserInfo(accessToken).Result;
             //未登录,通过此ID获取用户
-            var userInfo = _userDapper.FindByQQOpenID(qqUser.Id);
+            var userInfo = _context.Users.FirstOrDefault(u => u.QQOpenUID == qqUser.Id);
             if (userInfo == null)
             {
                 //新增用户
-                _userDapper.InsertUserForQQAuth(new UserInfo()
+                var user = new UserInfo()
                 {
                     UserName = qqUser.Name,
                     QQOpenUID = qqUser.Id,
                     AvatarUrl = qqUser.ImgUrl,
                     JsonData = JsonConvert.SerializeObject(qqUser)
-                });
-                userInfo = _userDapper.FindByQQOpenID(qqUser.Id);
+                };
+                _context.Users.Add(user);
+                _context.SaveChanges();
+                userInfo = user;
             }
             string token = userInfo.NewLoginToken;
             WriteUserToken(userInfo, token);
@@ -115,7 +118,8 @@ namespace HouseMapAPI.Service
             insertUser.UserName = registerUser.UserName;
             insertUser.Password = registerUser.Password;
             insertUser.ActivatedCode = activatecode;
-            _userDapper.InsertUser(insertUser);
+            _context.Users.Add(insertUser);
+            _context.SaveChanges();
             return insertUser;
         }
 
@@ -140,8 +144,7 @@ namespace HouseMapAPI.Service
             {
                 throw new Exception("用户名/用户邮箱不能为空.");
             }
-            var checkUser = _userDapper.FindUser(registerUser.UserName);
-            if (checkUser != null)
+            if (_context.Users.Any(u => u.UserName == registerUser.UserName))
             {
                 throw new Exception("用户已存在!");
             }
@@ -175,10 +178,7 @@ namespace HouseMapAPI.Service
             _RedisTool.WriteObject(token, loginUser, 0, 60 * 24 * 30);
         }
 
-        public UserInfo FindUser(string userName)
-        {
-            return _userDapper.FindUser(userName);
-        }
+
 
         public bool SaveWorkAddress(long userID, string address)
         {
@@ -186,15 +186,21 @@ namespace HouseMapAPI.Service
             {
                 throw new UnProcessableException("地址不能为空!");
             }
-            var success = _userDapper.SaveWorkAddress(userID, address);
+            var user = _context.Users.FirstOrDefault(u => u.ID == userID);
+            if (user == null)
+            {
+                throw new UnProcessableException("用户信息不存在,请重新登录!");
+            }
+            user.WorkAddress = address;
+            _context.SaveChanges();
             RefreshUserCache(userID);
-            return success;
+            return true;
         }
 
         private void RefreshUserCache(long userID)
         {
             var token = _RedisTool.ReadCache<string>(RedisKey.UserToken.Key + userID, RedisKey.UserToken.DBName);
-            var user = _userDapper.FindByID(userID);
+            var user = _context.Users.FirstOrDefault(u => u.ID == userID);
             _RedisTool.DeleteCache(RedisKey.UserId.Key + userID);
             _RedisTool.DeleteCache(token);
             WriteUserToken(user, token);
@@ -208,23 +214,23 @@ namespace HouseMapAPI.Service
             {
                 throw new TokenInvalidException("解密微信用户信息失败.");
             }
-            var userInfo = _userDapper.FindByWechatOpenID(wechatUser.openId);
+            var userInfo = _context.Users.FirstOrDefault(u => u.WechatOpenID == wechatUser.openId);
             if (userInfo == null)
             {
-                _userDapper.InsertUserForWechat(new UserInfo()
+                userInfo = new UserInfo()
                 {
                     UserName = wechatUser.nickName,
                     WechatOpenID = wechatUser.openId,
                     AvatarUrl = wechatUser.avatarUrl,
                     JsonData = JsonConvert.SerializeObject(wechatUser)
-                });
+                };
+                _context.Users.Add(userInfo);
+                _context.SaveChanges();
             }
             string token = userInfo.NewLoginToken;
             WriteUserToken(userInfo, token);
             return Tuple.Create<string, UserInfo>(token, userInfo);
         }
-
-
 
     }
 }

@@ -46,13 +46,13 @@ namespace HouseMapAPI
 
         private void InitDB(IServiceCollection services)
         {
-             services.AddDbContext<HouseMapContext>(options =>
-           {
-               var loggerFactory = new LoggerFactory();
-               loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-               options.UseLoggerFactory(loggerFactory);
-               options.UseMySql(Configuration["QCloudMySQL"].ToString());
-           });
+            services.AddDbContext<HouseMapContext>(options =>
+          {
+              var loggerFactory = new LoggerFactory();
+              loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+              options.UseLoggerFactory(loggerFactory);
+              options.UseMySql(Configuration["QCloudMySQL"].ToString());
+          });
         }
 
         private void InitRedis(IServiceCollection services)
@@ -70,7 +70,6 @@ namespace HouseMapAPI
         public void InitDI(IServiceCollection services)
         {
             #region Dapper
-            services.AddScoped<UserDapper, UserDapper>();
             services.AddScoped<BaseDapper, BaseDapper>();
             services.AddScoped<ConfigDapper, ConfigDapper>();
             services.AddScoped<NoticeDapper, NoticeDapper>();

@@ -10,7 +10,7 @@ namespace HouseMap.Dao.DBEntity
 {
 
     [Serializable]
-    [Table("UserHouses")]
+    [Table("Userhouse")]
     public class UserHouse : DBHouse
     {
         public long UserId { get; set; }
