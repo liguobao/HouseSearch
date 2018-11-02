@@ -1,7 +1,6 @@
 using Dapper;
 using HouseMap.Common;
 using HouseMap.Dao.DBEntity;
-using HouseMap.Models;
 using Microsoft.Extensions.Options;
 using MySql.Data.MySqlClient;
 using System;

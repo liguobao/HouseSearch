@@ -5,7 +5,7 @@ using System.Text;
 using HouseMapAPI.CommonException;
 using HouseMap.Dao;
 using HouseMap.Dao.DBEntity;
-using HouseMap.Models;
+
 using HouseMap.Common;
 using HouseMapAPI.Service;
 using Microsoft.Extensions.Options;
@@ -22,9 +22,9 @@ namespace HouseMapAPI.Service
 
         private readonly int PubTimeDay = 7;
 
-        private HouseDataContext _context;
+        private HouseMapContext _context;
 
-        public UserHouseService(HouseDataContext context)
+        public UserHouseService(HouseMapContext context)
         {
             _context = context;
         }

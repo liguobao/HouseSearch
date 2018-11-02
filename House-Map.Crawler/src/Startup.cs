@@ -54,13 +54,6 @@ namespace HouseMap.Crawler
 
         private void InitDB(IServiceCollection services)
         {
-            services.AddDbContext<HouseDataContext>(options =>
-            {
-                var loggerFactory = new LoggerFactory();
-                loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-                options.UseLoggerFactory(loggerFactory);
-                options.UseMySql(Configuration["MySQLConnectionString"].ToString());
-            });
 
             services.AddDbContext<HouseMapContext>(options =>
            {
@@ -87,8 +80,6 @@ namespace HouseMap.Crawler
         public void InitDI(IServiceCollection services)
         {
             #region Mapper
-            services.AddScoped<HouseDapper, HouseDapper>();
-            services.AddScoped<HouseStatDapper, HouseStatDapper>();
             services.AddScoped<ConfigDapper, ConfigDapper>();
             services.AddScoped<NewBaseDapper, NewBaseDapper>();
             services.AddScoped<BaseDapper, BaseDapper>();
@@ -106,29 +97,6 @@ namespace HouseMap.Crawler
             #endregion
 
             #region Crawler
-
-            services.AddScoped<BaseCrawler, BaseCrawler>();
-            services.AddScoped<DoubanCrawler, DoubanCrawler>();
-            services.AddScoped<DoubanCrawler, DoubanCrawler>();
-            services.AddScoped<SpaciousCrawler, SpaciousCrawler>();
-            services.AddScoped<MoGuCrawler, MoGuCrawler>();
-            services.AddScoped<HuzhuCrawler, HuzhuCrawler>();
-            services.AddScoped<PinPaiGongYuCrawler, PinPaiGongYuCrawler>();
-            services.AddScoped<ZuberCrawler, ZuberCrawler>();
-            services.AddScoped<BaixingCrawler, BaixingCrawler>();
-            services.AddScoped<BeikeCrawler, BeikeCrawler>();
-            services.AddScoped<ChengdufgjCrawler, ChengdufgjCrawler>();
-
-            services.AddScoped<ICrawler, DoubanCrawler>();
-            services.AddScoped<ICrawler, DoubanCrawler>();
-            services.AddScoped<ICrawler, SpaciousCrawler>();
-            services.AddScoped<ICrawler, MoGuCrawler>();
-            services.AddScoped<ICrawler, HuzhuCrawler>();
-            services.AddScoped<ICrawler, PinPaiGongYuCrawler>();
-            services.AddScoped<ICrawler, ZuberCrawler>();
-            services.AddScoped<ICrawler, BaixingCrawler>();
-            services.AddScoped<ICrawler, BeikeCrawler>();
-            services.AddScoped<ICrawler, ChengdufgjCrawler>();
 
 
             services.AddScoped<NewBaseCrawler, NewBaseCrawler>();

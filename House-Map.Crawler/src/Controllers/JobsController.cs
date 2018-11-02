@@ -19,43 +19,9 @@ namespace HouseMap.Crawler.Controllers
         private readonly IServiceProvider _serviceProvider;
 
 
-        public JobsController(
-
-                             IServiceProvider serviceProvider)
+        public JobsController(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
-        }
-
-
-        public IActionResult Index(string source)
-        {
-
-            try
-            {
-                var crawler = _serviceProvider.GetServices<ICrawler>().FirstOrDefault(c => c.GetSource() == source);
-                LogHelper.RunActionTaskNotThrowEx(() =>
-                {
-                    if (crawler != null)
-                    {
-                        crawler.Run();
-                    }
-                }, source);
-
-                return Json(new { success = true });
-            }
-            catch (Exception ex)
-            {
-                return Json(new { success = true, error = ex.ToString() });
-            }
-
-        }
-
-
-        public IActionResult RefreshHouseCache()
-        {
-            var houseService = _serviceProvider.GetServices<HouseService>().FirstOrDefault();
-            LogHelper.RunActionTaskNotThrowEx(houseService.RefreshHouse, "RefreshHouseCache");
-            return Json(new { success = true });
         }
 
 

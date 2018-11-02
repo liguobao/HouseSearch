@@ -46,13 +46,13 @@ namespace HouseMapAPI
 
         private void InitDB(IServiceCollection services)
         {
-            services.AddDbContext<HouseDataContext>(options =>
-            {
-                var loggerFactory = new LoggerFactory();
-                loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-                options.UseLoggerFactory(loggerFactory);
-                options.UseMySql(Configuration["MySQLConnectionString"].ToString());
-            });
+             services.AddDbContext<HouseMapContext>(options =>
+           {
+               var loggerFactory = new LoggerFactory();
+               loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+               options.UseLoggerFactory(loggerFactory);
+               options.UseMySql(Configuration["QCloudMySQL"].ToString());
+           });
         }
 
         private void InitRedis(IServiceCollection services)
@@ -70,8 +70,6 @@ namespace HouseMapAPI
         public void InitDI(IServiceCollection services)
         {
             #region Dapper
-            services.AddScoped<HouseDapper, HouseDapper>();
-            services.AddScoped<UserCollectionDapper, UserCollectionDapper>();
             services.AddScoped<UserDapper, UserDapper>();
             services.AddScoped<BaseDapper, BaseDapper>();
             services.AddScoped<ConfigDapper, ConfigDapper>();
@@ -92,7 +90,6 @@ namespace HouseMapAPI
             services.AddScoped<UserHouseService, UserHouseService>();
             services.AddScoped<ConfigService, ConfigService>();
             services.AddScoped<HouseService, HouseService>();
-            services.AddScoped<UserCollectionService, UserCollectionService>();
             services.AddScoped<QQOAuthClient, QQOAuthClient>();
             services.AddScoped<WeChatAppDecrypt, WeChatAppDecrypt>();
             services.AddScoped<UserTokenFilter, UserTokenFilter>();

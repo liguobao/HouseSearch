@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using HouseMap.Dao;
 using HouseMap.Dao.DBEntity;
-using HouseMap.Models;
+
 using HouseMap.Common;
 
 namespace HouseMapAPI.Service
@@ -13,36 +13,17 @@ namespace HouseMapAPI.Service
     public class DoubanService
     {
 
-        public static List<HouseInfo> GetHouseData(string groupID, string cityName, int pageIndex)
+        public static bool CheckDBGroupData (string groupID, string cityName, int pageIndex)
         {
-            List<HouseInfo> lstHouseInfo = new List<HouseInfo>();
+            List<DBHouse> lstHouseInfo = new List<DBHouse>();
             var apiURL = $"https://api.douban.com/v2/group/{groupID}/topics?start={pageIndex * 50}";
             //LogHelper.Info($"url:{apiURL},groupID:{groupID}, city:{cityName}");
             var result = GetAPIResult(apiURL);
             if (string.IsNullOrEmpty(result))
             {
-                return lstHouseInfo;
+                return false;
             }
-            var resultJObject = JsonConvert.DeserializeObject<JObject>(result);
-            foreach (var topic in resultJObject["topics"])
-            {
-                var house = new HouseInfo()
-                {
-                    HouseLocation = topic["title"].ToString(),
-                    HouseTitle = topic["title"].ToString(),
-                    HouseOnlineURL = topic["share_url"].ToString(),
-                    HouseText = topic["content"].ToString(),
-                    IsAnalyzed = true,
-                    Source = ConstConfigName.Douban,
-                    LocationCityName = cityName,
-                    Status = 1,
-                    PubTime = topic["created"].ToObject<DateTime>(),
-                    DataCreateTime = DateTime.Now,
-                };
-                lstHouseInfo.Add(house);
-            }
-
-            return lstHouseInfo;
+            return !string.IsNullOrEmpty(JToken.Parse(result)?["topics"]?.ToString());
         }
 
         private static string GetAPIResult(string apiURL)

@@ -8,14 +8,12 @@ namespace HouseMap.Crawler.Controllers
     {
          private readonly RedisTool _redis;
 
-        private ZuberCrawler _zuber;
 
-        private HouseDataContext _context;
+        private HouseMapContext _context;
 
 
-        public TestController(ZuberCrawler zuber, HouseDataContext context,RedisTool redis)
+        public TestController(HouseMapContext context,RedisTool redis)
         {
-            _zuber = zuber;
             _context = context;
             _redis = redis;
         }

@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using HouseMap.Dao;
 using HouseMap.Dao.DBEntity;
-using HouseMap.Models;
+
 
 namespace HouseCrawler.Web.API.Controllers
 {

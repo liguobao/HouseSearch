@@ -7,87 +7,55 @@ using Newtonsoft.Json.Linq;
 using HouseMapAPI.Service;
 using HouseMap.Dao;
 using HouseMap.Dao.DBEntity;
-using HouseMap.Models;
+
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace HouseCrawler.Web.API.Controllers
 {
-    [Route("v1/[controller]/")]
-    public class HousesController : ControllerBase
+    [Route("v2/cities/")]
+    public class CitiesController : ControllerBase
     {
 
         private ConfigService _configService;
 
         private CrawlerConfigService _crawlerConfigService;
 
-        private HouseService _houseService;
-
-
-
-        public HousesController(HouseService houseService,
+        public CitiesController(
                               ConfigService configService,
                               CrawlerConfigService crawlerConfigService)
         {
-            _houseService = houseService;
             _configService = configService;
             _crawlerConfigService = crawlerConfigService;
         }
 
 
-
-        [HttpPost("", Name = "Search")]
         [EnableCors("APICors")]
-        public IActionResult Search([FromBody] HouseCondition search)
-        {
-            return Ok(new { success = true, data = _houseService.Search(search) });
-        }
-
-        [EnableCors("APICors")]
-        [HttpGet("dashboard")]
-        public IActionResult Dashboards()
-        {
-            return Ok(new
-            {
-                success = true,
-                data = _configService.LoadDashboard()
-            });
-        }
-
-        [EnableCors("APICors")]
-        [HttpGet("city-source")]
+        [HttpGet("")]
         public IActionResult LoadDashboards()
         {
-            // TODO
             var id = 1;
+            var city = HttpContext.Request.Query["city"];
             return Ok(new
             {
                 success = true,
-                data = _configService.LoadCitySources().Select(i => new
+                data = _configService.LoadCitySources(city).Select(i => new
                 {
                     id = id++,
                     city = i.Key,
-                    sources = i.Value.Where(c => !string.IsNullOrEmpty(c.DisplaySource))
+                    sources = i.Value
                 })
             });
         }
 
-
-
         [EnableCors("APICors")]
-        [HttpGet("cities")]
-        public IActionResult Cities()
+        [HttpGet("{city}")]
+        public IActionResult LoadSources(string city)
         {
-            var id = 1;
             return Ok(new
             {
                 success = true,
-                data = _configService.LoadConfigs()
-                .GroupBy(c => c.City).Select(i => new
-                {
-                    id = id++,
-                    name = i.Key
-                })
+                data = _configService.LoadCitySources(city).FirstOrDefault().Value
             });
         }
 
@@ -96,10 +64,9 @@ namespace HouseCrawler.Web.API.Controllers
         public IActionResult AddDouBanGroup([FromBody]JToken model)
         {
             string doubanGroup = model?["groupId"].ToString();
-            string cityName = model?["cityName"].ToString();
-            _crawlerConfigService.AddDoubanConfig(doubanGroup, cityName);
+            string city = model?["city"].ToString();
+            _crawlerConfigService.AddDoubanConfig(doubanGroup, city);
             return Ok(new { success = true });
         }
-
     }
 }

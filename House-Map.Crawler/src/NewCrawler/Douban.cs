@@ -15,7 +15,6 @@ using HouseMap.Crawler.Common;
 using Newtonsoft.Json.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using HouseMap.Models;
 using HouseMap.Common;
 using System.IO;
 using Microsoft.Extensions.Options;

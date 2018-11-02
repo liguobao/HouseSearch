@@ -5,7 +5,7 @@ using System.Text;
 using HouseMapAPI.CommonException;
 using HouseMap.Dao;
 using HouseMap.Dao.DBEntity;
-using HouseMap.Models;
+
 using HouseMap.Common;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;

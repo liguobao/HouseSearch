@@ -16,7 +16,7 @@ using HouseMap.Crawler.Common;
 using Newtonsoft.Json.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using HouseMap.Models;
+
 using HouseMap.Common;
 using HouseMap.Crawler.Service;
 
@@ -26,14 +26,12 @@ namespace HouseMap.Crawler
     public class Zuber : NewBaseCrawler, INewCrawler
     {
 
-        private readonly HouseDapper _oldHouseDapper;
         static string API_VERSION = "v3/";
         static string SCENE = "2567a5ec9705eb7ac2c984033e06189d";
-        public Zuber(NewHouseDapper houseDapper, ConfigDapper configDapper, HouseDapper oldHouseDapper, ElasticService elasticService)
+        public Zuber(NewHouseDapper houseDapper, ConfigDapper configDapper, ElasticService elasticService)
         : base(houseDapper, configDapper, elasticService)
         {
             this.Source = SourceEnum.Zuber;
-            _oldHouseDapper = oldHouseDapper;
         }
 
         public override string GetJsonOrHTML(DBConfig config, int page)
@@ -99,61 +97,6 @@ namespace HouseMap.Crawler
                 return (int)RentTypeEnum.Shared;
             return (int)RentTypeEnum.Undefined;
         }
-
-        public override void SyncHouses()
-        {
-            foreach (var config in _configDapper.LoadBySource(SourceEnum.Zuber.GetSourceName()))
-            {
-                LogHelper.RunActionNotThrowEx(() =>
-                {
-
-                    List<HouseInfo> oldHouses = _oldHouseDapper.SearchHouses(new HouseCondition()
-                    {
-                        Source = SourceEnum.Zuber.GetSourceName(),
-                        IntervalDay = 1000,
-                        HouseCount = 300000,
-                        CityName = config.City
-                    }).ToList();
-                    if (oldHouses == null)
-                    {
-                        return;
-                    }
-                    LogHelper.Info($"zuber {config.City} SyncHouse start,count={oldHouses.Count}");
-                    var houses = new List<DBHouse>();
-                    foreach (var house in oldHouses)
-                    {
-                        if (string.IsNullOrEmpty(house.HouseText) || !house.HouseText.Contains("room"))
-                        {
-                            var one = new DBHouse()
-                            {
-                                Id = Tools.GetUUId(),
-                                Title = house.HouseTitle,
-                                Text = house.HouseTitle,
-                                Location = house.HouseLocation,
-                                City = house.LocationCityName,
-                                PicURLs = house.PicURLs,
-                                Price = (int)house.HousePrice,
-                                RentType = ConvertToRentType(house.HouseTitle),
-                                PubTime = house.PubTime,
-                                CreateTime = house.DataCreateTime,
-                                Source = SourceEnum.HuZhuZuFang.GetSourceName(),
-                                OnlineURL = house.HouseOnlineURL,
-                            };
-                            houses.Add(one);
-                        }
-                        var newOne = ConvertHouse(config.City, JToken.Parse(house.HouseText));
-                        houses.Add(newOne);
-
-                    }
-                    var result = _houseDapper.BulkInsertHouses(houses);
-                    LogHelper.Info($"zuber {config.City} SyncHouse finish,result:{result}");
-                }, "SyncHouse", config);
-
-            }
-
-
-        }
-
 
         private static string GetPhotos(JToken room)
         {

@@ -11,7 +11,7 @@ using HouseMapAPI.Service;
 using HouseMapAPI.Filters;
 using HouseMap.Dao;
 using HouseMap.Dao.DBEntity;
-using HouseMap.Models;
+
 using HouseMap.Common;
 
 namespace HouseCrawler.Web.API.Controllers

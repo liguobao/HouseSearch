@@ -6,8 +6,6 @@ namespace HouseMap.Common
     public class AppSettings
     {
 
-        public string MySQLConnectionString { get; set; }
-
         public string QCloudMySQL { get; set; }
 
         public string RedisConnectionString { get; set; }

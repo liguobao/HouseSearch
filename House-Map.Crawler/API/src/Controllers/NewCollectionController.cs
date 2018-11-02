@@ -10,7 +10,7 @@ using HouseMapAPI.Service;
 using HouseMapAPI.Filters;
 using HouseMap.Dao;
 using HouseMap.Dao.DBEntity;
-using HouseMap.Models;
+
 using Newtonsoft.Json.Linq;
 
 namespace HouseCrawler.Web.API.Controllers

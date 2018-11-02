@@ -10,7 +10,6 @@ using HouseMap.Dao.DBEntity;
 using HouseMap.Crawler.Common;
 using HouseMap.Common;
 using Newtonsoft.Json.Linq;
-using HouseMap.Models;
 using HouseMap.Crawler.Service;
 
 namespace HouseMap.Crawler
@@ -19,13 +18,11 @@ namespace HouseMap.Crawler
     public class Mogu : NewBaseCrawler
     {
 
-        private readonly HouseDapper _oldHouseDapper;
 
-        public Mogu(NewHouseDapper houseDapper, ConfigDapper configDapper, HouseDapper oldHouseDapper,
-         ElasticService elastic) : base(houseDapper, configDapper,elastic)
+        public Mogu(NewHouseDapper houseDapper, ConfigDapper configDapper,ElasticService elastic) 
+        : base(houseDapper, configDapper,elastic)
         {
             this.Source = SourceEnum.Mogu;
-            _oldHouseDapper = oldHouseDapper;
         }
 
         public override string GetJsonOrHTML(DBConfig config, int page)
@@ -171,42 +168,5 @@ namespace HouseMap.Crawler
             }
 
         }
-
-        public override void SyncHouses()
-        {
-            foreach (var config in _configDapper.LoadBySource(SourceEnum.Mogu.GetSourceName()))
-            {
-                LogHelper.RunActionNotThrowEx(() =>
-                {
-
-                    List<HouseInfo> oldHouses = _oldHouseDapper.SearchHouses(new HouseCondition()
-                    {
-                        Source = SourceEnum.Mogu.GetSourceName(),
-                        IntervalDay = 1000,
-                        HouseCount = 300000,
-                        CityName = config.City
-                    }).ToList();
-                    if (oldHouses == null)
-                    {
-                        return;
-                    }
-                    LogHelper.Info($"Mogu {config.City} SyncHouse start,count={oldHouses.Count}");
-                    var houses = new List<DBHouse>();
-                    foreach (var house in oldHouses)
-                    {
-                        var newOne = ConvertHouse(config, JToken.Parse(house.HouseText));
-                        houses.Add(newOne);
-                    }
-                    var result = _houseDapper.BulkInsertHouses(houses);
-                    LogHelper.Info($"Mogu {config.City} SyncHouse finish,result:{result}");
-                }, "SyncHouse", config);
-
-            }
-
-
-        }
-
-
-
     }
 }

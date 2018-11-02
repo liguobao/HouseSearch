@@ -5,7 +5,7 @@ using System.Net.Mail;
 using System.Text;
 using HouseMap.Dao;
 using HouseMap.Dao.DBEntity;
-using HouseMap.Models;
+
 using HouseMapAPI.Service;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -17,11 +17,11 @@ namespace HouseMapAPI.Service
 
     public class CrawlerConfigService
     {
-        private HouseDataContext _dataContext;
+        private HouseMapContext _dataContext;
 
 
 
-        public CrawlerConfigService(HouseDataContext dataContext)
+        public CrawlerConfigService(HouseMapContext dataContext)
         {
             _dataContext = dataContext;
 
@@ -33,13 +33,13 @@ namespace HouseMapAPI.Service
             {
                 throw new Exception("请输入豆瓣小组Group和城市名称。");
             }
-            var topics = DoubanService.GetHouseData(groupId, cityName, 1);
-            if (topics == null)
+            var result = DoubanService.CheckDBGroupData(groupId, cityName, 1);
+            if (!result)
             {
                 throw new Exception("保存失败!请检查豆瓣小组ID（如：XMhouse）/城市名称（如：厦门）是否正确...");
             }
             var json = $"{{ 'groupid':'{groupId}','cityname':'{cityName}','pagecount':5}}";
-            if (_dataContext.Configs.Any(c => c.City == cityName && c.Source == ConstConfigName.Douban && c.Json == json))
+            if (_dataContext.Configs.Any(c => c.City == cityName && c.Source == SourceEnum.Douban.GetSourceName() && c.Json == json))
             {
                 return;
             }
@@ -48,7 +48,7 @@ namespace HouseMapAPI.Service
                 Id = Tools.GetUUId(),
                 Json = json,
                 City = cityName,
-                Source = ConstConfigName.Douban,
+                Source = SourceEnum.Douban.GetSourceName(),
                 CreateTime = DateTime.Now,
                 PageCount = 10
             };

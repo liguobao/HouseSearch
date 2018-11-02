@@ -10,7 +10,6 @@ using HouseMap.Dao.DBEntity;
 using HouseMap.Crawler.Common;
 using HouseMap.Common;
 using Newtonsoft.Json.Linq;
-using HouseMap.Models;
 using HouseMap.Crawler.Service;
 using System.Net;
 
@@ -20,12 +19,10 @@ namespace HouseMap.Crawler
     public class Huzhu : NewBaseCrawler
     {
 
-        private readonly HouseDapper _oldHouseDapper;
-        public Huzhu(NewHouseDapper houseDapper, ConfigDapper configDapper, HouseDapper oldHouseDapper, ElasticService elastic)
+        public Huzhu(NewHouseDapper houseDapper, ConfigDapper configDapper, ElasticService elastic)
         : base(houseDapper, configDapper, elastic)
         {
             this.Source = SourceEnum.HuZhuZuFang;
-            _oldHouseDapper = oldHouseDapper;
         }
 
         public override string GetJsonOrHTML(DBConfig config, int page)
@@ -62,48 +59,7 @@ namespace HouseMap.Crawler
             }
             return houseList;
         }
-
-        public override void SyncHouses()
-        {
-            List<HouseInfo> oldHouses = _oldHouseDapper.SearchHouses(new HouseCondition()
-            {
-                Source = SourceEnum.HuZhuZuFang.GetSourceName(),
-                IntervalDay = 1000,
-                HouseCount = 300000,
-                CityName = "上海"
-            }).ToList();
-            if (oldHouses == null)
-            {
-                return;
-            }
-            LogHelper.Info($"上海 SyncHouse start,count={oldHouses.Count}");
-            var houses = new List<DBHouse>();
-            foreach (var house in oldHouses)
-            {
-                var one = new DBHouse()
-                {
-                    Id = Tools.GetUUId(),
-                    Title = house.HouseTitle,
-                    Text = house.HouseLocation,
-                    Location = house.HouseLocation,
-                    City = house.LocationCityName,
-                    PicURLs = house.PicURLs,
-                    Price = (int)house.HousePrice,
-                    RentType = GetRentType(house.HouseLocation),
-                    PubTime = house.PubTime,
-                    CreateTime = house.DataCreateTime,
-                    Source = SourceEnum.HuZhuZuFang.GetSourceName(),
-                    OnlineURL = house.HouseOnlineURL,
-                };
-                houses.Add(one);
-            }
-            var result = _houseDapper.BulkInsertHouses(houses);
-            LogHelper.Info($"上海 SyncHouse finish,result:{result}");
-
-
-        }
-
-
+        
         private int GetRentType(string houseDesc)
         {
             if (houseDesc.Contains("一室一厅") || houseDesc.Contains("1室1厅") || houseDesc.Contains("一室户") || houseDesc.Contains("1室户"))

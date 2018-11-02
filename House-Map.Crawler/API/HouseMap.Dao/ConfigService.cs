@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using HouseMap.Models;
 using HouseMap.Dao;
 using HouseMap.Dao.DBEntity;
 using HouseMap.Common;
@@ -50,32 +49,6 @@ namespace HouseMap.Dao
         public List<DBConfig> LoadBySource(string source)
         {
             return _configDapper.LoadBySource(source);
-        }
-
-        //待废弃
-        public dynamic LoadDashboard()
-        {
-            var dashboards = _redisTool.ReadCache<dynamic>(RedisKey.CityDashboards.Key,
-             RedisKey.CityDashboards.DBName);
-            if (dashboards == null || dashboards.Count == 0)
-            {
-                var id = 1;
-                dashboards = LoadConfigs().Select(c => new HouseDashboard()
-                {
-                    CityName = c.City,
-                    HouseSum = 9999,
-                    Source = c.Source
-                }).GroupBy(d => d.CityName)
-                .Select(i => new
-                {
-                    id = id++,
-                    cityName = i.Key,
-                    sources = i.GroupBy(d => d.Source).Select(item => item.FirstOrDefault()).ToList()
-                });
-                _redisTool.WriteObject(RedisKey.CityDashboards.Key, dashboards, RedisKey.CityDashboards.DBName);
-            }
-            return dashboards;
-
         }
 
         public void BulkInsert(List<DBConfig> configs)

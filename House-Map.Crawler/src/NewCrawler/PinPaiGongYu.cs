@@ -14,7 +14,6 @@ using HouseMap.Dao.DBEntity;
 using HouseMap.Crawler.Common;
 
 using Newtonsoft.Json.Linq;
-using HouseMap.Models;
 using HouseMap.Crawler.Service;
 using HouseMap.Common;
 
@@ -24,7 +23,7 @@ namespace HouseMap.Crawler
     public class PinPaiGongYu : NewBaseCrawler
     {
 
-        public PinPaiGongYu(NewHouseDapper houseDapper, ConfigDapper configDapper, HouseDapper oldHouseDapper,
+        public PinPaiGongYu(NewHouseDapper houseDapper, ConfigDapper configDapper,
          ElasticService elastic) : base(houseDapper, configDapper, elastic)
         {
             this.Source = SourceEnum.PinPaiGongYu;
@@ -64,7 +63,7 @@ namespace HouseMap.Crawler
                 Title = $"{info["title"].ToString()}-{info["subTitle"].ToString()}",
                 OnlineURL = onlineUrl,
                 Location = info["areaName"]?.ToString() + info["districtCode"]?.ToString(),
-                Source = ConstConfigName.PinPaiGongYu,
+                Source = SourceEnum.PinPaiGongYu.GetSourceName(),
                 Price = housePrice,
                 Longitude = info["longitude"]?.ToString(),
                 Latitude = info["latitude"]?.ToString(),

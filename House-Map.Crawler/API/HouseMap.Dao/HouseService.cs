@@ -6,7 +6,6 @@ using System.Text;
 using HouseMap.Common;
 using HouseMap.Dao;
 using HouseMap.Dao.DBEntity;
-using HouseMap.Models;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Linq;
@@ -20,70 +19,19 @@ namespace HouseMap.Dao
 
         private RedisTool _redisTool;
 
-        private HouseDapper _houseDapper;
+
 
         private NewHouseDapper _newHouseDapper;
 
 
         private ConfigService _configService;
 
-        public HouseService(RedisTool RedisTool, HouseDapper houseDapper, ConfigService configService, NewHouseDapper newHouseDapper)
+        public HouseService(RedisTool RedisTool, ConfigService configService, NewHouseDapper newHouseDapper)
         {
             _redisTool = RedisTool;
-            _houseDapper = houseDapper;
             _configService = configService;
             _newHouseDapper = newHouseDapper;
         }
-
-        private IEnumerable<HouseInfo> DBSearch(HouseCondition condition)
-        {
-            // LogHelper.Info($"Search start,key:{condition.RedisKey}");
-            if (condition == null || condition.CityName == null)
-            {
-                throw new Exception("查询条件不能为null");
-            }
-            var houses = _redisTool.ReadCache<List<HouseInfo>>(condition.RedisKey, RedisKey.Houses.DBName);
-            if (houses == null || houses.Count == 0 || condition.Refresh)
-            {
-                houses = _houseDapper.SearchHouses(condition).ToList();
-                if (houses != null && houses.Count > 0)
-                {
-                    _redisTool.WriteObject(condition.RedisKey, houses, RedisKey.Houses.DBName);
-                }
-            }
-            return houses;
-        }
-
-
-        public IEnumerable<HouseInfo> Search(HouseCondition condition)
-        {
-            if (string.IsNullOrEmpty(condition.Source))
-            {
-                var houseList = new List<HouseInfo>();
-                // 获取当前城市的房源配置
-                var cityConfigs = _configService.LoadSources(condition.CityName);
-                var limitCount = condition.HouseCount / cityConfigs.Count;
-                foreach (var config in cityConfigs)
-                {
-                    //建荣家园数据质量比较差,默认不出
-                    if (config.Source == ConstConfigName.CCBHouse)
-                    {
-                        continue;
-                    }
-                    condition.Source = config.Source;
-                    condition.HouseCount = limitCount;
-                    houseList.AddRange(DBSearch(condition));
-                }
-                return houseList.OrderByDescending(h => h.PubTime);
-            }
-            else
-            {
-                return DBSearch(condition);
-            }
-        }
-
-
-
 
         private List<DBHouse> NewDBSearch(NewHouseCondition condition)
         {
@@ -120,7 +68,7 @@ namespace HouseMap.Dao
                 foreach (var config in cityConfigs)
                 {
                     //建荣家园数据质量比较差,默认不出
-                    if (config.Source == ConstConfigName.CCBHouse)
+                    if (config.Source == SourceEnum.CCBHouse.GetSourceName())
                     {
                         continue;
                     }
@@ -153,62 +101,6 @@ namespace HouseMap.Dao
             }
             return house;
         }
-
-
-
-        public void RefreshHouse()
-        {
-            LogHelper.Info("开始RefreshHouse...");
-            var sw = new System.Diagnostics.Stopwatch();
-            sw.Start();
-
-            var cityDashboards = _configService.LoadCitySources();
-            foreach (var item in cityDashboards)
-            {
-                //聚合房源的缓存,前600条数据
-                var search = new HouseCondition() { CityName = item.Key, HouseCount = 600, IntervalDay = 14, Refresh = true };
-                Search(search);
-                foreach (var dashboard in item.Value)
-                {
-                    //每类房源的默认缓存,前600条数据
-                    search.HouseCount = 600;
-                    search.Source = dashboard.Source;
-                    this.Search(search);
-
-                    // 为小程序做的缓存,每次拉10条,一共20页
-                    for (var page = 0; page <= 30; page++)
-                    {
-                        search.HouseCount = 20;
-                        search.Source = dashboard.Source;
-                        search.Page = page;
-                        this.Search(search);
-                    }
-                }
-                //为移动端做的缓存,每次拉180条,一共10页
-                for (var page = 0; page <= 10; page++)
-                {
-                    search.Source = "";
-                    search.HouseCount = 180;
-                    search.Page = page;
-                    this.Search(search);
-                }
-
-                //为小程序做的缓存,每次拉20条,一共30页
-                for (var page = 0; page <= 30; page++)
-                {
-                    search.Source = "";
-                    search.HouseCount = 20;
-                    search.Page = page;
-                    this.Search(search);
-                }
-            }
-
-            sw.Stop();
-            string copyTime = sw.Elapsed.TotalSeconds.ToString(CultureInfo.InvariantCulture);
-            LogHelper.Info("RefreshHouse结束，花费时间：" + copyTime);
-        }
-
-
 
         public void RefreshHouseV2()
         {

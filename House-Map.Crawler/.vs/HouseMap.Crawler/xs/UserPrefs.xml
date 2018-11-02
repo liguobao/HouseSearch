@@ -1,11 +1,7 @@
 ﻿<Properties StartupConfiguration="{23BEB612-5B9D-4A7A-B02E-836D049CAEF7}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="src/NewCrawler/DoubanWechat.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="src/HouseMap.Crawler.csproj">
     <Files>
-      <File FileName="src/Controllers/TestController.cs" Line="1" Column="32" />
-      <File FileName="src/Controllers/JobsController.cs" Line="1" Column="1" />
-      <File FileName="src/Controllers/CrawlerController.cs" Line="1" Column="1" />
-      <File FileName="src/Startup.cs" Line="79" Column="1" />
-      <File FileName="src/NewCrawler/DoubanWechat.cs" Line="1" Column="1" />
+      <File FileName="src/HouseMap.Crawler.csproj" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

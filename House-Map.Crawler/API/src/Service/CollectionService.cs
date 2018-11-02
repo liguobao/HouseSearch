@@ -6,7 +6,7 @@ using System.Net.Mail;
 using System.Text;
 using HouseMap.Dao;
 using HouseMap.Dao.DBEntity;
-using HouseMap.Models;
+
 using HouseMap.Common;
 using HouseMapAPI.CommonException;
 using HouseMapAPI.Service;
@@ -20,23 +20,20 @@ namespace HouseMapAPI.Service
 
     public class CollectionService
     {
-        private readonly HouseDataContext _context;
+        private readonly HouseMapContext _context;
 
         private readonly HouseService _houseService;
 
 
         private readonly NewHouseDapper _newHouseDapper;
 
-        private readonly UserCollectionService _userCollectionService;
 
-        public CollectionService(HouseDataContext context, HouseService houseService, UserCollectionService userCollectionService,
+        public CollectionService(HouseMapContext context, HouseService houseService,
         NewHouseDapper newHouseDapper)
         {
             _context = context;
             _houseService = houseService;
             _newHouseDapper = newHouseDapper;
-            _userCollectionService = userCollectionService;
-
         }
 
         public Object GetUserDashboards(long userId)
@@ -116,36 +113,6 @@ namespace HouseMapAPI.Service
             _context.UserCollections.Add(collection);
             _context.SaveChanges();
             return collection;
-        }
-
-
-
-        public void MigrationUserCollectionsData()
-        {
-            foreach (var user in _context.Users)
-            {
-                var collections = _userCollectionService.FindUserCollections(user.ID);
-                foreach (var house in collections)
-                {
-                    var newHouse = _newHouseDapper.FindByOnlineURL(house.HouseOnlineURL);
-                    if (newHouse == null)
-                    {
-                        continue;
-                    }
-                    var collection = new DBUserCollection();
-                    collection.Source = house.Source;
-                    collection.Title = newHouse.Title;
-                    collection.OnlineURL = newHouse.OnlineURL;
-                    collection.City = newHouse.City;
-                    collection.Id = Tools.GetUUId();
-                    collection.HouseID = newHouse.Id;
-                    collection.UserID = user.ID;
-                    collection.CreateTime = DateTime.Now;
-                    collection.HouseJson = JsonConvert.SerializeObject(newHouse);
-                    _context.UserCollections.Add(collection);
-                }
-            }
-            _context.SaveChanges();
         }
 
         public void RemoveOne(long userId, string collectionId)

@@ -17,9 +17,17 @@ namespace HouseMap.Dao
         }
         public DbSet<UserHouse> UserHouses { get; set; }
 
-         public DbSet<DoubanHouse> DoubanHouses { get; set; }
+        public DbSet<DoubanHouse> DoubanHouses { get; set; }
 
         public DbSet<DBUserCollection> UserCollections { get; set; }
+
+
+        public DbSet<DBConfig> Configs { get; set; }
+
+
+
+
+        public DbSet<UserInfo> Users { get; set; }
 
     }
 }

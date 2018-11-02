@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 using Nest;
 using System.Linq;
 using HouseMap.Crawler.Common;
-using HouseMap.Models;
+
 using HouseMap.Common;
 using HouseMap.Dao.DBEntity;
 using System.Reflection;

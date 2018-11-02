@@ -21,7 +21,7 @@ namespace HouseMap.Dao
 
         protected IDbConnection GetConnection()
         {
-            return new MySqlConnection(_appSettings.MySQLConnectionString);
+            return new MySqlConnection(_appSettings.QCloudMySQL);
         }
     }
 }

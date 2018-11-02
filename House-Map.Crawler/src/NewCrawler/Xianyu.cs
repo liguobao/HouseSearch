@@ -10,7 +10,6 @@ using HouseMap.Dao.DBEntity;
 using HouseMap.Crawler.Common;
 using HouseMap.Common;
 using Newtonsoft.Json.Linq;
-using HouseMap.Models;
 using HouseMap.Crawler.Service;
 using System.Net;
 
