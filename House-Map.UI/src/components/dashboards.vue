@@ -147,7 +147,7 @@
       async getData() {
         this.loading = true;
         if (this.dataType === 'all') {
-          const res = await this.$ajax.get('/houses/city-source');
+          const res = await this.$v2.get('/cities');
           let data = res.data;
           this.cities = data;
         } else {
