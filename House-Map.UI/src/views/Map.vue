@@ -1044,7 +1044,7 @@
 
                   let sourceContent = item.source ? " 来源：" + item.source : "";
                   let title = item.title;
-                  if (title) {
+                  if (!title) {
                     title = item.location;
                   }
 
