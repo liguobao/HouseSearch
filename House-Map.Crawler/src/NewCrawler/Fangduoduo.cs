@@ -114,9 +114,9 @@ namespace HouseMap.Crawler
         {
             var titleFields = new List<string>() { "districtName", "cellName", "direction" };
             var title = string.Join("-", titleFields.Select(f => room[f]?.ToString()).Where(v => !string.IsNullOrEmpty(v)));
-            if (!string.IsNullOrEmpty(room["roomType"].ToString()))
+            if (!string.IsNullOrEmpty(room["roomType"]?.ToString()))
             {
-                title = title + "-" + room["roomType"].ToString();
+                title = title + "-" + room["roomType"]?.ToString();
             }
 
             return title;
