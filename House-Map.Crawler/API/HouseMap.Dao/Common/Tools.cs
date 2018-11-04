@@ -86,14 +86,32 @@ namespace HouseMap.Common
             return System.Guid.NewGuid().ToString();
         }
 
-         public static int GetTimestamp()
+        public static int GetTimestamp()
         {
             return (int)(DateTime.Now.ToLocalTime() - new DateTime(1970, 1, 1).ToLocalTime()).TotalSeconds;
         }
 
         public static string GetSearchTimeStamp()
         {
-           return DateTime.Now.ToLocalTime().ToString("yyyyMMddHHmmss");
+            return DateTime.Now.ToLocalTime().ToString("yyyyMMddHHmmss");
+        }
+
+
+        public static DateTime UnixTimeStampToDateTime(double unixTimeStamp)
+        {
+            // Unix timestamp is seconds past epoch
+            System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+            dtDateTime = dtDateTime.AddSeconds(unixTimeStamp).ToLocalTime();
+            return dtDateTime;
+        }
+
+
+        public static DateTime JavaTimeStampToDateTime(double javaTimeStamp)
+        {
+            // Java timestamp is milliseconds past epoch
+            System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+            dtDateTime = dtDateTime.AddMilliseconds(javaTimeStamp).ToLocalTime();
+            return dtDateTime;
         }
     }
 
