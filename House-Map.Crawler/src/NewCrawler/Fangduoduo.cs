@@ -54,7 +54,7 @@ namespace HouseMap.Crawler
             request.AddHeader("origin", "https://m.fangdd.com");
             request.AddHeader("city-id", cityId);
             request.AddHeader("user-id", "0");
-            request.AddParameter("application/json;charset=UTF-8", "{\"cityId\":" + cityId + ",\"condition\":\"p" + page + "_i50_v3\"}", ParameterType.RequestBody);
+            request.AddParameter("application/json;charset=UTF-8", "{\"cityId\":" + cityId + ",\"condition\":\"p" + page + "_i50_v3_n2\"}", ParameterType.RequestBody);
             IRestResponse response = client.Execute(request);
             return response.Content;
         }
