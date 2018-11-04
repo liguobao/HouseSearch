@@ -32,15 +32,19 @@ namespace HouseMap.Crawler
         public override string GetJsonOrHTML(DBConfig config, int page)
         {
             var configJson = JToken.Parse(config.Json);
-            var fangPage = page + 1;
-            return GetHouseListResult(configJson["cityId"]?.ToString(), fangPage, configJson["pinyin"]?.ToString());
+            var condition = configJson["condition"]?.ToString();
+            if (string.IsNullOrEmpty(condition))
+            {
+                condition = "p1_i20_v3";
+            }
+            return GetHouseListResult(configJson["cityId"]?.ToString(), page, configJson["pinyin"]?.ToString(), condition);
         }
 
-        private static string GetHouseListResult(string cityId, int page, string pinyin)
+        private static string GetHouseListResult(string cityId, int page, string pinyin, string condition)
         {
             var client = new RestClient("https://m.fangdd.com/api/zufang/fetchRentList?cityId=121");
             var request = new RestRequest(Method.POST);
-            request.AddHeader("referer", $"https://m.fangdd.com/{pinyin}/zufang-list-v3/");
+            request.AddHeader("referer", $"https://m.fangdd.com/{pinyin}/zufang-list/");
             request.AddHeader("cache-control", "no-cache");
             request.AddHeader("accept", "application/json, text/plain, */*");
             request.AddHeader("content-type", "application/json;charset=UTF-8");
@@ -54,7 +58,8 @@ namespace HouseMap.Crawler
             request.AddHeader("origin", "https://m.fangdd.com");
             request.AddHeader("city-id", cityId);
             request.AddHeader("user-id", "0");
-            request.AddParameter("application/json;charset=UTF-8", "{\"cityId\":" + cityId + ",\"condition\":\"p" + page + "_i50_v3_n2\"}", ParameterType.RequestBody);
+            string query_condition = condition.Replace("p1", "p" + (page + 1));
+            request.AddParameter("application/json;charset=UTF-8", "{\"cityId\":" + cityId + ",\"condition\":\"" + query_condition + "\"}", ParameterType.RequestBody);
             IRestResponse response = client.Execute(request);
             return response.Content;
         }
