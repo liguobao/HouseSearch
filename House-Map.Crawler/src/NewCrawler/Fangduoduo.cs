@@ -117,8 +117,9 @@ namespace HouseMap.Crawler
 
         private static string GetTitle(JToken room)
         {
-            var titleFields = new List<string>() { "districtName", "cellName", "direction" };
+            var titleFields = new List<string>() { "districtName", "cellName" };
             var title = string.Join("-", titleFields.Select(f => room[f]?.ToString()).Where(v => !string.IsNullOrEmpty(v)));
+            title = title + "-朝" + room["direction"]?.ToString();
             if (!string.IsNullOrEmpty(room["roomType"]?.ToString()))
             {
                 title = title + "-" + room["roomType"]?.ToString();
