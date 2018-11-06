@@ -10,7 +10,7 @@
     <div>
       <ul class="houses">
         <li v-for="item in houses" :key="item.id">
-          <a @click="navTo({city:item.city,source:item.source,intervalDay:14,houseCount:600})"  :title="item.displaySource" href="javascript:;">{{item.displaySource}}({{item.score}})</a>
+          <a @click="navTo({city:item.city,source:item.source,intervalDay:14,houseCount:600})"  :title="item.displaySource" href="javascript:;">{{item.displaySource}}(9999+)</a>
         </li>
       </ul>
     </div>
