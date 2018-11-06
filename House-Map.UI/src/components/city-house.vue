@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-      :title="cityName"
+      :title="title"
       :width="isMobile ? '100%' : '900px'"
       center
       :visible="visible"
@@ -8,13 +8,43 @@
       :before-close="cancel"
   >
     <div>
-      sssss
-      {{aaaa}}
+      <ul class="houses">
+        <li v-for="item in houses" :key="item.id">
+          <a @click="navTo({city:item.city,source:item.source,intervalDay:14,houseCount:600})"  :title="item.displaySource" href="javascript:;">{{item.displaySource}}({{item.score}})</a>
+        </li>
+      </ul>
     </div>
   </el-dialog>
 </template>
 <style lang="scss" scoped>
-
+  @keyframes toUp {
+    0% {
+      opacity: 0;
+      transform: translateY(50%);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .houses{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    li{
+      margin-right: 30px;
+      margin-bottom: 15px;
+      a{
+        color: #409EFF;
+        font-size: 14px;
+      }
+    }
+  }
+  @for $i from 1 to 20 {
+    li:not(.is-mobile):nth-of-type(#{$i}) {
+      animation: toUp 0.5s (0.05s*$i) ease-out both;
+    }
+  }
 </style>
 <script>
   export default {
@@ -25,19 +55,15 @@
       isMobile: {
         default: false
       },
-      aaaa:{},
       title: {
-        default: '全部城市'
-      }
+        default: ''
+      },
+      navTo: {}
     },
     data() {
       return {
-        visible: true
-      }
-    },
-    computed:{
-      cityName() {
-        return this.title
+        visible: true,
+        houses: []
       }
     },
     methods: {
@@ -51,10 +77,15 @@
       cancel() {
         this.close();
         this.$emit('cancel', false);
+      },
+      async getList() {
+        if(!this.title) {return}
+        const data = await this.$v2.get(`/cities/${this.title}`);
+        this.houses = data.data;
       }
     },
     created() {
-      console.log(this.title)
+      this.getList();
     }
   }
 </script>

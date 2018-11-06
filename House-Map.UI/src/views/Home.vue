@@ -32,7 +32,7 @@
           <div class="city-item" v-for="item in cities" :key="item.name">
             <!--<a target="_blank" @click="navTo({city:item.cityname})" href="javascript:;"-->
             <!--class="highlight-name">{{item.name}}</a>-->
-            <a target="_blank" @click="showDashboards('all',item.name)" href="javascript:;"
+            <a target="_blank" @click="showCityHouse(item)" href="javascript:;"
                class="highlight-name">{{item.name}}</a>
             <div class="form" v-if="item.form && item.form.length">
               <a target="_blank"
@@ -150,7 +150,8 @@
         :visible="dashboardsVisible"
         :before-close="() => {toggleDialog('dashboardsVisible')}"
     >
-      <dashboards v-if="dashboardsVisible" :nav-to="navTo" :type="dashboardsType" :key="dashboardsType" :filterCity="filterCity" :is-mobile="isMobile"
+      <dashboards v-if="dashboardsVisible" :nav-to="navTo" :type="dashboardsType" :key="dashboardsType"
+                  :filterCity="filterCity" :is-mobile="isMobile"
                   :token="token"></dashboards>
     </el-dialog>
 
@@ -559,6 +560,8 @@
   import HouseSearchList from './../components/house-search-list';
   import userInfo from './../components/user-info';
 
+  const asyncComponent = require('./../components/async-component.js').default;
+
   export default {
     name: 'home',
     components: {
@@ -684,6 +687,23 @@
       }
     },
     methods: {
+      async showCityHouse(item) {
+        let com = require('./../components/city-house').default;
+        try {
+          await asyncComponent(com, {
+            props:{
+              title: item.cityname,
+              isMobile:this.isMobile,
+              navTo:this.navTo
+            }
+          }, (template) => {
+            this.view = template;
+          })
+        } catch (e) {
+          this.view = undefined;
+          // this.$message.error(e.message)
+        }
+      },
       closeCityDialog() {
         this.filterCity = '';
       },
@@ -717,10 +737,10 @@
             this.loginType = undefined;
           }
         }
-        if(!val) {
-          setTimeout(()=>{
+        if (!val) {
+          setTimeout(() => {
             this.closeCityDialog();
-          },300)
+          }, 300)
         }
         this[key] = val || false;
       },
