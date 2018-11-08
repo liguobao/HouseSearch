@@ -111,7 +111,9 @@ namespace HouseMap.Crawler
             services.AddScoped<INewCrawler, PinPaiGongYu>();
             services.AddScoped<INewCrawler, Xianyu>();
             services.AddScoped<INewCrawler, Fangduoduo>();
-            
+            services.AddScoped<INewCrawler, Fangtianxia>();
+
+
             #endregion
 
 

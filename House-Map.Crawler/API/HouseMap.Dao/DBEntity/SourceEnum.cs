@@ -53,6 +53,10 @@ namespace HouseMap.Dao.DBEntity
         Fangduoduo,
 
 
+
+        [Source("fangtianxia", "FangtianxiaHouse", "房天下")]
+        Fangtianxia,
+
     }
 
 
