@@ -112,7 +112,7 @@ namespace HouseMap.Crawler
             services.AddScoped<INewCrawler, Xianyu>();
             services.AddScoped<INewCrawler, Fangduoduo>();
             services.AddScoped<INewCrawler, Fangtianxia>();
-
+            services.AddScoped<INewCrawler, Hizhu>();
 
             #endregion
 

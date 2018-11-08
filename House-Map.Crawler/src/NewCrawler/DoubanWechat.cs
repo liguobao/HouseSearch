@@ -78,7 +78,7 @@ namespace HouseMap.Crawler
             {
                 DBHouse house = new DBHouse();
                 var onlineURL = $"https://fang.douban.com/topics/{topic["id"].ToString()}/";
-                house.Id = Tools.GetUUId();
+                house.Id = Tools.GetGuid();
                 house.OnlineURL = onlineURL;
                 var topicDetailJson = GetTopicDetail(topic["id"].ToString());
                 if (!string.IsNullOrEmpty(topicDetailJson))

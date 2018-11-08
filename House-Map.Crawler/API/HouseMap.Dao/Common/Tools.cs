@@ -1,6 +1,7 @@
 
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -81,7 +82,7 @@ namespace HouseMap.Common
         }
         #endregion
 
-        public static string GetUUId()
+        public static string GetGuid()
         {
             return System.Guid.NewGuid().ToString();
         }
@@ -112,6 +113,16 @@ namespace HouseMap.Common
             System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
             dtDateTime = dtDateTime.AddMilliseconds(javaTimeStamp).ToLocalTime();
             return dtDateTime;
+        }
+
+        public static string GetPicURLs(string picURL)
+        {
+            var img =  new List<string>();
+            if(!string.IsNullOrEmpty(picURL))
+            {
+                img.Add(picURL);
+            }
+            return Newtonsoft.Json.JsonConvert.SerializeObject(img);
         }
     }
 

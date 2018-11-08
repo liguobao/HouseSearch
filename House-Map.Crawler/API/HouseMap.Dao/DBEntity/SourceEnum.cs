@@ -57,6 +57,10 @@ namespace HouseMap.Dao.DBEntity
         [Source("fangtianxia", "FangtianxiaHouse", "房天下")]
         Fangtianxia,
 
+
+        [Source("hizhu", "HizhuHouse", "嗨住租房")]
+        Hizhu,
+
     }
 
 

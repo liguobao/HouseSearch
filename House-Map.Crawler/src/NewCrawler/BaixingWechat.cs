@@ -127,7 +127,7 @@ namespace HouseMap.Crawler
             try
             {
                 var house = new DBHouse();
-                house.Id = Tools.GetUUId();
+                house.Id = Tools.GetGuid();
                 house.Title = roomDetail["title"]?.ToString();
                 house.Location = roomDetail["address"]?.ToString();
                 house.Text = roomDetail["description"]?.ToString();

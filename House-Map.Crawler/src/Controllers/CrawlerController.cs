@@ -144,7 +144,7 @@ namespace HouseMap.Crawler.Controllers
                         }
                         var config = new DBConfig();
                         config.City = city["name"].ToString();
-                        config.Id = Tools.GetUUId();
+                        config.Id = Tools.GetGuid();
                         config.Json = "{'cityname': '" + city["name"].ToString() + "','shortcutname': '"
                         + city["url"].ToString().Replace("http://", "").Replace(".jiayuan.home.ccb.com", "")
                         + "','pagecount': 10,'APIKey':'cef8222092f74b95a8b24bc4a9e694a0'}";
@@ -178,7 +178,7 @@ namespace HouseMap.Crawler.Controllers
                     {
                         var config = new DBConfig();
                         config.City = city["name"].ToString();
-                        config.Id = Tools.GetUUId();
+                        config.Id = Tools.GetGuid();
                         config.Json = "{'areaId':'" + city["id"].ToString() + "','session':'$2y$10$Cz9H5ib/ZKh0UOZxVp2rCOeiBjK7Y7/ZmOuUipdZ65QPhms7DpGD2'}";
                         config.PageCount = 30;
                         config.Source = SourceEnum.BaixingWechat.GetSourceName();
@@ -189,7 +189,7 @@ namespace HouseMap.Crawler.Controllers
                 {
                     var config = new DBConfig();
                     config.City = item["name"].ToString();
-                    config.Id = Tools.GetUUId();
+                    config.Id = Tools.GetGuid();
                     config.Json = "{'areaId':'" + item["id"].ToString() + "','session':'$2y$10$Cz9H5ib/ZKh0UOZxVp2rCOeiBjK7Y7/ZmOuUipdZ65QPhms7DpGD2'}";
                     config.PageCount = 30;
                     config.Source = SourceEnum.BaixingWechat.GetSourceName();

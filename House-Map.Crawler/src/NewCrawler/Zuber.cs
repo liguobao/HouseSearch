@@ -82,7 +82,7 @@ namespace HouseMap.Crawler
                 JsonData = item.ToString(),
                 Tags = $"{room["subway_line"]?.ToString()}|{room["room_type_affirm"]?.ToString()}|{room["region"]?.ToString()}",
                 PubTime = room["last_modify_time"].ToObject<DateTime>(),
-                Id = Tools.GetUUId()
+                Id = Tools.GetGuid()
             };
             return house;
         }

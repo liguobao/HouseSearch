@@ -63,7 +63,7 @@ namespace HouseMap.Crawler
                 {
                     house.Location = card["cardData"]?["title"]?.ToString();
                 }
-                house.Id = Tools.GetUUId();
+                house.Id = Tools.GetGuid();
                 var price = 0;
                 int.TryParse(card["cardData"]["price"]?.ToString(), out price);
                 house.Price = price;

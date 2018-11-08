@@ -49,7 +49,7 @@ namespace HouseMap.Crawler
             {
                 DBHouse house = new DBHouse();
                 var onlineURL = GetHouseURL(rentHouse, citySortName);
-                house.Id = Tools.GetUUId();
+                house.Id = Tools.GetGuid();
                 house.OnlineURL = onlineURL;
                 house.Title = rentHouse["house_title"].ToString();
                 house.Price = GetPrice(rentHouse);

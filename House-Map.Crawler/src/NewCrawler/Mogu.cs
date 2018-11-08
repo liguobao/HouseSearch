@@ -71,7 +71,7 @@ namespace HouseMap.Crawler
         {
             return new DBHouse()
             {
-                Id = Tools.GetUUId(),
+                Id = Tools.GetGuid(),
                 Location = location,
                 Title = $"{room["title"].ToString()}【{room["subtitleNew"].ToString()}】",
                 OnlineURL = $"https://h5.mgzf.com/{GetRoomPath(room)}/{room["roomId"].ToString()}",

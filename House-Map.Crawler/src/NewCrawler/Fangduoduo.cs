@@ -94,7 +94,7 @@ namespace HouseMap.Crawler
                 house.Tags = string.Join("|", room["tagList"]);
                 house.Price = room["minPrice"].ToObject<int>();
                 house.PubTime = Tools.JavaTimeStampToDateTime(room["createTime"].ToObject<long>());
-                house.Id = Tools.GetUUId();
+                house.Id = Tools.GetGuid();
                 house.Text = GetText(room);
                 house.Source = SourceEnum.Fangduoduo.GetSourceName();
                 house.JsonData = room.ToString();

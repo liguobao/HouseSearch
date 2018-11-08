@@ -57,7 +57,7 @@ namespace HouseMap.Crawler
                     continue;
                 }
                 DBHouse houseInfo = new DBHouse();
-                houseInfo.Id = Tools.GetUUId();
+                houseInfo.Id = Tools.GetGuid();
                 houseInfo.OnlineURL = GetHouseOnlineURL(cityShortCutName, item);
                 houseInfo.Location = !string.IsNullOrEmpty(item?["address"]?.ToString()) ? item?["address"]?.ToString() : item?["haName"]?.ToString();
                 houseInfo.Title = item["headline"].ToObject<string>();

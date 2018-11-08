@@ -41,7 +41,7 @@ namespace HouseMapAPI.Service
             {
                 throw new UnProcessableException("7天只允许发布一条房源信息.");
             }
-            newOne.Id = Tools.GetUUId();
+            newOne.Id = Tools.GetGuid();
             _context.UserHouses.Add(newOne);
             _context.SaveChanges();
             return newOne;

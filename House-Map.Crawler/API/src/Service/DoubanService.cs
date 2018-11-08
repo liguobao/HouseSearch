@@ -60,7 +60,7 @@ namespace HouseMapAPI.Service
             string json = PreDataCheck(groupId, city);
             var config = new DBConfig()
             {
-                Id = Tools.GetUUId(),
+                Id = Tools.GetGuid(),
                 Json = json,
                 City = city,
                 Source = SourceEnum.Douban.GetSourceName(),

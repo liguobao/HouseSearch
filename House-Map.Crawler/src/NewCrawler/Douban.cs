@@ -117,7 +117,7 @@ namespace HouseMap.Crawler
             var photos = topic["photos"]?.Select(photo => photo["alt"].ToString()).ToList();
             var house = new DBHouse()
             {
-                Id = Tools.GetUUId(),
+                Id = Tools.GetGuid(),
                 Location = topic["title"].ToString(),
                 Title = topic["title"].ToString(),
                 OnlineURL = topic["share_url"].ToString(),

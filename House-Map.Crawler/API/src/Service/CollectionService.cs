@@ -105,7 +105,7 @@ namespace HouseMapAPI.Service
             collection.Title = house.Title;
             collection.OnlineURL = house.OnlineURL;
             collection.City = house.City;
-            collection.Id = Tools.GetUUId();
+            collection.Id = Tools.GetGuid();
             collection.HouseID = houseID;
             collection.UserID = userId;
             collection.CreateTime = DateTime.Now;

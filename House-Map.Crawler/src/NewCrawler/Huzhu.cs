@@ -41,7 +41,7 @@ namespace HouseMap.Crawler
             foreach (var item in resultJObject["houseList"])
             {
                 DBHouse house = new DBHouse();
-                house.Id = Tools.GetUUId();
+                house.Id = Tools.GetGuid();
                 var houseDesc = item["houseDescript"].ToObject<string>().Replace("😄", "");
                 var houseURL = $"http://www.huzhumaifang.com/Renting/house_detail/id/{item["houseId"]}.html";
                 house.OnlineURL = houseURL;

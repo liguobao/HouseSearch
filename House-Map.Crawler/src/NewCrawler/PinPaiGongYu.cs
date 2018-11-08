@@ -59,7 +59,7 @@ namespace HouseMap.Crawler
             var housePrice = int.Parse(info["minPrice"].ToString());
             var houseInfo = new DBHouse
             {
-                Id = Tools.GetUUId(),
+                Id = Tools.GetGuid(),
                 Title = $"{info["title"].ToString()}-{info["subTitle"].ToString()}",
                 OnlineURL = onlineUrl,
                 Location = info["areaName"]?.ToString() + info["districtCode"]?.ToString(),

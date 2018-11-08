@@ -71,7 +71,7 @@ namespace HouseMap.Crawler
             foreach (var element in xDoc.Element("houses").Elements().Where(e => e.Name == "houseinfo"))
             {
                 var house = new DBHouse();
-                house.Id = Tools.GetUUId();
+                house.Id = Tools.GetGuid();
                 var houseFields = element.Elements();
                 var houseId = GetFieldValue(houseFields, "houseid");
                 house.OnlineURL = $"http://{domain}/chuzu/1_{houseId}_-1.htm";
