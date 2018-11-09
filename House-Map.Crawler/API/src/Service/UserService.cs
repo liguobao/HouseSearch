@@ -54,10 +54,10 @@ namespace HouseMapAPI.Service
 
         }
 
-        public Tuple<string,UserInfo> Activated(string code)
+        public Tuple<string, UserInfo> Activated(string code)
         {
-            var userInfo = _context.Users.FirstOrDefault(u =>u.ActivatedCode == code);
-            if(userInfo ==null)
+            var userInfo = _context.Users.FirstOrDefault(u => u.ActivatedCode == code);
+            if (userInfo == null)
             {
                 throw new NotFoundException($"{code} invalid,user not found.");
             }
@@ -74,7 +74,7 @@ namespace HouseMapAPI.Service
             {
                 throw new Exception("用户名/用户邮箱不能为空.");
             }
-            var userInfo = _context.Users.FirstOrDefault(u => u.UserName == loginUser.UserName);
+            var userInfo = _context.Users.FirstOrDefault(u => u.UserName == loginUser.UserName || u.Email == loginUser.UserName);
             CheckLogin(loginUser, userInfo);
             string token = userInfo.NewLoginToken;
             WriteUserToken(userInfo, token);
@@ -130,7 +130,7 @@ namespace HouseMapAPI.Service
             var insertUser = new UserInfo();
             insertUser.Email = registerUser.Email;
             insertUser.UserName = registerUser.UserName;
-            insertUser.Password =Tools.GetMD5(registerUser.Password);
+            insertUser.Password = Tools.GetMD5(registerUser.Password);
             insertUser.ActivatedCode = activatecode;
             _context.Users.Add(insertUser);
             _context.SaveChanges();
