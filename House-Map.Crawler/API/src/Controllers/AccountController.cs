@@ -56,6 +56,14 @@ namespace HouseMapAPI.Controllers
             return Ok(new { success = true, token = result.Item1, message = "登录成功!", data = result.Item2 });
         }
 
+        [EnableCors("APICors")]
+        [HttpGet("activated/{code}", Name = "Activated")]
+        public ActionResult Activated(string code)
+        {
+            var result = _userService.Activated(code);
+            return Ok(new { success = true, token = result.Item1, message = "激活成功!", data = result.Item2 });
+        }
+
 
         [EnableCors("APICors")]
         [HttpPost("weixin", Name = "Weixin")]

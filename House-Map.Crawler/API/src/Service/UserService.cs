@@ -54,6 +54,20 @@ namespace HouseMapAPI.Service
 
         }
 
+        public Tuple<string,UserInfo> Activated(string code)
+        {
+            var userInfo = _context.Users.FirstOrDefault(u =>u.ActivatedCode == code);
+            if(userInfo ==null)
+            {
+                throw new NotFoundException($"{code} invalid,user not found.");
+            }
+            userInfo.Status = 1;
+            _context.SaveChanges();
+            string token = userInfo.NewLoginToken;
+            WriteUserToken(userInfo, token);
+            return Tuple.Create<string, UserInfo>(token, userInfo);
+        }
+
         public Tuple<string, UserInfo> Login(UserSave loginUser)
         {
             if (loginUser == null || string.IsNullOrEmpty(loginUser.UserName))
@@ -116,7 +130,7 @@ namespace HouseMapAPI.Service
             var insertUser = new UserInfo();
             insertUser.Email = registerUser.Email;
             insertUser.UserName = registerUser.UserName;
-            insertUser.Password = registerUser.Password;
+            insertUser.Password =Tools.GetMD5(registerUser.Password);
             insertUser.ActivatedCode = activatecode;
             _context.Users.Add(insertUser);
             _context.SaveChanges();
@@ -128,7 +142,7 @@ namespace HouseMapAPI.Service
             EmailInfo email = new EmailInfo();
             email.Body = $"Hi,{registerUser.UserName}. <br>欢迎您注册地图搜租房(woyaozufang.live),你的账号已经注册成功." +
             "<br/>为了保证您能正常体验网站服务，请点击下面的链接完成邮箱验证以激活账号."
-            + $"<br><a href='https://woyaozufang.live/Account/Activated?activatedCode={token}'>https://woyaozufang.live/Account/Activate?activatedCode={token}</a> "
+            + $"<br><a href='https://woyaozufang.live/#/Account/Activated?code={token}'>https://woyaozufang.live/#/Account/Activate?code={token}</a> "
             + "<br>如果您以上链接无法点击，您可以将以上链接复制并粘贴到浏览器地址栏打开."
             + "<br>此信由系统自动发出，系统不接收回信，因此请勿直接回复。" +
             "<br>如果有其他问题咨询请发邮件到codelover@qq.com.";
