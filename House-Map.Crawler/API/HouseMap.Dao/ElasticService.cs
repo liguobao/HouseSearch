@@ -7,14 +7,12 @@ using Elasticsearch.Net;
 using Microsoft.Extensions.Options;
 using Nest;
 using System.Linq;
-using HouseMap.Crawler.Common;
-
 using HouseMap.Common;
 using HouseMap.Dao.DBEntity;
 using System.Reflection;
 using RestSharp;
 
-namespace HouseMap.Crawler.Service
+namespace HouseMap.Dao
 {
 
     public class ElasticService
@@ -25,6 +23,9 @@ namespace HouseMap.Crawler.Service
         {
             this.configuration = configuration.Value;
         }
+
+
+        
 
 
         public void SaveHouses(List<DBHouse> houses)
@@ -41,19 +42,8 @@ namespace HouseMap.Crawler.Service
                 var index = elasticClient.IndexExists(houseIndex);
                 if (!index.Exists && index.IsValid)//判断索引是否存在和有效
                 {
-                    // //创建索引
-                    // elasticClient.CreateIndex(houseIndex, i => i
-                    //    .Settings(s => s.NumberOfShards(1).NumberOfReplicas(0))
-                    //    .Mappings(m => m.Map<DBHouse>(mm => mm
-                    //    .Properties(p=>p.Completion(c =>c.Name(n =>n.Text).Analyzer("ik_max_word").SearchAnalyzer("ik_max_word")))
-                    //    .Properties(p=>p.Completion(c =>c.Name(n =>n.Title).Analyzer("ik_max_word").SearchAnalyzer("ik_max_word")))
-                    //    .Properties(p=>p.Completion(c =>c.Name(n =>n.JsonData).Analyzer("ik_max_word").SearchAnalyzer("ik_max_word")))
-                    //     .Properties(p=>p.Completion(c =>c.Name(n =>n.City).Analyzer("ik_max_word").SearchAnalyzer("ik_max_word")))
-                    //    ))
-                    //    );
 
                     CreateIndex(houseIndex);
-
                     CreateMapping(houseIndex);
                 }
                 //批量创建索引和文档
