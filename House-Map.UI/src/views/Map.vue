@@ -1268,7 +1268,7 @@
           let data = info.data;
 
           if (process.env.NODE_ENV === "development") {
-            // data.length = 20;
+            data.length = 20;
           }
 
           // this.showRight = true;
@@ -1278,6 +1278,9 @@
           //   loading.close();
           // }, 1000 * 20);
           await this.addMaker(map, data, code, self);
+          if(this.$store.state.userInfo && this.$store.state.userInfo.workAddress){
+            this.search();
+          }
           // loading.close();
           this.loading = false;
         } catch (e) {
