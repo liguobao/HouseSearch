@@ -192,10 +192,9 @@
                     this.$emit('close', 'loginVisible', false);
                 } catch (e) {
                     if (e.message) {
-                        this.$message.success(e.message);
+                        this.$message.error(e.message);
                     }
                     this.loading = false;
-                    reject();
                     throw e
                 }
             },
@@ -212,10 +211,9 @@
                     this.$emit('close', 'loginVisible', false);
                 } catch (e) {
                     if (e.message) {
-                        this.$message.success(e.message);
+                        this.$message.error(e.message);
                     }
                     this.loading = false;
-                    reject();
                     throw e
                 }
             }
