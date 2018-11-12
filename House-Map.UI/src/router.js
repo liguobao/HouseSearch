@@ -39,6 +39,14 @@ const router = new Router({
         title: '邮件激活'
       },
       component: () => import('./views/activation-email.vue')
+    },
+    {
+      path: '/login',
+      name: 'login',
+      meta: {
+        title: '登录'
+      },
+      component: () => import('./views/login.vue')
     }
   ]
 });
