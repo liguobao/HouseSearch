@@ -815,7 +815,7 @@
           return
         }
       },
-      search() {
+      search(type) {
         let self = this;
         self.searching = true;
         self.arrivalRange = new AMap.ArrivalRange();
@@ -838,7 +838,7 @@
             self.map.setFitView();
             self.map.setZoomAndCenter(13, self.lnglat);
             self.searching = false;
-            if (gtag) {
+            if (gtag && type !== 'auto') {
               gtag('event', '出行到达圈查询(地点)', {
                 'event_category': self.keyword
               });
@@ -858,7 +858,8 @@
 
             }
           } else {
-            self.$message.error('未知错误');
+            console.log('未知错误')
+            // self.$message.error('未知错误');
             self.searching = false;
           }
         }, {
@@ -1303,9 +1304,9 @@
           //   loading.close();
           // }, 1000 * 20);
           await this.addMaker(map, data, code, self);
-          if (this.$store.state.userInfo && this.$store.state.userInfo.workAddress) {
-            this.search();
-          }
+          setTimeout(()=>{
+            this.search('auto');
+          });
           // loading.close();
           this.loading = false;
         } catch (e) {
