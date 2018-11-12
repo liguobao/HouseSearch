@@ -31,6 +31,14 @@ const router = new Router({
         title: '地图搜租房'
       },
       component: () => import('./views/Map.vue')
+    },
+    {
+      path: '/Account/Activated',
+      name: 'email',
+      meta: {
+        title: '邮件激活'
+      },
+      component: () => import('./views/activation-email.vue')
     }
   ]
 });
