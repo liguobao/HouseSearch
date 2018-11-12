@@ -26,7 +26,7 @@ namespace HouseMap.Dao
                 var queryText = @"SELECT 
                         *
                     FROM
-                        Config where 1=1 ";
+                        Config where 1=1 and score >=0 ";
                 if (!string.IsNullOrEmpty(city))
                 {
                     queryText = queryText + " and city =@city ";
