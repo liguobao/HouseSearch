@@ -772,6 +772,12 @@
           houseID: item.id,
           // source: item.source
         });
+        if (gtag) {
+          gtag('event', '收藏', {
+            'event_category': item.title,
+            label: item.city
+          });
+        }
         this.collection = false;
         this.makerInfo = undefined;
         if (this.isMobile) {
@@ -1337,7 +1343,7 @@
       await this.appendScript(url);
       await this.appendScript(`//webapi.amap.com/ui/1.0/main.js?v=1.0.11`);
 
-
+      gtag('event', '进入地图页');
       this.init();
 
     }
