@@ -41,7 +41,7 @@ const router = new Router({
       component: () => import('./views/activation-email.vue')
     },
     {
-      path: '/login',
+      path: '/user-login',
       name: 'login',
       meta: {
         title: '登录'
