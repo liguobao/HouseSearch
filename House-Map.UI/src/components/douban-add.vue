@@ -62,6 +62,11 @@
           await this.$v2.post(`/cities/douban`,{
             ...this.form
           });
+          if (gtag) {
+            gtag('event', '新增豆瓣租房小组', {
+              'event_category' : this.form.city
+            });
+          }
           this.$message.success('添加成功');
           this.form = {};
           setTimeout(() => {

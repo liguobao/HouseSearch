@@ -22,7 +22,8 @@
     </el-dialog>
     <el-form ref="form" :model="form" :label-width="isMobile ? '0px' : '130px'" class="form" :rules="rules">
       <el-form-item :label="isMobile ? '' : '地区'" prop="city">
-        <el-select v-model="form.city" placeholder="请选择地区" style="width: 100%"  @change="cityChange" filterable allow-create>
+        <el-select v-model="form.city" placeholder="请选择地区" style="width: 100%" @change="cityChange" filterable
+                   allow-create>
           <!--<el-option label="全部" value=""></el-option>-->
           <el-option
               v-for="item in cities"
@@ -221,6 +222,11 @@
           delete params.type;
           // params.city = params.cityName;
           // delete params.cityName;
+          if (gtag) {
+            gtag('event', '高级搜索', {
+              'event_category' : this.form.city
+            });
+          }
           this.getHousesList(params)
         } catch (e) {
           this.loading = false;

@@ -18,6 +18,11 @@
         const params = Object.assign({}, options);
         const data = await this.$ajax.get(`/account/callback?${this.$qs.stringify(params)}`);
         this.$store.dispatch('UserLogin', data);
+        if (gtag) {
+          gtag('event', 'QQ登录', {
+            'event_category' : data.data.userName
+          });
+        }
         this.$message.success('登录成功');
         this.fullscreenLoading = false;
         this.$router.replace('/')

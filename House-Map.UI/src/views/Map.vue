@@ -832,6 +832,25 @@
             self.map.setFitView();
             self.map.setZoomAndCenter(13, self.lnglat);
             self.searching = false;
+            if (gtag) {
+              gtag('event', '出行到达圈查询(地点)', {
+                'event_category': self.keyword
+              });
+              gtag('event', '出行到达圈查询(时间)', {
+                'event_category': self.times
+              });
+
+              let text = '地铁加公交';
+              if (self.waysMethod === 'SUBWAY') {
+                text = '地铁';
+              } else if (self.waysMethod === '') {
+                text = '公交';
+              }
+              gtag('event', '出行到达圈查询(方式)', {
+                'event_category': text
+              });
+
+            }
           } else {
             self.$message.error('未知错误');
             self.searching = false;
@@ -1278,7 +1297,7 @@
           //   loading.close();
           // }, 1000 * 20);
           await this.addMaker(map, data, code, self);
-          if(this.$store.state.userInfo && this.$store.state.userInfo.workAddress){
+          if (this.$store.state.userInfo && this.$store.state.userInfo.workAddress) {
             this.search();
           }
           // loading.close();
