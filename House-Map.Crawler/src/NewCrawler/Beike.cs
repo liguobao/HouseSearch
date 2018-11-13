@@ -54,8 +54,6 @@ namespace HouseMap.Crawler
                 house.Title = rentHouse["house_title"].ToString();
                 house.Price = GetPrice(rentHouse);
                 house.Location = !string.IsNullOrEmpty(rentHouse["resblock_name"]?.ToString()) ? rentHouse["resblock_name"].ToString() : rentHouse["desc"].ToString();
-                house.Latitude = "";
-                house.Longitude = "";
                 house.PubTime = DateTime.Now;
                 house.RentType = ConvertRentType(rentHouse["layout"].ToString());
                 house.Text = $"朝{rentHouse["frame_orientation"].ToString()},{rentHouse["layout"].ToString()}" + rentHouse["desc"].ToString();
@@ -69,6 +67,7 @@ namespace HouseMap.Crawler
                 house.PicURLs = JsonConvert.SerializeObject(new List<string>() { picURL });
                 houses.Add(house);
             }
+            FillGoodHouseLocation("be14a27875f9ab6686009795c0f6ab21", config.City, houses);
             return houses;
 
         }
