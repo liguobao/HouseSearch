@@ -80,6 +80,9 @@
               </el-dropdown-menu>
             </el-dropdown>
           </li>
+          <li>
+              <a href="https://blog.house-map.cn" target="_blank" class="nav-item">官方博客</a>
+          </li>
         </ul>
       </nav>
     </div>

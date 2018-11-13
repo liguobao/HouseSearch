@@ -594,9 +594,9 @@
             cityname: '上海',
             form: [
               {
-                name: '互助租房',
+                name: 'Zuber',
                 url: '',
-                source: 'huzhuzufang'
+                source: 'zuber'
               },
               {
                 name: '豆瓣',
@@ -604,9 +604,9 @@
                 source: 'douban'
               },
               {
-                name: 'Zuber',
+                name: '互助租房',
                 url: '',
-                source: 'zuber'
+                source: 'huzhuzufang'
               },
             ]
           },
