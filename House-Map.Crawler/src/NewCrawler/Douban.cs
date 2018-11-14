@@ -178,6 +178,7 @@ namespace HouseMap.Crawler
                         if (geocodes == null || geocodes.Count() == 0 && geocodes.Count() != houses.Count)
                         {
                             houses.ForEach(h => { h.Status = (int)HouseStatusEnum.Analyzed; });
+                            continue;
                         }
                         for (var index = 0; index < houses.Count(); index++)
                         {
