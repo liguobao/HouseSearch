@@ -177,7 +177,7 @@ namespace HouseMap.Crawler
                         JToken geocodes = GetGeocodes(city, houses);
                         if (geocodes == null || geocodes.Count() == 0 && geocodes.Count() != houses.Count)
                         {
-                            houses.ForEach(h =>{h.Status = (int)HouseStatusEnum.Analyzed;});
+                            houses.ForEach(h => { h.Status = (int)HouseStatusEnum.Analyzed; });
                         }
                         for (var index = 0; index < houses.Count(); index++)
                         {
@@ -188,7 +188,7 @@ namespace HouseMap.Crawler
                     }
                     catch (Exception ex)
                     {
-                        houses.ForEach(h =>{h.Status = (int)HouseStatusEnum.Analyzed;});
+                        houses.ForEach(h => { h.Status = (int)HouseStatusEnum.Analyzed; });
                         LogHelper.Error("AnalyzeHouse", ex, city);
                     }
                     finally
@@ -212,11 +212,19 @@ namespace HouseMap.Crawler
                 house.Tags = geocode["district"].ToString();
                 house.Status = (int)HouseStatusEnum.Analyzed;
             }
-            house.UpdateTime = DateTime.Now;
-            if (geocode["location"].ToString().Split(",").Count() < 2 && house.Price == 0)
+            else if (geocode["location"].ToString().Split(",").Count() < 2)
             {
-                house.Status = (int)HouseStatusEnum.Deleted;
+                if (house.Price == 0)
+                {
+                    house.Status = (int)HouseStatusEnum.Deleted;
+                }
+                else
+                {
+                    house.Status = (int)HouseStatusEnum.Analyzed;
+                }
             }
+
+            house.UpdateTime = DateTime.Now;
         }
 
 
