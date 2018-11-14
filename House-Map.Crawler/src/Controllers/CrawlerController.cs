@@ -109,7 +109,7 @@ namespace HouseMap.Crawler.Controllers
                 {
                     return Json(new { success = true, error = $"{source} not found" });
                 }
-                crawler.AnalyzeHouse(DateTime.Now.Date.AddDays(-day), DateTime.Now.Date.AddDays(1));
+                crawler.AnalyzeHouse(DateTime.Now.Date.AddDays(-day), DateTime.Now);
                 return Json(new { success = true });
             }
             catch (Exception ex)
