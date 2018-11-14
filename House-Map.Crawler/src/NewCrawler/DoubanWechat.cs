@@ -26,8 +26,8 @@ namespace HouseMap.Crawler
     public class DoubanWechat : NewBaseCrawler
     {
         private readonly AppSettings _appSettings;
-        public DoubanWechat(NewHouseDapper houseDapper, ConfigDapper configDapper, IOptions<AppSettings> configuration,ElasticService elasticsearch) 
-        : base(houseDapper, configDapper,elasticsearch)
+        public DoubanWechat(NewHouseDapper houseDapper, ConfigDapper configDapper, IOptions<AppSettings> configuration, ElasticService elasticsearch)
+        : base(houseDapper, configDapper, elasticsearch)
         {
             this.Source = SourceEnum.DoubanWechat;
             _appSettings = configuration.Value;
@@ -86,13 +86,16 @@ namespace HouseMap.Crawler
                     var topicDetail = JToken.Parse(topicDetailJson)?["data"];
                     house.Title = topicDetail["title"].ToString();
                     house.Price = topicDetail["rent_fee"].ToObject<int>();
-                    house.Location = topicDetail["district_tag"]["name"].ToString();
-                    house.Latitude = topicDetail["district_tag"]["latitude"].ToString();
-                    house.Longitude = topicDetail["district_tag"]["longitude"].ToString();
+                    house.Location = topicDetail["district_tag"]?["name"]?.ToString();
+                    house.Latitude = topicDetail["district_tag"]?["latitude"]?.ToString();
+                    house.Longitude = topicDetail["district_tag"]?["longitude"]?.ToString();
                     house.PubTime = topicDetail["create_time"].ToObject<DateTime>();
                     house.RentType = ConvertRentType(topicDetail["rent_type"].ToObject<int>(), topicDetail["house_type_display"].ToString());
                     house.Text = topicDetail["description"].ToString();
-                    house.Labels = string.Join("|", topicDetail["labels"].ToObject<List<string>>());
+                    if (!string.IsNullOrEmpty(topicDetail["labels"].ToString()))
+                    {
+                        house.Labels = string.Join("|", topicDetail["labels"].ToObject<List<string>>());
+                    }
                     house.Source = SourceEnum.DoubanWechat.GetSourceName();
                     house.JsonData = topicDetailJson;
                     house.City = config.City;

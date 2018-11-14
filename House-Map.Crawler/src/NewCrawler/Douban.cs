@@ -51,41 +51,11 @@ namespace HouseMap.Crawler
             var lowHouses = new List<DBHouse>();
             var goodHouses = new List<DBHouse>();
             FillHouses(resultJObject, config.City, lowHouses, goodHouses);
-            FillGoodHouseLocation(config.City, goodHouses);
+            // FillGoodHouseLocation(config.City, goodHouses);
             lowHouses.AddRange(goodHouses);
             return lowHouses;
         }
 
-        private static void FillGoodHouseLocation(string city, List<DBHouse> goodHouses)
-        {
-            for (int page = 0; page <= goodHouses.Count / 10; page++)
-            {
-                var dhHouses = goodHouses.Skip(page * 10).Take(10).ToList();
-                try
-                {
-                    if (dhHouses.Count == 0)
-                    {
-                        break;
-                    }
-                    JToken geocodes = GetGeocodes(city, dhHouses);
-                    if (geocodes == null || geocodes.Count() == 0 || geocodes.Count() != dhHouses.Count())
-                    {
-                        continue;
-                    }
-                    for (var index = 0; index < dhHouses.Count(); index++)
-                    {
-                        var house = dhHouses[index];
-                        var geocode = geocodes[index];
-                        FillHousePriceAndLocation(house, geocode);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    LogHelper.Error("AnalyzeHouse", ex, city);
-                }
-
-            }
-        }
 
         private void FillHouses(JObject resultJObject, string city, List<DBHouse> lowHouses, List<DBHouse> goodHouses)
         {
@@ -100,6 +70,7 @@ namespace HouseMap.Crawler
                 }
                 else
                 {
+                    house.Status = (int)HouseStatusEnum.Created;
                     goodHouses.Add(house);
                 }
             }
@@ -192,32 +163,37 @@ namespace HouseMap.Crawler
             {
                 LogHelper.Info($"AnalyzeHouse-{city}-start");
                 var houseQuery = _houseDataContext.DoubanHouses
-                .Where(h => h.Price == -1 && h.CreateTime >= fromDate.Date && h.CreateTime <= toDate.Date && h.City == city && h.Status == (int)HouseStatusEnum.Created);
+                .Where(h => h.CreateTime >= fromDate.Date && h.CreateTime <= toDate.Date && h.City == city && h.Status == (int)HouseStatusEnum.Created)
+                .OrderBy(h => h.CreateTime);
                 for (var page = 0; page <= 100; page++)
                 {
+                    var houses = houseQuery.Skip(page * 10).Take(10).ToList();
+                    if (houses.Count == 0)
+                    {
+                        break;
+                    }
                     try
                     {
-                        var houses = houseQuery.Skip(page * 10).Take(10).OrderBy(h => h.CreateTime).ToList();
-                        if (houses.Count == 0)
-                        {
-                            break;
-                        }
                         JToken geocodes = GetGeocodes(city, houses);
                         if (geocodes == null || geocodes.Count() == 0 && geocodes.Count() != houses.Count)
                         {
-                            continue;
+                            houses.ForEach(h =>{h.Status = (int)HouseStatusEnum.Analyzed;});
                         }
                         for (var index = 0; index < houses.Count(); index++)
                         {
                             var house = houses[index];
                             var geocode = geocodes[index];
-                            FillHousePriceAndText(house, geocode);
+                            FillHouseLocation(house, geocode);
                         }
-                        _houseDataContext.SaveChanges();
                     }
                     catch (Exception ex)
                     {
+                        houses.ForEach(h =>{h.Status = (int)HouseStatusEnum.Analyzed;});
                         LogHelper.Error("AnalyzeHouse", ex, city);
+                    }
+                    finally
+                    {
+                        _houseDataContext.SaveChanges();
                     }
 
                 }
@@ -226,7 +202,7 @@ namespace HouseMap.Crawler
 
         }
 
-        private static void FillHousePriceAndText(DoubanHouse house, JToken geocode)
+        private static void FillHouseLocation(DoubanHouse house, JToken geocode)
         {
             if (geocode["location"].ToString().Split(",").Count() == 2)
             {
@@ -234,9 +210,8 @@ namespace HouseMap.Crawler
                 house.Latitude = geocode["location"].ToString().Split(",")[1];
                 house.Location = geocode["formatted_address"].ToString();
                 house.Tags = geocode["district"].ToString();
+                house.Status = (int)HouseStatusEnum.Analyzed;
             }
-            house.Text = RemoveImgLabels(house.Text, house.Pictures.Count);
-            house.Price = GetHousePrice(house);
             house.UpdateTime = DateTime.Now;
             if (geocode["location"].ToString().Split(",").Count() < 2 && house.Price == 0)
             {
@@ -244,22 +219,6 @@ namespace HouseMap.Crawler
             }
         }
 
-        private static void FillHousePriceAndLocation(DBHouse house, JToken geocode)
-        {
-            if (geocode["location"].ToString().Split(",").Count() == 2)
-            {
-                house.Longitude = geocode["location"].ToString().Split(",")[0];
-                house.Latitude = geocode["location"].ToString().Split(",")[1];
-                house.Location = geocode["formatted_address"].ToString();
-                house.Tags = geocode["district"].ToString();
-            }
-            house.Text = RemoveImgLabels(house.Text, house.Pictures.Count);
-            house.UpdateTime = DateTime.Now;
-            if (geocode["location"].ToString().Split(",").Count() < 2 && house.Price == 0)
-            {
-                house.Status = (int)HouseStatusEnum.Deleted;
-            }
-        }
 
         private static JToken GetGeocodes(string city, List<DoubanHouse> houses)
         {
@@ -267,48 +226,21 @@ namespace HouseMap.Crawler
             {
                 return GetGeoText(h);
             }));
-            var client = new RestClient($"https://restapi.amap.com/v3/geocode/geo?address={address}&output=json&key=fed53efe358677305ad9a9cad2b93b8b&city={city}&batch=true");
+            var client = new RestClient($"https://restapi.amap.com/v3/geocode/geo?address={address}&output=json&key=478aea7d5ba0cfb604106db0a33c7119&city={city}&batch=true");
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
             var geocodes = JToken.Parse(response.Content)?["geocodes"];
             return geocodes;
         }
-
-        private static JToken GetGeocodes(string city, List<DBHouse> houses)
-        {
-            var address = string.Join("|", houses.Select(h =>
-            {
-                return GetGeoText(h);
-            }));
-            var client = new RestClient($"https://restapi.amap.com/v3/geocode/geo?address={address}&output=json&key=fed53efe358677305ad9a9cad2b93b8b&city={city}&batch=true");
-            var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
-            if (string.IsNullOrEmpty(response.Content))
-            {
-                LogHelper.Info("GetGeocodes error,response:" + response.ErrorMessage);
-                return null;
-            }
-            var geocodes = JToken.Parse(response.Content)?["geocodes"];
-            return geocodes;
-        }
-
 
         private static string GetGeoText(DoubanHouse h)
         {
-            var text = "";
-            if (!string.IsNullOrEmpty(h.Text) && !h.Text.Contains("www.douban.com"))
-            {
-                text = RemoveImgLabels(h.Text, h.Pictures.Count);
-                if (string.IsNullOrEmpty(text))
-                {
-                    text = h.Title;
-                }
-            }
-            else
+            var text = RemoveImgLabels(h.Text, h.Pictures.Count);
+            if (string.IsNullOrEmpty(text) || text.Contains("www.douban.com"))
             {
                 text = h.Title;
             }
-            text = text.Replace("\n", "").Replace("|", "");
+            text = Tools.RemoveSpecialCharacter(text.Replace("\n", "").Replace("|", "").Trim());
             if (text.Count() >= 100)
             {
                 return text.Substring(0, 100);
@@ -318,20 +250,12 @@ namespace HouseMap.Crawler
 
         private static string GetGeoText(DBHouse h)
         {
-            var text = "";
-            if (!string.IsNullOrEmpty(h.Text) && !h.Text.Contains("www.douban.com"))
-            {
-                text = RemoveImgLabels(h.Text, h.Pictures.Count);
-                if (string.IsNullOrEmpty(text))
-                {
-                    text = h.Title;
-                }
-            }
-            else
+            var text = RemoveImgLabels(h.Text, h.Pictures.Count);
+            if (string.IsNullOrEmpty(text) || text.Contains("www.douban.com"))
             {
                 text = h.Title;
             }
-            text = text.Replace("\n", "").Replace("|", "");
+            text = Tools.RemoveSpecialCharacter(text).Replace("\n", "").Replace("|", "").Trim();
             if (text.Count() >= 100)
             {
                 return text.Substring(0, 100);
@@ -341,22 +265,15 @@ namespace HouseMap.Crawler
 
         private static string RemoveImgLabels(string text, int picturesCount)
         {
+            if (string.IsNullOrEmpty(text))
+            {
+                return "";
+            }
             for (var index = 1; index <= picturesCount; index++)
             {
                 text = text.Replace($"<图片{index}>", "");
             }
             return text.Replace("|", "");
-        }
-
-        private static int GetHousePrice(DoubanHouse house)
-        {
-            var price = JiebaTools.GetHousePrice(house.Title);
-            if (price == 0 && !string.IsNullOrEmpty(house.Text))
-            {
-                price = JiebaTools.GetHousePrice(house.Text);
-            }
-
-            return price;
         }
 
         private static int GetHousePrice(DBHouse house)

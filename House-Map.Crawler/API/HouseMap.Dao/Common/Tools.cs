@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace HouseMap.Common
 {
@@ -117,12 +118,17 @@ namespace HouseMap.Common
 
         public static string GetPicURLs(string picURL)
         {
-            var img =  new List<string>();
-            if(!string.IsNullOrEmpty(picURL))
+            var img = new List<string>();
+            if (!string.IsNullOrEmpty(picURL))
             {
                 img.Add(picURL);
             }
             return Newtonsoft.Json.JsonConvert.SerializeObject(img);
+        }
+
+        public static string RemoveSpecialCharacter(string hexData)
+        {
+            return Regex.Replace(hexData, "[ \\[ \\] \\^ \\-_*×――(^)$%~!@#$…&%￥—+=<>《》!！??？:：•`·、。，；,.;\"‘’“”-]", "");
         }
     }
 

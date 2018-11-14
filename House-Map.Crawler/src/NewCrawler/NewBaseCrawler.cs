@@ -26,7 +26,7 @@ namespace HouseMap.Crawler
         protected ElasticService _elasticService;
 
 
-        public NewBaseCrawler(NewHouseDapper houseDapper, ConfigDapper configDapper,ElasticService elasticService)
+        public NewBaseCrawler(NewHouseDapper houseDapper, ConfigDapper configDapper, ElasticService elasticService)
         {
             this._houseDapper = houseDapper;
             this._configDapper = configDapper;
@@ -84,7 +84,7 @@ namespace HouseMap.Crawler
 
 
 
-        protected void FillGoodHouseLocation(string key,string city, List<DBHouse> goodHouses)
+        protected void FillGoodHouseLocation(string key, string city, List<DBHouse> goodHouses)
         {
             for (int page = 0; page <= goodHouses.Count / 10; page++)
             {
@@ -95,7 +95,7 @@ namespace HouseMap.Crawler
                     {
                         break;
                     }
-                    JToken geocodes = GetGeocodes(key,city, dhHouses);
+                    JToken geocodes = GetGeocodes(key, city, dhHouses);
                     if (geocodes == null || geocodes.Count() == 0 || geocodes.Count() != dhHouses.Count())
                     {
                         continue;
@@ -131,11 +131,11 @@ namespace HouseMap.Crawler
             }
         }
 
-        private static JToken GetGeocodes(string key,string city, List<DBHouse> houses)
+        private static JToken GetGeocodes(string key, string city, List<DBHouse> houses)
         {
             var address = string.Join("|", houses.Select(h =>
             {
-                return h.Title.Replace("|", "").Replace(" ", "").Trim();
+                return Tools.RemoveSpecialCharacter(h.Title.Replace("|", "").Replace(" ", "").Trim());
             }));
             var client = new RestClient($"https://restapi.amap.com/v3/geocode/geo?address={address}&output=json&key={key}&city={city}&batch=true");
             var request = new RestRequest(Method.GET);
@@ -143,6 +143,6 @@ namespace HouseMap.Crawler
             var geocodes = JToken.Parse(response.Content)?["geocodes"];
             return geocodes;
         }
-  
+
     }
 }
