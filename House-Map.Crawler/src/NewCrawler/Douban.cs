@@ -175,7 +175,7 @@ namespace HouseMap.Crawler
                     try
                     {
                         JToken geocodes = GetGeocodes(city, houses);
-                        if (geocodes == null || geocodes.Count() == 0 && geocodes.Count() != houses.Count)
+                        if (geocodes == null || geocodes.Count() == 0 || geocodes.Count() != houses.Count)
                         {
                             houses.ForEach(h => { h.Status = (int)HouseStatusEnum.Analyzed; });
                             continue;
