@@ -113,6 +113,10 @@
             <span>邮件: </span><em>codelover@qq.com</em>
           </div>
         </div>
+        <div class="ewm">
+          <img src="./../images/ewm.jpg"/>
+          <span>( 关注 安得广夏千万屋 微信公众号 )</span>
+        </div>
       </div>
     </div>
     <footer>
@@ -122,20 +126,20 @@
           <a href="http://www.miitbeian.gov.cn/" class="highlight-name" target="_blank">粤ICP备18055424号</a>
           <a href="/" class="highlight-name">地图搜租房</a>
         </div>
-        <div class="call-me">
-          <el-tooltip class="item" effect="dark" content="88888888" placement="top">
-            <i class="iconfont icon-icon highlight-name"></i>
-          </el-tooltip>
-          <el-tooltip class="item" effect="dark" content="138-0000-0000" placement="top">
-            <i class="iconfont icon-dianhua highlight-name"></i>
-          </el-tooltip>
-          <el-tooltip class="item" effect="dark" content="138-0000-0000" placement="top">
-            <i class="iconfont icon-changyonglogo28 highlight-name"></i>
-          </el-tooltip>
-          <el-tooltip class="item" effect="dark" content="codelover@qq.com" placement="top">
-            <i class="iconfont icon-jianzhuanquan- highlight-name"></i>
-          </el-tooltip>
-        </div>
+        <!--<div class="call-me">-->
+          <!--<el-tooltip class="item" effect="dark" content="88888888" placement="top">-->
+            <!--<i class="iconfont icon-icon highlight-name"></i>-->
+          <!--</el-tooltip>-->
+          <!--<el-tooltip class="item" effect="dark" content="138-0000-0000" placement="top">-->
+            <!--<i class="iconfont icon-dianhua highlight-name"></i>-->
+          <!--</el-tooltip>-->
+          <!--<el-tooltip class="item" effect="dark" content="138-0000-0000" placement="top">-->
+            <!--<i class="iconfont icon-changyonglogo28 highlight-name"></i>-->
+          <!--</el-tooltip>-->
+          <!--<el-tooltip class="item" effect="dark" content="codelover@qq.com" placement="top">-->
+            <!--<i class="iconfont icon-jianzhuanquan- highlight-name"></i>-->
+          <!--</el-tooltip>-->
+        <!--</div>-->
       </div>
     </footer>
 
@@ -286,6 +290,20 @@
     overflow: auto;
   }
 
+  .ewm{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin: 25px 0 0 0;
+    align-items: center;
+    img{
+      width: 150px;
+    }
+    span{
+      font-size: 12px;
+      margin-top: 10px;
+    }
+  }
   .header {
     position: fixed;
     top: 25px;
