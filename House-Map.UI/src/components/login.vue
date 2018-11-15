@@ -84,6 +84,10 @@
         <el-button type="text" @click="type = 'register'">注册</el-button>
       </template>
     </div>
+    <div class="line"></div>
+    <div class="third-party">
+      <a :href="oauthUrl ? oauthUrl : 'javascript:'"><i class="iconfont icon-icon highlight-name"></i></a>
+    </div>
   </div>
 </template>
 <style scoped lang="scss">
@@ -113,6 +117,27 @@
       word-break: break-all;
     }
   }
+
+  .line{
+    margin: 20px auto;
+    background: #dcdfe6;
+    height: 1px;
+    width: 80%;
+  }
+  .third-party{
+    text-align: center;
+    a{
+      color: inherit;
+    }
+    i{
+      cursor: pointer;
+      font-size: 24px;
+      transition: all 0.3s;
+      &:hover{
+        color: #409EFF;
+      }
+    }
+  }
 </style>
 <script>
   export default {
@@ -136,6 +161,7 @@
         form: {
           checked: true,
         },
+        oauthUrl:undefined,
         type: this.loginType ? this.loginType : 'login',
         terms: false,
         rules: (() => {
@@ -222,6 +248,10 @@
           throw e
         }
       }
+    },
+    async created() {
+      const data = await this.$ajax.get('/account/oauth-url');
+      this.oauthUrl = data.url;
     }
   }
 </script>
