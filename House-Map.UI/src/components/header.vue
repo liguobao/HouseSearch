@@ -98,7 +98,7 @@
         <el-collapse accordion>
           <el-collapse-item :title="historyTitle(item)" :name="item.id" v-for="item in historyNotices"
                             :key="item.id">
-            <div class="history-notices-item">{{item.content}}</div>
+            <div class="history-notices-item"  v-html='item.content'></div>
           </el-collapse-item>
         </el-collapse>
       </div>

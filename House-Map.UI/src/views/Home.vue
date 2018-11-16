@@ -26,7 +26,7 @@
         <h3 class="sub-title">这是什么？</h3>
         <p class="text">
           通过实时爬虫获取公开租房信息，直接在高德地图上直观展示房源位置+基础信息，同时提供住址到公司的路线计算（公交+地图 or
-          步行导航），已实现【豆瓣租房小组】、【Zuber合租平台】、【蘑菇租房】、【CCB建融家园】、【58同城品牌公寓】、【58同城诚信租房】、【上海互助租房】数据展示，部分房源价格支持筛选功能。
+          步行导航），已实现【豆瓣租房小组】、【豆瓣租房小程序】、【Zuber合租】、【蘑菇租房】、【CCB建融家园】、【58同城品牌公寓】、【Hi住租房】、【房多多】、【贝壳租房】、【v2ex租房帖子】、【上海互助租房】等房源信息数据爬取，部分房源价格支持筛选功能。
         </p>
         <div class="cities">
           <div class="city-item" v-for="item in cities" :key="item.name">
@@ -99,7 +99,7 @@
     </div>
     <div class="contact " ref="contact">
       <div>
-        <p>联系我？试试下面的方式咯。</p>
+        <p>有更好的房源平台推荐?想吐槽一下网站内容?可以通过一下方式联系我啦.</p>
         <div class="ways">
           <div>
             <span>知乎: </span>
@@ -107,7 +107,7 @@
           </div>
           <div>
             <span>GitHub: </span>
-            <a href="https://github.com/liguobao/58HouseSearch" class="highlight-name" target="_blank">58HouseSearch</a>
+            <a href="https://github.com/liguobao/58HouseSearch" class="highlight-name" target="_blank">liguobao/58HouseSearch</a>
           </div>
           <div>
             <span>邮件: </span><em>codelover@qq.com</em>
@@ -115,7 +115,7 @@
         </div>
         <div class="ewm">
           <img src="./../images/ewm.jpg"/>
-          <span>( 关注 安得广夏千万屋 微信公众号 )</span>
+          <span>( 欢迎关注【安得广夏千万屋】微信公众号获取租房技巧/体验地图搜租房小程序/房源精选. )</span>
         </div>
       </div>
     </div>
