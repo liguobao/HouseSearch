@@ -83,29 +83,49 @@ namespace HouseMap.Crawler
                 var topicDetailJson = GetTopicDetail(topic["id"].ToString());
                 if (!string.IsNullOrEmpty(topicDetailJson))
                 {
-                    var topicDetail = JToken.Parse(topicDetailJson)?["data"];
-                    house.Title = topicDetail["title"].ToString();
-                    house.Price = topicDetail["rent_fee"].ToObject<int>();
-                    house.Location = topicDetail["district_tag"]?["name"]?.ToString();
-                    house.Latitude = topicDetail["district_tag"]?["latitude"]?.ToString();
-                    house.Longitude = topicDetail["district_tag"]?["longitude"]?.ToString();
-                    house.PubTime = topicDetail["create_time"].ToObject<DateTime>();
-                    house.RentType = ConvertRentType(topicDetail["rent_type"].ToObject<int>(), topicDetail["house_type_display"].ToString());
-                    house.Text = topicDetail["description"].ToString();
-                    if (!string.IsNullOrEmpty(topicDetail["labels"].ToString()))
-                    {
-                        house.Labels = string.Join("|", topicDetail["labels"].ToObject<List<string>>());
-                    }
-                    house.Source = SourceEnum.DoubanWechat.GetSourceName();
-                    house.JsonData = topicDetailJson;
-                    house.City = config.City;
-                    house.CreateTime = DateTime.Now;
-                    house.Tags = $"{topicDetail["house_type_display"]?.ToString()}|{topicDetail["direction_display"]?.ToString()}|{topicDetail["topic_kind_display"]?.ToString()}";
-                    house.PicURLs = JsonConvert.SerializeObject(topicDetail["photos"].Select(item => item["large_picture_url"].ToString()));
-                    houses.Add(house);
+                    FillHouse(config.City, houses, house, topicDetailJson);
                 }
             }
             return houses;
+
+        }
+
+        private void FillHouse(string city, List<DBHouse> houses, DBHouse house, string topicDetailJson)
+        {
+            try
+            {
+                var topicDetail = JToken.Parse(topicDetailJson)?["data"];
+                house.Title = topicDetail["title"].ToString();
+                if (!string.IsNullOrEmpty(topicDetail["rent_fee"]?.ToString()))
+                {
+                    house.Price = topicDetail["rent_fee"].ToObject<int>();
+                }
+                if (!string.IsNullOrEmpty(topicDetail["district_tag"]?.ToString()))
+                {
+                    house.Location = topicDetail["district_tag"]?["name"]?.ToString();
+                    house.Latitude = topicDetail["district_tag"]?["latitude"]?.ToString();
+                    house.Longitude = topicDetail["district_tag"]?["longitude"]?.ToString();
+                }
+                house.PubTime = topicDetail["create_time"].ToObject<DateTime>();
+                house.RentType = ConvertRentType(topicDetail["rent_type"].ToObject<int>(), topicDetail["house_type_display"].ToString());
+                house.Text = topicDetail["description"].ToString();
+                if (!string.IsNullOrEmpty(topicDetail["labels"].ToString()))
+                {
+                    house.Labels = string.Join("|", topicDetail["labels"].ToObject<List<string>>());
+                }
+                house.Source = SourceEnum.DoubanWechat.GetSourceName();
+                house.JsonData = topicDetailJson;
+                house.City = city;
+                house.CreateTime = DateTime.Now;
+                house.Tags = $"{topicDetail["house_type_display"]?.ToString()}|{topicDetail["direction_display"]?.ToString()}|{topicDetail["topic_kind_display"]?.ToString()}";
+                house.PicURLs = JsonConvert.SerializeObject(topicDetail["photos"].Select(item => item["large_picture_url"].ToString()));
+                houses.Add(house);
+
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error("FillHouse fail", ex, topicDetailJson);
+            }
 
         }
 

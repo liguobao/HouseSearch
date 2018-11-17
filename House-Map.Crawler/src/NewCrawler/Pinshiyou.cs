@@ -29,7 +29,7 @@ namespace HouseMap.Crawler
         {
             var jsonData = JToken.Parse(config.Json);
             var city = config.City;
-            var offset = page * 10 + 1000;
+            var offset = page * 10;
             return GetData(city, offset);
         }
 
