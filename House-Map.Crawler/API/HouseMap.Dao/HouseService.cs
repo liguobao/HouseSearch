@@ -67,11 +67,6 @@ namespace HouseMap.Dao
                 var limitCount = condition.Size / cityConfigs.Count;
                 foreach (var config in cityConfigs)
                 {
-                    //建荣家园数据质量比较差,默认不出
-                    if (config.Source == SourceEnum.CCBHouse.GetSourceName())
-                    {
-                        continue;
-                    }
                     condition.Source = config.Source;
                     condition.Size = limitCount;
                     houseList.AddRange(NewDBSearch(condition));
@@ -113,15 +108,23 @@ namespace HouseMap.Dao
             {
                 //聚合房源的缓存,前600条数据
                 var search = new NewHouseCondition() { City = item.Key, Size = 600, IntervalDay = 14, Refresh = true };
-                NewSearch(search);
+                for (var page = 0; page <= 5; page++)
+                {
+                    search.Page = page;
+                    NewSearch(search);
+                }
                 foreach (var dashboard in item.Value)
                 {
-                    //每类房源的默认缓存,前600条数据
-                    search.Size = 600;
-                    search.Source = dashboard.Source;
-                    NewSearch(search);
+                    //指定来源,每次拉600条,
+                    for (var page = 0; page <= 3; page++)
+                    {
+                        search.Size = 600;
+                        search.Page = page;
+                        search.Source = dashboard.Source;
+                        NewSearch(search);
+                    }
 
-                    // 为小程序做的缓存,每次拉10条,一共20页
+                    // 指定来源,每次拉20条,前30页
                     for (var page = 0; page <= 30; page++)
                     {
                         search.Size = 20;
@@ -130,7 +133,7 @@ namespace HouseMap.Dao
                         this.NewSearch(search);
                     }
                 }
-                //为移动端做的缓存,每次拉180条,一共10页
+                //无指定来源,每次拉180条,一共10页
                 for (var page = 0; page <= 10; page++)
                 {
                     search.Source = "";
@@ -139,7 +142,7 @@ namespace HouseMap.Dao
                     this.NewSearch(search);
                 }
 
-                //为小程序做的缓存,每次拉20条,一共30页
+                //无指定来源,每次拉20条,一共30页
                 for (var page = 0; page <= 30; page++)
                 {
                     search.Source = "";
@@ -148,7 +151,6 @@ namespace HouseMap.Dao
                     this.NewSearch(search);
                 }
             }
-
             sw.Stop();
             string copyTime = sw.Elapsed.TotalSeconds.ToString(CultureInfo.InvariantCulture);
             LogHelper.Info("RefreshHouseV2结束，花费时间：" + copyTime);

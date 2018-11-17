@@ -96,8 +96,11 @@
     >
       <div class="history-notices">
         <el-collapse accordion>
-          <el-collapse-item :title="historyTitle(item)" :name="item.id" v-for="item in historyNotices"
+          <el-collapse-item :name="item.id" v-for="item in historyNotices"
                             :key="item.id">
+              <template slot="title">
+                <div v-html="historyTitle(item)"></div>
+              </template>
             <div class="history-notices-item"  v-html='item.content'></div>
           </el-collapse-item>
         </el-collapse>
@@ -250,7 +253,7 @@
         window.open(href, '_blank');
       },
       historyTitle(item) {
-        const name = item.content.slice(0, 40);
+        const name = item.content.slice(0, 80);
         const time = this.$transformData(item.dataCreateTime, 'yyyy-MM-dd hh:mm:ss')
         return `${name}... (${time})`
       },
