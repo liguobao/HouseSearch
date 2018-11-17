@@ -106,16 +106,10 @@ namespace HouseMap.Dao
             var cityDashboards = _configService.LoadCitySources();
             foreach (var item in cityDashboards)
             {
-                //聚合房源的缓存,前600条数据
                 var search = new NewHouseCondition() { City = item.Key, Size = 600, IntervalDay = 14, Refresh = true };
-                for (var page = 0; page <= 5; page++)
-                {
-                    search.Page = page;
-                    NewSearch(search);
-                }
                 foreach (var dashboard in item.Value)
                 {
-                    //指定来源,每次拉600条,
+                    //指定来源,每次拉600条,一般用于地图页
                     for (var page = 0; page <= 3; page++)
                     {
                         search.Size = 600;
@@ -124,7 +118,7 @@ namespace HouseMap.Dao
                         NewSearch(search);
                     }
 
-                    // 指定来源,每次拉20条,前30页
+                    // 指定来源,每次拉20条,前30页,一般用于小程序/移动端列表页
                     for (var page = 0; page <= 30; page++)
                     {
                         search.Size = 20;
@@ -133,7 +127,31 @@ namespace HouseMap.Dao
                         this.NewSearch(search);
                     }
                 }
-                //无指定来源,每次拉180条,一共10页
+            }
+            sw.Stop();
+            string copyTime = sw.Elapsed.TotalSeconds.ToString(CultureInfo.InvariantCulture);
+            LogHelper.Info("RefreshHouseV2结束，花费时间：" + copyTime);
+        }
+
+
+        public void RefreshHouseV3()
+        {
+            LogHelper.Info("RefreshHouseV3...");
+            var sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            var cityDashboards = _configService.LoadCitySources();
+            foreach (var item in cityDashboards)
+            {
+                //无指定来源,前600条数据
+                var search = new NewHouseCondition() { City = item.Key, Size = 600, IntervalDay = 14, Refresh = true };
+                for (var page = 0; page <= 5; page++)
+                {
+                    search.Page = page;
+                    NewSearch(search);
+                }
+
+                //无指定来源,每次拉180条,一共10页,一般用于移动端地图
                 for (var page = 0; page <= 10; page++)
                 {
                     search.Source = "";
@@ -142,7 +160,7 @@ namespace HouseMap.Dao
                     this.NewSearch(search);
                 }
 
-                //无指定来源,每次拉20条,一共30页
+                //无指定来源,每次拉20条,一共30页,一般用于小程序或者移动端列表
                 for (var page = 0; page <= 30; page++)
                 {
                     search.Source = "";
@@ -155,8 +173,6 @@ namespace HouseMap.Dao
             string copyTime = sw.Elapsed.TotalSeconds.ToString(CultureInfo.InvariantCulture);
             LogHelper.Info("RefreshHouseV2结束，花费时间：" + copyTime);
         }
-
-
 
     }
 

@@ -32,5 +32,12 @@ namespace HouseMap.Crawler.Controllers
             return Json(new { success = true });
         }
 
+        public IActionResult RefreshHouseCacheV3()
+        {
+            var houseService = _serviceProvider.GetServices<HouseService>().FirstOrDefault();
+            LogHelper.RunActionTaskNotThrowEx(houseService.RefreshHouseV3, "RefreshHouseCacheV3");
+            return Json(new { success = true });
+        }
+
     }
 }
