@@ -25,7 +25,11 @@ namespace HouseMap.Dao
         }
 
 
-
+        public List<DBHouse> Query()
+        {
+            
+            return null;
+        }
 
 
         public void SaveHouses(List<DBHouse> houses)

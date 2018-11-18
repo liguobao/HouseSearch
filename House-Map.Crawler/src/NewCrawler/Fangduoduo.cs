@@ -93,8 +93,8 @@ namespace HouseMap.Crawler
                 house.City = room["cityName"].ToString();
                 house.PicURLs = JsonConvert.SerializeObject(new List<string>() { room["coverImage"].ToString() });
                 house.Title = GetTitle(room);
-                house.Longitude = room["lng"].ToString();
-                house.Latitude = room["lat"].ToString();
+                house.Longitude = room["lng"]?.ToString().Length > 10 ? room["lng"]?.ToString().Substring(0, 10) : room["lng"]?.ToString();
+                house.Latitude = room["lat"]?.ToString().Length > 10 ? room["lat"]?.ToString().Substring(0, 10) : room["lat"]?.ToString();
                 house.Tags = string.Join("|", room["tagList"]);
                 house.Price = room["minPrice"].ToObject<int>();
                 house.PubTime = Tools.JavaTimeStampToDateTime(room["createTime"].ToObject<long>());
