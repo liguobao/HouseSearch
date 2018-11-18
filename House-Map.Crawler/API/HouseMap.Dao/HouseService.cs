@@ -23,14 +23,18 @@ namespace HouseMap.Dao
 
         private NewHouseDapper _newHouseDapper;
 
+        private ElasticService _elasticService;
+
 
         private ConfigService _configService;
 
-        public HouseService(RedisTool RedisTool, ConfigService configService, NewHouseDapper newHouseDapper)
+        public HouseService(RedisTool RedisTool, ConfigService configService,
+         NewHouseDapper newHouseDapper, ElasticService elasticService)
         {
             _redisTool = RedisTool;
             _configService = configService;
             _newHouseDapper = newHouseDapper;
+            _elasticService = elasticService;
         }
 
         private List<DBHouse> NewDBSearch(NewHouseCondition condition)

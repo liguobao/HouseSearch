@@ -94,6 +94,7 @@ namespace HouseMapAPI
             services.AddScoped<UserTokenFilter, UserTokenFilter>();
             services.AddScoped<FieldsFilterAttribute, FieldsFilterAttribute>();
             services.AddScoped<DBGroupService, DBGroupService>();
+            services.AddScoped<ElasticService,ElasticService>();
 
             #endregion
         }
