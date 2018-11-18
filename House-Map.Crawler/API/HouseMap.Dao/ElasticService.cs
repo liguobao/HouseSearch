@@ -25,7 +25,7 @@ namespace HouseMap.Dao
         }
 
 
-        
+
 
 
         public void SaveHouses(List<DBHouse> houses)
@@ -38,7 +38,8 @@ namespace HouseMap.Dao
                 {
                     return;
                 }
-                var houseIndex = $"house-data-{DateTime.Now.ToString("yyyy-MM-dd")}";
+                // Elasticsearch 跨index 无法插入自动去重更新,所以此处做成按照月份存储降低重复概率
+                var houseIndex = $"house-data-{DateTime.Now.ToString("yyyy-MM")}";
                 var index = elasticClient.IndexExists(houseIndex);
                 if (!index.Exists && index.IsValid)//判断索引是否存在和有效
                 {
