@@ -38,20 +38,22 @@ namespace HouseMap.Dao
                 {
                     return;
                 }
-                // Elasticsearch 跨index 无法插入自动去重更新,所以此处做成按照月份存储降低重复概率
-                var houseIndex = $"house-data-{DateTime.Now.ToString("yyyy-MM")}";
-                var index = elasticClient.IndexExists(houseIndex);
-                if (!index.Exists && index.IsValid)//判断索引是否存在和有效
+                // Elasticsearch 跨index 无法插入自动去重更新,所以此处做按照发布时间分组
+                foreach (var group in houses.GroupBy(h => h.PubTime.ToString("yyyy-MM-dd")))
                 {
-
-                    CreateIndex(houseIndex);
-                    CreateMapping(houseIndex);
-                }
-                //批量创建索引和文档
-                IBulkResponse bulkRs = elasticClient.IndexMany(houses, houseIndex);
-                if (bulkRs.Errors)//如果异常
-                {
-                    LogHelper.Info("SaveHouses error,index:" + houseIndex + ",DebugInformation:" + bulkRs.DebugInformation);
+                    var houseIndex = $"house-data-{group.Key}";
+                    var index = elasticClient.IndexExists(houseIndex);
+                    if (!index.Exists && index.IsValid)//判断索引是否存在和有效
+                    {
+                        CreateIndex(houseIndex);
+                        CreateMapping(houseIndex);
+                    }
+                    //批量创建索引和文档
+                    IBulkResponse bulkRs = elasticClient.IndexMany(group.ToList(), houseIndex);
+                    if (bulkRs.Errors)//如果异常
+                    {
+                        LogHelper.Info("SaveHouses error,index:" + houseIndex + ",DebugInformation:" + bulkRs.DebugInformation);
+                    }
                 }
             }, "SaveHouses");
 
