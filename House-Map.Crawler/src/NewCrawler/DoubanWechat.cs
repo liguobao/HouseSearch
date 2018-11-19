@@ -96,7 +96,7 @@ namespace HouseMap.Crawler
             {
 
                 var topicDetail = JToken.Parse(topicDetailJson)?["data"];
-                house.Title = topicDetail["title"].ToString();
+                house.Title = topicDetail["title"]?.ToString();
                 if (!string.IsNullOrEmpty(topicDetail["rent_fee"]?.ToString()) && topicDetail["rent_fee"] != null)
                 {
                     house.Price = topicDetail["rent_fee"].ToObject<int>();
@@ -108,9 +108,9 @@ namespace HouseMap.Crawler
                     house.Longitude = topicDetail["district_tag"]?["longitude"]?.ToString();
                 }
                 house.PubTime = topicDetail["create_time"].ToObject<DateTime>();
-                house.RentType = ConvertRentType(topicDetail["rent_type"].ToObject<int>(), topicDetail["house_type_display"].ToString());
-                house.Text = topicDetail["description"].ToString();
-                if (!string.IsNullOrEmpty(topicDetail["labels"].ToString()))
+                house.RentType = ConvertRentType(topicDetail["rent_type"]?.ToString(), topicDetail["house_type_display"]?.ToString());
+                house.Text = topicDetail["description"]?.ToString();
+                if (!string.IsNullOrEmpty(topicDetail["labels"]?.ToString()))
                 {
                     house.Labels = string.Join("|", topicDetail["labels"].ToObject<List<string>>());
                 }
@@ -127,17 +127,17 @@ namespace HouseMap.Crawler
 
         }
 
-        private int ConvertRentType(int sourceRentType, string houseTypeDisplay)
+        private int ConvertRentType(string sourceRentType, string houseTypeDisplay)
         {
             if (houseTypeDisplay == "一居室")
             {
                 return (int)RentTypeEnum.OneRoom;
             }
-            if (sourceRentType == 2)
+            if (sourceRentType == "2")
             {
                 return (int)RentTypeEnum.Shared;
             }
-            else if (sourceRentType == 1)
+            else if (sourceRentType == "1")
             {
                 return (int)RentTypeEnum.AllInOne;
             }
