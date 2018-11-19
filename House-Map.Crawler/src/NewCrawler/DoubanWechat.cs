@@ -92,11 +92,12 @@ namespace HouseMap.Crawler
 
         private void FillHouse(string city, List<DBHouse> houses, DBHouse house, string topicDetailJson)
         {
-            try
+            LogHelper.RunActionNotThrowEx(() =>
             {
+
                 var topicDetail = JToken.Parse(topicDetailJson)?["data"];
                 house.Title = topicDetail["title"].ToString();
-                if (!string.IsNullOrEmpty(topicDetail["rent_fee"]?.ToString()))
+                if (!string.IsNullOrEmpty(topicDetail["rent_fee"]?.ToString()) && topicDetail["rent_fee"] != null)
                 {
                     house.Price = topicDetail["rent_fee"].ToObject<int>();
                 }
@@ -121,11 +122,8 @@ namespace HouseMap.Crawler
                 house.PicURLs = JsonConvert.SerializeObject(topicDetail["photos"].Select(item => item["large_picture_url"].ToString()));
                 houses.Add(house);
 
-            }
-            catch (Exception ex)
-            {
-                LogHelper.Error("FillHouse fail", ex, topicDetailJson);
-            }
+            }, "FillHouse", topicDetailJson);
+
 
         }
 
