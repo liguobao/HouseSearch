@@ -17,15 +17,21 @@
         <li v-for="item in houseList" :key="`${item.id}-${item.source}`">
           <div class="left">
             <template v-if="item.pictures && item.pictures.length">
+              <!--<transition name="el-fade-in">-->
+                <!--<i v-show="!imagesLoadingMap[item.pictures[0]]"-->
+                   <!--class="el-icon-loading loading-icon"></i>-->
+              <!--</transition>-->
               <transition name="el-fade-in">
-                <i v-show="!imagesLoadingMap[item.pictures[0]]"
-                   class="el-icon-loading loading-icon"></i>
+                <img
+                    v-lazy="item.pictures[0]"
+                    class="lazyImage"
+                />
               </transition>
-              <transition name="el-fade-in">
-                <img :src="item.pictures[0]"
-                     v-show="imagesLoadingMap[item.pictures[0]]"
-                     @load="imageLoading(item.pictures[0],imagesLoadingMap)"/>
-              </transition>
+              <!--<transition name="el-fade-in">-->
+              <!--<img :src="item.pictures[0]"-->
+              <!--v-show="imagesLoadingMap[item.pictures[0]]"-->
+              <!--@load="imageLoading(item.pictures[0],imagesLoadingMap)"/>-->
+              <!--</transition>-->
             </template>
 
           </div>
@@ -82,7 +88,8 @@
       background: rgb(248, 248, 248);
     }
   }
-  .labels{
+
+  .labels {
     font-size: 12px;
     padding-bottom: 15px;
   }
@@ -116,7 +123,8 @@
         houseList: this.list,
         loading: false,
         query: this.params,
-        over: false
+        over: false,
+        observer: undefined
       }
     },
     methods: {
@@ -127,6 +135,7 @@
             this.init();
           }, 200)
         } else {
+          // this.lazyImage();
           list.addEventListener('scroll', (e) => {
             this.lazyLoad(e);
           })
@@ -144,6 +153,32 @@
           }
         }
       },
+      lazyImage() {
+        const config = {
+          rootMargin: '50px 0px',
+          threshold: 0.01
+        };
+        let self = this;
+
+        function intersection(entries) {
+          entries.forEach(entry => {
+            if (entry.intersectionRatio > 0) {
+              self.observer.unobserve(entry.target);
+              console.log(entry.target)
+              // entry.target.setAttribute('src',entry.target.getAttribute('data-src'))
+            }
+          })
+        }
+
+        let images = document.querySelectorAll('.lazyImage');
+
+        if (!this.observer) {
+          this.observer = new IntersectionObserver(intersection, config);
+        }
+        images.forEach(image => {
+          this.observer.observe(image)
+        })
+      },
       async getHouseList() {
         let params = this.query;
         let page = params.page ? params.page : 0;
@@ -158,6 +193,7 @@
         this.loading = false;
         if (list && list.length) {
           this.houseList.push(...list);
+          // this.lazyImage();
         } else {
           this.over = true;
         }
@@ -171,7 +207,7 @@
       },
       labels(label) {
         let html = '';
-        if(label) {
+        if (label) {
           let words = label.split('|');
           if (words.length > 1) {
             html += `${words[0]}<br>`;
