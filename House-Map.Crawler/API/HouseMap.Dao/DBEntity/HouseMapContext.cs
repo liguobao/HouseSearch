@@ -23,9 +23,8 @@ namespace HouseMap.Dao
 
 
         public DbSet<DBConfig> Configs { get; set; }
-
-
-
+        
+        public DbSet<Notice> Notices { get; set; }
 
         public DbSet<UserInfo> Users { get; set; }
 

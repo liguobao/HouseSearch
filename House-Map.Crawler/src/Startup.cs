@@ -54,11 +54,10 @@ namespace HouseMap.Crawler
 
         private void InitDB(IServiceCollection services)
         {
-
-            services.AddDbContext<HouseMapContext>(options =>
+            var loggerFactory = new LoggerFactory();
+            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            services.AddDbContextPool<HouseMapContext>(options =>
            {
-               var loggerFactory = new LoggerFactory();
-               loggerFactory.AddConsole(Configuration.GetSection("Logging"));
                options.UseLoggerFactory(loggerFactory);
                options.UseMySql(Configuration["QCloudMySQL"].ToString());
            });

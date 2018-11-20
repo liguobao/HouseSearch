@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using HouseMap.Dao;
 using HouseMap.Dao.DBEntity;
-
+using HouseMapAPI.Service;
 
 namespace HouseCrawler.Web.API.Controllers
 {
@@ -16,11 +16,14 @@ namespace HouseCrawler.Web.API.Controllers
     [Route("v1/[controller]/")]
     public class NoticesController : ControllerBase
     {
-        private NoticeDapper _dapper;
+        private readonly NoticeDapper _dapper;
 
-        public NoticesController(NoticeDapper dapper)
+        private readonly NoticeService _noticeService;
+
+        public NoticesController(NoticeDapper dapper, NoticeService noticeService)
         {
             _dapper = dapper;
+            _noticeService = noticeService;
         }
 
         [EnableCors("APICors")]
@@ -29,6 +32,17 @@ namespace HouseCrawler.Web.API.Controllers
         {
             return Ok(new { success = true, data = _dapper.FindAllNotice() });
         }
+
+
+        [EnableCors("APICors")]
+        [HttpGet("{id}")]
+        public ActionResult One(long id)
+        {
+            return Ok(new { success = true, data = _noticeService.FindNotice(id) });
+        }
+
+
+
 
 
         [EnableCors("APICors")]
