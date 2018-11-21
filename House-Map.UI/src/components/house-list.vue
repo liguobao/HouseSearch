@@ -15,6 +15,15 @@
             <!--</transition>-->
           <!--</template>-->
         <!--</div>-->
+        <div class="left">
+          <template v-if="item.pictures && item.pictures.length">
+            <transition name="el-fade-in">
+              <img
+                   v-lazy="item.pictures[0]"
+                  />
+            </transition>
+          </template>
+        </div>
         <div class="right">
           <div class="content">
             <a class="title" href="javascript:;"  :title="item.title ?
@@ -41,6 +50,11 @@
 </template>
 <style lang="scss" scoped>
   @import "./../scss/house-list";
+  .content{
+    .title{
+      white-space:normal;
+    }
+  }
 </style>
 <script>
   export default {
