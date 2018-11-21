@@ -65,7 +65,10 @@ namespace HouseMap.Dao.DBEntity
         V2ex,
 
         [Source("pinshiyou", "PinshiyouHouse", "拼室友")]
-        Pinshiyou
+        Pinshiyou,
+
+        [Source("hezuzhaoshiyou", "HezuzhaoshiyouHouse", "合租找室友")]
+        Hezuzhaoshiyou
 
     }
 

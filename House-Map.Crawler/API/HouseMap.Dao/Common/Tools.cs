@@ -126,6 +126,16 @@ namespace HouseMap.Common
             return Newtonsoft.Json.JsonConvert.SerializeObject(img);
         }
 
+
+        public static string SubLocation(string text)
+        {
+            if (text == null)
+            {
+                return "";
+            }
+            return text.Length > 15 ? text.Substring(0, 15) : text;
+        }
+
         public static string RemoveSpecialCharacter(string hexData)
         {
             return Regex.Replace(hexData, "[ \\[ \\] \\^ \\-_*×――(^)$%~!@#$…&%￥—+=<>《》!！??？:：•`·、。，；,.;\"‘’“”-]", "");

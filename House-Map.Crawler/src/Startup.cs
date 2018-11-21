@@ -38,7 +38,7 @@ namespace HouseMap.Crawler
             InitRedis(services);
             InitDI(services);
             InitDB(services);
-            InitSkyWalking(services);
+
         }
 
         private void InitRedis(IServiceCollection services)
@@ -63,18 +63,7 @@ namespace HouseMap.Crawler
            });
         }
 
-        private void InitSkyWalking(IServiceCollection services)
-        {
-            //services.AddSkyWalking(option =>
-            //{
-            //    option.ApplicationCode = Configuration["AppName"]?.ToString();
-            //    option.DirectServers = Configuration["SkyWalkingURL"]?.ToString();
-            //    // 每三秒采样的Trace数量,-1 为全部采集
-            //    option.SamplePer3Secs = -1;
-            //}).AddEntityFrameworkCore(c => { c.AddPomeloMysql().AddNpgsql(); })
-            //.AddSqlClient()
-            //.AddHttpClient();
-        }
+
 
         public void InitDI(IServiceCollection services)
         {
@@ -114,6 +103,8 @@ namespace HouseMap.Crawler
             services.AddScoped<INewCrawler, Hizhu>();
             services.AddScoped<INewCrawler, V2ex>();
             services.AddScoped<INewCrawler, Pinshiyou>();
+            services.AddScoped<INewCrawler, Hezuzhaoshiyou>();
+
             #endregion
 
 
