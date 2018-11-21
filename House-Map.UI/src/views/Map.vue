@@ -2,49 +2,15 @@
   <div class="map">
     <div class="container" id="map-container"></div>
     <template v-if="!isMobile">
-      <div class="card">
-        <h4>出行到达圈查询</h4>
-        <div class="card-item">
-          <span class="card-name">上班地点</span>
-          <el-input
-              id="keyword"
-              class="card-value"
-              size="mini"
-              type="text"
-              placeholder="请输入内容"
-              v-model="keyword"
-              clearable>
-          </el-input>
-        </div>
-        <div class="card-item">
-          <span class="card-name">时长(分钟)</span>
-          <el-slider class="card-value" :min="1" :max="60" v-model="times" size="mini"></el-slider>
-          <span class="card-times">{{times}}</span>
-        </div>
-        <div class="card-item">
-          <span class="card-name">出行方式</span>
-          <el-select v-model="waysMethod" placeholder="请选择出行方式" class="card-value" size="mini">
-            <el-option
-                label="地铁+公交"
-                value="">
-            </el-option>
-            <el-option
-                label="地铁"
-                value="SUBWAY">
-            </el-option>
-            <el-option
-                label="公交"
-                value="BUS">
-            </el-option>
-          </el-select>
-        </div>
-        <div class="card-item btn">
-          <el-button type="primary" size="mini" @click="search" :loading="searching">查询</el-button>
-          <el-button type="info" size="mini" :loading="searching" @click="next">下一页</el-button>
-          <!--<el-button size="mini">清空</el-button>-->
-        </div>
-      </div>
       <span class="highlight-text">特此声明:房源信息来自网络，本网站不对其真实性负责。首次载入无数据可尝试【F5】强制刷新.问题反馈：codelover@qq.com</span>
+      <div class="map-house-list">
+        <span class="toggleHouseList" @click="toggleHouseListUp = !toggleHouseListUp">{{toggleHouseListUp ? '收起' : '展开'}}</span>
+        <el-collapse-transition>
+          <house-list v-show="toggleHouseListUp" :house-list="mapHouseList" @click="houseListClick"
+                      v-if="mapHouseList && mapHouseList.length"></house-list>
+        </el-collapse-transition>
+
+      </div>
       <div class="icon-tips">
         <ul>
           <!--<li class="btn">-->
@@ -56,14 +22,50 @@
           </li>
         </ul>
       </div>
-      <div class="map-house-list">
-        <span class="toggleHouseList" @click="toggleHouseListUp = !toggleHouseListUp">{{toggleHouseListUp ? '收起' : '展开'}}</span>
-        <el-collapse-transition>
-          <house-list v-show="toggleHouseListUp" :house-list="mapHouseList" @click="houseListClick"
-                      v-if="mapHouseList && mapHouseList.length"></house-list>
-        </el-collapse-transition>
-
-      </div>
+      <template v-if="!collectionType">
+        <div class="card">
+          <h4>出行到达圈查询</h4>
+          <div class="card-item">
+            <span class="card-name">上班地点</span>
+            <el-input
+                id="keyword"
+                class="card-value"
+                size="mini"
+                type="text"
+                placeholder="请输入内容"
+                v-model="keyword"
+                clearable>
+            </el-input>
+          </div>
+          <div class="card-item">
+            <span class="card-name">时长(分钟)</span>
+            <el-slider class="card-value" :min="1" :max="60" v-model="times" size="mini"></el-slider>
+            <span class="card-times">{{times}}</span>
+          </div>
+          <div class="card-item">
+            <span class="card-name">出行方式</span>
+            <el-select v-model="waysMethod" placeholder="请选择出行方式" class="card-value" size="mini">
+              <el-option
+                  label="地铁+公交"
+                  value="">
+              </el-option>
+              <el-option
+                  label="地铁"
+                  value="SUBWAY">
+              </el-option>
+              <el-option
+                  label="公交"
+                  value="BUS">
+              </el-option>
+            </el-select>
+          </div>
+          <div class="card-item btn">
+            <el-button type="primary" size="mini" @click="search" :loading="searching">查询</el-button>
+            <el-button type="info" size="mini" :loading="searching" @click="next">下一页</el-button>
+            <!--<el-button size="mini">清空</el-button>-->
+          </div>
+        </div>
+      </template>
     </template>
     <template v-else>
       <div class="mobile-type" :class="{'in-map' : inMap}">
@@ -548,6 +550,7 @@
         cityName: '',
         myPosition: undefined,
         transferFn: undefined,
+        collectionType: false,
         iconTips: [
           {
             src: require('./../images/Blue.png'),
@@ -887,7 +890,6 @@
         };
         delete params.cityname;
         let data = await this.$v2.post('/houses', params);
-        this.houseList = data.data;
         return data;
       },
       transfer(position, map, self) {
@@ -1286,12 +1288,20 @@
 
           this.keywordSelect(map, positionPicker);
 
-          let info = await this.getList();
+          let info = [];
+          let data = undefined;
+
+          if(this.user && this.collectionType) {
+            info = await this.getCollections();
+          }else {
+            info = await this.getList();
+          }
+          data = info.data;
+          this.houseList = data;
           if (this.mobileType === 'list' && this.isMobile) {
             this.toList();
             return;
           }
-          let data = info.data;
 
           if (process.env.NODE_ENV === "development") {
             data.length = 20;
@@ -1304,7 +1314,7 @@
           //   loading.close();
           // }, 1000 * 20);
           await this.addMaker(map, data, code, self);
-          setTimeout(()=>{
+          setTimeout(() => {
             this.search('auto');
           });
           // loading.close();
@@ -1328,10 +1338,19 @@
             this.$message.error('地图初始化失败,请重新刷新页面')
           }
         })
+      },
+      async getCollections() {
+        if (this.user) {
+          const userId = this.$store.state.userInfo.id;
+          let data = await this.$v2.get(`/users/${userId}/collections`);
+
+          return data
+        }
       }
     },
     created() {
       let query = this.$route.query;
+      this.collectionType = !!query.collectionType;
     },
     async mounted() {
       this.loading = true;
@@ -1346,7 +1365,6 @@
 
       gtag('event', '进入地图页');
       this.init();
-
     }
   }
 </script>

@@ -6,14 +6,14 @@
       <ul v-if="cityList && cityList.length">
         <li v-for="item in cityList" :key="item.id" :class="{'is-mobile': isMobile}">
           <a target="_blank"
-             @click="navTo({city:item.city})"
+             @click="to({city:item.city})"
              href="javascript:;"
              :title="item.city" class="title highlight">{{item.city}}</a>
           <div class="source-wrap">
             <a target="_blank"
                :key="source.id"
                href="javascript:;"
-               @click="navTo({city:item.city,source:source.source,intervalDay:14,houseCount:600})"
+               @click="to({city:item.city,source:source.source,intervalDay:14,houseCount:600})"
                class="highlight" v-for="source in item.sources" :title="source.displaySource">
               {{source.displaySource}}
               <template v-if="source.houseCount > 0">
@@ -157,6 +157,13 @@
           this.cities = data;
         }
         this.loading = false;
+      },
+      to(parmas) {
+        let query = parmas;
+        if(this.dataType === 'user') {
+          query.collectionType = true
+        }
+        this.navTo(query)
       }
     },
     created() {
