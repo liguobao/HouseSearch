@@ -59,6 +59,10 @@ namespace HouseMap.Dao
 
         public IEnumerable<DBHouse> NewSearch(NewHouseCondition condition)
         {
+            if(condition == null)
+            {
+                return default(List<DBHouse>);
+            }
             if (string.IsNullOrEmpty(condition.Source))
             {
                 var houseList = new List<DBHouse>();
