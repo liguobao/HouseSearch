@@ -617,15 +617,15 @@
                 source: 'zuber'
               },
               {
-                name: '豆瓣',
+                name: '豆瓣租房',
                 url: '',
-                source: 'douban'
+                source: 'douban_wechat'
               },
               {
-                name: '互助租房',
+                name: '嗨住',
                 url: '',
-                source: 'huzhuzufang'
-              },
+                source: 'hizhu'
+              }
             ]
           },
           {
@@ -634,9 +634,9 @@
             cityname: '北京',
             form: [
               {
-                name: '豆瓣',
+                name: '豆瓣租房',
                 url: '',
-                source: 'douban'
+                source: 'douban_wechat'
               },
               {
                 name: 'Zuber',
@@ -644,10 +644,10 @@
                 source: 'zuber'
               },
               {
-                name: '蘑菇',
+                name: '嗨住',
                 url: '',
-                source: 'mogu'
-              },
+                source: 'hizhu'
+              }
             ]
           },
           {
@@ -666,10 +666,10 @@
                 source: 'zuber'
               },
               {
-                name: '蘑菇',
+                name: '嗨住',
                 url: '',
-                source: 'mogu'
-              },
+                source: 'hizhu'
+              }
             ]
           },
           {
@@ -678,15 +678,20 @@
             cityname: '深圳',
             form: [
               {
-                name: '豆瓣',
+                name: '豆瓣租房',
                 url: '',
-                source: 'douban'
+                source: 'douban_wechat'
               },
               {
                 name: 'Zuber',
                 url: '',
                 source: 'zuber'
               },
+               {
+                name: '嗨住',
+                url: '',
+                source: 'hizhu'
+              }
             ]
           }
         ],
