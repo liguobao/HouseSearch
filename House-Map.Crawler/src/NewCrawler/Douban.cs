@@ -27,7 +27,7 @@ namespace HouseMap.Crawler
     {
         private readonly HouseMapContext _houseDataContext;
 
-        public Douban(NewHouseDapper houseDapper, ConfigDapper configDapper, IOptions<AppSettings> configuration,
+        public Douban(HouseDapper houseDapper, ConfigDapper configDapper, IOptions<AppSettings> configuration,
          HouseMapContext houseDataContext, ElasticService elasticsearch)
         : base(houseDapper, configDapper, elasticsearch)
         {

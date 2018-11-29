@@ -21,12 +21,12 @@ namespace HouseMap.Crawler
 
         protected readonly ConfigDapper _configDapper;
 
-        protected NewHouseDapper _houseDapper;
+        protected HouseDapper _houseDapper;
 
         protected ElasticService _elasticService;
 
 
-        public NewBaseCrawler(NewHouseDapper houseDapper, ConfigDapper configDapper, ElasticService elasticService)
+        public NewBaseCrawler(HouseDapper houseDapper, ConfigDapper configDapper, ElasticService elasticService)
         {
             this._houseDapper = houseDapper;
             this._configDapper = configDapper;

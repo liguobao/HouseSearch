@@ -28,7 +28,7 @@ namespace HouseMap.Crawler
 
         static string API_VERSION = "v3/";
         static string SCENE = "2567a5ec9705eb7ac2c984033e06189d";
-        public Zuber(NewHouseDapper houseDapper, ConfigDapper configDapper, ElasticService elasticService)
+        public Zuber(HouseDapper houseDapper, ConfigDapper configDapper, ElasticService elasticService)
         : base(houseDapper, configDapper, elasticService)
         {
             this.Source = SourceEnum.Zuber;

@@ -25,7 +25,7 @@ namespace HouseMap.Crawler
 
     public class Hizhu : NewBaseCrawler
     {
-        public Hizhu(NewHouseDapper houseDapper, ConfigDapper configDapper, ElasticService elasticService)
+        public Hizhu(HouseDapper houseDapper, ConfigDapper configDapper, ElasticService elasticService)
         : base(houseDapper, configDapper, elasticService)
         {
             this.Source = SourceEnum.Hizhu;

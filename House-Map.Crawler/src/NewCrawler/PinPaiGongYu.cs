@@ -23,7 +23,7 @@ namespace HouseMap.Crawler
     public class PinPaiGongYu : NewBaseCrawler
     {
 
-        public PinPaiGongYu(NewHouseDapper houseDapper, ConfigDapper configDapper,
+        public PinPaiGongYu(HouseDapper houseDapper, ConfigDapper configDapper,
          ElasticService elastic) : base(houseDapper, configDapper, elastic)
         {
             this.Source = SourceEnum.PinPaiGongYu;

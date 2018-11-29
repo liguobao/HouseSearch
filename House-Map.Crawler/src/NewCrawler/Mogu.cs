@@ -19,7 +19,7 @@ namespace HouseMap.Crawler
     {
 
 
-        public Mogu(NewHouseDapper houseDapper, ConfigDapper configDapper,ElasticService elastic) 
+        public Mogu(HouseDapper houseDapper, ConfigDapper configDapper,ElasticService elastic) 
         : base(houseDapper, configDapper,elastic)
         {
             this.Source = SourceEnum.Mogu;

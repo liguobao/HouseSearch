@@ -19,7 +19,7 @@ namespace HouseMap.Crawler
     {
 
 
-        public Pinshiyou(NewHouseDapper houseDapper, ConfigDapper configDapper, ElasticService elastic)
+        public Pinshiyou(HouseDapper houseDapper, ConfigDapper configDapper, ElasticService elastic)
         : base(houseDapper, configDapper, elastic)
         {
             this.Source = SourceEnum.Pinshiyou;

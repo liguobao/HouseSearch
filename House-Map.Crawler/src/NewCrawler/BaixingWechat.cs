@@ -23,7 +23,7 @@ namespace HouseMap.Crawler
     public class BaixingWechat : NewBaseCrawler
     {
         private static HtmlParser htmlParser = new HtmlParser();
-        public BaixingWechat(NewHouseDapper houseDapper, ConfigDapper configDapper, ElasticService elasticService)
+        public BaixingWechat(HouseDapper houseDapper, ConfigDapper configDapper, ElasticService elasticService)
         : base(houseDapper, configDapper, elasticService)
         {
             this.Source = SourceEnum.BaixingWechat;

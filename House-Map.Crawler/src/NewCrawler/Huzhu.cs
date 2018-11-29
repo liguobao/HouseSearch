@@ -19,7 +19,7 @@ namespace HouseMap.Crawler
     public class Huzhu : NewBaseCrawler
     {
 
-        public Huzhu(NewHouseDapper houseDapper, ConfigDapper configDapper, ElasticService elastic)
+        public Huzhu(HouseDapper houseDapper, ConfigDapper configDapper, ElasticService elastic)
         : base(houseDapper, configDapper, elastic)
         {
             this.Source = SourceEnum.HuZhuZuFang;

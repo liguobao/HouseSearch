@@ -20,7 +20,7 @@ namespace HouseMap.Crawler
     {
 
         private readonly string APP_KEY = "12574478";
-        public Xianyu(NewHouseDapper houseDapper, ConfigDapper configDapper,
+        public Xianyu(HouseDapper houseDapper, ConfigDapper configDapper,
          ElasticService elastic) : base(houseDapper, configDapper, elastic)
         {
             this.Source = SourceEnum.Xianyu;

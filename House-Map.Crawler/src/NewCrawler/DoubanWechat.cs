@@ -26,7 +26,7 @@ namespace HouseMap.Crawler
     public class DoubanWechat : NewBaseCrawler
     {
         private readonly AppSettings _appSettings;
-        public DoubanWechat(NewHouseDapper houseDapper, ConfigDapper configDapper, IOptions<AppSettings> configuration, ElasticService elasticsearch)
+        public DoubanWechat(HouseDapper houseDapper, ConfigDapper configDapper, IOptions<AppSettings> configuration, ElasticService elasticsearch)
         : base(houseDapper, configDapper, elasticsearch)
         {
             this.Source = SourceEnum.DoubanWechat;

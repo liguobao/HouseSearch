@@ -22,7 +22,7 @@ namespace HouseMap.Crawler
 
         private static HtmlParser htmlParser = new HtmlParser();
 
-        public V2ex(NewHouseDapper houseDapper, ConfigDapper configDapper,
+        public V2ex(HouseDapper houseDapper, ConfigDapper configDapper,
          ElasticService elastic) : base(houseDapper, configDapper, elastic)
         {
             this.Source = SourceEnum.V2ex;

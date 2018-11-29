@@ -25,7 +25,7 @@ namespace HouseMap.Crawler
 
     public class Beike : NewBaseCrawler
     {
-        public Beike(NewHouseDapper houseDapper, ConfigDapper configDapper, ElasticService elasticService)
+        public Beike(HouseDapper houseDapper, ConfigDapper configDapper, ElasticService elasticService)
         : base(houseDapper, configDapper, elasticService)
         {
             this.Source = SourceEnum.Beike;

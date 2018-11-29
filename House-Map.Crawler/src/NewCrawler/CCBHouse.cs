@@ -25,7 +25,7 @@ namespace HouseMap.Crawler
     public class CCBHouse : NewBaseCrawler
     {
 
-        public CCBHouse(NewHouseDapper houseDapper, ConfigDapper configDapper, ElasticService elasticService)
+        public CCBHouse(HouseDapper houseDapper, ConfigDapper configDapper, ElasticService elasticService)
         : base(houseDapper, configDapper, elasticService)
         {
             this.Source = SourceEnum.CCBHouse;

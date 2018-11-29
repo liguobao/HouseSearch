@@ -25,7 +25,7 @@ namespace HouseMap.Crawler
     public class Fangtianxia : NewBaseCrawler
     {
         private static HtmlParser htmlParser = new HtmlParser();
-        public Fangtianxia(NewHouseDapper houseDapper, ConfigDapper configDapper, ElasticService elasticService)
+        public Fangtianxia(HouseDapper houseDapper, ConfigDapper configDapper, ElasticService elasticService)
         : base(houseDapper, configDapper, elasticService)
         {
             this.Source = SourceEnum.Fangtianxia;

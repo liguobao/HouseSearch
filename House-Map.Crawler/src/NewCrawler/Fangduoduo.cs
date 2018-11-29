@@ -23,7 +23,7 @@ namespace HouseMap.Crawler
     public class Fangduoduo : NewBaseCrawler
     {
         private static HtmlParser htmlParser = new HtmlParser();
-        public Fangduoduo(NewHouseDapper houseDapper, ConfigDapper configDapper, ElasticService elasticService)
+        public Fangduoduo(HouseDapper houseDapper, ConfigDapper configDapper, ElasticService elasticService)
         : base(houseDapper, configDapper, elasticService)
         {
             this.Source = SourceEnum.Fangduoduo;
