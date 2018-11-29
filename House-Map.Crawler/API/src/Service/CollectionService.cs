@@ -25,11 +25,11 @@ namespace HouseMapAPI.Service
         private readonly HouseService _houseService;
 
 
-        private readonly NewHouseDapper _newHouseDapper;
+        private readonly HouseDapper _newHouseDapper;
 
 
         public CollectionService(HouseMapContext context, HouseService houseService,
-        NewHouseDapper newHouseDapper)
+        HouseDapper newHouseDapper)
         {
             _context = context;
             _houseService = houseService;

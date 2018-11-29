@@ -17,19 +17,19 @@ namespace HouseMap.Dao
     public class HouseService
     {
 
-        private RedisTool _redisTool;
+        private readonly RedisTool _redisTool;
 
 
 
-        private NewHouseDapper _newHouseDapper;
+        private readonly HouseDapper _newHouseDapper;
 
-        private ElasticService _elasticService;
+        private readonly ElasticService _elasticService;
 
 
-        private ConfigService _configService;
+        private readonly ConfigService _configService;
 
         public HouseService(RedisTool RedisTool, ConfigService configService,
-         NewHouseDapper newHouseDapper, ElasticService elasticService)
+         HouseDapper newHouseDapper, ElasticService elasticService)
         {
             _redisTool = RedisTool;
             _configService = configService;
@@ -37,18 +37,17 @@ namespace HouseMap.Dao
             _elasticService = elasticService;
         }
 
-        private List<DBHouse> NewDBSearch(NewHouseCondition condition)
+        private List<DBHouse> NewDBSearch(HouseCondition condition)
         {
-            // LogHelper.Info($"Search start,key:{condition.RedisKey}");
             if (condition == null || condition.City == null)
             {
                 throw new Exception("查询条件不能为null");
             }
             var houses = _redisTool.ReadCache<List<DBHouse>>(condition.RedisKey, RedisKey.NewHouses.DBName);
-            if (houses == null || houses.Count == 0 || condition.Refresh)
+            if (houses == null || !houses.Any() || condition.Refresh)
             {
-                houses = _newHouseDapper.SearchHouses(condition);
-                if (houses != null && houses.Count > 0)
+                houses = !string.IsNullOrEmpty(condition.Keyword) ? _elasticService.Query(condition) : _newHouseDapper.SearchHouses(condition);
+                if (houses != null && houses.Any())
                 {
                     _redisTool.WriteObject(condition.RedisKey, houses, RedisKey.NewHouses.DBName);
                 }
@@ -57,9 +56,9 @@ namespace HouseMap.Dao
         }
 
 
-        public IEnumerable<DBHouse> NewSearch(NewHouseCondition condition)
+        public IEnumerable<DBHouse> NewSearch(HouseCondition condition)
         {
-            if(condition == null)
+            if (condition == null)
             {
                 return default(List<DBHouse>);
             }
@@ -114,7 +113,7 @@ namespace HouseMap.Dao
             var cityDashboards = _configService.LoadCitySources();
             foreach (var item in cityDashboards)
             {
-                var search = new NewHouseCondition() { City = item.Key, Size = 600, IntervalDay = 14, Refresh = true };
+                var search = new HouseCondition() { City = item.Key, Size = 600, IntervalDay = 14, Refresh = true };
                 foreach (var dashboard in item.Value)
                 {
                     //指定来源,每次拉600条,一般用于地图页
@@ -152,7 +151,7 @@ namespace HouseMap.Dao
             foreach (var item in cityDashboards)
             {
                 //无指定来源,前600条数据
-                var search = new NewHouseCondition() { City = item.Key, Size = 600, IntervalDay = 14, Refresh = true };
+                var search = new HouseCondition() { City = item.Key, Size = 600, IntervalDay = 14, Refresh = true };
                 for (var page = 0; page <= 5; page++)
                 {
                     search.Page = page;

@@ -50,8 +50,6 @@ namespace HouseMapAPI
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             services.AddDbContextPool<HouseMapContext>(options =>
           {
-
-
               options.UseLoggerFactory(loggerFactory);
               options.UseMySql(Configuration["QCloudMySQL"].ToString());
           });
@@ -75,7 +73,7 @@ namespace HouseMapAPI
             services.AddScoped<BaseDapper, BaseDapper>();
             services.AddScoped<ConfigDapper, ConfigDapper>();
             services.AddScoped<NoticeDapper, NoticeDapper>();
-            services.AddScoped<NewHouseDapper, NewHouseDapper>();
+            services.AddScoped<HouseDapper, HouseDapper>();
 
             #endregion
 

@@ -27,7 +27,7 @@ namespace HouseCrawler.Web.API.Controllers
 
         [HttpPost("")]
         [EnableCors("APICors")]
-        public IActionResult Search([FromBody] NewHouseCondition search)
+        public IActionResult Search([FromBody] HouseCondition search)
         {
             return Ok(new { success = true, data = _houseService.NewSearch(search) });
         }
@@ -37,7 +37,7 @@ namespace HouseCrawler.Web.API.Controllers
         [EnableCors("APICors")]
         public IActionResult GetHouse()
         {
-            var condition = new NewHouseCondition();
+            var condition = new HouseCondition();
             condition.City = !string.IsNullOrEmpty(HttpContext.Request.Query["city"]) ? HttpContext.Request.Query["city"].ToString() : "上海";
             condition.Source = HttpContext.Request.Query["source"];
             condition.Keyword = HttpContext.Request.Query["keyword"];
@@ -47,6 +47,7 @@ namespace HouseCrawler.Web.API.Controllers
             condition.RentType = !string.IsNullOrEmpty(HttpContext.Request.Query["rentType"]) ? int.Parse(HttpContext.Request.Query["RentType"]) : 0;
             condition.FromPrice = !string.IsNullOrEmpty(HttpContext.Request.Query["fromPrice"]) ? int.Parse(HttpContext.Request.Query["fromPrice"]) : 0;
             condition.ToPrice = !string.IsNullOrEmpty(HttpContext.Request.Query["toPrice"]) ? int.Parse(HttpContext.Request.Query["toPrice"]) : 0;
+            condition.Refresh = !string.IsNullOrEmpty(HttpContext.Request.Query["Refresh"]) ? bool.Parse(HttpContext.Request.Query["refresh"]) : false;
             return Ok(new { success = true, data = _houseService.NewSearch(condition) });
         }
 

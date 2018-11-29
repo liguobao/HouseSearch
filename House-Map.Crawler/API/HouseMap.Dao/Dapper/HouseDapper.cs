@@ -10,9 +10,9 @@ using System.Linq;
 
 namespace HouseMap.Dao
 {
-    public class NewHouseDapper : NewBaseDapper
+    public class HouseDapper : BaseDapper
     {
-        public NewHouseDapper(IOptions<AppSettings> options) : base(options)
+        public HouseDapper(IOptions<AppSettings> options) : base(options)
         {
         }
 
@@ -58,7 +58,7 @@ namespace HouseMap.Dao
 
 
 
-        public List<DBHouse> SearchHouses(NewHouseCondition condition)
+        public List<DBHouse> SearchHouses(HouseCondition condition)
         {
             var houses = new List<DBHouse>();
             using (IDbConnection dbConnection = GetConnection())

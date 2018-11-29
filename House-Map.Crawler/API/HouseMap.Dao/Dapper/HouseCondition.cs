@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace HouseMap.Dao
 {
-    public class NewHouseCondition
+    public class HouseCondition
     {
         public string City { get; set; }
         public string Source { get; set; } = "";
@@ -22,6 +22,8 @@ namespace HouseMap.Dao
         public int? RentType { get; set; }
         public int FromPrice { get; set; } = 0;
         public int ToPrice { get; set; } = 0;
+
+        public string Query {get;set;}
 
         public string RedisKey
         {
