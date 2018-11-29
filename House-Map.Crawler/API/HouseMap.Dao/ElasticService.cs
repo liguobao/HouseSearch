@@ -51,14 +51,13 @@ namespace HouseMap.Dao
             .Sort(sort => sort.Descending(h => h.PubTime))
             .Query(q => ConvertToQuery(condition, q))
             );
-            Console.WriteLine(searchRsp.DebugInformation);
             if (searchRsp.IsValid)
             {
                 return searchRsp.Documents.ToList();
             }
             else
             {
-                Console.WriteLine(searchRsp.DebugInformation);
+                LogHelper.Info(searchRsp.DebugInformation);
             }
             return new List<DBHouse>();
         }
