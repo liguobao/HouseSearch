@@ -44,10 +44,10 @@ namespace HouseMap.Dao
                 throw new Exception("查询条件不能为null");
             }
             var houses = _redisTool.ReadCache<List<DBHouse>>(condition.RedisKey, RedisKey.NewHouses.DBName);
-            if (houses == null || !houses.Any() || condition.Refresh)
+            if (houses == null || condition.Refresh)
             {
                 houses = !string.IsNullOrEmpty(condition.Keyword) ? _elasticService.Query(condition) : _newHouseDapper.SearchHouses(condition);
-                if (houses != null && houses.Any())
+                if (houses != null)
                 {
                     _redisTool.WriteObject(condition.RedisKey, houses, RedisKey.NewHouses.DBName);
                 }
