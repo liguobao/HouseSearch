@@ -62,7 +62,7 @@ namespace HouseMap.Dao
             {
                 return default(List<DBHouse>);
             }
-            if (string.IsNullOrEmpty(condition.Source))
+            if (string.IsNullOrEmpty(condition.Source) && string.IsNullOrEmpty(condition.Keyword))
             {
                 var houseList = new List<DBHouse>();
                 // 获取当前城市的房源配置
