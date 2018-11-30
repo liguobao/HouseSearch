@@ -305,6 +305,10 @@
           await this.$refs.form.validate();
           const params = Object.assign({}, this.form);
           delete params.type;
+          if (this.keywordArr.length) {
+            params.keyword =  this.keywordArr.join(',');
+            this.form.keyword = params.keyword;
+          }
           // params.cityname = params.cityName;
           // // params.token = this.token;
           // delete params.cityName;
