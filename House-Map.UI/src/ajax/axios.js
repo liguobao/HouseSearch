@@ -5,7 +5,7 @@ import store from './../store'
 
 const vue = new Vue();
 
-axios.defaults.timeout = 5000;
+axios.defaults.timeout = 15000;
 axios.defaults.baseURL = 'https://woyaozufang.live/api/';
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8';
 

@@ -57,21 +57,55 @@
       <el-form-item :label="isMobile ? '' : '时限(天数)'" prop="intervalDay">
         <el-input v-model="form.intervalDay" placeholder="几天内的数据？默认十天" :maxlength="8"></el-input>
       </el-form-item>
-      <el-form-item :label="isMobile ? '' : '关键词'">
-        <el-input v-model="form.keyword" placeholder="搜索关键字" :maxlength="50"></el-input>
+      <el-form-item :label="isMobile ? '' : '关键字'">
+       <div class="keyword-tag-wrap">
+        <div class="keyword-tag">
+          <el-tag
+              class="tag"
+              :key="tag"
+              v-for="tag in keywordArr"
+              closable
+              :disable-transitions="false"
+              @close="removeKeyword(tag)">
+            {{tag}}
+          </el-tag>
+        </div>
+         <el-input
+             class="keyword-tag-input"
+             v-model="keywordTag"
+             ref="saveTagInput"
+             size="small"
+             v-if="inputVisible"
+             @keyup.enter.native="keywordConfirm"
+             @blur="keywordConfirm"
+             placeholder="搜索关键字"
+             :maxlength="50"></el-input>
+         <el-button v-else class="button-new-tag" size="small" @click="showInput">+ 关键词</el-button>
+       </div>
+
+
       </el-form-item>
-      <el-form-item :label="isMobile ? '' : '数据展示方式'" prop="type">
-        <el-select v-model="form.type" placeholder="请选择数据展示方式" style="width: 100%">
+      <el-form-item :label="isMobile ? '' : '房源类型'" prop="rentType">
+        <el-select v-model="form.rentType" placeholder="请选择房源类型" style="width: 100%">
           <el-option
-              label="列表"
-              value="0"
+              v-for="item in rentTypeArr"
+              :label="item.label"
+              :value="item.value"
           ></el-option>
-          <!--<el-option-->
-          <!--label="地图"-->
-          <!--value="1"-->
-          <!--&gt;</el-option>-->
         </el-select>
       </el-form-item>
+      <!--<el-form-item :label="isMobile ? '' : '数据展示方式'" prop="type">-->
+        <!--<el-select v-model="form.type" placeholder="请选择数据展示方式" style="width: 100%">-->
+          <!--<el-option-->
+              <!--label="列表"-->
+              <!--value="0"-->
+          <!--&gt;</el-option>-->
+          <!--&lt;!&ndash;<el-option&ndash;&gt;-->
+          <!--&lt;!&ndash;label="地图"&ndash;&gt;-->
+          <!--&lt;!&ndash;value="1"&ndash;&gt;-->
+          <!--&lt;!&ndash;&gt;</el-option>&ndash;&gt;-->
+        <!--</el-select>-->
+      <!--</el-form-item>-->
       <el-form-item label-width="0px">
         <el-collapse-transition>
           <el-alert
@@ -95,6 +129,20 @@
 
   .search {
     margin-top: 10px;
+  }
+  .keyword-tag-wrap{
+    display: flex;
+    align-items: center;
+    min-height: 40px;
+  }
+  .keyword-tag{
+    text-align: left;
+    .tag{
+      margin-right: 10px;
+    }
+  }
+  .keyword-tag-input{
+    max-width: 100px;
   }
 </style>
 <script>
@@ -121,6 +169,7 @@
           intervalDay: 14,
           source: '',
           type: '0',
+          rentType:undefined
         },
         currentPage: 1,
         searchRes: false,
@@ -183,10 +232,61 @@
           }
         ],
         cities: [],
-        houseList: []
+        houseList: [],
+        rentTypeArr:[
+          {
+            label:'全部',
+            value:undefined
+          },
+          {
+            label:'未知',
+            value:0
+          },
+          {
+            label:'合租',
+            value:1
+          },
+          {
+            label:'单间',
+            value:2
+          },
+          {
+            label:'整套出租',
+            value:3
+          },
+          {
+            label:'公寓',
+            value:4
+          },
+        ],
+        keywordArr:[],
+        inputVisible:false,
+        keywordTag:''
       }
     },
     methods: {
+      showInput() {
+        this.inputVisible = true;
+        this.$nextTick(_ => {
+          this.$refs.saveTagInput.$refs.input.focus();
+        });
+      },
+      keywordConfirm() {
+        let inputValue = this.keywordTag;
+        if (inputValue) {
+          let has = this.keywordArr.find(item=>{
+            return item === inputValue
+          });
+          if(!has) {
+            this.keywordArr.push(inputValue);
+          }
+        }
+        this.inputVisible = false;
+        this.keywordTag = '';
+      },
+      removeKeyword(item) {
+        this.keywordArr.splice(this.keywordArr.indexOf(item), 1);
+      },
       closeSearchList() {
         this.searchRes = false;
         this.$refs['search-list'].reset();
@@ -222,14 +322,21 @@
           delete params.type;
           // params.city = params.cityName;
           // delete params.cityName;
+
+          if (this.keywordArr.length) {
+            params.keyword =  this.keywordArr.join(',');
+            this.form.keyword = params.keyword;
+          }
           if (gtag) {
             gtag('event', '高级搜索', {
               'event_category' : this.form.city
             });
           }
+
           this.getHousesList(params)
         } catch (e) {
           this.loading = false;
+          console.log(e)
         }
       },
       async getHousesList(options, type) {
@@ -244,10 +351,8 @@
         //   params.city = params.cityName;
         // }
         // delete params.cityName;
-
-        const data = await this.$v2.post('/houses', {
-          ...params
-        });
+        const data = await this.$v2.get(`/houses?${this.$qs.stringify(params)}`);
+        // const data = await this.$v2.post(`/houses`,params);
 
         if (this.isMobile) {
           let com = require('./../components/mobile/house-list').default;
