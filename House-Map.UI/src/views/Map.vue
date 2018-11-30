@@ -665,7 +665,8 @@
       '$route.query': function (params) {
         if (!params.mobileType || params.mobileType !== 'list') {
           this.loading = true;
-          this.init();
+          // this.init();
+           this.initMap()
         }
       }
     },
@@ -1326,7 +1327,7 @@
       },
 
       appendScript(url) {
-        return new Promise((resolve) => {
+        return new Promise((resolve,reject) => {
           let jsapi = document.createElement('script');
           jsapi.charset = 'utf-8';
           jsapi.src = url;
@@ -1334,8 +1335,9 @@
           jsapi.onload = () => {
             resolve()
           };
-          jsapi.onerror = () => {
-            this.$message.error('地图初始化失败,请重新刷新页面')
+          jsapi.onerror = (e) => {
+            this.$message.error('地图初始化失败,请重新刷新页面');
+            reject(e)
           }
         })
       },
@@ -1346,6 +1348,27 @@
 
           return data
         }
+      },
+      async initMap() {
+        try {
+          this.loading = true;
+          let key = `8a971a2f88a0ec7458d43b8bc03b6462`;
+          let plugin = `AMap.ArrivalRange,AMap.Scale,AMap.Geocoder,AMap.Transfer,AMap.Autocomplete,AMap.CitySearch,AMap.Walking`.split();
+          plugin.push(`AMap.ToolBar`);
+          let url = `https://webapi.amap.com/maps?v=1.4.8&key=${key}&plugin=${plugin.join()}`;
+
+          userInfo(this);
+          await this.appendScript(url);
+          await this.appendScript(`//webapi.amap.com/ui/1.0/main.js?v=1.0.11`);
+
+          let self = this;
+          window.onload = function () {
+            gtag('event', '进入地图页');
+            self.init();
+          }
+        }catch (e) {
+          console.log(e)
+        }
       }
     },
     created() {
@@ -1353,18 +1376,7 @@
       this.collectionType = !!query.collectionType;
     },
     async mounted() {
-      this.loading = true;
-      let key = `8a971a2f88a0ec7458d43b8bc03b6462`;
-      let plugin = `AMap.ArrivalRange,AMap.Scale,AMap.Geocoder,AMap.Transfer,AMap.Autocomplete,AMap.CitySearch,AMap.Walking`.split();
-      plugin.push(`AMap.ToolBar`);
-      let url = `https://webapi.amap.com/maps?v=1.4.8&key=${key}&plugin=${plugin.join()}`;
-
-      userInfo(this);
-      await this.appendScript(url);
-      await this.appendScript(`//webapi.amap.com/ui/1.0/main.js?v=1.0.11`);
-
-      gtag('event', '进入地图页');
-      this.init();
+      await this.initMap()
     }
   }
 </script>
