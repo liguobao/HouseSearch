@@ -1,16 +1,50 @@
 <template>
-  <div class="map">
+  <div class="map" :class="{'showInfo':isMobile}">
     <div class="container" id="map-container"></div>
     <template v-if="!isMobile">
-      <span class="highlight-text">特此声明:房源信息来自网络，本网站不对其真实性负责。首次载入无数据可尝试【F5】强制刷新.问题反馈：codelover@qq.com</span>
-      <div class="map-house-list">
-        <span class="toggleHouseList" @click="toggleHouseListUp = !toggleHouseListUp">{{toggleHouseListUp ? '收起' : '展开'}}</span>
-        <el-collapse-transition>
-          <house-list v-show="toggleHouseListUp" :house-list="mapHouseList" @click="houseListClick"
-                      v-if="mapHouseList && mapHouseList.length"></house-list>
-        </el-collapse-transition>
-
+      <div class="card">
+        <h4>出行到达圈查询</h4>
+        <div class="card-item">
+          <span class="card-name">上班地点</span>
+          <el-input
+              id="keyword"
+              class="card-value"
+              size="mini"
+              type="text"
+              placeholder="请输入内容"
+              v-model="keyword"
+              clearable>
+          </el-input>
+        </div>
+        <div class="card-item">
+          <span class="card-name">时长(分钟)</span>
+          <el-slider class="card-value" :min="1" :max="60" v-model="times" size="mini"></el-slider>
+          <span class="card-times">{{times}}</span>
+        </div>
+        <div class="card-item">
+          <span class="card-name">出行方式</span>
+          <el-select v-model="waysMethod" placeholder="请选择出行方式" class="card-value" size="mini">
+            <el-option
+                label="地铁+公交"
+                value="">
+            </el-option>
+            <el-option
+                label="地铁"
+                value="SUBWAY">
+            </el-option>
+            <el-option
+                label="公交"
+                value="BUS">
+            </el-option>
+          </el-select>
+        </div>
+        <div class="card-item btn">
+          <el-button type="primary" size="mini" @click="search" :loading="searching">查询</el-button>
+          <el-button type="info" size="mini" :loading="searching" @click="next">下一页</el-button>
+          <!--<el-button size="mini">清空</el-button>-->
+        </div>
       </div>
+      <span class="highlight-text">特此声明:房源信息来自网络，本网站不对其真实性负责。首次载入无数据可尝试【F5】强制刷新。 <a href="https://wj.qq.com/s/2953926/aabe" target="_blank" class="do-more-better">帮我们做得更好?</a></span>
       <div class="icon-tips">
         <ul>
           <!--<li class="btn">-->
@@ -22,50 +56,14 @@
           </li>
         </ul>
       </div>
-      <template v-if="!collectionType">
-        <div class="card">
-          <h4>出行到达圈查询</h4>
-          <div class="card-item">
-            <span class="card-name">上班地点</span>
-            <el-input
-                id="keyword"
-                class="card-value"
-                size="mini"
-                type="text"
-                placeholder="请输入内容"
-                v-model="keyword"
-                clearable>
-            </el-input>
-          </div>
-          <div class="card-item">
-            <span class="card-name">时长(分钟)</span>
-            <el-slider class="card-value" :min="1" :max="60" v-model="times" size="mini"></el-slider>
-            <span class="card-times">{{times}}</span>
-          </div>
-          <div class="card-item">
-            <span class="card-name">出行方式</span>
-            <el-select v-model="waysMethod" placeholder="请选择出行方式" class="card-value" size="mini">
-              <el-option
-                  label="地铁+公交"
-                  value="">
-              </el-option>
-              <el-option
-                  label="地铁"
-                  value="SUBWAY">
-              </el-option>
-              <el-option
-                  label="公交"
-                  value="BUS">
-              </el-option>
-            </el-select>
-          </div>
-          <div class="card-item btn">
-            <el-button type="primary" size="mini" @click="search" :loading="searching">查询</el-button>
-            <el-button type="info" size="mini" :loading="searching" @click="next">下一页</el-button>
-            <!--<el-button size="mini">清空</el-button>-->
-          </div>
-        </div>
-      </template>
+      <div class="map-house-list">
+        <span class="toggleHouseList" @click="toggleHouseListUp = !toggleHouseListUp">{{toggleHouseListUp ? '收起' : '展开'}}</span>
+        <el-collapse-transition>
+          <house-list v-show="toggleHouseListUp" :house-list="mapHouseList" @click="houseListClick"
+                      v-if="mapHouseList && mapHouseList.length"></house-list>
+        </el-collapse-transition>
+
+      </div>
     </template>
     <template v-else>
       <div class="mobile-type" :class="{'in-map' : inMap}">
@@ -133,54 +131,6 @@
 
     <component v-if="view" :is="view"></component>
 
-
-    <!--<div class="right" :class="{'show-right' : showRight}">-->
-    <!--<section class="link">-->
-    <!--<router-link class="to" :to="item.link" v-for="item in rightLinks">{{item.text}}</router-link>-->
-    <!--</section>-->
-    <!--<section>-->
-    <!--<p class="text">您当前所在的城市: {{activeCityName}}</p>-->
-    <!--</section>-->
-    <!--<section>-->
-    <!--<p class="text sub-title">-->
-    <!--选择工作地点：-->
-    <!--</p>-->
-    <!--<div class="el-input el-input&#45;&#45;medium el-input&#45;&#45;suffix" :class="{clean: keywordClean}">-->
-    <!--<input type="text" v-model="keyword" autocomplete="off" placeholder="请输入内容" id="keyword"-->
-    <!--class="el-input__inner keyword">-->
-    <!--<span class="el-input__suffix keyword-clean">-->
-    <!--<span class="el-input__suffix-inner">-->
-    <!--<i class="el-input__icon el-icon-circle-close" @click="keyword = undefined"></i>-->
-    <!--</span>-->
-    <!--</span>-->
-    <!--</div>-->
-    <!--</section>-->
-    <!--<section>-->
-    <!--<p class="text sub-title">-->
-    <!--选择通勤方式：-->
-    <!--</p>-->
-    <!--<el-radio-group v-model="commuting" class="commuting">-->
-    <!--<el-radio :label="3" class="text">公交+地铁</el-radio>-->
-    <!--<el-radio :label="6" class="text">地铁</el-radio>-->
-    <!--<el-radio :label="9" class="text">步行</el-radio>-->
-    <!--</el-radio-group>-->
-    <!--</section>-->
-    <!--<section>-->
-    <!--<p class="text sub-title">-->
-    <!--参考代码：-->
-    <!--</p>-->
-    <!--<a href="https://github.com/liguobao/58HouseSearch" target="_blank" class="to">Github源码（无耻求收藏）</a>-->
-    <!--<a href="" target="_blank" class="to">互助租房-微博</a>-->
-    <!--<a href="" target="_blank" class="to">高德API+Python解决租房问题</a>-->
-    <!--</section>-->
-    <!--<section>-->
-    <!--<p class="text sub-title">-->
-    <!--问题反馈：-->
-    <!--</p>-->
-    <!--<a href="https://github.com/liguobao/58HouseSearch/issues" target="_blank" class="to">改进建议: Github Issues</a>-->
-    <!--<span class="to">联系邮箱: codelover@qq.com</span>-->
-    <!--</section>-->
-    <!--</div>-->
   </div>
 </template>
 <style scoped lang="scss">
@@ -192,7 +142,7 @@
   .highlight-text {
     position: fixed;
     color: red;
-    left: 5px;
+    left: 83px;
     top: 2px;
     font-weight: bold;
     z-index: 40;
@@ -459,6 +409,22 @@
   .map {
     height: 100vh;
     width: 100%;
+    &.showInfo{
+      padding-top: 30px;
+      .mobile-type{
+        top:27px
+      }
+      .filter{
+        top: 67px;
+      }
+      .house-list.in-map{
+        margin-top: 67px;
+      }
+    }
+    .do-more-better{
+      text-decoration: underline;
+      font-size: #333;
+    }
     .container {
       height: 100%;
       flex: auto;
@@ -550,7 +516,6 @@
         cityName: '',
         myPosition: undefined,
         transferFn: undefined,
-        collectionType: false,
         iconTips: [
           {
             src: require('./../images/Blue.png'),
@@ -665,8 +630,7 @@
       '$route.query': function (params) {
         if (!params.mobileType || params.mobileType !== 'list') {
           this.loading = true;
-          // this.init();
-           this.initMap()
+          this.init();
         }
       }
     },
@@ -891,6 +855,7 @@
         };
         delete params.cityname;
         let data = await this.$v2.post('/houses', params);
+        this.houseList = data.data;
         return data;
       },
       transfer(position, map, self) {
@@ -1289,20 +1254,12 @@
 
           this.keywordSelect(map, positionPicker);
 
-          let info = [];
-          let data = undefined;
-
-          if(this.user && this.collectionType) {
-            info = await this.getCollections();
-          }else {
-            info = await this.getList();
-          }
-          data = info.data;
-          this.houseList = data;
+          let info = await this.getList();
           if (this.mobileType === 'list' && this.isMobile) {
             this.toList();
             return;
           }
+          let data = info.data;
 
           if (process.env.NODE_ENV === "development") {
             data.length = 20;
@@ -1315,7 +1272,7 @@
           //   loading.close();
           // }, 1000 * 20);
           await this.addMaker(map, data, code, self);
-          setTimeout(() => {
+          setTimeout(()=>{
             this.search('auto');
           });
           // loading.close();
@@ -1327,7 +1284,7 @@
       },
 
       appendScript(url) {
-        return new Promise((resolve,reject) => {
+        return new Promise((resolve) => {
           let jsapi = document.createElement('script');
           jsapi.charset = 'utf-8';
           jsapi.src = url;
@@ -1335,48 +1292,29 @@
           jsapi.onload = () => {
             resolve()
           };
-          jsapi.onerror = (e) => {
-            this.$message.error('地图初始化失败,请重新刷新页面');
-            reject(e)
+          jsapi.onerror = () => {
+            this.$message.error('地图初始化失败,请重新刷新页面')
           }
         })
-      },
-      async getCollections() {
-        if (this.user) {
-          const userId = this.$store.state.userInfo.id;
-          let data = await this.$v2.get(`/users/${userId}/collections`);
-
-          return data
-        }
-      },
-      async initMap() {
-        try {
-          this.loading = true;
-          let key = `8a971a2f88a0ec7458d43b8bc03b6462`;
-          let plugin = `AMap.ArrivalRange,AMap.Scale,AMap.Geocoder,AMap.Transfer,AMap.Autocomplete,AMap.CitySearch,AMap.Walking`.split();
-          plugin.push(`AMap.ToolBar`);
-          let url = `https://webapi.amap.com/maps?v=1.4.8&key=${key}&plugin=${plugin.join()}`;
-
-          userInfo(this);
-          await this.appendScript(url);
-          await this.appendScript(`//webapi.amap.com/ui/1.0/main.js?v=1.0.11`);
-
-          let self = this;
-          window.onload = function () {
-            gtag('event', '进入地图页');
-            self.init();
-          }
-        }catch (e) {
-          console.log(e)
-        }
       }
     },
     created() {
       let query = this.$route.query;
-      this.collectionType = !!query.collectionType;
     },
     async mounted() {
-      await this.initMap()
+      this.loading = true;
+      let key = `8a971a2f88a0ec7458d43b8bc03b6462`;
+      let plugin = `AMap.ArrivalRange,AMap.Scale,AMap.Geocoder,AMap.Transfer,AMap.Autocomplete,AMap.CitySearch,AMap.Walking`.split();
+      plugin.push(`AMap.ToolBar`);
+      let url = `https://webapi.amap.com/maps?v=1.4.8&key=${key}&plugin=${plugin.join()}`;
+
+      userInfo(this);
+      await this.appendScript(url);
+      await this.appendScript(`//webapi.amap.com/ui/1.0/main.js?v=1.0.11`);
+
+      gtag('event', '进入地图页');
+      this.init();
+
     }
   }
 </script>

@@ -1,10 +1,27 @@
 <template>
   <div id="app">
+    <a v-if="isMobile" href="https://wj.qq.com/s/2953926/aabe" target="_blank" class="do-more-better">帮我们做得更好?</a>
     <transition name="fade">
       <router-view/>
     </transition>
   </div>
 </template>
+<style scoped lang="scss">
+  .do-more-better{
+    text-align: center;
+    background: rgba(0,0,0,0.5);
+    display: block;
+    position: fixed;
+    z-index: 2500;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding: 4px 0;
+    color: #fff;
+    font-size: 12px;
+    text-decoration: underline;
+  }
+</style>
 <style lang="scss">
   * {
     padding: 0;
@@ -101,6 +118,11 @@
       '$route'() {
         this.czc();
       },
+    },
+    computed: {
+      isMobile() {
+        return this.$store.state.isMobile
+      }
     },
     methods: {
       czc() {
