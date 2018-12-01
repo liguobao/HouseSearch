@@ -6,24 +6,28 @@
   </div>
 </template>
 <style lang="scss">
-  *{
+  * {
     padding: 0;
     margin: 0;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   }
-  ul,li{
+
+  ul, li {
     list-style: none;
   }
-  a{
+
+  a {
     text-decoration: none;
   }
-  body{
+
+  body {
     font-weight: 400;
     line-height: 1.6;
   }
+
   @font-face {
     font-family: 'FontAwesome';
     src: url('./fonts/fontawesome-webfont.eot?v=4.6.3');
@@ -40,22 +44,27 @@
     url('//at.alicdn.com/t/font_826486_ns6jc4zbuh.ttf') format('truetype'),
     url('//at.alicdn.com/t/font_826486_ns6jc4zbuh.svg#iconfont') format('svg');
   }
-  .ellipsis{
+
+  .ellipsis {
     display: -webkit-box;
     text-overflow: ellipsis;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-  .text-center{
+
+  .text-center {
     text-align: center;
   }
-  .text-left{
+
+  .text-left {
     text-align: left;
   }
-  .text-right{
+
+  .text-right {
     text-align: right;
   }
+
   ::-webkit-scrollbar-track-piece {
     background-color: #f8f8f8;
   }
@@ -74,13 +83,15 @@
   ::-webkit-scrollbar-thumb:hover {
     background-color: #bbb;
   }
-  html,body{
+
+  html, body {
     width: 100%;
   }
+
   /*body{*/
-    /*overflow-x: hidden;*/
+  /*overflow-x: hidden;*/
   /*}*/
-  .el-dialog__wrapper{
+  .el-dialog__wrapper {
     -webkit-overflow-scrolling: touch;
   }
 </style>
@@ -93,28 +104,29 @@
     },
     methods: {
       czc() {
-        if(window._czc) {
+        if (window._czc) {
           let location = window.location
           let contentUrl = location.pathname + location.hash
           let refererUrl = '/'
           window._czc.push(['_trackPageview', contentUrl, refererUrl])
 
-        }else {
+        } else {
           setTimeout(() => {
             this.czc();
-          },200)
+          }, 200)
         }
       }
     },
     mounted() {
-        let self = this;
-        const script = document.createElement('script')
-        script.src = 'https://s95.cnzz.com/z_stat.php?id=1260881876&web_id=1260881876'
-        script.language = 'JavaScript'
-        document.body.appendChild(script);
-        script.onload = function(){
-         self.czc();
-        }
+      let self = this;
+      const script = document.createElement('script')
+      script.src = 'https://s95.cnzz.com/z_stat.php?id=1260881876&web_id=1260881876'
+      script.language = 'JavaScript'
+      document.body.appendChild(script);
+      script.onload = function () {
+        self.czc();
+      };
+
     }
   }
 </script>

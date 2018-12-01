@@ -3,6 +3,16 @@
        :class="{'is-mobile': isMobile}"
        v-loading.fullscreen.lock="fullscreenLoading"
   >
+    <el-alert
+        title=""
+        center
+        class="top-tips"
+        :closable="false"
+        type="info">
+      <a class="top-tips-con" href="https://wj.qq.com/s/2953926/aabe" target="_blank">
+        帮我们做得更好(๑•̀ㅂ•́)و✧(有奖问卷)
+      </a>
+    </el-alert>
     <Header
         :is-mobile="isMobile"
         class="header"
@@ -239,6 +249,20 @@
   }
 </style>
 <style lang="scss" scoped>
+  .top-tips{
+    position: fixed;
+    left: 50%;
+    z-index: 102;
+    transform: translateX(-50%);
+    width: 250px;
+    padding: 0;
+    line-height: normal;
+    top: 4px;
+    .top-tips-con{
+      font-size: 12px;
+      color: #909399;
+    }
+  }
   @keyframes right2left {
     0% {
       opacity: 0;
