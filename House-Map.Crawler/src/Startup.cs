@@ -117,6 +117,7 @@ namespace HouseMap.Crawler
         {
 
             env.ConfigureNLog("nlog.config");
+            app.UseStaticFiles();
             app.UseMvc(routes =>
            {
                routes.MapRoute(
