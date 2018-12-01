@@ -3,12 +3,14 @@
        :class="{'is-mobile':isMobile}"
   >
     <div>
-      <router-link to="/" class="title">房子是租来的,而生活不是。</router-link>
+      <router-link to="/" class="title" v-if="!isMobile">房子是租来的,而生活不是。</router-link>
+      <a href="https://wj.qq.com/s/2953926/aabe" target="_blank" class="title"  v-else>房子是租来的,而生活不是。</a>
 
       <nav v-if="!isMobile">
         <ul>
           <li>
-            <router-link class="nav-item" to="/">网站首页</router-link>
+            <a href="https://wj.qq.com/s/2953926/aabe" target="_blank" class="nav-item">帮我们做得更好?</a>
+            <!--<router-link class="nav-item" to="/">网站首页</router-link>-->
           </li>
           <li>
             <el-dropdown>

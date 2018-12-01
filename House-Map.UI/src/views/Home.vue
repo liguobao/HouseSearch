@@ -3,16 +3,17 @@
        :class="{'is-mobile': isMobile}"
        v-loading.fullscreen.lock="fullscreenLoading"
   >
-    <el-alert
-        title=""
-        center
-        class="top-tips"
-        :closable="false"
-        type="info">
-      <a class="top-tips-con" href="https://wj.qq.com/s/2953926/aabe" target="_blank">
-        帮我们做得更好(๑•̀ㅂ•́)و✧(有奖问卷)
-      </a>
-    </el-alert>
+    <a v-if="isMobile" href="https://wj.qq.com/s/2953926/aabe" target="_blank" class="do-more-better">帮我们做得更好?</a>
+    <!--<el-alert-->
+        <!--title=""-->
+        <!--center-->
+        <!--class="top-tips"-->
+        <!--:closable="false"-->
+        <!--type="info">-->
+      <!--<a class="top-tips-con" href="https://wj.qq.com/s/2953926/aabe" target="_blank">-->
+        <!--帮我们做得更好(๑•̀ㅂ•́)و✧(有奖问卷)-->
+      <!--</a>-->
+    <!--</el-alert>-->
     <Header
         :is-mobile="isMobile"
         class="header"
@@ -249,6 +250,20 @@
   }
 </style>
 <style lang="scss" scoped>
+  .do-more-better{
+    text-align: center;
+    background: rgba(0,0,0,0.5);
+    display: block;
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding: 4px 0;
+    color: #fff;
+    font-size: 12px;
+    text-decoration: underline;
+  }
   .top-tips{
     position: fixed;
     left: 50%;
