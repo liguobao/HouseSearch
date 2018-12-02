@@ -51,6 +51,19 @@ namespace HouseCrawler.Web.API.Controllers
         }
 
 
+        [EnableCors("APICors")]
+        [HttpPost("v1/users/{userId}/email")]
+        [ServiceFilter(typeof(UserTokenFilter))]
+        public ActionResult SetEmail(long userId, [FromHeader] string token, [FromBody]JToken model)
+        {
+            return Ok(new
+            {
+                success = _userService.SaveEmail(userId, model?["email"]?.ToString()),
+                data = _userService.GetUserByToken(token)
+            });
+        }
+
+
 
     }
 }

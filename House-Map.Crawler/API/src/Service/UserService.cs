@@ -211,6 +211,24 @@ namespace HouseMapAPI.Service
             return true;
         }
 
+
+        public bool SaveEmail(long userID, string email)
+        {
+            if (string.IsNullOrEmpty(email))
+            {
+                throw new UnProcessableException("地址不能为空!");
+            }
+            var user = _context.Users.FirstOrDefault(u => u.ID == userID);
+            if (user == null)
+            {
+                throw new UnProcessableException("用户信息不存在,请重新登录!");
+            }
+            user.Email = email;
+            _context.SaveChanges();
+            RefreshUserCache(userID);
+            return true;
+        }
+
         private void RefreshUserCache(long userID)
         {
             var token = _RedisTool.ReadCache<string>(RedisKey.UserToken.Key + userID, RedisKey.UserToken.DBName);
