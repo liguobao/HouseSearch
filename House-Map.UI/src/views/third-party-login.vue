@@ -25,7 +25,8 @@
         }
         this.$message.success('登录成功');
         this.fullscreenLoading = false;
-        this.$router.replace('/')
+        this.$store.dispatch('setDialogName','setAddress');
+        this.$router.replace('/');
       }
     },
     created() {

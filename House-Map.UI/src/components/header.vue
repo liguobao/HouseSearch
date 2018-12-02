@@ -245,6 +245,16 @@
       user() {
         return !!this.$store.state.userInfo
       },
+      dialogName() {
+        let dialogName = this.$store.state.dialogName;
+        if(dialogName === 'setAddress') {
+          if(this.$store.state.userInfo && !this.$store.state.userInfo.email) {
+            this.setAddress();
+          }
+          this.$store.dispatch('setDialogName',undefined);
+        }
+        return dialogName;
+      }
     },
     methods: {
       navTo(item) {
@@ -329,6 +339,8 @@
     async created() {
       const data = await this.$ajax.get('/account/oauth-url');
       this.oauthUrl = data.url;
+
+      let dialogName = this.dialogName
     }
   }
 </script>
