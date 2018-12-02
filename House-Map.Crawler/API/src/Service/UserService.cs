@@ -140,7 +140,7 @@ namespace HouseMapAPI.Service
         private void SendActivateEmail(UserSave registerUser, string token)
         {
             EmailInfo email = new EmailInfo();
-            email.Body = $"Hi,{registerUser.UserName}. <br>欢迎您注册地图搜租房(woyaozufang.live),你的账号已经注册成功." +
+            email.Body = $"Hi,{registerUser.UserName}. <br>欢迎注册地图搜租房(house-map.cn),您的账号已经注册成功." +
             "<br/>为了保证您能正常体验网站服务，请点击下面的链接完成邮箱验证以激活账号."
             + $"<br><a href='https://woyaozufang.live/#/Account/Activated?code={token}'>https://woyaozufang.live/#/Account/Activate?code={token}</a> "
             + "<br>如果您以上链接无法点击，您可以将以上链接复制并粘贴到浏览器地址栏打开."
