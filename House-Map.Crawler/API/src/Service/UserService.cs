@@ -147,7 +147,7 @@ namespace HouseMapAPI.Service
             + "<br>此信由系统自动发出，系统不接收回信，因此请勿直接回复。" +
             "<br>如果有其他问题咨询请发邮件到codelover@qq.com.";
             email.Receiver = registerUser.Email;
-            email.Subject = "地图找租房-激活账号";
+            email.Subject = "地图搜租房-激活账号";
             email.ReceiverName = registerUser.UserName;
             _emailService.Send(email);
         }
