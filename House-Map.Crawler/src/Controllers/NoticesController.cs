@@ -47,6 +47,7 @@ namespace HouseMap.Crawler.Controllers
             {
                 notice = new Notice();
                 notice.DataCreateTime = DateTime.Now;
+                notice.DataChange_LastTime = DateTime.Now;
                 _context.Notices.Add(notice);
             }
             notice.Content = content;
