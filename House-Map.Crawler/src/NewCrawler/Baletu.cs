@@ -62,7 +62,7 @@ namespace HouseMap.Crawler
                 house.Text = room["area_name"]?.ToString() + room["subway_desc"]?.ToString();
                 house.Title = room["subdistrict_name"]?.ToString() + room["house_info_concat"]?.ToString();
                 house.City = config.City;
-                house.Location = room["locationName"]?.ToString();
+                house.Location = room["subdistrict_name"]?.ToString();
                 if (!string.IsNullOrEmpty(room["latlon"]?.ToString()))
                 {
                     house.Latitude = room["latlon"]?.ToString().Split(",")[0];
