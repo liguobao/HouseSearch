@@ -105,6 +105,9 @@ namespace HouseMap.Crawler
             services.AddScoped<INewCrawler, Pinshiyou>();
             services.AddScoped<INewCrawler, Hezuzhaoshiyou>();
             services.AddScoped<INewCrawler, Baletu>();
+            services.AddScoped<INewCrawler, Anjuke>();
+
+            
 
 
             #endregion

@@ -71,7 +71,10 @@ namespace HouseMap.Dao.DBEntity
         Hezuzhaoshiyou,
 
         [Source("baletu", "BaletuHouse", "巴乐兔租房")]
-        Baletu
+        Baletu,
+
+        [Source("anjuke", "AnjukeHouse", "安居客租房")]
+        Anjuke
 
     }
 
