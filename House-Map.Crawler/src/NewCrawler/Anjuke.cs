@@ -83,12 +83,12 @@ namespace HouseMap.Crawler
         private static int GetRentType(JToken room)
         {
             var rentType = 0;
-            var roomType = room["room_type"]?.ToString();
-            if (roomType == "2" || roomType == "1")
+            var roomType = room["rent_type_name"]?.ToString();
+            if (roomType == "合租")
             {
                 rentType = (int)RentTypeEnum.Shared;
             }
-            else if (roomType == "0")
+            else if (roomType == "整租")
             {
                 rentType = (int)RentTypeEnum.AllInOne;
             }
