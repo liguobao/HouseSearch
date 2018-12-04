@@ -6,6 +6,7 @@
     </transition>
   </div>
 </template>
+
 <style scoped lang="scss">
   .do-more-better{
     text-align: center;

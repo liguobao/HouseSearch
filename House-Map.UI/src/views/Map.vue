@@ -93,7 +93,7 @@
           <div class="content">
             <section>
               <span class="content-name">房源: </span>
-              <a :href="makerInfo.houseOnlineURL" target="_blank"
+              <a :href="`/#/detail/${makerInfo.id}`" target="_blank"
                  class="content-value">{{makerInfo.title}}</a>
             </section>
             <section v-if="makerInfo.displayMoney">
@@ -1066,7 +1066,7 @@
                             h('a', {
                               attrs: {
                                 target: '_blank',
-                                href: item.onlineURL
+                                href: `/#/detail/${item.id}`
                               },
                               class: ['marker-link'],
                               domProps: {
@@ -1076,7 +1076,7 @@
                             h('a', {
                               attrs: {
                                 target: '_blank',
-                                href: item.onlineURL
+                                href: `/#/detail/${item.id}`
                               },
                               class: ['marker-link'],
                               domProps: {
@@ -1086,7 +1086,7 @@
                             h('a', {
                               attrs: {
                                 target: '_blank',
-                                href: item.onlineURL
+                                href: `/#/detail/${item.id}`
                               },
                               class: ['marker-link'],
                               domProps: {

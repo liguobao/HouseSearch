@@ -47,6 +47,15 @@ const router = new Router({
         title: '登录'
       },
       component: () => import('./views/login.vue')
+    },
+    {
+      path: '/detail/:id',
+      name: 'house-detail',
+      props: true,
+      meta: {
+        title: '房源详情'
+      },
+      component: () => import('./views/house-detail.vue')
     }
   ]
 });

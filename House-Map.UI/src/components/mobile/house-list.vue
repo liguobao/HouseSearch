@@ -37,7 +37,7 @@
           </div>
           <div class="right">
             <div class="content">
-              <a class="title" :href="item.onlineURL" target="_blank">{{item.title ?
+              <a class="title" :href="`/#/detail/${item.id}`" target="_blank">{{item.title ?
                 item.title : item.location}}</a>
               <div class="price" v-if="item.price > 0">
                 {{item.price}}<span> /月</span>
