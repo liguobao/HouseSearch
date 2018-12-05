@@ -47,7 +47,7 @@ namespace HouseMap.Dao
             if (houses == null || condition.Refresh)
             {
                 houses = !string.IsNullOrEmpty(condition.Keyword) ? _elasticService.Query(condition) : _newHouseDapper.SearchHouses(condition);
-                if (houses != null)
+                if (houses != null && !houses.Any())
                 {
                     _redisTool.WriteObject(condition.RedisKey, houses, RedisKey.NewHouses.DBName);
                 }

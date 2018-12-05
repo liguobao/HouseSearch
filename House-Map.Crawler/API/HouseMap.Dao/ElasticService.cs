@@ -53,7 +53,8 @@ namespace HouseMap.Dao
             );
             if (searchRsp.IsValid)
             {
-                return searchRsp.Documents.ToList();
+                return searchRsp.Documents
+                .GroupBy(h => h.OnlineURL).Select(items => items.FirstOrDefault()).ToList();
             }
             else
             {

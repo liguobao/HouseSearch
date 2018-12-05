@@ -9,16 +9,15 @@ using HouseMap.Dao;
 using HouseMap.Dao.DBEntity;
 
 
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace HouseCrawler.Web.API.Controllers
 {
     [Route("v2/houses/")]
-    public class NewHousesController : ControllerBase
+    public class HousesController : ControllerBase
     {
         private HouseService _houseService;
 
-        public NewHousesController(HouseService houseService)
+        public HousesController(HouseService houseService)
         {
             _houseService = houseService;
         }

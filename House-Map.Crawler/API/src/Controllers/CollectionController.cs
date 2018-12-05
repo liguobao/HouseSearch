@@ -16,13 +16,13 @@ using Newtonsoft.Json.Linq;
 namespace HouseCrawler.Web.API.Controllers
 {
     [Route("v2/users/")]
-    public class NewCollectionController : ControllerBase
+    public class CollectionController : ControllerBase
     {
 
         private CollectionService _collectionService;
 
 
-        public NewCollectionController(CollectionService collectionService)
+        public CollectionController(CollectionService collectionService)
         {
             _collectionService = collectionService;
         }
