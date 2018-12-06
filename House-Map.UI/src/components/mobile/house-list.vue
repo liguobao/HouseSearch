@@ -37,8 +37,10 @@
           </div>
           <div class="right">
             <div class="content">
-              <a class="title" :href="`/#/detail/${item.id}`" target="_blank">{{item.title ?
-                item.title : item.location}}</a>
+              <!--<a class="title" :href="`/#/detail/${item.id}`" target="_blank">{{item.title ?-->
+                <!--item.title : item.location}}</a>-->
+              <router-link :to="`/detail/${item.id}`" tag="a" class="title">{{item.title ?
+                item.title : item.location}}</router-link>
               <div class="price" v-if="item.price > 0">
                 {{item.price}}<span> /月</span>
               </div>

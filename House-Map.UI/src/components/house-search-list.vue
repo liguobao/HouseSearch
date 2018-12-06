@@ -46,8 +46,9 @@
           label="标题"
           width="300">
         <template slot-scope="scope">
-          <a slot="reference" class="ellipsis text-left link" :href="scope.row.onlineURL" target="_blank">{{
-            scope.row.title }}</a>
+          <!--<a slot="reference" class="ellipsis text-left link" :href="scope.row.onlineURL" target="_blank">{{-->
+            <!--scope.row.title }}</a>-->
+          <router-link slot="reference" class="ellipsis text-left link" :to="`/detail/${scope.row.id}`" target="_blank">{{scope.row.title}}</router-link>
           <!--<el-popover-->
           <!--placement="top-start"-->
           <!--title=""-->
