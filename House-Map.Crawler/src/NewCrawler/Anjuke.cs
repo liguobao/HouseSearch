@@ -49,6 +49,10 @@ namespace HouseMap.Crawler
         public override List<DBHouse> ParseHouses(DBConfig config, string data)
         {
             var houses = new List<DBHouse>();
+            if(data.Contains("<html"))
+            {
+                return houses;
+            }
             var result = JToken.Parse(data);
             if (result == null || result.Count() == 0 || result["datas"]?["list_info"] == null)
             {
