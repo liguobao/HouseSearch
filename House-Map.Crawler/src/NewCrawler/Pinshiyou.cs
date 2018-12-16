@@ -37,17 +37,23 @@ namespace HouseMap.Crawler
         {
             var client = new RestClient("https://api.xiaozhuankeji.com/graphql");
             var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
             request.AddHeader("connection", "Keep-Alive");
             request.AddHeader("host", "api.xiaozhuankeji.com");
-            request.AddHeader("user-agent", "Mozilla/5.0 (Linux; Android 8.0.0; MIX Build/OPR1.170623.032; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/70.0.3538.80 Mobile Safari/537.36 MicroMessenger/6.7.3.1360(0x26070333) NetType/WIFI Language/zh_CN Process/appbrand0");
+            request.AddHeader("user-agent", "Mozilla/5.0 (Linux; Android 8.0.0; MIX Build/OPR1.170623.032; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/68.0.3440.91 Mobile Safari/537.36 MicroMessenger/6.7.3.1360(0x2607033C) NetType/WIFI Language/zh_CN Process/toolsmp");
+            request.AddHeader("token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiI1YzE0Yzg0YTBkNWZkZjFmZmNiMWNhOTgifQ.aAGg1135LxUV6_O6TeeStOGz2-wTCV0DGHcYCzGKqho");
+            request.AddHeader("accept", "*/*");
+            request.AddHeader("n", "611481");
             request.AddHeader("platform", "android");
-            request.AddHeader("version", "1.1.88");
+            request.AddHeader("version", "1.1.95");
             request.AddHeader("content-type", "application/json");
             request.AddHeader("v", "1");
+            request.AddHeader("t", "1544866521687");
+            request.AddHeader("s", "80d93cc604f7ae29d02bcae4d6511fea");
             request.AddHeader("product", "roommate");
-            request.AddHeader("referer", "https://servicewechat.com/wx0b017a14ebdca1ee/108/page-frame.html");
+            request.AddHeader("referer", "https://servicewechat.com/wx0b017a14ebdca1ee/122/page-frame.html");
             request.AddHeader("charset", "utf-8");
-            request.AddParameter("application/json", GetBody(city, offset), ParameterType.RequestBody);
+            request.AddParameter("application/json", "[{\"operationName\":\"searchRoommateRequest\",\"variables\":{\"roomTypes\":[],\"searchText\":null,\"showVideoOnly\":false,\"locationCircle\":null,\"types\":[\"userRental\",\"transferRental\"],\"userToken\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiI1YzE0Yzg0YTBkNWZkZjFmZmNiMWNhOTgifQ.aAGg1135LxUV6_O6TeeStOGz2-wTCV0DGHcYCzGKqho\",\"city\":\""+city+"\",\"startingDate\":null,\"maxBudget\":0,\"targetGender\":null,\"realtorFree\":false,\"shortTerm\":false,\"internetIncluded\":false,\"userIds\":[]},\"extensions\":{\"persistedQuery\":{\"version\":1,\"sha256Hash\":\"07760e284d7163861b795964d412fef84c40dc9a774dd00e68117a4b4fe8ba19\"}}}]", ParameterType.RequestBody);
             IRestResponse response = client.Execute(request);
             return response.IsSuccessful ? response.Content : "";
         }
