@@ -19,7 +19,7 @@
       </div>
       <div class="info">
         <div class="title">
-          {{detail.title}}
+          <a :href="detail.onlineURL" target="_blank">{{detail.title}}</a>
           <el-button class="" type="warning" icon="el-icon-star-off" circle size="mini" @click="collect(detail)" ></el-button>
         </div>
         <div class="address">
@@ -57,8 +57,9 @@
           color: #fff;
           font-size: 14px;
           transition: all 0.2s;
+          text-decoration: underline;
           &:hover{
-            text-decoration: underline;
+            color: lightblue;
           }
         }
       }
@@ -93,6 +94,15 @@
         justify-content: space-between;
         color: #333;
         font-size: 18px;
+        text-decoration: underline;
+        transition: all 0.2s;
+        a{
+          display: block;
+          color: #333;
+          &:hover{
+            color: lightblue;
+          }
+        }
       }
       .address{
         border-top: 1px solid #737b8a;
