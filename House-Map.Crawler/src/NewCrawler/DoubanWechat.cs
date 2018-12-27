@@ -43,7 +43,7 @@ namespace HouseMap.Crawler
         {
             try
             {
-                var client = new RestClient($"{_appSettings.NodeProxyHost}/topics?city={config.City}&page={page}&limit=30");
+                var client = new RestClient($"{_appSettings.NodeProxyHost}/topics?city={config.City}&page={page+1}&limit=30");
                 var request = new RestRequest(Method.GET);
                 IRestResponse response = client.Execute(request);
                 return response.Content;
