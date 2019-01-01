@@ -97,7 +97,7 @@ namespace HouseMap.Crawler
             services.AddScoped<INewCrawler, Douban>();
             services.AddScoped<INewCrawler, CCBHouse>();
             services.AddScoped<INewCrawler, PinPaiGongYu>();
-            services.AddScoped<INewCrawler, Xianyu>();
+            //services.AddScoped<INewCrawler, Xianyu>();
             services.AddScoped<INewCrawler, Fangduoduo>();
             services.AddScoped<INewCrawler, Fangtianxia>();
             services.AddScoped<INewCrawler, Hizhu>();
@@ -106,13 +106,7 @@ namespace HouseMap.Crawler
             services.AddScoped<INewCrawler, Hezuzhaoshiyou>();
             services.AddScoped<INewCrawler, Baletu>();
             services.AddScoped<INewCrawler, Anjuke>();
-
-            
-
-
             #endregion
-
-
 
         }
 
