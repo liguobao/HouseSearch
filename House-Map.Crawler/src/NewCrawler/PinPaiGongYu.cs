@@ -69,6 +69,7 @@ namespace HouseMap.Crawler
                 Latitude = info["latitude"]?.ToString().Length > 10 ? info["latitude"]?.ToString().Substring(0, 10) : info["latitude"]?.ToString(),
                 Labels = $"{info["companyName"].ToString()}|{info["label"].ToString()}",
                 City = cityName,
+                JsonData = info.ToString(),
                 PubTime = new DateTime(info["postDate"]["year"].ToObject<int>(),
                 info["postDate"]["mon"].ToObject<int>(),
                 info["postDate"]["mday"].ToObject<int>(),

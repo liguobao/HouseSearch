@@ -117,7 +117,7 @@ namespace HouseMap.Dao
                     return;
                 }
                 // Elasticsearch 跨index 无法插入自动去重更新,所以此处做按照发布时间分组
-                foreach (var group in houses.GroupBy(h => h.PubTime.ToString("yyyy-MM-dd")))
+                foreach (var group in houses.GroupBy(h => h.PubTime.ToString("yyyy-MM")))
                 {
                     var houseIndex = $"house-data-{group.Key}";
                     var index = _elasticClient.IndexExists(houseIndex);
