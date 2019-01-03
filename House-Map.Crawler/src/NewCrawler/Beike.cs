@@ -25,9 +25,11 @@ namespace HouseMap.Crawler
 
     public class Beike : NewBaseCrawler
     {
+        private readonly RestClient _restClient;
         public Beike(HouseDapper houseDapper, ConfigDapper configDapper, ElasticService elasticService)
         : base(houseDapper, configDapper, elasticService)
         {
+            _restClient = new RestClient("https://app.api.ke.com/Rentplat/v1");
             this.Source = SourceEnum.Beike;
         }
 
@@ -35,8 +37,8 @@ namespace HouseMap.Crawler
         public override string GetJsonOrHTML(DBConfig config, int page)
         {
             var cityId = JToken.Parse(config.Json)["cityID"].ToString();
-            var apiURL = $"https://app.api.ke.com/Rentplat/v1/house/list?city_id={cityId}&offset={page * 30}&limit=30";
-            return GetHouseResult(apiURL, cityId);
+            var resource = $"/house/list?city_id={cityId}&offset={page * 30}&limit=30";
+            return GetHouseResult(resource, cityId);
         }
         public override List<DBHouse> ParseHouses(DBConfig config, string data)
         {
@@ -82,12 +84,11 @@ namespace HouseMap.Crawler
         }
 
 
-        private static string GetHouseResult(string apiURL, string cityID)
+        private string GetHouseResult(string resource, string cityID)
         {
             try
             {
-                var client = new RestClient(apiURL);
-                var request = new RestRequest(Method.GET);
+                var request = new RestRequest(resource, Method.GET);
                 request.AddHeader("connection", "Keep-Alive");
                 request.AddHeader("host", "app.api.ke.com");
                 request.AddHeader("lianjia-im-version", "2.8.0");
@@ -98,12 +99,8 @@ namespace HouseMap.Crawler
                 request.AddHeader("extension", "lj_device_id_android=865371037947909&mac_id=B4:0B:44:D0:2E:D1&lj_imei=865371037947909&lj_android_id=a9adb10848897a64");
                 request.AddHeader("lianjia-city-id", cityID);
                 request.AddHeader("page-schema", "matrix%2Fhomepage");
-                IRestResponse response = client.Execute(request);
-                if (response.IsSuccessful)
-                {
-                    return response.Content;
-                }
-
+                IRestResponse response = _restClient.Execute(request);
+                return response.IsSuccessful ? response.Content : "";
             }
             catch (Exception ex)
             {

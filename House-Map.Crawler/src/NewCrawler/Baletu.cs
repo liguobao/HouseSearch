@@ -17,11 +17,11 @@ namespace HouseMap.Crawler
 
     public class Baletu : NewBaseCrawler
     {
-
-
+        private readonly RestClient _restClient;
         public Baletu(HouseDapper houseDapper, ConfigDapper configDapper, ElasticService elastic)
         : base(houseDapper, configDapper, elastic)
         {
+            _restClient = new RestClient("https://api.baletu.com/App401/Homes/guessLikeRecHouseList");
             this.Source = SourceEnum.Baletu;
         }
 
@@ -29,8 +29,7 @@ namespace HouseMap.Crawler
         {
             var jsonData = JToken.Parse(config.Json);
             var city_id = jsonData["city_id"].ToString();
-            var client = new RestClient("https://api.baletu.com/App401/Homes/guessLikeRecHouseList");
-            var request = new RestRequest(Method.POST);
+            var request = new RestRequest("", Method.POST);
             request.AddHeader("cookie2", "=1");
             request.AddHeader("user-agent", "app:4.6.2(Linux; Android 9;Xiaomi MI 8 Build:PKQ1.180729.001;862756046928978)");
             request.AddHeader("connection", "Keep-Alive");
@@ -39,7 +38,7 @@ namespace HouseMap.Crawler
             var pageIndex = page + 1;
             request.AddParameter("application/x-www-form-urlencoded", $"P={pageIndex}&S=50&device_id=862756046928990&v=4.6.2&from=3&city_id={city_id}",
             ParameterType.RequestBody);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = _restClient.Execute(request);
             return response.IsSuccessful ? response.Content : "";
         }
 
@@ -78,7 +77,7 @@ namespace HouseMap.Crawler
                 }
                 else if (room["publish_date"].ToString().Contains("天前发布"))
                 {
-                    house.PubTime = DateTime.Now.Date.AddDays(-int.Parse(room["publish_date"].ToString().Replace("天前发布","").Trim()));
+                    house.PubTime = DateTime.Now.Date.AddDays(-int.Parse(room["publish_date"].ToString().Replace("天前发布", "").Trim()));
                 }
                 else
                 {

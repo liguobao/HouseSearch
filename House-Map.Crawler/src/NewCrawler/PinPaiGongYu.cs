@@ -22,11 +22,14 @@ namespace HouseMap.Crawler
 
     public class PinPaiGongYu : NewBaseCrawler
     {
+        private readonly RestClient _restClient;
 
         public PinPaiGongYu(HouseDapper houseDapper, ConfigDapper configDapper,
          ElasticService elastic) : base(houseDapper, configDapper, elastic)
         {
             this.Source = SourceEnum.PinPaiGongYu;
+            _restClient = new RestClient();
+            _restClient.BaseUrl = new Uri("https://appgongyu.58.com/house/listing/");
         }
 
         public override string GetJsonOrHTML(DBConfig config, int page)
@@ -34,7 +37,7 @@ namespace HouseMap.Crawler
             var json = JToken.Parse(config.Json);
             var shortCutName = json["shortcutname"].ToString();
             var cityName = json["cityname"].ToString();
-            return GetDataFromAPI(shortCutName, page);
+            return GetDataFromAPI(shortCutName, page + 1);
         }
 
         public override List<DBHouse> ParseHouses(DBConfig config, string data)
@@ -50,6 +53,11 @@ namespace HouseMap.Crawler
                 var house = ConvertToHouse(shortCutName, cityName, info);
                 houses.Add(house);
             }
+            if (houses.Count > 0)
+            {
+                Console.WriteLine(houses[0].Title + houses[0].OnlineURL);
+            }
+
             return houses;
         }
 
@@ -100,12 +108,10 @@ namespace HouseMap.Crawler
             }
             return houseLocation;
         }
-        public static string GetDataFromAPI(string citySortName, int page)
+        private string GetDataFromAPI(string citySortName, int page)
         {
-            string parameters = $"&localname={citySortName}&page={page}";
-            var client = new RestClient("https://appgongyu.58.com/house/listing/gongyu?tabkey=allcity&action=getListInfo&curVer=8.6.5&appId=1&os=android&format=json&geotype=baidu&v=1"
-            + parameters);
-            var request = new RestRequest(Method.GET);
+            string resource = $"gongyu?tabkey=allcity&action=getListInfo&curVer=8.6.5&appId=1&os=android&format=json&geotype=baidu&v=1&localname={citySortName}&page={page}";
+            var request = new RestRequest(resource, Method.GET);
             request.AddHeader("user-agent", "okhttp/3.4.2");
             request.AddHeader("connection", "Keep-Alive");
             request.AddHeader("host", "appgongyu.58.com");
@@ -115,18 +121,15 @@ namespace HouseMap.Crawler
             request.AddHeader("ua", "SM801");
             request.AddHeader("brand", "SMARTISAN");
             request.AddHeader("location", "2,6180,6348");
-            request.AddHeader("58mac", "B4:0B:44:80:2E:B6");
+            request.AddHeader("58mac", "B4:0B:44:80:2E:B9");
             request.AddHeader("platform", "android");
             request.AddHeader("currentcid", "2");
             request.AddHeader("rnsoerror", "0");
             request.AddHeader("os", "android");
             request.AddHeader("owner", "baidu");
-            request.AddHeader("deviceid", "57b4bf2216c7d1da");
-            request.AddHeader("m", "B4:0B:44:80:2E:B6");
+            request.AddHeader("m", "B4:0B:44:80:2E:B9");
             request.AddHeader("cid", "2");
-            request.AddHeader("androidid", "57b4bf2216c7d1da");
             request.AddHeader("apn", "WIFI");
-            request.AddHeader("uniqueid", "0aa38c71a1f1192af301c5ac03aa0198");
             request.AddHeader("58ua", "58app");
             request.AddHeader("nettype", "wifi");
             request.AddHeader("osarch", "arm64-v8a");
@@ -136,15 +139,12 @@ namespace HouseMap.Crawler
             request.AddHeader("bundle", "com.wuba");
             request.AddHeader("maptype", "2");
             request.AddHeader("totalsize", "24.7");
-            request.AddHeader("rimei", "990006210059787");
-            request.AddHeader("id58", "97987698730095");
-            request.AddHeader("xxzl_deviceid", "IaqlqznImYdoMvhJpnkjFpsGfWr09FnsJscDy3FpeK+k+afS/XcvibL6qHQue6uz");
             request.AddHeader("marketchannelid", "1593");
             request.AddHeader("osv", "5.1.1");
             request.AddHeader("lon", "121.39829");
             request.AddHeader("official", "true");
-            IRestResponse response = client.Execute(request);
-            return response.Content;
+            IRestResponse response = _restClient.Execute(request);
+            return response.IsSuccessful ? response.Content : "";
         }
 
 

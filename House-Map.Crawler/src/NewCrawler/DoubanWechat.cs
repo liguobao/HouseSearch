@@ -26,11 +26,16 @@ namespace HouseMap.Crawler
     public class DoubanWechat : NewBaseCrawler
     {
         private readonly AppSettings _appSettings;
+
+        private readonly RestClient _restClient;
+
         public DoubanWechat(HouseDapper houseDapper, ConfigDapper configDapper, IOptions<AppSettings> configuration, ElasticService elasticsearch)
         : base(houseDapper, configDapper, elasticsearch)
         {
             this.Source = SourceEnum.DoubanWechat;
             _appSettings = configuration.Value;
+            _restClient = new RestClient();
+            _restClient.BaseUrl = new Uri(_appSettings.NodeProxyHost);
         }
 
 
@@ -43,9 +48,8 @@ namespace HouseMap.Crawler
         {
             try
             {
-                var client = new RestClient($"{_appSettings.NodeProxyHost}/topics?city={config.City}&page={page+1}&limit=30");
-                var request = new RestRequest(Method.GET);
-                IRestResponse response = client.Execute(request);
+                var request = new RestRequest($"/topics?city={config.City}&page={page+1}&limit=30", Method.GET);
+                IRestResponse response = _restClient.Execute(request);
                 return response.Content;
             }
             catch (Exception ex)
@@ -59,9 +63,8 @@ namespace HouseMap.Crawler
         {
             try
             {
-                var client = new RestClient($"{_appSettings.NodeProxyHost}/topics/{topicId}");
-                var request = new RestRequest(Method.GET);
-                IRestResponse response = client.Execute(request);
+                var request = new RestRequest($"/topics/{topicId}", Method.GET);
+                IRestResponse response = _restClient.Execute(request);
                 return response.Content;
             }
             catch (Exception ex)
