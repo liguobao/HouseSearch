@@ -7,6 +7,8 @@
       :append-to-body="appendToBody"
       :before-close="cancel"
   >
+    <a class="title" slot="title" @click="navTo({city:title,intervalDay:14,houseCount:600})"
+       :title="title" href="javascript:;">{{title}}</a>
     <div>
       <ul class="houses">
         <li v-for="item in houses" :key="item.id">
@@ -28,7 +30,11 @@
       transform: translateY(0);
     }
   }
+  .title{
+    color: #409EFF;
+    text-decoration: underline;
 
+  }
   .houses {
     display: flex;
     justify-content: center;
