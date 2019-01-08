@@ -3,6 +3,14 @@
        :class="{'is-mobile':isMobile}"
   >
     <template v-if="!loading">
+      <div class="search" v-if="type === 'all'">
+        <el-input
+            placeholder="城市名"
+            prefix-icon="el-icon-search"
+            @input="search"
+            v-model="key">
+        </el-input>
+      </div>
       <ul v-if="cityList && cityList.length">
         <li v-for="item in cityList" :key="item.id" :class="{'is-mobile': isMobile}">
           <a target="_blank"
@@ -60,6 +68,10 @@
     }
   }
 
+  .search{
+    width: 60%;
+    margin: 15px auto;
+  }
   .el-icon-loading {
     color: #409EFF;
   }
@@ -134,13 +146,19 @@
             return this.filterCity.indexOf(item.city) !== -1
           })
         }
+        if(this.key) {
+          cities = cities.filter(item => {
+            return this.key.indexOf(item.city) !== -1
+          })
+        }
         return cities
       }
     },
     data() {
       return {
         cities: undefined,
-        loading: false
+        loading: false,
+        key:undefined
       }
     },
     methods: {
@@ -157,6 +175,9 @@
           this.cities = data;
         }
         this.loading = false;
+      },
+      search(key) {
+
       },
       to(parmas) {
         let query = parmas;
