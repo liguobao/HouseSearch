@@ -14,5 +14,4 @@ RUN dotnet publish src -c Release -o out
 FROM microsoft/dotnet:2.2-aspnetcore-runtime
 WORKDIR /app
 COPY --from=build-env /app/src/out .
-ENV ASPNETCORE_HOSTINGSTARTUPASSEMBLIES SkyWalking.Agent.AspNetCore
 ENTRYPOINT ["dotnet", "HouseMapAPI.dll"]
