@@ -53,11 +53,6 @@ namespace HouseMap.Crawler
                 var house = ConvertToHouse(shortCutName, cityName, info);
                 houses.Add(house);
             }
-            if (houses.Count > 0)
-            {
-                Console.WriteLine(houses[0].Title + houses[0].OnlineURL);
-            }
-
             return houses;
         }
 
