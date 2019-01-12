@@ -8,7 +8,7 @@ using Newtonsoft.Json.Linq;
 
 namespace HouseMapAPI.Controllers
 {
-    [Route("v1/[controller]")]
+    [Route("v1/health")]
     public class HealthController : ControllerBase
     {
 
