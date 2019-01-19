@@ -88,15 +88,29 @@ namespace HouseMap.Crawler
             var houseData = JToken.Parse(houseDataJson)["data"];
             house.Title = houseData["name"].ToString();
             house.City = config.City;
-            house.PubTime = houseData["actually_complete_date"].ToObject<DateTime>();
+            house.PubTime = DateTime.Now;
             house.Text = houseData["introduction"].ToString();
             if (!string.IsNullOrEmpty(houseData["resblock"]?["around"].ToString()))
             {
-                house.Text = house.Text + "。" + houseData["resblock"]?["around"].ToString();
+                house.Text = house.Text + "<br/>" + houseData["resblock"]?["around"].ToString();
             }
             if (!string.IsNullOrEmpty(houseData["resblock"]?["traffic"].ToString()))
             {
-                house.Text = house.Text + houseData["resblock"]?["traffic"].ToString();
+                house.Text = house.Text + "<br/>" + houseData["resblock"]?["traffic"].ToString();
+            }
+
+            house.Text = house.Text + $"<br/><br/>上线时间：{houseData["actually_complete_date"]?.ToString()}";
+            if (!string.IsNullOrEmpty(houseData["air_report_detail"].ToString()))
+            {
+                house.Text = house.Text + $" <br/>空气检测信息如下:";
+                foreach (var item in houseData["air_report_detail"]["data"])
+                {
+                    house.Text = house.Text + $"<br/>{item["title"].ToString()}:{item["value"].ToString()}";
+                    if (!string.IsNullOrEmpty(item["link"]?.ToString()))
+                    {
+                        house.Text = house.Text + $"<br/>在线链接:<a href='{item["link"].ToString()}' target='_blank'>{item["link"].ToString()}</a>";
+                    }
+                }
             }
             house.Location = houseData["location"]?.ToString();
             house.Latitude = houseData["resblock"]?["lat"].ToString();
