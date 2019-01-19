@@ -34,7 +34,7 @@ namespace HouseMap.Crawler.Controllers
             try
             {
                 var crawler = _serviceProvider.GetServices<INewCrawler>().FirstOrDefault(c =>
-                c.GetSource().GetSourceName() == source);
+                c.GetSource().GetSourceName().ToUpper() == source?.ToUpper());
                 if (crawler == null)
                 {
                     return Json(new { success = true, error = $"{source} not found" });
