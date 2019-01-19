@@ -88,6 +88,7 @@
       <el-form-item :label="isMobile ? '' : '房源类型'" prop="rentType">
         <el-select v-model="form.rentType" placeholder="请选择房源类型" style="width: 100%">
           <el-option
+              :ket="item.value"
               v-for="item in rentTypeArr"
               :label="item.label"
               :value="item.value"

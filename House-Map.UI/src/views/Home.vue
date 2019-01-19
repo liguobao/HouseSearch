@@ -27,9 +27,11 @@
 
     </Header>
     <div class="banner ">
-      <h2 class="slogan">满大街找租房心力交瘁？试试换个方式直接在地图上搜租房吧。</h2>
-      <p class="sub-slogan">房源爬虫 + 高德地图强力驱动,帮助你迅速找到合适房源</p>
-      <el-button type="danger" class="start" @click="scrollTo('introduction')">马上开始！</el-button>
+      <div>
+        <h2 class="slogan">满大街找租房心力交瘁？试试换个方式直接在地图上搜租房!</h2>
+        <p class="sub-slogan">多平台房源爬虫 + 高德地图强力驱动,帮助你迅速找到合适房源。</p>
+        <el-button type="danger" class="start" @click="scrollTo('introduction')">马上开始</el-button>
+      </div>
     </div>
     <div class="introduction " ref="introduction">
       <div>
@@ -350,11 +352,15 @@
     background-size: cover;
     height: 680px;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     flex-direction: column;
     justify-content: center;
     color: #fff;
     font-weight: 400;
+    &>div{
+      max-width: 1200px;
+      margin: auto;
+    }
     &.running {
       .slogan {
         animation: right2left 0.5s ease-out both;

@@ -340,7 +340,18 @@
       const data = await this.$ajax.get('/account/oauth-url');
       this.oauthUrl = data.url;
 
-      let dialogName = this.dialogName
+
+
+      try {
+        let where = await this.$ajax.get('http://txt.go.sohu.com/ip/soip');
+        console.log(where)
+      }catch (e) {
+
+      }
+
+    },
+    async mounted(){
+
     }
   }
 </script>
