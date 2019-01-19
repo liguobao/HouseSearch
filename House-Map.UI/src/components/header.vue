@@ -343,7 +343,7 @@
 
 
       try {
-        let where = await this.$ajax.get('http://txt.go.sohu.com/ip/soip');
+        let where = await this.$ajax.get('https://txt.go.sohu.com/ip/soip');
         console.log(where)
       }catch (e) {
 
