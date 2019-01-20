@@ -7,7 +7,7 @@
         <router-link to="/"  >地图搜租房</router-link>
         <el-dropdown>
             <span class="el-dropdown-link location">
-              {{location}}<i class="el-icon-caret-bottom"></i>
+              <i class="el-icon-location"></i>{{location}}<i class="el-icon-caret-bottom"></i>
             </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item v-for="item in cities" :key="item">
@@ -331,7 +331,14 @@
         this.$store.dispatch('UserLogout');
       },
       async setAddress() {
-        this.$prompt('', '设置上班地址', {
+        let text = '';
+        if(this.user){
+          let user = this.$store.state.userInfo;
+          if(user.workAddress){
+            text = `记录: ${user.workAddress}`
+          }
+        }
+        this.$prompt(text, '设置上班地址', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           inputValidator: /\S/,

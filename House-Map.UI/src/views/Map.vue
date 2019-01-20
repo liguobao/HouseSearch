@@ -5,7 +5,7 @@
         <router-link to="/"  >地图搜租房</router-link>
         <el-dropdown>
             <span class="el-dropdown-link location">
-              {{location}}<i class="el-icon-caret-bottom"></i>
+                <i class="el-icon-location"></i>{{location}}<i class="el-icon-caret-bottom"></i>
             </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item v-for="item in cities" :key="item">
