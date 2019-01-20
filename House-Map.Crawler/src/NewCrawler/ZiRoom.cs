@@ -130,14 +130,14 @@ namespace HouseMap.Crawler
         private static List<string> GetPhotos(JToken houseData)
         {
             var allPhotos = new List<string>();
+            if (!string.IsNullOrEmpty(houseData["3d_showing"]?.ToString()))
+            {
+                allPhotos.Add(houseData["3d_showing"]?.ToString());
+            }
             var photos = houseData["space"].SelectMany(s => s["photos_big"].Select(p => "https:" + p.ToString())).ToList();
             if (photos != null)
             {
                 allPhotos.AddRange(photos);
-            }
-            if (!string.IsNullOrEmpty(houseData["3d_showing"]?.ToString()))
-            {
-                allPhotos.Add("https:" + houseData["3d_showing"]?.ToString());
             }
             allPhotos.AddRange(houseData["hx_photos_big"].Select(i => "https:" + i.ToString()).ToList());
 
