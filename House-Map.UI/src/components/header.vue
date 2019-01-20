@@ -3,30 +3,44 @@
        :class="{'is-mobile':isMobile}"
   >
     <div>
-      <router-link to="/" class="title" v-if="!isMobile">房子是租来的,而生活不是。</router-link>
-      <a href="https://wj.qq.com/s/2953926/aabe" target="_blank" class="title"  v-else>房子是租来的,而生活不是。</a>
-
+      <div class="title" v-if="!isMobile">
+        <router-link to="/"  >地图搜租房</router-link>
+        <el-dropdown>
+            <span class="el-dropdown-link location">
+              {{location}}<i class="el-icon-caret-bottom"></i>
+            </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item v-for="item in cities" :key="item">
+              <a href="javascript:;"
+                 target="_blank"
+                 @click="cityLocation(item)"
+                 class="link-to">{{item}}</a>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
+      <a href="https://wj.qq.com/s/2953926/aabe" target="_blank" class="title"  v-else>地图搜租房</a>
       <nav v-if="!isMobile">
         <ul>
           <li>
-            <a href="https://wj.qq.com/s/2953926/aabe" target="_blank" class="nav-item">帮我们做得更好?</a>
+            <a href="https://wj.qq.com/s/2953926/aabe" target="_blank" class="nav-item">帮我们?</a>
             <!--<router-link class="nav-item" to="/">网站首页</router-link>-->
           </li>
-          <li>
-            <el-dropdown>
-            <span class="el-dropdown-link nav-item">
-              热门城市<i class="el-icon-caret-bottom"></i>
-            </span>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item v-for="item in cities" :key="item">
-                  <a href="javascript:;"
-                     target="_blank"
-                     @click="navTo(item)"
-                     class="link-to">{{item}}</a>
-                </el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-          </li>
+          <!--<li>-->
+            <!--<el-dropdown>-->
+            <!--<span class="el-dropdown-link nav-item">-->
+              <!--热门城市<i class="el-icon-caret-bottom"></i>-->
+            <!--</span>-->
+              <!--<el-dropdown-menu slot="dropdown">-->
+                <!--<el-dropdown-item v-for="item in cities" :key="item">-->
+                  <!--<a href="javascript:;"-->
+                     <!--target="_blank"-->
+                     <!--@click="navTo(item)"-->
+                     <!--class="link-to">{{item}}</a>-->
+                <!--</el-dropdown-item>-->
+              <!--</el-dropdown-menu>-->
+            <!--</el-dropdown>-->
+          <!--</li>-->
           <li>
             <el-dropdown class="dropdown">
             <span class="el-dropdown-link nav-item">
@@ -43,8 +57,8 @@
                   <el-dropdown-item><a href="javascript:" class="link-to"
                                        @click="showDashboards('user')">房源看板</a>
                   </el-dropdown-item>
-                  <el-dropdown-item><a href="javascript:" class="link-to" @click="getUserHouseList">收藏列表</a>
-                  </el-dropdown-item>
+                  <!--<el-dropdown-item><a href="javascript:" class="link-to" @click="getUserHouseList">收藏列表</a>-->
+                  <!--</el-dropdown-item>-->
                   <el-dropdown-item disabled><a href="javascript:" class="link-to">绑定QQ</a>
                   </el-dropdown-item>
                   <el-dropdown-item><a href="javascript:" class="link-to" @click="setAddress">设置地址</a>
@@ -65,6 +79,10 @@
               </el-dropdown-menu>
             </el-dropdown>
           </li>
+          <li v-if="user">
+            <a href="javascript:" class="nav-item" @click="getUserHouseList">房源收藏</a>
+            <!--<router-link class="nav-item" to="/">网站首页</router-link>-->
+          </li>
           <li>
             <el-dropdown>
             <span class="el-dropdown-link nav-item">
@@ -83,7 +101,7 @@
             </el-dropdown>
           </li>
           <li>
-              <a href="https://blog.house-map.cn" target="_blank" class="nav-item">官方博客</a>
+              <a href="https://blog.house-map.cn" target="_blank" class="nav-item">关于我们</a>
           </li>
         </ul>
       </nav>
@@ -136,6 +154,11 @@
   }
 </style>
 <style lang="scss" scoped>
+  .location{
+    color: #fff;
+    cursor: pointer;
+    font-weight: normal;
+  }
   .header {
     padding: 0 22px;
     > div {
@@ -211,6 +234,16 @@
     font-weight: 600;
     letter-spacing: 7px;
     transition: all 0.5s;
+    a{
+      color: #0e90d2;
+      font-size: 21px;
+      font-weight: 600;
+      letter-spacing: 7px;
+      transition: all 0.5s;
+      &:hover {
+        color: #095f8a;
+      }
+    }
     &:hover {
       color: #095f8a;
     }
@@ -239,7 +272,11 @@
       scrollTo: {},
       isMobile: {},
       token: {},
-      getUserInfo: {}
+      getUserInfo: {},
+      location:{},
+      type:{
+        default:''
+      }
     },
     computed: {
       user() {
@@ -257,6 +294,9 @@
       }
     },
     methods: {
+      cityLocation(item){
+        this.$emit('changeLocation',item)
+      },
       navTo(item) {
         const params = {
           city: item
@@ -311,11 +351,17 @@
         const data = await this.$ajax.get('/notices');
         this.historyNotices = data.data;
         this.noticesVisible = true;
+      },
+      async getCities() {
+        const data = await this.$v2.get('/cities?fields=id,city,sources&index=0&count=15');
+        this.cities = data.data.map(item=>{
+          return item.city
+        })
       }
     },
     data() {
       return {
-        cities: ['上海', '北京', '广州', '深圳', '杭州', '南京', '武汉', '成都', '厦门', '苏州'],
+        cities: [],
         instructions: [
           {
             name: '使用教程',
@@ -339,16 +385,7 @@
     async created() {
       const data = await this.$ajax.get('/account/oauth-url');
       this.oauthUrl = data.url;
-
-
-
-      try {
-        let where = await this.$ajax.get('https://txt.go.sohu.com/ip/soip');
-        console.log(where)
-      }catch (e) {
-
-      }
-
+      this.getCities()
     },
     async mounted(){
 

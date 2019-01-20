@@ -23,6 +23,8 @@
         :scroll-to="scrollTo"
         :token="token"
         :get-user-info="getUserInfo"
+        :location="location"
+        @changeLocation="changeLocation"
     >
 
     </Header>
@@ -30,7 +32,7 @@
       <div>
         <h2 class="slogan">满大街找租房心力交瘁？试试换个方式直接在地图上搜租房!</h2>
         <p class="sub-slogan">多平台房源爬虫 + 高德地图强力驱动,帮助你迅速找到合适房源。</p>
-        <el-button type="danger" class="start" @click="scrollTo('introduction')">马上开始</el-button>
+        <el-button type="danger" class="start" @click="go">马上开始</el-button>
       </div>
     </div>
     <div class="introduction " ref="introduction">
@@ -215,6 +217,9 @@
     .banner {
       height: 200px;
       background-size: 100% auto;
+      >div{
+          text-align: center;
+      }
       .slogan {
         font-size: 16px;
         text-align: center;
@@ -345,7 +350,6 @@
       background: #1a1f2a;
     }
   }
-
   .banner {
     background: url("./../images/banner1.jpg") no-repeat;
     background-position: center;
@@ -738,9 +742,18 @@
         userHouseVisible: false,
         userSource: false,
         dashboardsType: 'all',
+          location:'上海'
       }
     },
     methods: {
+        go(){
+            this.navTo({
+                city:this.location
+            })
+        },
+        changeLocation(city){
+            this.location = city;
+        },
       async showCityHouse(item) {
         let com = require('./../components/city-house').default;
         try {
@@ -879,6 +892,10 @@
       this.elements = [document.querySelector('.banner'), document.querySelector('.introduction'), document.querySelector('.thanks'), document.querySelector('.contact')];
       this.animation();
 
+        if(!returnCitySN){return}
+        let str = returnCitySN.cname;
+        str = str.match(/省(\S*)市/)[1];
+        this.location = str;
     }
   }
 </script>

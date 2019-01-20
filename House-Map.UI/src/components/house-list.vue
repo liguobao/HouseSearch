@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ul class="list" v-if="houseList && houseList.length" ref="list">
+    <ul class="list" v-if="houseList && houseList.length" ref="list" :style="{'max-height': height ? height :'89vh'}">
       <li @click="handleClick(item)" v-for="item in houseList" :key="`${item.id}-${item.source}`">
         <!--<div class="left">-->
           <!--<template v-if="item.pictures && item.pictures.length">-->
@@ -59,6 +59,7 @@
 <script>
   export default {
     props: {
+      height:{},
       houseList: {
         default() {
           return []

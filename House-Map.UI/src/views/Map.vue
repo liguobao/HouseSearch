@@ -1,146 +1,333 @@
 <template>
   <div class="map" :class="{'showInfo':isMobile}">
-    <div class="container" id="map-container"></div>
-    <template v-if="!isMobile">
-      <div class="card">
-        <h4>出行到达圈查询</h4>
-        <div class="card-item">
-          <span class="card-name">上班地点</span>
+    <header v-if="!isMobile">
+      <div class="title" v-if="!isMobile">
+        <router-link to="/"  >地图搜租房</router-link>
+        <el-dropdown>
+            <span class="el-dropdown-link location">
+              {{location}}<i class="el-icon-caret-bottom"></i>
+            </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item v-for="item in cities" :key="item">
+              <a href="javascript:;"
+                 target="_blank"
+                 @click="cityLocation(item)"
+                 class="link-to">{{item}}</a>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
+      <div class="search-wrap">
+        <div class="key-word">
+          <div class="keyword-tag">
+            <el-tag
+                    class="tag"
+                    :key="tag"
+                    v-for="tag in keywordArr"
+                    closable
+                    :disable-transitions="false"
+                    @close="removeKeyword(tag)">
+              {{tag}}
+            </el-tag>
+          </div>
           <el-input
-              id="keyword"
-              class="card-value"
-              size="mini"
-              type="text"
-              placeholder="请输入内容"
-              v-model="keyword"
-              clearable>
-          </el-input>
+                  class="keyword-tag-input"
+                  v-model="keywordTag"
+                  ref="saveTagInput"
+                  size="small"
+                  v-if="inputVisible"
+                  @keyup.enter.native="keywordConfirm"
+                  @blur="keywordConfirm"
+                  placeholder="搜索关键字"
+                  :maxlength="50"></el-input>
+          <el-button v-if="!inputVisible&&keywordArr.length <= 6" class="button-new-tag" size="small" @click="showInput">+ 关键词</el-button>
         </div>
-        <div class="card-item">
-          <span class="card-name">时长(分钟)</span>
-          <el-slider class="card-value" :min="1" :max="60" v-model="times" size="mini"></el-slider>
-          <span class="card-times">{{times}}</span>
-        </div>
-        <div class="card-item">
-          <span class="card-name">出行方式</span>
-          <el-select v-model="waysMethod" placeholder="请选择出行方式" class="card-value" size="mini">
-            <el-option
-                label="地铁+公交"
-                value="">
-            </el-option>
-            <el-option
-                label="地铁"
-                value="SUBWAY">
-            </el-option>
-            <el-option
-                label="公交"
-                value="BUS">
-            </el-option>
-          </el-select>
-        </div>
-        <div class="card-item btn">
-          <el-button type="primary" size="mini" @click="search" :loading="searching">查询</el-button>
-          <el-button type="info" size="mini" :loading="searching" @click="next">下一页</el-button>
-          <!--<el-button size="mini">清空</el-button>-->
-        </div>
+        <el-button type="primary" class="search-btn" size="small" @click="refresh">搜索</el-button>
       </div>
-      <span class="highlight-text">特此声明:房源信息来自网络，本网站不对其真实性负责。首次载入无数据可尝试【F5】强制刷新。 <a href="https://wj.qq.com/s/2953926/aabe" target="_blank" class="do-more-better">帮我们做得更好?</a></span>
-      <div class="icon-tips">
-        <ul>
-          <!--<li class="btn">-->
-          <!--<el-button type="success" size="medium" @click="toggleRight">上班导航</el-button>-->
-          <!--</li>-->
-          <li v-for="item in iconTips">
-            <img :src="item.src"/>
-            <span>{{item.text}}</span>
-          </li>
-        </ul>
-      </div>
-      <div class="map-house-list">
-        <span class="toggleHouseList" @click="toggleHouseListUp = !toggleHouseListUp">{{toggleHouseListUp ? '收起' : '展开'}}</span>
+    </header>
+    <div class="filter-wrap" v-if="!isMobile">
+      <ul>
+        <li>
+          <span>房源类型</span>
+          <div>
+            <el-select v-model="form.rentType" @change="refresh" placeholder="请选择房源类型" size="mini" style="width: 100%">
+              <el-option
+                      :ket="item.value"
+                      v-for="item in rentTypeArr"
+                      :label="item.label"
+                      :value="item.value"
+              ></el-option>
+            </el-select>
+          </div>
+        </li>
+        <li>
+          <span>价位</span>
+          <div>
+            <el-col :span="11">
+              <el-input @change="refresh" v-model="form.fromPrice" size="mini" type="number" placeholder="低" :maxlength="8"></el-input>
+            </el-col>
+            <el-col class="line" :span="2">-</el-col>
+            <el-col :span="11">
+              <el-input @change="refresh" v-model="form.toPrice" size="mini" type="number" placeholder="高" :maxlength="8"></el-input>
+            </el-col>
+          </div>
+        </li>
+        <li>
+          <span>房源</span>
+          <div>
+            <el-select @change="refresh" v-model="form.source" size="mini" placeholder="请选择房源" style="width: 100%" filterable>
+              <el-option label="全部" value=""></el-option>
+              <el-option
+                      v-for="item in source"
+                      :label="item.displaySource"
+                      :value="item.source"
+                      :key="item.id"
+              >
+              </el-option>
+            </el-select>
+          </div>
+        </li>
+        <li>
+          <el-button type="info" size="mini" @click="resetFilter">重置</el-button>
+        </li>
+      </ul>
+    </div>
+    <div class="map-content">
+      <div v-if="!isMobile" class="map-house-list">
+        <!--<span class="toggleHouseList" @click="toggleHouseListUp = !toggleHouseListUp">{{toggleHouseListUp ? '收起' : '展开'}}</span>-->
         <el-collapse-transition>
-          <house-list v-show="toggleHouseListUp" :house-list="mapHouseList" @click="houseListClick"
+          <house-list height="100%" v-show="toggleHouseListUp" :house-list="mapHouseList" @click="houseListClick"
                       v-if="mapHouseList && mapHouseList.length"></house-list>
         </el-collapse-transition>
 
       </div>
-    </template>
-    <template v-else>
-      <div class="mobile-type" :class="{'in-map' : inMap}">
-        <span @click="toMap" :class="{active: mobileType !== 'list'}">地图模式</span>
-        <span @click="toList" :class="{active: mobileType === 'list'}">列表模式</span>
-      </div>
-      <template v-if="!inMap">
-        <div class="filter">
-          <div class="filter-item">
-            <span>上班地点: </span>
-            <el-input
-                id="keyword"
-                class="card-value"
-                size="mini"
-                placeholder="请输入内容"
-                v-model="keyword"
-                clearable>
-            </el-input>
+      <div class="container-wrap">
+        <template v-if="!inMap">
+          <div id="panel" v-show="transferWays" :class="{'slide-up' : toggleUp,'is-mobile' : isMobile}">
+            <!--<span class="panel-handle" @click="toggleUp = !toggleUp">{{!toggleUp ? '收起' : '展开'}}</span>-->
           </div>
-          <div class="filter-item">
-            <el-button type="primary" size="mini" :loading="searching" @click="next">下一页</el-button>
-            <!--<el-button icon="el-icon-tickets" size="mini" type="text" @click="toList"-->
-            <!--class="to-list"></el-button>-->
-          </div>
-        </div>
-        <div class="mobile-bg" v-if="makerInfo" @click="handleMobileBg">
-          <div class="content">
-            <section>
-              <span class="content-name">房源: </span>
-              <a :href="`/#/detail/${makerInfo.id}`" target="_blank"
-                 class="content-value">{{makerInfo.title}}</a>
-            </section>
-            <section v-if="makerInfo.displayMoney">
-              <span class="content-value">{{makerInfo.displayMoney}}</span>
-            </section>
-            <section>
-              <span class="content-value">{{makerInfo.sourceContent}}</span>
-            </section>
-            <section v-if="makerInfo.pictures && makerInfo.pictures.length">
-                        <span class="content-name btn" @click="preview(makerInfo)"><i
-                            class="el-icon-picture"></i>查看图片</span>
-            </section>
-            <section>
-                        <span class="content-name btn" @click="collect(makerInfo)"><i
-                            class="el-icon-star-on"></i>收藏</span>
-            </section>
-            <section>
-                        <span class="content-name btn" @click="navTo(makerInfo)"><i
-                            class="el-icon-location"></i>开始导航</span>
-            </section>
-          </div>
-        </div>
-      </template>
-
-    </template>
-    <template v-if="!inMap">
-      <div id="panel" v-show="transferWays" :class="{'slide-up' : toggleUp,'is-mobile' : isMobile}">
-        <!--<span class="panel-handle" @click="toggleUp = !toggleUp">{{!toggleUp ? '收起' : '展开'}}</span>-->
-      </div>
-      <span @click="whereAmI" class="where-am-i" :class="{'is-mobile' : isMobile}">
+          <span @click="whereAmI" class="where-am-i" :class="{'is-mobile' : isMobile}">
             <i class="el-icon-location"></i>
             我在哪
         </span>
-    </template>
+        </template>
+        <template v-if="!isMobile">
+          <div class="card">
+            <h4>出行到达圈查询</h4>
+            <div class="card-item">
+              <span class="card-name">上班地点</span>
+              <el-input
+                      id="keyword"
+                      class="card-value"
+                      size="mini"
+                      type="text"
+                      placeholder="请输入内容"
+                      v-model="keyword"
+                      clearable>
+              </el-input>
+            </div>
+            <div class="card-item">
+              <span class="card-name">时长(分钟)</span>
+              <el-slider class="card-value" :min="1" :max="60" v-model="times" size="mini"></el-slider>
+              <span class="card-times">{{times}}</span>
+            </div>
+            <div class="card-item">
+              <span class="card-name">出行方式</span>
+              <el-select v-model="waysMethod" placeholder="请选择出行方式" class="card-value" size="mini">
+                <el-option
+                        label="地铁+公交"
+                        value="">
+                </el-option>
+                <el-option
+                        label="地铁"
+                        value="SUBWAY">
+                </el-option>
+                <el-option
+                        label="公交"
+                        value="BUS">
+                </el-option>
+              </el-select>
+            </div>
+            <div class="card-item btn">
+              <el-button type="primary" size="mini" @click="search" :loading="searching">查询</el-button>
+              <el-button type="info" size="mini" :loading="searching" @click="next">下一页</el-button>
+              <!--<el-button size="mini">清空</el-button>-->
+            </div>
+          </div>
+          <span class="highlight-text">特此声明:房源信息来自网络，本网站不对其真实性负责。首次载入无数据可尝试【F5】强制刷新。 <a href="https://wj.qq.com/s/2953926/aabe" target="_blank" class="do-more-better">帮我们做得更好?</a></span>
+          <div class="icon-tips">
+            <ul>
+              <!--<li class="btn">-->
+              <!--<el-button type="success" size="medium" @click="toggleRight">上班导航</el-button>-->
+              <!--</li>-->
+              <li v-for="item in iconTips">
+                <img :src="item.src"/>
+                <span>{{item.text}}</span>
+              </li>
+            </ul>
+          </div>
+          <!--<div class="map-house-list">-->
+          <!--<span class="toggleHouseList" @click="toggleHouseListUp = !toggleHouseListUp">{{toggleHouseListUp ? '收起' : '展开'}}</span>-->
+          <!--<el-collapse-transition>-->
+          <!--<house-list v-show="toggleHouseListUp" :house-list="mapHouseList" @click="houseListClick"-->
+          <!--v-if="mapHouseList && mapHouseList.length"></house-list>-->
+          <!--</el-collapse-transition>-->
+
+          <!--</div>-->
+        </template>
+        <div class="container" id="map-container"></div>
+      </div>
+      <template v-if="isMobile">
+        <div class="mobile-type" :class="{'in-map' : inMap}">
+          <span @click="toMap" :class="{active: mobileType !== 'list'}">地图模式</span>
+          <span @click="toList" :class="{active: mobileType === 'list'}">列表模式</span>
+        </div>
+        <template v-if="!inMap">
+          <div class="filter">
+            <div class="filter-item">
+              <span>上班地点: </span>
+              <el-input
+                      id="keyword"
+                      class="card-value"
+                      size="mini"
+                      placeholder="请输入内容"
+                      v-model="keyword"
+                      clearable>
+              </el-input>
+            </div>
+            <div class="filter-item">
+              <el-button type="primary" size="mini" :loading="searching" @click="next">下一页</el-button>
+              <!--<el-button icon="el-icon-tickets" size="mini" type="text" @click="toList"-->
+              <!--class="to-list"></el-button>-->
+            </div>
+          </div>
+          <div class="mobile-bg" v-if="makerInfo" @click="handleMobileBg">
+            <div class="content">
+              <section>
+                <span class="content-name">房源: </span>
+                <a :href="`/#/detail/${makerInfo.id}`" target="_blank"
+                   class="content-value">{{makerInfo.title}}</a>
+              </section>
+              <section v-if="makerInfo.displayMoney">
+                <span class="content-value">{{makerInfo.displayMoney}}</span>
+              </section>
+              <section>
+                <span class="content-value">{{makerInfo.sourceContent}}</span>
+              </section>
+              <section v-if="makerInfo.pictures && makerInfo.pictures.length">
+                        <span class="content-name btn" @click="preview(makerInfo)"><i
+                                class="el-icon-picture"></i>查看图片</span>
+              </section>
+              <section>
+                        <span class="content-name btn" @click="collect(makerInfo)"><i
+                                class="el-icon-star-on"></i>收藏</span>
+              </section>
+              <section>
+                        <span class="content-name btn" @click="navTo(makerInfo)"><i
+                                class="el-icon-location"></i>开始导航</span>
+              </section>
+            </div>
+          </div>
+        </template>
+
+      </template>
+    </div>
 
     <component v-if="view" :is="view"></component>
-
   </div>
 </template>
 <style scoped lang="scss">
+  .location{
+    cursor: pointer;
+  }
+  .filter-wrap{
+    min-height: 40px;
+    display: flex;
+    border-bottom: 1px solid #efefef;
+    border-top: 1px solid #efefef;
+    padding: 0 10px;
+    .line{
+      line-height: 28px;
+    }
+    ul{
+      display: flex;
+      width: 100%;
+    }
+    li{
+      flex: auto;
+      border-right: 1px solid #efefef;
+      display: flex;
+      font-size: 12px;
+      align-items: center;
+      padding: 0 8px;
+      span{
+        margin-right: 8px;
+      }
+      >div{
+        width: 60%;
+      }
+    }
+  }
+  .keyword-tag{
+    .tag{
+      margin-right: 10px;
+    }
+  }
+  .button-new-tag{
+    height: 32px;
+  }
+  .keyword-tag-input{
+    width: 120px;
+  }
+  .link-to{
+    color: #333;
+    display: block;
+  }
+  header{
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    .title{
+      border-right: 1px solid #efefef;
+      padding-right: 20px;
+      margin-right: 20px;
+      a{
+        color: #0e90d2;
+        font-size: 28px;
+        font-weight: 600;
+        letter-spacing: 7px;
+        transition: all 0.5s;
+        &:hover {
+          color: #095f8a;
+        }
+      }
+    }
+  }
+  .search-wrap{
+    flex: auto;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    .search-btn{
+      margin-left: 20px;
+    }
+    .key-word{
+      font-size: 14px;
+      display: flex;
+    }
+  }
+  .container-wrap{
+    position: relative;
+    flex: auto;
+  }
   .to-list {
     color: #fff;
     font-size: 18px;
   }
 
   .highlight-text {
-    position: fixed;
+    position: absolute;
     color: red;
     left: 83px;
     top: 2px;
@@ -149,7 +336,7 @@
   }
 
   .icon-tips {
-    position: fixed;
+    position: absolute;
     right: 20px;
     top: 30px;
     z-index: 66;
@@ -252,7 +439,7 @@
     background: #fff;
     box-shadow: 0 2px 6px 0 rgba(114, 124, 245, .5);
     border-radius: 5px;
-    position: fixed;
+    position: absolute;
     left: 80px;
     top: 40px;
     z-index: 30;
@@ -389,8 +576,9 @@
   }
 
   .map-house-list {
-    position: fixed;
     z-index: 67;
+    max-height: 100%;
+    overflow: auto;
     width: 260px;
     top: 40px;
     right: 178px;
@@ -409,6 +597,13 @@
   .map {
     height: 100vh;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    .map-content{
+      flex: auto;
+      width: 100%;
+      display: flex;
+    }
     &.showInfo{
       padding-top: 30px;
       .mobile-type{
@@ -506,6 +701,43 @@
     },
     data() {
       return {
+        form:{
+          rentType:undefined,
+          fromPrice:undefined,
+          toPrice:undefined,
+          source:undefined
+        },
+        inputVisible:false,
+        rentTypeArr:[
+          {
+            label:'全部',
+            value:undefined
+          },
+          {
+            label:'未知',
+            value:0
+          },
+          {
+            label:'合租',
+            value:1
+          },
+          {
+            label:'单间',
+            value:2
+          },
+          {
+            label:'整套出租',
+            value:3
+          },
+          {
+            label:'公寓',
+            value:4
+          },
+        ],
+        source: [],
+        keywordTag:'',
+        keywordArr:[],
+        cities:[],
         toggleHouseListUp: true,
         mapHouseList: [],
         houseList: [],
@@ -604,7 +836,8 @@
         done: null,
         collection: false,
         makerInfo: undefined,
-        view: undefined
+        view: undefined,
+        location:'上海'
       }
     },
     computed: {
@@ -628,13 +861,68 @@
     },
     watch: {
       '$route.query': function (params) {
-        if (!params.mobileType || params.mobileType !== 'list') {
+        if ((!params.mobileType || params.mobileType !== 'list') && this.isMobile) {
           this.loading = true;
           this.init();
         }
       }
     },
     methods: {
+      resetFilter(){
+        this.form = {
+          rentType:undefined,
+          fromPrice:undefined,
+          toPrice:undefined,
+          source:''
+        };
+        this.refresh();
+      },
+      async cityChange(cityName) {
+        const data = await this.$v2.get(`/cities/${cityName}`);
+        this.source = data.data;
+        this.form.source = '';
+      },
+      removeKeyword(item){
+        this.keywordArr.splice(this.keywordArr.indexOf(item), 1);
+      },
+      transformParams(){
+        let params = Object.assign({}, this.form);
+        if (this.keywordArr.length) {
+          params.keyword =  this.keywordArr.join(',');
+        }
+        params.city = this.location;
+        return params;
+      },
+      refresh(){
+        let query = this.$route.query;
+        let params = Object.assign({}, query,this.transformParams());
+        this.$router.push({query:params});
+        this.init();
+      },
+      cityLocation(item){
+        this.location = item;
+        this.cityChange(item);
+        this.refresh();
+      },
+      keywordConfirm(){
+        let inputValue = this.keywordTag;
+        if (inputValue) {
+          let has = this.keywordArr.find(item=>{
+            return item === inputValue
+          });
+          if(!has) {
+            this.keywordArr.push(inputValue);
+          }
+        }
+        this.inputVisible = false;
+        this.keywordTag = '';
+      },
+      showInput(){
+        this.inputVisible = true;
+        this.$nextTick(_ => {
+          this.$refs.saveTagInput.$refs.input.focus();
+        })
+      },
       changeQuery(q) {
         const query = this.$route.query;
         const params = Object.assign({}, query, q);
@@ -705,6 +993,12 @@
         if (e.target === e.currentTarget) {
           this.makerInfo = undefined;
         }
+      },
+      async getCities() {
+        const data = await this.$v2.get('/cities?fields=id,city,sources&index=0&count=15');
+        this.cities = data.data.map(item=>{
+          return item.city
+        })
       },
       navTo(item) {
         this.transfer(item.geocodes.location, this.map, this);
@@ -1217,6 +1511,7 @@
         //   spinner: 'el-icon-loading',
         //   background: 'rgba(0, 0, 0, 0.7)'
         // });
+        this.getCities();
         try {
           const query = this.$route.query;
           let cityName = query.city;
@@ -1300,9 +1595,31 @@
     },
     created() {
       let query = this.$route.query;
+      let keyword = query.keyword;
+      if(keyword){
+        this.keywordArr = keyword.split(',')
+      }
     },
     async mounted() {
       this.loading = true;
+
+      const query = this.$route.query;
+      let cityName = query.city;
+      if(cityName){
+        this.location = cityName;
+        this.cityChange(cityName)
+      }else{
+        if(returnCitySN){
+          let str = returnCitySN.cname;
+          str = str.match(/省(\S*)市/)[1];
+          this.location = str;
+          this.cityChange(str);
+          this.$router.replace({query:{city:str}});
+          window.location.reload();
+          return;
+        }
+      }
+
       let key = `8a971a2f88a0ec7458d43b8bc03b6462`;
       let plugin = `AMap.ArrivalRange,AMap.Scale,AMap.Geocoder,AMap.Transfer,AMap.Autocomplete,AMap.CitySearch,AMap.Walking`.split();
       plugin.push(`AMap.ToolBar`);
