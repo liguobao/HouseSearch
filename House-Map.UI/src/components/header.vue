@@ -23,7 +23,7 @@
       <nav v-if="!isMobile">
         <ul>
           <li>
-            <a href="https://wj.qq.com/s/2953926/aabe" target="_blank" class="nav-item">帮我们?</a>
+            <a href="https://wj.qq.com/s/2953926/aabe" target="_blank" class="nav-item">帮我们做得更好?</a>
             <!--<router-link class="nav-item" to="/">网站首页</router-link>-->
           </li>
           <!--<li>-->
@@ -101,7 +101,7 @@
             </el-dropdown>
           </li>
           <li>
-              <a href="https://blog.house-map.cn" target="_blank" class="nav-item">关于我们</a>
+              <a href="https://mp.weixin.qq.com/s/Vzu4fsFspSvNqvOJ0kWfyg" target="_blank" class="nav-item">关于我们</a>
           </li>
         </ul>
       </nav>
@@ -236,7 +236,7 @@
     transition: all 0.5s;
     a{
       color: #0e90d2;
-      font-size: 21px;
+      font-size: 30px;
       font-weight: 600;
       letter-spacing: 7px;
       transition: all 0.5s;

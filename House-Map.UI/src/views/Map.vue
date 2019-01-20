@@ -64,11 +64,11 @@
           <span>价位</span>
           <div>
             <el-col :span="11">
-              <el-input @change="refresh" v-model="form.fromPrice" size="mini" type="number" placeholder="低" :maxlength="8"></el-input>
+              <el-input @change="refresh" v-model="form.fromPrice" size="mini" type="number" placeholder="最低价" :maxlength="8"></el-input>
             </el-col>
             <el-col class="line" :span="2">-</el-col>
             <el-col :span="11">
-              <el-input @change="refresh" v-model="form.toPrice" size="mini" type="number" placeholder="高" :maxlength="8"></el-input>
+              <el-input @change="refresh" v-model="form.toPrice" size="mini" type="number" placeholder="最高价" :maxlength="8"></el-input>
             </el-col>
           </div>
         </li>
@@ -248,6 +248,7 @@
     padding: 0 10px;
     .line{
       line-height: 28px;
+      text-align: center;
     }
     ul{
       display: flex;
