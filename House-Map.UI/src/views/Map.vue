@@ -898,7 +898,9 @@
         let query = this.$route.query;
         let params = Object.assign({}, query,this.transformParams());
         this.$router.push({query:params});
-        this.init();
+        setTimeout(()=>{
+          this.init();
+        },100);
       },
       cityLocation(item){
         this.location = item;
