@@ -12,7 +12,7 @@ using HouseMap.Dao.DBEntity;
 
 namespace HouseCrawler.Web.API.Controllers
 {
-    [Route("v2/houses/")]
+
     public class HousesController : ControllerBase
     {
         private HouseService _houseService;
@@ -24,7 +24,7 @@ namespace HouseCrawler.Web.API.Controllers
 
 
 
-        [HttpPost("")]
+        [HttpPost("v2/houses")]
         [EnableCors("APICors")]
         public IActionResult Search([FromBody] HouseCondition search)
         {
@@ -32,7 +32,7 @@ namespace HouseCrawler.Web.API.Controllers
         }
 
 
-        [HttpGet("")]
+        [HttpGet("v2/houses")]
         [EnableCors("APICors")]
         public IActionResult GetHouse()
         {
@@ -41,20 +41,29 @@ namespace HouseCrawler.Web.API.Controllers
             condition.Source = HttpContext.Request.Query["source"];
             condition.Keyword = HttpContext.Request.Query["keyword"];
             condition.Page = !string.IsNullOrEmpty(HttpContext.Request.Query["page"]) ? int.Parse(HttpContext.Request.Query["page"]) : 0;
-            condition.Size = !string.IsNullOrEmpty(HttpContext.Request.Query["Size"]) ? int.Parse(HttpContext.Request.Query["Size"]) : 600;
+            condition.Size = !string.IsNullOrEmpty(HttpContext.Request.Query["size"]) ? int.Parse(HttpContext.Request.Query["size"]) : 600;
             condition.IntervalDay = !string.IsNullOrEmpty(HttpContext.Request.Query["intervalDay"]) ? int.Parse(HttpContext.Request.Query["intervalDay"]) : 14;
-            condition.RentType = !string.IsNullOrEmpty(HttpContext.Request.Query["rentType"]) ? int.Parse(HttpContext.Request.Query["RentType"]) : 0;
+            condition.RentType = !string.IsNullOrEmpty(HttpContext.Request.Query["rentType"]) ? int.Parse(HttpContext.Request.Query["rentType"]) : 0;
             condition.FromPrice = !string.IsNullOrEmpty(HttpContext.Request.Query["fromPrice"]) ? int.Parse(HttpContext.Request.Query["fromPrice"]) : 0;
             condition.ToPrice = !string.IsNullOrEmpty(HttpContext.Request.Query["toPrice"]) ? int.Parse(HttpContext.Request.Query["toPrice"]) : 0;
-            condition.Refresh = !string.IsNullOrEmpty(HttpContext.Request.Query["Refresh"]) ? bool.Parse(HttpContext.Request.Query["refresh"]) : false;
+            condition.Refresh = !string.IsNullOrEmpty(HttpContext.Request.Query["refresh"]) ? bool.Parse(HttpContext.Request.Query["refresh"]) : false;
             return Ok(new { success = true, data = _houseService.NewSearch(condition) });
         }
 
-        [HttpGet("{houseId}")]
+        [HttpGet("v2/houses/{houseId}")]
         [EnableCors("APICors")]
         public IActionResult FindById(string houseId)
         {
             return Ok(new { success = true, data = _houseService.FindById(houseId) });
+        }
+
+
+        [HttpPut("v2/houses/{houseId}/latlng")]
+        [EnableCors("APICors")]
+        public IActionResult UpdateLatLng(string houseId, [FromQuery] string lat, [FromQuery] string lng)
+        {
+            _houseService.UpdateLatLng(houseId, lat, lng);
+            return Ok(new { success = true });
         }
 
 

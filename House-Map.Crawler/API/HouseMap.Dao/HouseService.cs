@@ -104,6 +104,25 @@ namespace HouseMap.Dao
             return house;
         }
 
+
+        public void UpdateLatLng(string houseId, string lat, string lng)
+        {
+            if (string.IsNullOrEmpty(lat) || string.IsNullOrEmpty(lng))
+            {
+                throw new Exception("lat and lng not empty.");
+            }
+            var house = FindById(houseId);
+            if (house == null)
+            {
+                throw new Exception($"{houseId} not found.");
+            }
+            house.Latitude = lat;
+            house.Longitude = lng;
+            _newHouseDapper.UpdateLatLng(house);
+            var redisKey = RedisKey.HouseDetail;
+            _redisTool.WriteObject(redisKey.Key + houseId, house, redisKey.DBName, (int)redisKey.ExpireTime.TotalMinutes);
+        }
+
         public void RefreshHouseV2()
         {
             LogHelper.Info("开始RefreshHouseV2...");

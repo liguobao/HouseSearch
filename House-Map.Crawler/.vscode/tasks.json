@@ -10,6 +10,16 @@
                 "${workspaceFolder}/src/HouseMap.Crawler.csproj"
             ],
             "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build-api",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/API/src/HouseMapAPI.csproj"
+            ],
+            "problemMatcher": "$msCompile"
         }
     ]
 }

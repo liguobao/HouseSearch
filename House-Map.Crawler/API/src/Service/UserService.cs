@@ -212,11 +212,16 @@ namespace HouseMapAPI.Service
         }
 
 
-        public bool SaveEmail(long userID, string email)
+        public bool SaveEmail(long userID, string email, string password = "")
         {
             if (string.IsNullOrEmpty(email))
             {
                 throw new UnProcessableException("地址不能为空!");
+            }
+            // 检查邮件是否已存在
+            if (_context.Users.Any(u => u.Email == email && u.ID != userID))
+            {
+                throw new UnProcessableException("此邮箱已绑定其他账号,请尝试找回密码后重新登录!");
             }
             var user = _context.Users.FirstOrDefault(u => u.ID == userID);
             if (user == null)

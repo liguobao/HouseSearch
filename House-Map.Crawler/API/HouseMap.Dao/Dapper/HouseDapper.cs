@@ -103,6 +103,24 @@ namespace HouseMap.Dao
         }
 
 
+        public int UpdateLatLng(DBHouse house)
+        {
+            using (IDbConnection dbConnection = GetConnection())
+            {
+                dbConnection.Open();
+                var tableName =  SourceTool.GetHouseTableNameDic()[house.Source];
+                return dbConnection.Execute($"UPDATE {tableName} SET `Longitude`=@Longitude, `Latitude`=@Latitude WHERE `Id`=@Id;",
+                new 
+                {
+                    Longitude = house.Longitude,
+                    Latitude = house.Latitude,
+                    Id = house.Id
+                });
+            }
+        }
+
+
+
         public DBHouse FindByOnlineURL(string onlineURL)
         {
             using (IDbConnection dbConnection = GetConnection())

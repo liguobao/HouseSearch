@@ -37,9 +37,9 @@
             "name": "API",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
+            "preLaunchTask": "build-api",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/API/src/bin/Debug/netcoreapp2.1/HouseMapAPI.dll",
+            "program": "${workspaceFolder}/API/src/bin/Debug/netcoreapp2.2/HouseMapAPI.dll",
             "args": [],
             "cwd": "${workspaceFolder}/API/src",
             "stopAtEntry": false,
