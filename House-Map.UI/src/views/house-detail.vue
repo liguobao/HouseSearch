@@ -12,7 +12,8 @@
         <el-carousel indicator-position="inside" :interval="0"  :autoplay="false" arrow="always">
           <el-carousel-item v-for="item in detail.pictures" :key="item">
             <a :href="item" target="_blank" class="image" >
-              <img :src="item"/>
+              <img :src="item" v-if="!is3D(item)"/>
+              <span v-else>点击进入3D看房</span>
             </a>
           </el-carousel-item>
         </el-carousel>
@@ -84,6 +85,15 @@
         max-width: 100%;
         margin: auto;
       }
+      span{
+          display: flex;
+          text-decoration: underline;
+          align-items: center;
+          justify-content: center;
+          font-size: 16px;
+          color: #7c7c7c;
+          height: 100%;
+      }
     }
     .info{
       background: #fff;
@@ -143,6 +153,9 @@
       }
     },
     methods:{
+        is3D(url){
+          return url.indexOf('realsee.com/ziroom/') !== -1
+        },
       async collect(item) {
         let self = this;
         if (!self.user) {
