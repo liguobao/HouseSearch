@@ -62,9 +62,6 @@
             </el-select>
           </div>
 
-
-        </li>
-        <li>
           <span>价位</span>
           <div>
             <el-col :span="11">
@@ -77,23 +74,26 @@
                         :maxlength="8"></el-input>
             </el-col>
           </div>
-        </li>
-        <li>
+
           <span>房源</span>
-          <div>
-            <el-select @change="refresh" v-model="form.source" size="mini" placeholder="请选择房源" style="width: 100%"
-                       filterable>
-              <el-option label="全部" value=""></el-option>
-              <el-option
-                  v-for="item in source"
-                  :label="item.displaySource"
-                  :value="item.source"
-                  :key="item.id"
-              >
-              </el-option>
-            </el-select>
+          <div class="displaySource">
+            <span>全部</span>
+            <span :class="{active:item.source === $route.query.source}" v-for="item in source" @click="selectSource(item.source)">{{item.displaySource}}</span>
+
+            <!--<el-select @change="refresh" v-model="form.source" size="mini" placeholder="请选择房源"-->
+                       <!--filterable>-->
+              <!--&lt;!&ndash;<el-option label="全部" value=""></el-option>&ndash;&gt;-->
+              <!--<el-option-->
+                  <!--v-for="item in otherSource"-->
+                  <!--:label="item.displaySource"-->
+                  <!--:value="item.source"-->
+                  <!--:key="item.id"-->
+              <!--&gt;-->
+              <!--</el-option>-->
+            <!--</el-select>-->
           </div>
         </li>
+
         <li>
           <el-button type="info" size="mini" @click="resetFilter">重置</el-button>
         </li>
@@ -255,6 +255,19 @@
     border-bottom: 1px solid #efefef;
     border-top: 1px solid #efefef;
     padding: 0 10px;
+    .displaySource {
+      display: flex;
+      width: auto;
+      align-items: center;
+      span {
+        cursor: pointer;
+        transition: color 0.3s;
+        &.active,
+        &:hover{
+          color: #0D87F4;
+        }
+      }
+    }
     .line {
       line-height: 28px;
       text-align: center;
@@ -274,7 +287,8 @@
         margin-right: 8px;
       }
       > div {
-        width: 60%;
+        width: 200px;
+        margin-right: 10px;
       }
     }
   }
@@ -859,6 +873,20 @@
       }
     },
     computed: {
+      sourceFilter() {
+        let arr = this.source || [];
+        if (arr.length > 6) {
+          return arr.slice(0, 6)
+        }
+        return arr;
+      },
+      otherSource() {
+        let arr = this.source || [];
+        if (arr.length > 6) {
+          return arr.slice(6, arr.length)
+        }
+        return arr;
+      },
       mobileType() {
         let query = this.$route.query;
         if (query.mobileType && query.mobileType === 'list') {
@@ -886,6 +914,11 @@
       }
     },
     methods: {
+      selectSource(source){
+        if(this.form.source === source){return}
+        this.form.source = source;
+        this.refresh();
+      },
       resetFilter() {
         this.form = {
           rentType: undefined,
