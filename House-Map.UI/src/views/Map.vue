@@ -1521,7 +1521,7 @@
           if (!cityName) {
             cityName = await this.getActiveCityName(this);
           }
-          this.location = this.activeCityName = this.cityName = cityName;
+          this.activeCityName = this.cityName = cityName;
 
           this.mapHouseList = [];
           let map = new AMap.Map('map-container', {
