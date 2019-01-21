@@ -2,7 +2,7 @@
   <div class="map" :class="{'showInfo':isMobile}">
     <header v-if="!isMobile">
       <div class="title" v-if="!isMobile">
-        <router-link to="/"  >地图搜租房</router-link>
+        <router-link to="/">地图搜租房</router-link>
         <el-dropdown>
             <span class="el-dropdown-link location">
                 <i class="el-icon-location"></i>{{location}}<i class="el-icon-caret-bottom"></i>
@@ -21,26 +21,28 @@
         <div class="key-word">
           <div class="keyword-tag">
             <el-tag
-                    class="tag"
-                    :key="tag"
-                    v-for="tag in keywordArr"
-                    closable
-                    :disable-transitions="false"
-                    @close="removeKeyword(tag)">
+                class="tag"
+                :key="tag"
+                v-for="tag in keywordArr"
+                closable
+                :disable-transitions="false"
+                @close="removeKeyword(tag)">
               {{tag}}
             </el-tag>
           </div>
           <el-input
-                  class="keyword-tag-input"
-                  v-model="keywordTag"
-                  ref="saveTagInput"
-                  size="small"
-                  v-if="inputVisible"
-                  @keyup.enter.native="keywordConfirm"
-                  @blur="keywordConfirm"
-                  placeholder="搜索关键字"
-                  :maxlength="50"></el-input>
-          <el-button v-if="!inputVisible&&keywordArr.length <= 6" class="button-new-tag" size="small" @click="showInput">+ 关键词</el-button>
+              class="keyword-tag-input"
+              v-model="keywordTag"
+              ref="saveTagInput"
+              size="small"
+              v-if="inputVisible"
+              @keyup.enter.native="keywordConfirm"
+              @blur="keywordConfirm"
+              placeholder="搜索关键字"
+              :maxlength="50"></el-input>
+          <el-button v-if="!inputVisible&&keywordArr.length <= 6" class="button-new-tag" size="small"
+                     @click="showInput">+ 关键词
+          </el-button>
         </div>
         <el-button type="primary" class="search-btn" size="small" @click="refresh">搜索</el-button>
       </div>
@@ -52,36 +54,41 @@
           <div>
             <el-select v-model="form.rentType" @change="refresh" placeholder="请选择房源类型" size="mini" style="width: 100%">
               <el-option
-                      :ket="item.value"
-                      v-for="item in rentTypeArr"
-                      :label="item.label"
-                      :value="item.value"
+                  :ket="item.value"
+                  v-for="item in rentTypeArr"
+                  :label="item.label"
+                  :value="item.value"
               ></el-option>
             </el-select>
           </div>
+
+
         </li>
         <li>
           <span>价位</span>
           <div>
             <el-col :span="11">
-              <el-input @change="refresh" v-model="form.fromPrice" size="mini" type="number" placeholder="最低价" :maxlength="8"></el-input>
+              <el-input @change="refresh" v-model="form.fromPrice" size="mini" type="number" placeholder="最低价"
+                        :maxlength="8"></el-input>
             </el-col>
             <el-col class="line" :span="2">-</el-col>
             <el-col :span="11">
-              <el-input @change="refresh" v-model="form.toPrice" size="mini" type="number" placeholder="最高价" :maxlength="8"></el-input>
+              <el-input @change="refresh" v-model="form.toPrice" size="mini" type="number" placeholder="最高价"
+                        :maxlength="8"></el-input>
             </el-col>
           </div>
         </li>
         <li>
           <span>房源</span>
           <div>
-            <el-select @change="refresh" v-model="form.source" size="mini" placeholder="请选择房源" style="width: 100%" filterable>
+            <el-select @change="refresh" v-model="form.source" size="mini" placeholder="请选择房源" style="width: 100%"
+                       filterable>
               <el-option label="全部" value=""></el-option>
               <el-option
-                      v-for="item in source"
-                      :label="item.displaySource"
-                      :value="item.source"
-                      :key="item.id"
+                  v-for="item in source"
+                  :label="item.displaySource"
+                  :value="item.source"
+                  :key="item.id"
               >
               </el-option>
             </el-select>
@@ -117,13 +124,13 @@
             <div class="card-item">
               <span class="card-name">上班地点</span>
               <el-input
-                      id="keyword"
-                      class="card-value"
-                      size="mini"
-                      type="text"
-                      placeholder="请输入内容"
-                      v-model="keyword"
-                      clearable>
+                  id="keyword"
+                  class="card-value"
+                  size="mini"
+                  type="text"
+                  placeholder="请输入内容"
+                  v-model="keyword"
+                  clearable>
               </el-input>
             </div>
             <div class="card-item">
@@ -135,16 +142,16 @@
               <span class="card-name">出行方式</span>
               <el-select v-model="waysMethod" placeholder="请选择出行方式" class="card-value" size="mini">
                 <el-option
-                        label="地铁+公交"
-                        value="">
+                    label="地铁+公交"
+                    value="">
                 </el-option>
                 <el-option
-                        label="地铁"
-                        value="SUBWAY">
+                    label="地铁"
+                    value="SUBWAY">
                 </el-option>
                 <el-option
-                        label="公交"
-                        value="BUS">
+                    label="公交"
+                    value="BUS">
                 </el-option>
               </el-select>
             </div>
@@ -154,7 +161,8 @@
               <!--<el-button size="mini">清空</el-button>-->
             </div>
           </div>
-          <span class="highlight-text">特此声明:房源信息来自网络，本网站不对其真实性负责。首次载入无数据可尝试【F5】强制刷新。 <a href="https://wj.qq.com/s/2953926/aabe" target="_blank" class="do-more-better">帮我们做得更好?</a></span>
+          <span class="highlight-text">特此声明:房源信息来自网络，本网站不对其真实性负责。首次载入无数据可尝试【F5】强制刷新。 <a
+              href="https://wj.qq.com/s/2953926/aabe" target="_blank" class="do-more-better">帮我们做得更好?</a></span>
           <div class="icon-tips">
             <ul>
               <!--<li class="btn">-->
@@ -187,12 +195,12 @@
             <div class="filter-item">
               <span>上班地点: </span>
               <el-input
-                      id="keyword"
-                      class="card-value"
-                      size="mini"
-                      placeholder="请输入内容"
-                      v-model="keyword"
-                      clearable>
+                  id="keyword"
+                  class="card-value"
+                  size="mini"
+                  placeholder="请输入内容"
+                  v-model="keyword"
+                  clearable>
               </el-input>
             </div>
             <div class="filter-item">
@@ -216,15 +224,15 @@
               </section>
               <section v-if="makerInfo.pictures && makerInfo.pictures.length">
                         <span class="content-name btn" @click="preview(makerInfo)"><i
-                                class="el-icon-picture"></i>查看图片</span>
+                            class="el-icon-picture"></i>查看图片</span>
               </section>
               <section>
                         <span class="content-name btn" @click="collect(makerInfo)"><i
-                                class="el-icon-star-on"></i>收藏</span>
+                            class="el-icon-star-on"></i>收藏</span>
               </section>
               <section>
                         <span class="content-name btn" @click="navTo(makerInfo)"><i
-                                class="el-icon-location"></i>开始导航</span>
+                            class="el-icon-location"></i>开始导航</span>
               </section>
             </div>
           </div>
@@ -237,63 +245,69 @@
   </div>
 </template>
 <style scoped lang="scss">
-  .location{
+  .location {
     cursor: pointer;
   }
-  .filter-wrap{
+
+  .filter-wrap {
     min-height: 40px;
     display: flex;
     border-bottom: 1px solid #efefef;
     border-top: 1px solid #efefef;
     padding: 0 10px;
-    .line{
+    .line {
       line-height: 28px;
       text-align: center;
     }
-    ul{
+    ul {
       display: flex;
       width: 100%;
     }
-    li{
+    li {
       flex: auto;
       border-right: 1px solid #efefef;
       display: flex;
       font-size: 12px;
       align-items: center;
       padding: 0 8px;
-      span{
+      span {
         margin-right: 8px;
       }
-      >div{
+      > div {
         width: 60%;
       }
     }
   }
-  .keyword-tag{
-    .tag{
+
+  .keyword-tag {
+    .tag {
       margin-right: 10px;
     }
   }
-  .button-new-tag{
+
+  .button-new-tag {
     height: 32px;
   }
-  .keyword-tag-input{
+
+  .keyword-tag-input {
     width: 120px;
   }
-  .link-to{
+
+  .link-to {
     color: #333;
     display: block;
   }
-  header{
+
+  header {
     min-height: 80px;
     display: flex;
     align-items: center;
     padding: 10px;
-    .title{
+    .title {
       border-right: 1px solid #efefef;
       padding-right: 20px;
       margin-right: 20px;
-      a{
+      a {
         color: #0e90d2;
         font-size: 28px;
         font-weight: 600;
@@ -305,23 +319,26 @@
       }
     }
   }
-  .search-wrap{
+
+  .search-wrap {
     flex: auto;
     height: 44px;
     display: flex;
     align-items: center;
-    .search-btn{
+    .search-btn {
       margin-left: 20px;
     }
-    .key-word{
+    .key-word {
       font-size: 14px;
       display: flex;
     }
   }
-  .container-wrap{
+
+  .container-wrap {
     position: relative;
     flex: auto;
   }
+
   .to-list {
     color: #fff;
     font-size: 18px;
@@ -600,24 +617,24 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    .map-content{
+    .map-content {
       flex: auto;
       width: 100%;
       display: flex;
     }
-    &.showInfo{
+    &.showInfo {
       padding-top: 30px;
-      .mobile-type{
-        top:27px
+      .mobile-type {
+        top: 27px
       }
-      .filter{
+      .filter {
         top: 67px;
       }
-      .house-list.in-map{
+      .house-list.in-map {
         margin-top: 67px;
       }
     }
-    .do-more-better{
+    .do-more-better {
       text-decoration: underline;
       font-size: #333;
     }
@@ -702,43 +719,43 @@
     },
     data() {
       return {
-        form:{
-          rentType:undefined,
-          fromPrice:undefined,
-          toPrice:undefined,
-          source:undefined
+        form: {
+          rentType: undefined,
+          fromPrice: undefined,
+          toPrice: undefined,
+          source: undefined
         },
-        inputVisible:false,
-        rentTypeArr:[
+        inputVisible: false,
+        rentTypeArr: [
           {
-            label:'全部',
-            value:undefined
+            label: '全部',
+            value: undefined
           },
           {
-            label:'未知',
-            value:0
+            label: '未知',
+            value: 0
           },
           {
-            label:'合租',
-            value:1
+            label: '合租',
+            value: 1
           },
           {
-            label:'单间',
-            value:2
+            label: '单间',
+            value: 2
           },
           {
-            label:'整套出租',
-            value:3
+            label: '整套出租',
+            value: 3
           },
           {
-            label:'公寓',
-            value:4
+            label: '公寓',
+            value: 4
           },
         ],
         source: [],
-        keywordTag:'',
-        keywordArr:[],
-        cities:[],
+        keywordTag: '',
+        keywordArr: [],
+        cities: [],
         toggleHouseListUp: true,
         mapHouseList: [],
         houseList: [],
@@ -838,7 +855,7 @@
         collection: false,
         makerInfo: undefined,
         view: undefined,
-        location:'上海'
+        location: '上海'
       }
     },
     computed: {
@@ -869,12 +886,12 @@
       }
     },
     methods: {
-      resetFilter(){
+      resetFilter() {
         this.form = {
-          rentType:undefined,
-          fromPrice:undefined,
-          toPrice:undefined,
-          source:''
+          rentType: undefined,
+          fromPrice: undefined,
+          toPrice: undefined,
+          source: ''
         };
         this.refresh();
       },
@@ -883,44 +900,44 @@
         this.source = data.data;
         this.form.source = '';
       },
-      removeKeyword(item){
+      removeKeyword(item) {
         this.keywordArr.splice(this.keywordArr.indexOf(item), 1);
       },
-      transformParams(){
+      transformParams() {
         let params = Object.assign({}, this.form);
         if (this.keywordArr.length) {
-          params.keyword =  this.keywordArr.join(',');
+          params.keyword = this.keywordArr.join(',');
         }
         params.city = this.location;
         return params;
       },
-      refresh(){
+      refresh() {
         let query = this.$route.query;
-        let params = Object.assign({}, query,this.transformParams());
-        this.$router.push({query:params});
-        setTimeout(()=>{
-          this.init();
-        },100);
+        let params = Object.assign({}, query, this.transformParams());
+        this.$router.push({query: params});
+        setTimeout(() => {
+          this.init(this.location);
+        }, 200);
       },
-      cityLocation(item){
+      cityLocation(item) {
         this.location = item;
         this.cityChange(item);
         this.refresh();
       },
-      keywordConfirm(){
+      keywordConfirm() {
         let inputValue = this.keywordTag;
         if (inputValue) {
-          let has = this.keywordArr.find(item=>{
+          let has = this.keywordArr.find(item => {
             return item === inputValue
           });
-          if(!has) {
+          if (!has) {
             this.keywordArr.push(inputValue);
           }
         }
         this.inputVisible = false;
         this.keywordTag = '';
       },
-      showInput(){
+      showInput() {
         this.inputVisible = true;
         this.$nextTick(_ => {
           this.$refs.saveTagInput.$refs.input.focus();
@@ -999,7 +1016,7 @@
       },
       async getCities() {
         const data = await this.$v2.get('/cities?fields=id,city,sources&index=0&count=15');
-        this.cities = data.data.map(item=>{
+        this.cities = data.data.map(item => {
           return item.city
         })
       },
@@ -1508,7 +1525,7 @@
         })
       },
 
-      async init() {
+      async init(location) {
         // const loading = this.$loading({
         //   lock: true,
         //   text: '正在加载数据,若等待时间过长,请重新刷新页面',
@@ -1522,7 +1539,11 @@
           if (!cityName) {
             cityName = await this.getActiveCityName(this);
           }
-          this.activeCityName = this.cityName = cityName;
+          if (location) {
+            this.activeCityName = this.cityName = location;
+          } else {
+            this.activeCityName = this.cityName = cityName;
+          }
 
           this.mapHouseList = [];
           let map = new AMap.Map('map-container', {
@@ -1571,7 +1592,7 @@
           //   loading.close();
           // }, 1000 * 20);
           await this.addMaker(map, data, code, self);
-          setTimeout(()=>{
+          setTimeout(() => {
             this.search('auto');
           });
           // loading.close();
@@ -1600,7 +1621,7 @@
     created() {
       let query = this.$route.query;
       let keyword = query.keyword;
-      if(keyword){
+      if (keyword) {
         this.keywordArr = keyword.split(',')
       }
     },
@@ -1609,16 +1630,16 @@
 
       const query = this.$route.query;
       let cityName = query.city;
-      if(cityName){
+      if (cityName) {
         this.location = cityName;
         this.cityChange(cityName)
-      }else{
-        if(returnCitySN){
+      } else {
+        if (returnCitySN) {
           let str = returnCitySN.cname;
           str = str.match(/省(\S*)市/)[1];
           this.location = str;
           this.cityChange(str);
-          this.$router.replace({query:{city:str}});
+          this.$router.replace({query: {city: str}});
           window.location.reload();
           return;
         }
