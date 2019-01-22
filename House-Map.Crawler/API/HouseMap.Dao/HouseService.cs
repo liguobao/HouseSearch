@@ -105,7 +105,7 @@ namespace HouseMap.Dao
         }
 
 
-        public void UpdateLatLng(string houseId, string lat, string lng)
+        public void UpdateLngLat(string houseId, string lng,string lat)
         {
             if (string.IsNullOrEmpty(lat) || string.IsNullOrEmpty(lng))
             {
@@ -118,7 +118,7 @@ namespace HouseMap.Dao
             }
             house.Latitude = lat;
             house.Longitude = lng;
-            _newHouseDapper.UpdateLatLng(house);
+            _newHouseDapper.UpdateLngLat(house);
             var redisKey = RedisKey.HouseDetail;
             _redisTool.WriteObject(redisKey.Key + houseId, house, redisKey.DBName, (int)redisKey.ExpireTime.TotalMinutes);
         }

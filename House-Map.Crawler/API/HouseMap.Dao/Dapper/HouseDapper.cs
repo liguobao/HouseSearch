@@ -103,7 +103,7 @@ namespace HouseMap.Dao
         }
 
 
-        public int UpdateLatLng(DBHouse house)
+        public int UpdateLngLat(DBHouse house)
         {
             using (IDbConnection dbConnection = GetConnection())
             {

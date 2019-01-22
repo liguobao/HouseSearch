@@ -58,11 +58,11 @@ namespace HouseCrawler.Web.API.Controllers
         }
 
 
-        [HttpPut("v2/houses/{houseId}/latlng")]
+        [HttpPut("v2/houses/{houseId}/lnglat")]
         [EnableCors("APICors")]
         public IActionResult UpdateLatLng(string houseId, [FromQuery] string lat, [FromQuery] string lng)
         {
-            _houseService.UpdateLatLng(houseId, lat, lng);
+            _houseService.UpdateLngLat(houseId, lng, lat);
             return Ok(new { success = true });
         }
 
