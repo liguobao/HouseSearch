@@ -212,7 +212,7 @@ namespace HouseMapAPI.Service
         }
 
 
-        public bool SaveEmail(long userID, string email, string password = "")
+        public bool SaveEmail(long userID, string email)
         {
             if (string.IsNullOrEmpty(email))
             {
