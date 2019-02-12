@@ -37,8 +37,7 @@
 - appsetting.json配置和初始化MySQL脚本
   appsetting.json配置如下:
   
-  
-    ```json
+```json
     {
     "MySQLConnectionString": "server=mysql地址;port=端口号;database=数据库名字;uid=账号;pwd=密码;charset='utf-8';Allow User Variables=True;Connection Timeout=30;SslMode=None;",
     "RedisConnectionString": "redis数据库地址:端口,name=名字,keepAlive=1800,syncTimeout=10000,connectTimeout=360000,password=访问密码,ssl=False,abortConnect=False,responseTimeout=360000,defaultDatabase=1",
@@ -52,12 +51,11 @@
     "EncryptionConfigCIV": "加密向量,16个16进制数字",
     "EncryptionConfigCKEY": "加密秘钥,16个16进制数字"
 }
-    ```
+```
     
-    
-    数据库初始化脚本:[HouseCrawler.Core/Dump20180512-House-Structure.sql](/HouseCrawler.Core/Dump20180512-House-Structure.sql)
+数据库初始化脚本:[HouseCrawler.Core/Dump20180512-House-Structure.sql](/HouseCrawler.Core/Dump20180512-House-Structure.sql)
 
-    数据库爬虫配置数据:[HouseCrawler.Core/Dump20180512-House-Config.sql](HouseCrawler.Core/Dump20180512-House-Config.sql)
+数据库爬虫配置数据:[HouseCrawler.Core/Dump20180512-House-Config.sql](HouseCrawler.Core/Dump20180512-House-Config.sql)
 
 ### [58HouseSearch.Core(停止维护)](/58HouseSearch.Core)
 
