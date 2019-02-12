@@ -8,7 +8,7 @@
 
 - 使用高德地图API直接在地图上展示房源位置,方便查看租房地理位置,同时提供住址到公司的路线计算（公交+地图 or 步行导航）以及预估耗时.
 
-- 已接入【豆瓣租房小组】、【Zuber合租平台】、【蘑菇租房】、【CCB建融家园】、【58同城品牌公寓】、【58同城诚信租房】、【上海互助租房】数据展示，部分房源价格支持筛选功能,累计数据过百万,同时支持手动添加豆瓣房源爬虫任务.
+- 通过实时爬虫获取公开租房信息，直接在高德地图上直观展示房源位置+基础信息，同时提供住址到公司的路线计算（公交+地图 or 步行导航），已实现【豆瓣租房小组】、【豆瓣租房小程序】、【Zuber合租】、【蘑菇租房】、【CCB建融家园】、【58同城品牌公寓】、【Hi住租房】、【房多多】、【贝壳租房】、【v2ex租房帖子】、【上海互助租房】等房源信息数据爬取，部分房源价格支持筛选功能。
 
 - 支持个人收藏房源信息,以便筛选自己合适的房子.
 
@@ -24,18 +24,27 @@
 
 - vue.js 冻爷[Erane](https://github.com/Erane/) 已全部完成
 
-### 后端 [HouseCrawler.Core(当前维护版本)](/HouseCrawler.Core)
+### API+爬虫 [House-Map.Crawler(当前维护版本)](/House-Map.Crawler)
 
-- 基于dotnet core 2.0,使用了 dapper, TimeJob ,RestSharp , Jieba.net...
+- 基于dotnet core 2.2,使用了 dapper ,RestSharp , Jieba.net, NEST...
 
 - 数据库使用 MySQL, 缓存使用redis
 
-- Core项目为爬虫逻辑,Web项目为API,逻辑分离
+- [House-Map.Crawler/src][/House-Map.Crawler/src]项目为爬虫代码
+
+- [House-Map.Crawler/API][/House-Map.Crawler/API]项目为API代码
+
+- [House-Map.Crawler/node-proxy][/House-Map.Crawler/node-proxy]项目为某些API的服务转发/解密
+
+- 每个项目都支持Docker打包,都可以自行打包独立使用
+
+- 由于单服务器爬虫比较低效,简单改造成分布式爬虫, 所有的爬虫均通过crawler项目中暴露API供外部启动
 
 - CI自动化发布使用Jenkins +Docker(这部分有兴趣可以看下:[手把手教你用Jenkins做Docker自动化发布](https://zhuanlan.zhihu.com/p/36509817))
 
 - appsetting.json配置和初始化MySQL脚本
-  appsetting.json配置如下:
+
+appsetting.json配置如下:
   
 ```json
     {
@@ -56,6 +65,9 @@
 数据库初始化脚本:[HouseCrawler.Core/Dump20180512-House-Structure.sql](/HouseCrawler.Core/Dump20180512-House-Structure.sql)
 
 数据库爬虫配置数据:[HouseCrawler.Core/Dump20180512-House-Config.sql](HouseCrawler.Core/Dump20180512-House-Config.sql)
+
+
+
 
 ### [58HouseSearch.Core(停止维护)](/58HouseSearch.Core)
 
