@@ -6,10 +6,10 @@
 
 - [安装visualstudio code](https://code.visualstudio.com/)
 
-## 运行程序 
+## 运行程序 
 
 ```sh
-dotnet run;
+dotnet run;
 ```
 
 或者直接使用VS code debug
