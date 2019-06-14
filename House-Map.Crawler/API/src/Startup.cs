@@ -46,13 +46,10 @@ namespace HouseMapAPI
 
         private void InitDB(IServiceCollection services)
         {
-            var loggerFactory = new LoggerFactory();
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             services.AddDbContextPool<HouseMapContext>(options =>
-          {
-              options.UseLoggerFactory(loggerFactory);
-              options.UseMySql(Configuration["QCloudMySQL"].ToString());
-          });
+            {
+                options.UseMySql(Configuration["QCloudMySQL"].ToString());
+            });
         }
 
         private void InitRedis(IServiceCollection services)
@@ -105,7 +102,6 @@ namespace HouseMapAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             env.ConfigureNLog("nlog.config");
             app.UseErrorHandling();
             app.UseMvc();

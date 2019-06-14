@@ -166,7 +166,7 @@ namespace HouseMapAPI.Service
 
         public UserInfo GetUserInfo(long userId, string token)
         {
-            var userToken = _RedisTool.ReadCache(RedisKey.UserToken.Key + userId, RedisKey.UserToken.DBName);
+            var userToken = _RedisTool.ReadCache(RedisKeys.UserToken.Key + userId, RedisKeys.UserToken.DBName);
             if (string.IsNullOrEmpty(userToken))
             {
                 throw new TokenInvalidException("can not find token in redis");
@@ -176,7 +176,7 @@ namespace HouseMapAPI.Service
             {
                 throw new TokenInvalidException("token invalid");
             }
-            return _RedisTool.ReadCache<UserInfo>(RedisKey.UserId.Key + userId, RedisKey.UserId.DBName);
+            return _RedisTool.ReadCache<UserInfo>(RedisKeys.UserId.Key + userId, RedisKeys.UserId.DBName);
         }
 
         public UserInfo GetUserByToken(string token)
@@ -187,8 +187,8 @@ namespace HouseMapAPI.Service
 
         public void WriteUserToken(UserInfo loginUser, string token)
         {
-            _RedisTool.WriteObject(RedisKey.UserToken.Key + loginUser.ID, token, 0, 60 * 24 * 30);
-            _RedisTool.WriteObject(RedisKey.UserId.Key + loginUser.ID, loginUser, 0, 60 * 24 * 30);
+            _RedisTool.WriteObject(RedisKeys.UserToken.Key + loginUser.ID, token, 0, 60 * 24 * 30);
+            _RedisTool.WriteObject(RedisKeys.UserId.Key + loginUser.ID, loginUser, 0, 60 * 24 * 30);
             _RedisTool.WriteObject(token, loginUser, 0, 60 * 24 * 30);
         }
 
@@ -236,9 +236,9 @@ namespace HouseMapAPI.Service
 
         private void RefreshUserCache(long userID)
         {
-            var token = _RedisTool.ReadCache<string>(RedisKey.UserToken.Key + userID, RedisKey.UserToken.DBName);
+            var token = _RedisTool.ReadCache<string>(RedisKeys.UserToken.Key + userID, RedisKeys.UserToken.DBName);
             var user = _context.Users.FirstOrDefault(u => u.ID == userID);
-            _RedisTool.DeleteCache(RedisKey.UserId.Key + userID);
+            _RedisTool.DeleteCache(RedisKeys.UserId.Key + userID);
             _RedisTool.DeleteCache(token);
             WriteUserToken(user, token);
         }

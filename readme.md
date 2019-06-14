@@ -24,25 +24,15 @@
 
 - vue.js 冻爷[Erane](https://github.com/Erane/) 已全部完成
 
-### API+爬虫 
+### 后端 [House-Map.Crawler(当前维护版本)](/House-Map.Crawler)
 
-- [House-Map.Crawler(当前维护版本)](/House-Map.Crawler)
-
-- 基于dotnet core 2.2,使用了 dapper ,RestSharp , Jieba.net, NEST...
+- 基于dotnet core 2.0,使用了 dapper ,RestSharp , Jieba.net...
 
 - 数据库使用 MySQL, 缓存使用redis
 
-- [House-Map.Crawler/src](/House-Map.Crawler/src)项目为爬虫代码
+- Crawler项目为爬虫逻辑,API项目为Web API,逻辑分离
 
-- [House-Map.Crawler/API](/House-Map.Crawler/API)项目为API代码
-
-- [House-Map.Crawler/node-proxy](/House-Map.Crawler/node-proxy)项目为某些API的服务转发/解密
-
-- 每个项目都支持Docker打包,都可以自行打包独立使用
-
-- 由于单服务器爬虫比较低效,简单改造成分布式爬虫, 所有的爬虫均通过crawler项目中暴露API供外部启动
-
-- CI自动化发布使用Jenkins +Docker(这部分有兴趣可以看下:[手把手教你用Jenkins做Docker自动化发布](https://zhuanlan.zhihu.com/p/36509817))
+- CI自动化发布使用Jenkins +Docker(这部分有兴趣可以看下:[手把手教你用Jenkins做Docker自动化发布](https://zhuanlan.zhihu.com/p/36509817)) PS:已废弃,全面改用Gitlab CI + k8s
 
 - appsetting.json配置和初始化MySQL脚本
 
@@ -62,6 +52,7 @@ appsetting.json配置如下:
     "EncryptionConfigCIV": "加密向量,16个16进制数字",
     "EncryptionConfigCKEY": "加密秘钥,16个16进制数字"
 }
+<<<<<<< HEAD
 ```
     
 数据库初始化脚本:[HouseCrawler.Core/Dump20180512-House-Structure.sql](/HouseCrawler.Core/Dump20180512-House-Structure.sql)
@@ -70,6 +61,14 @@ appsetting.json配置如下:
 
 
 
+=======
+    ```
+
+1. [House-Map.Crawler/API(当前维护版本)](/House-Map.Crawler/API) 所有的API都在这里
+
+2. [House-Map.Crawler/Crawler(当前维护版本)](/House-Map.Crawler/Crawler) 所有的Crawler都在这里, 通过改变环境变量控制启动那个爬虫
+
+>>>>>>> 同步N多代码到GitHub
 
 ### [58HouseSearch.Core(停止维护)](/58HouseSearch.Core)
 

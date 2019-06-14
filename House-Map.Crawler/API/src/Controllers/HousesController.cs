@@ -28,7 +28,16 @@ namespace HouseCrawler.Web.API.Controllers
         [EnableCors("APICors")]
         public IActionResult Search([FromBody] HouseCondition search)
         {
-            return Ok(new { success = true, data = _houseService.NewSearch(search) });
+            return Ok(new { success = true, data = _houseService.Search(search) });
+        }
+
+
+        [HttpPost("v2/houses-refresh")]
+        [EnableCors("APICors")]
+        public IActionResult RefreshSearch([FromBody] HouseCondition search)
+        {
+            _houseService.RefreshSearch(search);
+            return Ok(new { success = true });
         }
 
 
@@ -41,13 +50,12 @@ namespace HouseCrawler.Web.API.Controllers
             condition.Source = HttpContext.Request.Query["source"];
             condition.Keyword = HttpContext.Request.Query["keyword"];
             condition.Page = !string.IsNullOrEmpty(HttpContext.Request.Query["page"]) ? int.Parse(HttpContext.Request.Query["page"]) : 0;
-            condition.Size = !string.IsNullOrEmpty(HttpContext.Request.Query["size"]) ? int.Parse(HttpContext.Request.Query["size"]) : 600;
-            condition.IntervalDay = !string.IsNullOrEmpty(HttpContext.Request.Query["intervalDay"]) ? int.Parse(HttpContext.Request.Query["intervalDay"]) : 14;
+            condition.Size = !string.IsNullOrEmpty(HttpContext.Request.Query["size"]) ? int.Parse(HttpContext.Request.Query["size"]) : 0;
             condition.RentType = !string.IsNullOrEmpty(HttpContext.Request.Query["rentType"]) ? int.Parse(HttpContext.Request.Query["rentType"]) : 0;
             condition.FromPrice = !string.IsNullOrEmpty(HttpContext.Request.Query["fromPrice"]) ? int.Parse(HttpContext.Request.Query["fromPrice"]) : 0;
             condition.ToPrice = !string.IsNullOrEmpty(HttpContext.Request.Query["toPrice"]) ? int.Parse(HttpContext.Request.Query["toPrice"]) : 0;
             condition.Refresh = !string.IsNullOrEmpty(HttpContext.Request.Query["refresh"]) ? bool.Parse(HttpContext.Request.Query["refresh"]) : false;
-            return Ok(new { success = true, data = _houseService.NewSearch(condition) });
+            return Ok(new { success = true, data = _houseService.Search(condition) });
         }
 
         [HttpGet("v2/houses/{houseId}")]
@@ -58,14 +66,15 @@ namespace HouseCrawler.Web.API.Controllers
         }
 
 
-        [HttpPut("v2/houses/{houseId}/lnglat")]
+
+
+
+        [HttpPut("v2/houses-lat-lng")]
         [EnableCors("APICors")]
-        public IActionResult UpdateLatLng(string houseId, [FromQuery] string lat, [FromQuery] string lng)
+        public IActionResult UpdateHousesLatLng([FromBody]List<DBHouse> houses)
         {
-            _houseService.UpdateLngLat(houseId, lng, lat);
+            _houseService.UpdateHousesLngLat(houses);
             return Ok(new { success = true });
         }
-
-
     }
 }

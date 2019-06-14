@@ -23,13 +23,18 @@ namespace HouseMap.Dao
 
         public List<DBConfig> LoadConfigs(string city = "")
         {
-            var configs = _redisTool.ReadCache<List<DBConfig>>(RedisKey.CrawlerConfig.Key + city, RedisKey.CrawlerConfig.DBName);
+            var keyConfig = RedisKeys.CrawlerConfig.CopyOne(city);
+            var configs = _redisTool.ReadCache<List<DBConfig>>(keyConfig);
             if (configs == null)
             {
                 var configQuery = _configDapper.LoadAll(city);
                 configs = configQuery.OrderByDescending(c => c.Score).ToList();
-                _redisTool.WriteObject(RedisKey.CrawlerConfig.Key + city, configs,
-                 RedisKey.CrawlerConfig.DBName, RedisKey.CrawlerConfig.Minutes);
+                if (!configs.Any())
+                {
+                    return new List<DBConfig>();
+                }
+
+                _redisTool.WriteObject(keyConfig, configs);
             }
             return configs;
         }
@@ -40,7 +45,7 @@ namespace HouseMap.Dao
             return LoadConfigs(city).GroupBy(c => c.Source).Select(i => i.First()).ToList();
         }
 
-        public Dictionary<string, List<DBConfig>> LoadCitySources(string city="")
+        public Dictionary<string, List<DBConfig>> LoadCitySources(string city = "")
         {
             return LoadConfigs(city).GroupBy(c => c.City)
             .ToDictionary(item => item.Key, items => items.GroupBy(c => c.Source).Select(i => i.First()).ToList());

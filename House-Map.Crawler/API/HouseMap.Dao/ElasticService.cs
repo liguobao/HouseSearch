@@ -63,6 +63,21 @@ namespace HouseMap.Dao
             return new List<DBHouse>();
         }
 
+        public DBHouse QueryById(string id)
+        {
+            var searchRsp = _elasticClient.Search<DBHouse>(s => s
+            .Index("house-data-*")
+            .Explain()
+            .Sort(sort => sort.Descending(h => h.PubTime))
+            .Query(q => q.Match(m => m.Field("id.keyword").Query(id))));
+            if (searchRsp.IsValid)
+            {
+                return searchRsp.Documents.FirstOrDefault();
+            }
+            Console.WriteLine(searchRsp.DebugInformation);
+            return null;
+        }
+
         private static QueryContainer ConvertToQuery(HouseCondition condition, QueryContainerDescriptor<DBHouse> q)
         {
             List<string> keywords = GetKeywords(condition);
@@ -79,9 +94,6 @@ namespace HouseMap.Dao
                 .GreaterThanOrEquals(condition.FromPrice)
                 .LessThanOrEquals(condition.ToPrice));
             }
-            query = query && q.DateRange(dr => dr.Field(f => f.PubTime)
-            .GreaterThanOrEquals(DateTime.Now.AddDays(-condition.IntervalDay)));
-
             return query;
         }
 

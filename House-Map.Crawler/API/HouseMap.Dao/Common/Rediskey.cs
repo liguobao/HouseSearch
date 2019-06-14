@@ -2,7 +2,7 @@ using System;
 
 namespace HouseMap.Common
 {
-    public static class RedisKey
+    public static class RedisKeys
     {
         public static KeyConfig Token = new KeyConfig()
         {
@@ -41,7 +41,7 @@ namespace HouseMap.Common
         };
         public static KeyConfig HouseDetail = new KeyConfig()
         {
-            Key = "House_",
+            Key = "house_",
             ExpireTime = new TimeSpan(TimeSpan.TicksPerMinute * 60 * 12),
             DBName = 2
         };
@@ -73,8 +73,7 @@ namespace HouseMap.Common
         {
             Key = "SourceConfig-",
             ExpireTime = new TimeSpan(TimeSpan.TicksPerMinute * 60 * 4),
-            DBName = 1,
-            Minutes = 4 * 60
+            DBName = 1
         };
 
 
@@ -86,6 +85,22 @@ namespace HouseMap.Common
             DBName = 0
         };
 
+
+        public static KeyConfig CrawlerState = new KeyConfig()
+        {
+            Key = "crawler_state_",
+            ExpireTime = new TimeSpan(TimeSpan.TicksPerMinute * 50),
+            DBName = 6
+        };
+
+        public static KeyConfig CurrentCrawler = new KeyConfig()
+        {
+            Key = "current_crawler",
+            ExpireTime = new TimeSpan(TimeSpan.TicksPerDay * 1),
+            DBName = 6
+        };
+
+
     }
 
     public class KeyConfig
@@ -94,8 +109,17 @@ namespace HouseMap.Common
 
         public TimeSpan ExpireTime { get; set; }
 
-        public int Minutes { get; set; }
+
 
         public int DBName { get; set; } = 0;
+
+        public KeyConfig CopyOne(string state)
+        {
+            var one = new KeyConfig();
+            one.DBName = this.DBName;
+            one.Key = this.Key + state;
+            one.ExpireTime = this.ExpireTime;
+            return one;
+        }
     }
 }

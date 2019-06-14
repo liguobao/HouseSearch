@@ -77,7 +77,19 @@ namespace HouseMap.Dao.DBEntity
         Anjuke,
 
         [Source("ziroom", "ZiRoomHouse", "自如")]
-        ZiRoom
+        ZiRoom,
+
+        [Source("qingke", "QingkeHouse", "青客")]
+        Qingke,
+
+        [Source("cjia", "CJiaHouse", "城家")]
+        CJia,
+
+        [Source("hangzhouzhufang", "GovernmentHouse", "杭州租赁")]
+        Hangzhouzhufang,
+
+        [Source("anxuan", "AnxuanHouse", "58安选")]
+        Anxuan,
 
     }
 
@@ -125,6 +137,11 @@ namespace HouseMap.Dao.DBEntity
                 return descriptionDic[source];
             }
             return displayName;
+        }
+
+        internal static object GetHouseTableName(object source)
+        {
+            throw new NotImplementedException();
         }
     }
 

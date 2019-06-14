@@ -13,8 +13,8 @@ namespace HouseMap.Dao
     {
         public string City { get; set; }
         public string Source { get; set; } = "";
-        public int Size { get; set; } = 600;
-        public int IntervalDay { get; set; } = 14;
+        public int Size { get; set; } = 0;
+
         public string Keyword { get; set; } = "";
         public bool Refresh { get; set; }
         public int Page { get; set; } = 0;
@@ -23,14 +23,17 @@ namespace HouseMap.Dao
         public int FromPrice { get; set; } = 0;
         public int ToPrice { get; set; } = 0;
 
-        public string Query {get;set;}
+        public string Query { get; set; }
+
+
+        public DateTime? PubTime { get; set; }
 
         public string RedisKey
         {
             get
             {
 
-                var key = $"{this.City}-{this.Source}-{this.IntervalDay}-{this.Page}-{this.Size}-{this.Keyword}";
+                var key = $"{this.City}-{this.Source}-p{this.Page}-s{this.Size}-{this.Keyword}";
                 if (this.FromPrice > 0 && this.ToPrice > 0 && this.FromPrice <= this.ToPrice)
                 {
                     key = key + $"-{this.FromPrice}-{this.ToPrice}";
@@ -40,14 +43,6 @@ namespace HouseMap.Dao
                     key = key + $"-{this.RentType}";
                 }
                 return key;
-            }
-        }
-
-        public DateTime PubTime
-        {
-            get
-            {
-                return DateTime.Now.Date.AddDays(-IntervalDay);
             }
         }
 
@@ -81,11 +76,18 @@ namespace HouseMap.Dao
                                             Longitude,
                                             Text"
                                    + $" from { tableName } where 1=1 "
-                                   + $" and City = @City and  PubTime >= @PubTime and Status !=1 ";
+                                   + $" and City = @City ";
                 if (!string.IsNullOrEmpty(this.Keyword))
                 {
                     queryText = queryText + " and (Text like @LikeKeyWord or Title like @LikeKeyWord) ";
                 }
+                if (this.PubTime == null)
+                {
+                    // 默认查询60天内的数据
+                    this.PubTime = DateTime.Now.Date.AddDays(-60);
+                    queryText = queryText + " and PubTime >= @PubTime  ";
+                }
+
                 if (this.FromPrice > 0 && this.ToPrice >= 0 && this.FromPrice <= this.ToPrice)
                 {
                     queryText = queryText + $" and (Price >= {this.FromPrice} and Price <={this.ToPrice}) "

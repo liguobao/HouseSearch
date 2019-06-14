@@ -50,6 +50,52 @@ namespace HouseMap.Common
 
         }
 
+
+        public void WriteObject(KeyConfig keyConfig, Object value)
+        {
+            try
+            {
+                IDatabase db = _redisMultiplexer.GetDatabase(keyConfig.DBName);
+                db.StringSet(keyConfig.Key, Newtonsoft.Json.JsonConvert.SerializeObject(value), keyConfig.ExpireTime);
+
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error("WriteObject", ex, keyConfig);
+                Console.WriteLine(ex.ToString());
+            }
+
+        }
+
+        public virtual void WriteHash(KeyConfig keyConfig, string hashKey, string value)
+        {
+            try
+            {
+                IDatabase db = _redisMultiplexer.GetDatabase(keyConfig.DBName);
+                db.HashSet(keyConfig.Key, hashKey, value);
+
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error("WriteHash", ex, keyConfig);
+            }
+        }
+
+        public virtual Dictionary<RedisValue, RedisValue> ReadHash(KeyConfig keyConfig)
+        {
+            try
+            {
+                IDatabase db = _redisMultiplexer.GetDatabase(keyConfig.DBName);
+                return db.HashGetAll(keyConfig.Key).ToDictionary();
+
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error("ReadHash", ex, keyConfig);
+                return default(Dictionary<RedisValue, RedisValue>);
+            }
+        }
+
         public T ReadCache<T>(string key, int dbName)
         {
             try
@@ -63,6 +109,24 @@ namespace HouseMap.Common
             catch (Exception ex)
             {
                 LogHelper.Error("ReadCache", ex, key);
+                Console.WriteLine(ex.ToString());
+                return default(T);
+            }
+        }
+
+
+         public T ReadCache<T>(KeyConfig keyConfig)
+        {
+            try
+            {
+                IDatabase db = _redisMultiplexer.GetDatabase(keyConfig.DBName);
+                var data = db.KeyExists(keyConfig.Key) == true ? Newtonsoft.Json.JsonConvert.DeserializeObject<T>(db.StringGet(keyConfig.Key).ToString()) : default(T);
+                return data;
+
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error("ReadCache", ex, keyConfig);
                 Console.WriteLine(ex.ToString());
                 return default(T);
             }

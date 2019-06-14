@@ -10,19 +10,20 @@ using System.Linq;
 
 namespace HouseMap.Dao
 {
-    public class HouseDapper : BaseDapper
+    public class IntentionDapper : BaseDapper
     {
-        public HouseDapper(IOptions<AppSettings> options) : base(options)
+        public IntentionDapper(IOptions<AppSettings> options) : base(options)
         {
         }
 
-        public int BulkInsertHouses(List<DBHouse> houses)
+
+        public int BulkInsertPeoples(List<DBPeopleIntention> intentions)
         {
-            if (houses == null || houses.Count == 0)
+            if (intentions == null || intentions.Count == 0)
             {
                 return 0;
             }
-            var tableName = SourceTool.GetHouseTableName(houses.FirstOrDefault().Source);
+            var tableName = SourceTool.GetHouseTableName(intentions.FirstOrDefault().Source);
             using (IDbConnection dbConnection = GetConnection())
             {
                 dbConnection.Open();
@@ -44,52 +45,11 @@ namespace HouseMap.Dao
                                             @PubTime,@OnlineURL,
                                             @Price,@Labels,
                                             @Source,@Id)  ON DUPLICATE KEY UPDATE UpdateTime=now();",
-                                     houses, transaction: transaction);
+                                     intentions, transaction: transaction);
                 dbConnection.Execute(@"INSERT INTO HouseData
                         (`JsonData`,`Id`,`OnlineURL`)
                         VALUES (@JsonData,@Id,@OnlineURL) ON DUPLICATE KEY UPDATE UpdateTime=now();",
-                        houses.Where(h => !string.IsNullOrEmpty(h.JsonData)), transaction: transaction);
-
-                transaction.Commit();
-                return result;
-            }
-
-        }
-
-
-        public int BulkInsertPeoples(List<DBHouse> houses)
-        {
-            if (houses == null || houses.Count == 0)
-            {
-                return 0;
-            }
-            var tableName = SourceTool.GetHouseTableName(houses.FirstOrDefault().Source);
-            using (IDbConnection dbConnection = GetConnection())
-            {
-                dbConnection.Open();
-                IDbTransaction transaction = dbConnection.BeginTransaction();
-                var result = dbConnection.Execute("INSERT INTO " + tableName + @"
-                                     (`Title`, `Text`,
-                                    `PicURLs`, `Location`,
-                                    `City`,
-                                    `Longitude`, `Latitude`,
-                                    `RentType`,`Tags`,
-                                    `PubTime`, `OnlineURL`,
-                                     `Price`,`Labels`,
-                                    `Source`,`Id`)
-                                     VALUES (@Title, @Text,
-                                            @PicURLs, @Location,
-                                            @City,
-                                            @Longitude,@Latitude,
-                                            @RentType,@Tags,
-                                            @PubTime,@OnlineURL,
-                                            @Price,@Labels,
-                                            @Source,@Id)  ON DUPLICATE KEY UPDATE UpdateTime=now();",
-                                     houses, transaction: transaction);
-                dbConnection.Execute(@"INSERT INTO HouseData
-                        (`JsonData`,`Id`,`OnlineURL`)
-                        VALUES (@JsonData,@Id,@OnlineURL) ON DUPLICATE KEY UPDATE UpdateTime=now();",
-                        houses.Where(h => !string.IsNullOrEmpty(h.JsonData)), transaction: transaction);
+                        intentions.Where(h => !string.IsNullOrEmpty(h.JsonData)), transaction: transaction);
 
                 transaction.Commit();
                 return result;
@@ -102,20 +62,12 @@ namespace HouseMap.Dao
 
         public List<DBHouse> SearchHouses(HouseCondition condition)
         {
-            try
+            var houses = new List<DBHouse>();
+            using (IDbConnection dbConnection = GetConnection())
             {
-                var houses = new List<DBHouse>();
-                using (IDbConnection dbConnection = GetConnection())
-                {
-                    dbConnection.Open();
-                    houses = dbConnection.Query<DBHouse>(condition.QueryText, condition).ToList();
-                    return houses;
-                }
-            }
-            catch (Exception ex)
-            {
-                LogHelper.Error("SearchHouses fail", ex, condition);
-                return new List<DBHouse>();
+                dbConnection.Open();
+                houses = dbConnection.Query<DBHouse>(condition.QueryText, condition).ToList();
+                return houses;
             }
         }
 
@@ -169,49 +121,6 @@ namespace HouseMap.Dao
             }
         }
 
-
-        public List<DBHouse> FindDoubanNotPriceData(int intervalDay = 14)
-        {
-            try
-            {
-                var houses = new List<DBHouse>();
-                using (IDbConnection dbConnection = GetConnection())
-                {
-                    dbConnection.Open();
-                    houses = dbConnection.Query<DBHouse>(@"SELECT 
-                        *
-                    FROM
-                        housemap.doubanhouse
-                    WHERE
-                        Price = - 1
-                            AND UpdateTime > DATE_SUB(NOW(), INTERVAL @intervalDay DAY);", new { intervalDay = intervalDay }).ToList();
-                    return houses;
-                }
-            }
-            catch (Exception ex)
-            {
-                LogHelper.Error("FindDoubanNotPriceData fail", ex);
-                return new List<DBHouse>();
-            }
-        }
-
-        public int UpdateDoubanPrices(List<DBHouse> houses)
-        {
-            try
-            {
-                using (IDbConnection dbConnection = GetConnection())
-                {
-                    dbConnection.Open();
-                    var sql = @"UPDATE `housemap`.`doubanhouse` SET `Price`=@Price WHERE `Id`=@Id;";
-                    return dbConnection.Execute(sql, houses);
-                }
-            }
-            catch (Exception ex)
-            {
-                LogHelper.Error("FindDoubanNotPriceData fail", ex);
-                return -1;
-            }
-        }
 
 
         public DBHouse FindByOnlineURL(string onlineURL)

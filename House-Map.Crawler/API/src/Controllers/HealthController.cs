@@ -5,10 +5,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Cors;
 
 namespace HouseMapAPI.Controllers
 {
-    [Route("v1/health")]
     public class HealthController : ControllerBase
     {
 
@@ -18,12 +18,22 @@ namespace HouseMapAPI.Controllers
 
         }
 
-        [HttpGet("")]
+        [EnableCors("APICors")]
+        [HttpGet("v1/health")]
         public IActionResult GetHealth()
         {
-            return Ok(new { data = new {  }, code = 0 });
+            var header = Request.Headers;
+            Console.WriteLine($"header:{Newtonsoft.Json.JsonConvert.SerializeObject(header)}");
+            return Ok(new { data = new { }, code = 0 });
         }
 
-    
+        [EnableCors("APICors")]
+        [HttpGet("/")]
+        public IActionResult GetHost([FromHeader(Name = "X-Real-IP")]string xRealIP, [FromHeader(Name = "X-Forwarded-For")]string xForwardedFor)
+        {
+            var header = Request.Headers;
+            Console.WriteLine($"[{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}]|xRealIP:{xRealIP},xForwardedFor:{xForwardedFor},header:{Newtonsoft.Json.JsonConvert.SerializeObject(header)}");
+            return Ok(new { data = new { }, code = 0 });
+        }
     }
 }

@@ -1,7 +1,3 @@
-//============================================================
-//http://codelover.link author:李国宝
-//============================================================
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,7 +11,7 @@ using Newtonsoft.Json;
 namespace HouseMap.Dao.DBEntity
 {
 
-    [ElasticsearchType(IdProperty = "OnlineURL")]
+    [ElasticsearchType(IdProperty = "Id")]
     public class DBHouse : BaseEntity
     {
         public string Title { get; set; }
@@ -80,7 +76,7 @@ namespace HouseMap.Dao.DBEntity
             }
         }
 
-        
+
         [NotMapped]
         public List<string> Pictures
         {
@@ -106,6 +102,15 @@ namespace HouseMap.Dao.DBEntity
 
 
         public string Source { get; set; }
+
+        [NotMapped]
+        public string DisplaySource
+        {
+            get
+            {
+                return SourceTool.GetDisplayName(this.Source);
+            }
+        }
     }
 
 
