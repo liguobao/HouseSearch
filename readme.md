@@ -52,23 +52,20 @@ appsetting.json配置如下:
     "EncryptionConfigCIV": "加密向量,16个16进制数字",
     "EncryptionConfigCKEY": "加密秘钥,16个16进制数字"
 }
-<<<<<<< HEAD
-```
+
+```log
     
 数据库初始化脚本:[HouseCrawler.Core/Dump20180512-House-Structure.sql](/HouseCrawler.Core/Dump20180512-House-Structure.sql)
 
 数据库爬虫配置数据:[HouseCrawler.Core/Dump20180512-House-Config.sql](HouseCrawler.Core/Dump20180512-House-Config.sql)
 
 
-
-=======
-    ```
+```
 
 1. [House-Map.Crawler/API(当前维护版本)](/House-Map.Crawler/API) 所有的API都在这里
 
 2. [House-Map.Crawler/Crawler(当前维护版本)](/House-Map.Crawler/Crawler) 所有的Crawler都在这里, 通过改变环境变量控制启动那个爬虫
 
->>>>>>> 同步N多代码到GitHub
 
 ### [58HouseSearch.Core(停止维护)](/58HouseSearch.Core)
 
