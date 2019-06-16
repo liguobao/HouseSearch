@@ -26,7 +26,7 @@
 
 ### 后端 [House-Map.Crawler(当前维护版本)](/House-Map.Crawler)
 
-- 基于dotnet core 2.0,使用了 dapper ,RestSharp , Jieba.net...
+- 基于dotnet core 2.0,使用了 dapper ,RestSharp , Jieba.net...
 
 - 数据库使用 MySQL, 缓存使用redis
 
