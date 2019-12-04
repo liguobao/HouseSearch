@@ -1,6 +1,6 @@
 [![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](http://www.gnu.org/licenses/lgpl-3.0)
 
-# [地图搜租房(https://house-map.cn)](https://house-map.cn/#/)
+# [地图搜租房(https://house-map.cn/app/house-map/)](https://house-map.cn/app/house-map/)
 
 ## 这是什么?爬虫+高德地图驱动的找租房平台
 
