@@ -44,10 +44,10 @@ namespace HouseMapAPI.Service
         public Tuple<string, UserInfo> Register(UserSave registerUser)
         {
             CheckRegisterUser(registerUser);
-            string activatecode = Tools.GetSha256(registerUser.UserName + registerUser.Email + DateTime.Now);
+            string activatecode = Tools.GetSha256(registerUser.userName + registerUser.email + DateTime.Now);
             SendActivateEmail(registerUser, activatecode);
             UserInfo insertUser = AddUser(registerUser, activatecode);
-            var userInfo = _context.Users.FirstOrDefault(u => u.UserName == registerUser.UserName);
+            var userInfo = _context.Users.FirstOrDefault(u => u.UserName == registerUser.userName);
             string token = userInfo.NewLoginToken;
             WriteUserToken(userInfo, token);
             return Tuple.Create<string, UserInfo>(token, userInfo);
@@ -70,11 +70,11 @@ namespace HouseMapAPI.Service
 
         public Tuple<string, UserInfo> Login(UserSave loginUser)
         {
-            if (loginUser == null || string.IsNullOrEmpty(loginUser.UserName))
+            if (loginUser == null || string.IsNullOrEmpty(loginUser.userName))
             {
                 throw new Exception("用户名/用户邮箱不能为空.");
             }
-            var userInfo = _context.Users.FirstOrDefault(u => u.UserName == loginUser.UserName || u.Email == loginUser.UserName);
+            var userInfo = _context.Users.FirstOrDefault(u => u.UserName == loginUser.userName || u.Email == loginUser.userName);
             CheckLogin(loginUser, userInfo);
             string token = userInfo.NewLoginToken;
             WriteUserToken(userInfo, token);
@@ -119,7 +119,7 @@ namespace HouseMapAPI.Service
             {
                 throw new Exception("找不到用户信息或密码错误!");
             }
-            if (userInfo.Password != Tools.GetMD5(loginUser.Password))
+            if (userInfo.Password != Tools.GetMD5(loginUser.password))
             {
                 throw new Exception("用户名/密码错误.");
             }
@@ -128,9 +128,9 @@ namespace HouseMapAPI.Service
         private UserInfo AddUser(UserSave registerUser, string activatecode)
         {
             var insertUser = new UserInfo();
-            insertUser.Email = registerUser.Email;
-            insertUser.UserName = registerUser.UserName;
-            insertUser.Password = Tools.GetMD5(registerUser.Password);
+            insertUser.Email = registerUser.email;
+            insertUser.UserName = registerUser.userName;
+            insertUser.Password = Tools.GetMD5(registerUser.password);
             insertUser.ActivatedCode = activatecode;
             _context.Users.Add(insertUser);
             _context.SaveChanges();
@@ -140,25 +140,25 @@ namespace HouseMapAPI.Service
         private void SendActivateEmail(UserSave registerUser, string token)
         {
             EmailInfo email = new EmailInfo();
-            email.Body = $"Hi,{registerUser.UserName}. <br>欢迎注册地图搜租房(house-map.cn),您的账号已经注册成功." +
+            email.Body = $"Hi,{registerUser.userName}. <br>欢迎注册地图搜租房(house-map.cn),您的账号已经注册成功." +
             "<br/>为了保证您能正常体验网站服务，请点击下面的链接完成邮箱验证以激活账号."
             + $"<br><a href='https://woyaozufang.live/#/Account/Activated?code={token}'>https://woyaozufang.live/#/Account/Activate?code={token}</a> "
             + "<br>如果您以上链接无法点击，您可以将以上链接复制并粘贴到浏览器地址栏打开."
             + "<br>此信由系统自动发出，系统不接收回信，因此请勿直接回复。" +
             "<br>如果有其他问题咨询请发邮件到codelover@qq.com.";
-            email.Receiver = registerUser.Email;
+            email.Receiver = registerUser.email;
             email.Subject = "地图搜租房-激活账号";
-            email.ReceiverName = registerUser.UserName;
+            email.ReceiverName = registerUser.userName;
             _emailService.Send(email);
         }
 
         private void CheckRegisterUser(UserSave registerUser)
         {
-            if (registerUser == null || string.IsNullOrEmpty(registerUser.Email) || string.IsNullOrEmpty(registerUser.UserName))
+            if (registerUser == null || string.IsNullOrEmpty(registerUser.email) || string.IsNullOrEmpty(registerUser.userName))
             {
                 throw new Exception("用户名/用户邮箱不能为空.");
             }
-            if (_context.Users.Any(u => u.UserName == registerUser.UserName))
+            if (_context.Users.Any(u => u.UserName == registerUser.userName))
             {
                 throw new Exception("用户已存在!");
             }

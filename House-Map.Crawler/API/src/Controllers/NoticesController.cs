@@ -1,13 +1,6 @@
-using System;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Cors;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using HouseMap.Dao;
-using HouseMap.Dao.DBEntity;
 using HouseMapAPI.Service;
 
 namespace HouseCrawler.Web.API.Controllers
@@ -26,6 +19,9 @@ namespace HouseCrawler.Web.API.Controllers
             _noticeService = noticeService;
         }
 
+        /// <summary>
+        /// 获取所有的公告
+        /// </summary>
         [EnableCors("APICors")]
         [HttpGet("", Name = "Notice")]
         public ActionResult Info()
@@ -33,7 +29,9 @@ namespace HouseCrawler.Web.API.Controllers
             return Ok(new { success = true, data = _dapper.FindAllNotice() });
         }
 
-
+        /// <summary>
+        /// 获取单条公告
+        /// </summary>
         [EnableCors("APICors")]
         [HttpGet("{id}")]
         public ActionResult One(long id)
@@ -44,7 +42,9 @@ namespace HouseCrawler.Web.API.Controllers
 
 
 
-
+        /// <summary>
+        /// 获取最新公告
+        /// </summary>
         [EnableCors("APICors")]
         [HttpGet("last", Name = "FindLastNotice")]
         public ActionResult FindLastNotice()

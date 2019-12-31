@@ -25,7 +25,7 @@ namespace HouseMap.Crawler
         {
             this.Source = SourceEnum.Anxuan;
             _restClient = new RestClient();
-            _restClient.BaseUrl = new Uri("https://1109393218718134.cn-shanghai.fc.aliyuncs.com");
+            _restClient.BaseUrl = new Uri("http://192.168.1.2");
         }
 
         public override string GetJsonOrHTML(DBConfig config, int page)
@@ -33,8 +33,12 @@ namespace HouseMap.Crawler
             var configJson = JToken.Parse(config.Json);
             var shortCutName = configJson["shortcutname"].ToString();
             var pageIndex = page + 1;
-            var request = new RestRequest($"/2016-08-15/proxy/anxuan-58/get_anxuan_houses/?city={shortCutName}&page={pageIndex}", Method.GET);
+            var request = new RestRequest($"/58-anxuan?city={shortCutName}&page={pageIndex}", Method.GET);
             IRestResponse response = _restClient.Execute(request);
+            if (!response.IsSuccessful)
+            {
+                Console.WriteLine(response.Content);
+            }
             return response.IsSuccessful ? response.Content : "";
         }
 

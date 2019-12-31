@@ -67,6 +67,11 @@ namespace HouseMap.Crawler
         {
             var houses = new List<DBHouse>();
             var room = item["room"];
+            if (room["client_attr"] == null || room["client_attr"]["beds"] == null)
+            {
+                Console.WriteLine($"houses not found, item:{item?.ToString()}");
+                return houses;
+            }
             foreach (var bed in room["client_attr"]["beds"])
             {
                 var housePrice = bed["money"].ToObject<int>();

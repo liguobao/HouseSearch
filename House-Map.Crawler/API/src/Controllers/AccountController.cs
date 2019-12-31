@@ -1,13 +1,7 @@
-using System;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using HouseMapAPI.Service;
 using Talk.OAuthClient;
-using Microsoft.Extensions.Options;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Cors;
-using Newtonsoft.Json;
-using HouseMap.Common;
 using HouseMapAPI.Models;
 
 namespace HouseMapAPI.Controllers
@@ -29,6 +23,9 @@ namespace HouseMapAPI.Controllers
             _authClient = authClient.GetAPIOAuthClient();
         }
 
+        /// <summary>
+        /// 用户注册
+        /// </summary>
         [EnableCors("APICors")]
         [HttpPost("register", Name = "Register")]
         public ActionResult Register([FromBody]UserSave registerUser)
@@ -38,6 +35,10 @@ namespace HouseMapAPI.Controllers
 
         }
 
+
+        /// <summary>
+        /// 用户登录
+        /// </summary>
         [EnableCors("APICors")]
         [HttpPost("", Name = "Login")]
         public ActionResult Login([FromBody]UserSave loginUser)
@@ -48,14 +49,20 @@ namespace HouseMapAPI.Controllers
         }
 
 
+        /// <summary>
+        /// 第三方登录回调
+        /// </summary>
         [EnableCors("APICors")]
         [HttpGet("callback", Name = "Callback")]
-        public ActionResult Callback(string code, string state)
+        public ActionResult Callback([FromQuery]string code, [FromQuery]string state)
         {
             var result = _userService.OAuthCallback(code);
             return Ok(new { success = true, token = result.Item1, message = "登录成功!", data = result.Item2 });
         }
 
+        /// <summary>
+        /// 激活用户
+        /// </summary>
         [EnableCors("APICors")]
         [HttpGet("activated/{code}", Name = "Activated")]
         public ActionResult Activated(string code)
@@ -65,6 +72,9 @@ namespace HouseMapAPI.Controllers
         }
 
 
+        /// <summary>
+        /// 微信登录
+        /// </summary>
         [EnableCors("APICors")]
         [HttpPost("weixin", Name = "Weixin")]
         public ActionResult Weixin([FromBody]WechatLoginInfo loginInfo)
@@ -73,6 +83,10 @@ namespace HouseMapAPI.Controllers
             return Ok(new { success = true, token = result.Item1, message = "登录成功!", data = result.Item2 });
         }
 
+
+        /// <summary>
+        /// 获取QQ登录URL
+        /// </summary>
         [EnableCors("APICors")]
         [HttpGet("oauth-url", Name = "GetQQOAuthUrl")]
         public IActionResult GetQQOAuthUrl()

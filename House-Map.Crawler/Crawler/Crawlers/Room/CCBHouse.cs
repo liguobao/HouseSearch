@@ -1,19 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using AngleSharp.Parser.Html;
 using Newtonsoft.Json;
 using RestSharp;
-using System.Data;
-using MySql.Data.MySqlClient;
-using System.Data.SqlClient;
-using Dapper;
-using AngleSharp.Dom;
 using HouseMap.Dao;
 using HouseMap.Dao.DBEntity;
-using HouseMap.Crawler.Common;
 using Newtonsoft.Json.Linq;
-using Microsoft.Extensions.Options;
 using HouseMap.Common;
 using System.Net;
 
@@ -29,6 +20,7 @@ namespace HouseMap.Crawler
         {
             this.Source = SourceEnum.CCBHouse;
             this._restClient = new RestClient("http://api.jiayuan.ccbhome.cn");
+            // this._restClient.Proxy = new WebProxy("house-map.cn", 3128);
         }
 
         public override string GetJsonOrHTML(DBConfig config, int page)
@@ -112,16 +104,13 @@ namespace HouseMap.Crawler
         private string GetResultByAPI(string apiKey, string cityShortCutName, int page)
         {
             var request = new RestRequest($"/hlsp/cityhouse/deal/search?apiKey={apiKey}&city={cityShortCutName}&saleOrLease=lease&pageSize=50&page={page + 1}&lang=zh-CN&tmflags=3", Method.GET);
-            request.AddHeader("cookie2", "=1");
-            request.AddHeader("cookie", "null=874709770.20480.0000");
-            request.AddHeader("connection", "Keep-Alive");
             request.AddHeader("host", "api.jiayuan.ccbhome.cn");
             IRestResponse response = _restClient.Execute(request);
             if (response.IsSuccessful)
             {
                 return response.Content;
             }
-            Console.WriteLine($"request:{request.Resource}, response:{response.Content}");
+            Console.WriteLine($"request:{request.Resource},statusCode:{response.StatusCode},response:{response.Content}");
             return "";
         }
 

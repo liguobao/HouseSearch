@@ -1,16 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json;
 using RestSharp;
-using System.Data;
-using Dapper;
 using HouseMap.Dao;
 using HouseMap.Dao.DBEntity;
 using HouseMap.Crawler.Common;
 using HouseMap.Common;
 using Newtonsoft.Json.Linq;
-using System.Net;
 using AngleSharp.Parser.Html;
 
 namespace HouseMap.Crawler

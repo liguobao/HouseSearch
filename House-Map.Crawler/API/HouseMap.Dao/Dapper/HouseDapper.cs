@@ -45,11 +45,10 @@ namespace HouseMap.Dao
                                             @Price,@Labels,
                                             @Source,@Id)  ON DUPLICATE KEY UPDATE UpdateTime=now();",
                                      houses, transaction: transaction);
-                dbConnection.Execute(@"INSERT INTO HouseData
-                        (`JsonData`,`Id`,`OnlineURL`)
-                        VALUES (@JsonData,@Id,@OnlineURL) ON DUPLICATE KEY UPDATE UpdateTime=now();",
-                        houses.Where(h => !string.IsNullOrEmpty(h.JsonData)), transaction: transaction);
-
+                // dbConnection.Execute(@"INSERT INTO HouseData
+                //         (`JsonData`,`Id`,`OnlineURL`)
+                //         VALUES (@JsonData,@Id,@OnlineURL) ON DUPLICATE KEY UPDATE UpdateTime=now();",
+                //         houses.Where(h => !string.IsNullOrEmpty(h.JsonData)), transaction: transaction);
                 transaction.Commit();
                 return result;
             }
@@ -100,7 +99,7 @@ namespace HouseMap.Dao
 
 
 
-        public List<DBHouse> SearchHouses(HouseCondition condition)
+        public List<DBHouse> SearchHouses(DBHouseQuery condition)
         {
             try
             {
@@ -153,18 +152,53 @@ namespace HouseMap.Dao
         }
 
 
-        public int UpdateLngLat(DBHouse house)
+        public DBHouse FindByURL(string houseURL)
         {
             using (IDbConnection dbConnection = GetConnection())
             {
                 dbConnection.Open();
-                var tableName = SourceTool.GetHouseTableNameDic()[house.Source];
+                foreach (var tableName in SourceTool.GetHouseTableNameDic().Values)
+                {
+                    var house = dbConnection.QueryFirstOrDefault<DBHouse>(@"SELECT Id,
+                                            OnlineURL,
+                                            Title,
+                                            Location,
+                                            Price,
+                                            PubTime,
+                                            City,
+                                            Source,
+                                            PicURLs,
+                                            Labels,
+                                            Tags,
+                                            RentType,
+                                            Latitude,
+                                            Longitude,
+                                            Text,
+                                            Status"
+                                            + $" from { tableName } where OnlineURL = @OnlineURL", new { OnlineURL = houseURL });
+                    if (house != null)
+                    {
+                        return house;
+                    }
+                }
+                return null;
+            }
+        }
+
+
+
+        public int UpdateLngLat(HousesLatLng house)
+        {
+            using (IDbConnection dbConnection = GetConnection())
+            {
+                dbConnection.Open();
+                var tableName = SourceTool.GetHouseTableNameDic()[house.source];
                 return dbConnection.Execute($"UPDATE {tableName} SET Longitude=@Longitude, Latitude=@Latitude,UpdateTime=now() WHERE Id=@Id;",
                 new
                 {
-                    Longitude = house.Longitude,
-                    Latitude = house.Latitude,
-                    Id = house.Id
+                    Longitude = house.longitude,
+                    Latitude = house.latitude,
+                    Id = house.id
                 });
             }
         }
@@ -210,40 +244,6 @@ namespace HouseMap.Dao
             {
                 LogHelper.Error("FindDoubanNotPriceData fail", ex);
                 return -1;
-            }
-        }
-
-
-        public DBHouse FindByOnlineURL(string onlineURL)
-        {
-            using (IDbConnection dbConnection = GetConnection())
-            {
-                dbConnection.Open();
-                foreach (var tableName in SourceTool.GetHouseTableNameDic().Values)
-                {
-                    var house = dbConnection.QueryFirstOrDefault<DBHouse>(@"SELECT Id,
-                                            OnlineURL,
-                                            Title,
-                                            Location,
-                                            Price,
-                                            PubTime,
-                                            City,
-                                            Source,
-                                            PicURLs,
-                                            Labels,
-                                            Tags,
-                                            RentType,
-                                            Latitude,
-                                            Longitude,
-                                            Text,
-                                            Status"
-                                            + $" from { tableName } where OnlineURL = @OnlineURL", new { OnlineURL = onlineURL });
-                    if (house != null)
-                    {
-                        return house;
-                    }
-                }
-                return null;
             }
         }
     }

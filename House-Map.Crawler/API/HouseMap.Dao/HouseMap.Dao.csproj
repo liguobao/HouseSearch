@@ -10,5 +10,9 @@
     <PackageReference Include="RestSharp" Version="106.5.4"/>
     <PackageReference Include="NLog.Extensions.Logging" Version="1.3.0"/>
     <PackageReference Include="NEST" Version="6.4.0"/>
+    <PackageReference Include="MongoDB.Bson" Version="2.10.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.10.0" />
+    <PackageReference Include="MongoDB.Driver.Core" Version="2.10.0" />
+    <PackageReference Include="MongoDB.Driver.GridFS" Version="2.10.0" />
   </ItemGroup>
 </Project>

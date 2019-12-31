@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 namespace HouseMap.Dao.DBEntity
 {
 
-    [ElasticsearchType(IdProperty = "Id")]
+    [ElasticsearchType(IdProperty = "OnlineURL")]
     public class DBHouse : BaseEntity
     {
         public string Title { get; set; }

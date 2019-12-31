@@ -1,19 +1,13 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using HouseMap.Common;
-using HouseMap.Crawler.Common;
 using HouseMap.Dao;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.Json;
-using Microsoft.Extensions.Options;
-using RestSharp;
-using StackExchange.Redis;
+using HouseMapConsumer.Dao;
 using System.IO;
+using StackExchange.Redis;
 
 namespace HouseMap.Crawler
 {
@@ -28,17 +22,23 @@ namespace HouseMap.Crawler
             InitConfiguration(environmentName, services);
             ConfigureServices(services);
             var serviceProvider = services.BuildServiceProvider();
-            var refreshHouseVersion = Environment.GetEnvironmentVariable("REFRESH_CACHE");
-            if (!string.IsNullOrEmpty(refreshHouseVersion))
+            var refreshHouseVersionV2 = Environment.GetEnvironmentVariable("REFRESH_CACHE_V2");
+            if (!string.IsNullOrEmpty(refreshHouseVersionV2))
             {
                 var houseService = serviceProvider.GetServices<HouseService>().FirstOrDefault();
                 houseService.RefreshHouseV2();
+                return;
+            }
+
+            var refreshHouseVersionV3 = Environment.GetEnvironmentVariable("REFRESH_CACHE_V3");
+            if (!string.IsNullOrEmpty(refreshHouseVersionV3))
+            {
+                var houseService = serviceProvider.GetServices<HouseService>().FirstOrDefault();
                 houseService.RefreshHouseV3();
                 return;
             }
             var crawlName = Environment.GetEnvironmentVariable("CRAWL_NAME");
-            var crawler = serviceProvider.GetServices<IHouseCrawler>()
-            .FirstOrDefault(c => c.GetSource().GetSourceName().ToUpper() == crawlName?.ToUpper());
+            var crawler = serviceProvider.GetServices<IHouseCrawler>().FirstOrDefault(c => c.GetSource().GetSourceName().ToUpper() == crawlName?.ToUpper());
             if (crawler == null)
             {
                 Console.WriteLine($"crawler:{crawlName} not found!");
@@ -100,6 +100,8 @@ namespace HouseMap.Crawler
             services.AddScoped<BaseDapper, BaseDapper>();
             services.AddScoped<BaseDapper, BaseDapper>();
             services.AddScoped<HouseDapper, HouseDapper>();
+            services.AddScoped<HouseMongoMapper, HouseMongoMapper>();
+            services.AddScoped<MongoDBMapper, MongoDBMapper>();
 
             #endregion Service
 
@@ -138,7 +140,8 @@ namespace HouseMap.Crawler
             services.AddScoped<IHouseCrawler, CJia>();
             services.AddScoped<IHouseCrawler, Hangzhouzhufang>();
             services.AddScoped<IHouseCrawler, AnXuan>();
-
+            services.AddScoped<IHouseCrawler, Nuan>();
+            services.AddScoped<IHouseCrawler, Xhj>();
 
             #endregion
 

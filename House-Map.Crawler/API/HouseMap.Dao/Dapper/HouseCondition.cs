@@ -1,31 +1,61 @@
-using Dapper;
 using HouseMap.Dao.DBEntity;
-using Microsoft.Extensions.Options;
-using MySql.Data.MySqlClient;
 using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 
 namespace HouseMap.Dao
 {
-    public class HouseCondition
+    public class DBHouseQuery
     {
+        /// <summary>
+        /// 城市名
+        /// </summary>
         public string City { get; set; }
+
+        /// <summary>
+        /// 来源
+        /// </summary>
         public string Source { get; set; } = "";
+
+        /// <summary>
+        /// 分页数量
+        /// </summary>
         public int Size { get; set; } = 0;
 
+        /// <summary>
+        /// 关键字搜索
+        /// </summary>
         public string Keyword { get; set; } = "";
+
+        /// <summary>
+        /// 是否刷新数据
+        /// </summary>
         public bool Refresh { get; set; }
+
+        /// <summary>
+        /// 页码
+        /// </summary>
         public int Page { get; set; } = 0;
 
+        /// <summary>
+        /// 房源类型
+        /// </summary>
         public int? RentType { get; set; }
+
+        /// <summary>
+        /// 起始价格
+        /// </summary>
         public int FromPrice { get; set; } = 0;
+
+        /// <summary>
+        /// 结束价格
+        /// </summary>
         public int ToPrice { get; set; } = 0;
+
 
         public string Query { get; set; }
 
-
+        /// <summary>
+        /// 发布时间
+        /// </summary>
         public DateTime? PubTime { get; set; }
 
         public string RedisKey

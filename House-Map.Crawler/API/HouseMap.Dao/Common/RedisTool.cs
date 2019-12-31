@@ -34,7 +34,7 @@ namespace HouseMap.Common
             }
         }
 
-        public void WriteObject(string key, Object value, int dbName, int minutes = 60)
+        public void WriteObject(string key, Object value, int dbName, int minutes = 120)
         {
             try
             {
@@ -115,7 +115,7 @@ namespace HouseMap.Common
         }
 
 
-         public T ReadCache<T>(KeyConfig keyConfig)
+        public T ReadCache<T>(KeyConfig keyConfig)
         {
             try
             {

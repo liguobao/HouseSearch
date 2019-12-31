@@ -5,13 +5,8 @@ using Talk.OAuthClient;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Cors;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using HouseMap.Dao;
-using HouseMap.Dao.DBEntity;
-
 using HouseMapAPI.Service;
-using HouseMap.Common;
 using HouseMapAPI.Filters;
 
 namespace HouseCrawler.Web.API.Controllers
@@ -29,17 +24,22 @@ namespace HouseCrawler.Web.API.Controllers
             _userService = userService;
         }
 
-
+        /// <summary>
+        /// 获取用户信息
+        /// </summary>
         [EnableCors("APICors")]
         [HttpGet("v1/users/{userId}", Name = "Info")]
         [ServiceFilter(typeof(UserTokenFilter))]
-        public ActionResult Info(long userId, [FromHeader] string token)
+        public ActionResult Info([FromRoute]long userId, [FromHeader] string token)
         {
             return Ok(new { success = true, data = _userService.GetUserByToken(token) });
         }
 
+        /// <summary>
+        /// 设置用户上班地址
+        /// </summary>
         [EnableCors("APICors")]
-        [HttpPost("v1/users/{userId}/address", Name = "SetWorkAddress")]
+        [HttpPost("v1/users/{userId}/address")]
         [ServiceFilter(typeof(UserTokenFilter))]
         public ActionResult SetWorkAddress(long userId, [FromHeader] string token, [FromBody]JToken model)
         {
@@ -50,7 +50,9 @@ namespace HouseCrawler.Web.API.Controllers
             });
         }
 
-
+        /// <summary>
+        /// 更改用户邮箱
+        /// </summary>
         [EnableCors("APICors")]
         [HttpPost("v1/users/{userId}/email")]
         [ServiceFilter(typeof(UserTokenFilter))]
@@ -62,8 +64,5 @@ namespace HouseCrawler.Web.API.Controllers
                 data = _userService.GetUserByToken(token)
             });
         }
-
-
-
     }
 }

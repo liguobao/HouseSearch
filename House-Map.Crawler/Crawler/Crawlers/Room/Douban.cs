@@ -31,7 +31,7 @@ namespace HouseMap.Crawler
         : base(houseDapper, configDapper, elasticsearch, redisTool)
         {
             this.Source = SourceEnum.Douban;
-            _restClient = new RestClient("http://10.3.255.179");
+            _restClient = new RestClient("http://192.168.1.2");
             //_restClient = new RestClient("https://api.douban.com");
         }
 

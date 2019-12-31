@@ -54,5 +54,9 @@ namespace HouseMap.Common
 
 
         public string NodeProxyHost { get; set; }
+
+        public string MongoDBConnectionString { get; set; }
+
+        public string MongoDBName { get; set; }
     }
 }

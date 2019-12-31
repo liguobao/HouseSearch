@@ -1,15 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Net.Mail;
-using System.Text;
 using HouseMap.Common;
-using HouseMap.Dao;
 using HouseMap.Dao.DBEntity;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using System.Linq;
 using System.Globalization;
+using HouseMapConsumer.Dao;
+using HouseMapConsumer.Dao.DBEntity;
 
 namespace HouseMap.Dao
 {
@@ -21,7 +17,10 @@ namespace HouseMap.Dao
 
 
 
-        private readonly HouseDapper _newHouseDapper;
+        private readonly HouseDapper _houseDapper;
+
+
+        private readonly HouseMongoMapper _houseMongoMapper;
 
         private readonly ElasticService _elasticService;
 
@@ -29,15 +28,17 @@ namespace HouseMap.Dao
         private readonly ConfigService _configService;
 
         public HouseService(RedisTool RedisTool, ConfigService configService,
-         HouseDapper newHouseDapper, ElasticService elasticService)
+                           HouseDapper houseDapper, ElasticService elasticService,
+                           HouseMongoMapper houseMongoMapper)
         {
             _redisTool = RedisTool;
             _configService = configService;
-            _newHouseDapper = newHouseDapper;
+            _houseDapper = houseDapper;
             _elasticService = elasticService;
+            _houseMongoMapper = houseMongoMapper;
         }
 
-        private List<DBHouse> HouseQuery(HouseCondition condition)
+        private List<DBHouse> HouseQuery(DBHouseQuery condition)
         {
             if (condition == null || condition.City == null)
             {
@@ -46,8 +47,8 @@ namespace HouseMap.Dao
             var houses = _redisTool.ReadCache<List<DBHouse>>(condition.RedisKey, RedisKeys.NewHouses.DBName);
             if (houses == null || condition.Refresh)
             {
-                houses = !string.IsNullOrEmpty(condition.Keyword) ? _elasticService.Query(condition) : _newHouseDapper.SearchHouses(condition);
-                if (houses != null && houses.Any())
+                houses = !string.IsNullOrEmpty(condition.Keyword) ? _elasticService.Query(condition) : _houseDapper.SearchHouses(condition);
+                if (houses != null)
                 {
                     _redisTool.WriteObject(condition.RedisKey, houses, RedisKeys.NewHouses.DBName);
                 }
@@ -55,19 +56,9 @@ namespace HouseMap.Dao
             return houses;
         }
 
-        public void RefreshSearch(HouseCondition condition)
-        {
-            condition.Refresh = true;
-            Search(condition);
-            LogHelper.RunActionTaskNotThrowEx(() =>
-            {
-
-            }, "RefreshSearch", condition);
-
-        }
 
 
-        public IEnumerable<DBHouse> Search(HouseCondition condition)
+        public IEnumerable<DBHouse> Search(DBHouseQuery condition)
         {
             if (condition == null)
             {
@@ -97,21 +88,26 @@ namespace HouseMap.Dao
             {
                 if (condition.Size == 0)
                 {
-                    condition.Size = 600;
+                    condition.Size = 1200;
                 }
                 return HouseQuery(condition);
             }
         }
 
 
-        public DBHouse FindById(string houseId)
+        public DBHouse FindById(string houseId, string onlineURL = "")
         {
             var redisKey = RedisKeys.HouseDetail;
             var house = _redisTool.ReadCache<DBHouse>(redisKey.Key + houseId, redisKey.DBName);
             if (house == null)
             {
-                house = _elasticService.QueryById(houseId);
-                house = (house == null ? _newHouseDapper.FindById(houseId) : house);
+                house = _houseDapper.FindById(houseId);
+                if (house == null && !string.IsNullOrEmpty(onlineURL))
+                {
+                    Console.WriteLine($"FindByURL,houseId:{houseId},onlineURL:{onlineURL}");
+                    house = _houseDapper.FindByURL(onlineURL);
+                }
+                house = house ?? _elasticService.QueryById(houseId);
                 if (house == null)
                 {
                     return null;
@@ -122,13 +118,21 @@ namespace HouseMap.Dao
             return house;
         }
 
-        public void UpdateHousesLngLat(List<DBHouse> houses)
+        public void RefreshSearch(DBHouseQuery condition)
+        {
+            condition.Refresh = true;
+            Search(condition);
+        }
+
+
+        public void UpdateHousesLngLat(List<HousesLatLng> houses)
         {
             LogHelper.RunActionTaskNotThrowEx(() =>
             {
                 foreach (var house in houses)
                 {
-                    _newHouseDapper.UpdateLngLat(house);
+                    _houseDapper.UpdateLngLat(house);
+                    _houseMongoMapper.UpdateHousesLngLat(house);
                 }
             });
 
@@ -143,13 +147,22 @@ namespace HouseMap.Dao
             var cityDashboards = _configService.LoadCitySources();
             foreach (var item in cityDashboards)
             {
-                var condition = new HouseCondition() { City = item.Key, Refresh = true };
+                var condition = new DBHouseQuery() { City = item.Key, Refresh = true };
                 foreach (var dashboard in item.Value)
                 {
                     //指定来源,每次拉600条,一般用于地图页
                     for (var page = 0; page <= 3; page++)
                     {
                         condition.Size = 600;
+                        condition.Page = page;
+                        condition.Source = dashboard.Source;
+                        Console.WriteLine($"正在刷新[{condition.RedisKey}]缓存");
+                        Search(condition);
+                    }
+
+                    for (var page = 0; page <= 3; page++)
+                    {
+                        condition.Size = 1200;
                         condition.Page = page;
                         condition.Source = dashboard.Source;
                         Console.WriteLine($"正在刷新[{condition.RedisKey}]缓存");
@@ -183,12 +196,16 @@ namespace HouseMap.Dao
             foreach (var item in cityDashboards)
             {
                 //无指定来源,前600条数据
-                var condition = new HouseCondition() { City = item.Key, Refresh = true };
+                var condition = new DBHouseQuery() { City = item.Key, Refresh = true };
                 for (var page = 0; page <= 5; page++)
                 {
                     condition.Page = page;
                     Console.WriteLine($"正在刷新[{condition.RedisKey}]缓存");
-                    Search(condition);
+                    var dhHouses = Search(condition);
+                    foreach (var dbHouse in dhHouses)
+                    {
+                        _houseMongoMapper.WriteRecord(new MongoHouseEntity(dbHouse));
+                    }
                 }
 
                 //无指定来源,每次拉180条,一共10页,一般用于移动端地图

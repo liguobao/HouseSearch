@@ -36,22 +36,26 @@ namespace HouseMapAPI.Service
             _newHouseDapper = newHouseDapper;
         }
 
-        public Object GetUserDashboards(long userId)
+        public List<SourceDashboard> GetUserDashboards(long userId)
         {
-            var list = _context.UserCollections.Where(c => c.UserID == userId && c.Deleted == 0)
-            .GroupBy(c => c.City).Select(item => new
+            var userHouses = _context.UserCollections.Where(c => c.UserID == userId && c.Deleted == 0);
+            var index = 1;
+            var ds = userHouses.GroupBy(c => c.City).Select(item => new SourceDashboard()
             {
                 city = item.Key,
-                id = item.First().Id,
                 sources = item.GroupBy(i => i.Source).Select(g => new DBConfig()
                 {
                     Id = g.First().Id,
                     City = g.First().City,
                     Source = g.Key,
                     HouseCount = g.Count()
-                })
+                }).ToList()
+            }).ToList();
+            ds.ForEach(item =>
+            {
+                item.id = index++;
             });
-            return list;
+            return ds;
         }
 
         public List<DBHouse> FindUserCollections(long userId, string cityName = "", string source = "", string id = "")

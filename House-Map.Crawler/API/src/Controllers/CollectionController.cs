@@ -12,10 +12,11 @@ using HouseMap.Dao;
 using HouseMap.Dao.DBEntity;
 
 using Newtonsoft.Json.Linq;
+using Swashbuckle.AspNetCore.Annotations;
+using HouseMapAPI.Models;
 
 namespace HouseCrawler.Web.API.Controllers
 {
-    [Route("v2/users/")]
     public class CollectionController : ControllerBase
     {
 
@@ -27,52 +28,74 @@ namespace HouseCrawler.Web.API.Controllers
             _collectionService = collectionService;
         }
 
-        [HttpGet("{userId}/collections/city-source")]
+        /// <summary>
+        /// 获取用户收藏夹的来源列表
+        /// </summary>
+        [HttpGet("v2/users/{userId}/collections/city-source")]
         [EnableCors("APICors")]
         [ServiceFilter(typeof(UserTokenFilter))]
-        public IActionResult GetUserDashboard(long userId)
+        [SwaggerResponse(200, "success", typeof(List<SourceDashboard>))]
+        public IActionResult GetUserDashboard([FromRoute]long userId)
         {
             return Ok(new { success = true, data = _collectionService.GetUserDashboards(userId) });
         }
 
+        /// <summary>
+        /// 获取用户收藏的房源
+        /// </summary>
         [EnableCors("APICors")]
-        [HttpGet("{userId}/collections/")]
+        [HttpGet("v2/users/{userId}/collections/")]
         [ServiceFilter(typeof(UserTokenFilter))]
-        public IActionResult List(long userId, string cityName="", string source = "")
+        [SwaggerResponse(200, "success", typeof(List<DBHouse>))]
+        public IActionResult List([FromRoute]long userId, [FromQuery]string cityName = "", [FromQuery]string source = "")
         {
             var rooms = _collectionService.FindUserCollections(userId, cityName, source);
             return Ok(new { success = true, data = rooms });
         }
 
+        /// <summary>
+        /// 获取某一个收藏的房源信息
+        /// </summary>
         [EnableCors("APICors")]
-        [HttpGet("{userId}/collections/{id}")]
+        [HttpGet("v2/users/{userId}/collections/{id}")]
         [ServiceFilter(typeof(UserTokenFilter))]
-        public IActionResult GetOne(long userId, string id)
+        [SwaggerResponse(200, "success", typeof(CollectionDetail))]
+        public IActionResult GetOne([FromRoute]long userId, [FromRoute]string id)
         {
             var collection = _collectionService.FindUserCollection(userId, id);
             return Ok(new { success = true, data = collection });
         }
 
+        /// <summary>
+        /// 添加一个收藏
+        /// </summary>
         [EnableCors("APICors")]
-        [HttpPost("{userId}/collections/")]
+        [HttpPost("v2/users/{userId}/collections/")]
         [ServiceFilter(typeof(UserTokenFilter))]
-        public IActionResult Create(long userId, [FromBody] JToken userCollection)
+        public IActionResult Create([FromRoute]long userId, [FromBody] CollectionDTO userCollection)
         {
-            var houseID = userCollection?["houseID"]?.ToString();
-            var collection = _collectionService.AddOne(userId, houseID);
+            var collection = _collectionService.AddOne(userId, userCollection?.houseID);
             return Ok(new { success = true, message = "收藏成功.", data = collection });
         }
 
+        /// <summary>
+        /// 移除一个收藏
+        /// </summary>
         [EnableCors("APICors")]
-        [HttpDelete("{userId}/collections/{id}")]
+        [HttpDelete("v2/users/{userId}/collections/{id}")]
         [ServiceFilter(typeof(UserTokenFilter))]
-        public IActionResult Remove(long userId, string id)
+        public IActionResult Remove([FromRoute]long userId, [FromRoute]string id)
         {
             _collectionService.RemoveOne(userId, id);
             return Ok(new { success = true, message = "删除成功." });
         }
 
 
+    }
+
+    public class CollectionDTO
+    {
+        public string houseID { get; set; }
     }
 
 }

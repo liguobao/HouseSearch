@@ -17,7 +17,7 @@ namespace HouseMap.Crawler
     public class ZiRoom : BaseCrawler
     {
         private readonly RestClient _restClient;
-        public ZiRoom(HouseDapper houseDapper, ConfigDapper configDapper, ElasticService elastic,  RedisTool redisTool)
+        public ZiRoom(HouseDapper houseDapper, ConfigDapper configDapper, ElasticService elastic, RedisTool redisTool)
         : base(houseDapper, configDapper, elastic, redisTool)
         {
             _restClient = new RestClient("http://m.ziroom.com/");
@@ -75,7 +75,7 @@ namespace HouseMap.Crawler
                 }
                 catch (Exception ex)
                 {
-                    LogHelper.Error("ConvertToHouse fail", ex, room);
+                    Console.WriteLine($"ConvertToHouse fail,StackTrace:{ex.StackTrace},room:{room.ToString()}");
                 }
             }
             return houses;
@@ -99,7 +99,7 @@ namespace HouseMap.Crawler
             }
 
             house.Text = house.Text + $"<br/><br/>上线时间：{houseData["actually_complete_date"]?.ToString()}";
-            if (!string.IsNullOrEmpty(houseData["air_report_detail"].ToString()))
+            if (!string.IsNullOrEmpty(houseData["air_report_detail"]?.ToString()))
             {
                 house.Text = house.Text + $" <br/>空气检测信息如下:";
                 foreach (var item in houseData["air_report_detail"]["data"])

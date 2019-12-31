@@ -3,17 +3,15 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Cors;
-using Newtonsoft.Json.Linq;
 using HouseMapAPI.Service;
 using HouseMap.Dao;
 using HouseMap.Dao.DBEntity;
+using Swashbuckle.AspNetCore.Annotations;
+using HouseMapAPI.Models;
 
-
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace HouseCrawler.Web.API.Controllers
 {
-    [Route("v2/cities/")]
     public class CitiesController : ControllerBase
     {
 
@@ -30,28 +28,35 @@ namespace HouseCrawler.Web.API.Controllers
             _groupService = groupService;
         }
 
-
+        /// <summary>
+        /// 获取城市房源看板信息
+        /// </summary>
         [EnableCors("APICors")]
-        [HttpGet("")]
-        public IActionResult LoadDashboards()
+        [HttpGet("v2/cities")]
+        [SwaggerResponse(200, "success", typeof(List<SourceDashboard>))]
+        public IActionResult LoadDashboards([FromQuery] string city)
         {
             var id = 1;
-            var city = HttpContext.Request.Query["city"];
+            var dashboards = _configService.LoadCitySources(city).Select(i => new SourceDashboard()
+            {
+                id = id++,
+                city = i.Key,
+                sources = i.Value
+            });
             return Ok(new
             {
                 success = true,
-                data = _configService.LoadCitySources(city).Select(i => new
-                {
-                    id = id++,
-                    city = i.Key,
-                    sources = i.Value
-                })
+                data = dashboards
             });
         }
 
+        /// <summary>
+        /// 获取某个城市下支持的房源
+        /// </summary>
         [EnableCors("APICors")]
-        [HttpGet("{city}")]
-        public IActionResult LoadSources(string city)
+        [HttpGet("v2/cities/{city}")]
+        [SwaggerResponse(200, "success", typeof(List<DBConfig>))]
+        public IActionResult LoadSources([FromRoute]string city)
         {
             return Ok(new
             {
@@ -60,13 +65,14 @@ namespace HouseCrawler.Web.API.Controllers
             });
         }
 
+        /// <summary>
+        /// 添加豆瓣来源
+        /// </summary>
         [EnableCors("APICors")]
-        [HttpPost("douban")]
-        public IActionResult AddGroup([FromBody]JToken model)
+        [HttpPost("v2/cities/douban")]
+        public IActionResult AddGroup([FromBody]DoubanSource model)
         {
-            string groupId = model?["groupId"].ToString();
-            string city = model?["city"].ToString();
-            return Ok(new { success = _groupService.AddGroupConfig(groupId, city) });
+            return Ok(new { success = _groupService.AddGroupConfig(model?.groupId, model?.city) });
         }
     }
 }

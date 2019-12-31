@@ -60,7 +60,7 @@ namespace HouseMap.Dao
 
 
 
-        public List<DBHouse> SearchHouses(HouseCondition condition)
+        public List<DBHouse> SearchHouses(DBHouseQuery condition)
         {
             var houses = new List<DBHouse>();
             using (IDbConnection dbConnection = GetConnection())

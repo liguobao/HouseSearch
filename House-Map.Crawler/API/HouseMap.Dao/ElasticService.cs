@@ -41,7 +41,7 @@ namespace HouseMap.Dao
 
 
 
-        public List<DBHouse> Query(HouseCondition condition)
+        public List<DBHouse> Query(DBHouseQuery condition)
         {
             var searchRsp = _elasticClient.Search<DBHouse>(s => s
             .Index("house-data-*")
@@ -78,7 +78,7 @@ namespace HouseMap.Dao
             return null;
         }
 
-        private static QueryContainer ConvertToQuery(HouseCondition condition, QueryContainerDescriptor<DBHouse> q)
+        private static QueryContainer ConvertToQuery(DBHouseQuery condition, QueryContainerDescriptor<DBHouse> q)
         {
             List<string> keywords = GetKeywords(condition);
             var qcList = keywords.Select(k => ConvertToQueryContainer(k)).ToArray();
@@ -97,7 +97,7 @@ namespace HouseMap.Dao
             return query;
         }
 
-        private static List<string> GetKeywords(HouseCondition condition)
+        private static List<string> GetKeywords(DBHouseQuery condition)
         {
             var keywords = new List<string>();
             if (condition.Keyword.Contains(","))
@@ -122,7 +122,7 @@ namespace HouseMap.Dao
 
         public void SaveHouses(List<DBHouse> houses)
         {
-            LogHelper.RunActionTaskNotThrowEx(() =>
+            LogHelper.RunActionNotThrowEx(() =>
             {
                 if (houses == null || !houses.Any())
                 {
@@ -142,7 +142,7 @@ namespace HouseMap.Dao
                     IBulkResponse bulkRs = _elasticClient.IndexMany(group.ToList(), houseIndex);
                     if (bulkRs.Errors)//如果异常
                     {
-                        LogHelper.Info("SaveHouses error,index:" + houseIndex + ",DebugInformation:" + bulkRs.DebugInformation);
+                        Console.WriteLine("SaveHouses error,index:" + houseIndex + ",DebugInformation:" + bulkRs.DebugInformation);
                     }
                 }
             }, "SaveHouses");
@@ -151,7 +151,7 @@ namespace HouseMap.Dao
 
         private void CreateMapping(string houseIndex)
         {
-            var client = new RestClient($"{_config.ESURL}/{houseIndex}/dbhoused/_mapping");
+            var client = new RestClient($"{_config.ESURL}/{houseIndex}/dbhouse/_mapping");
             var request = new RestRequest(Method.PUT);
             request.AddParameter("application/json", "{\n        \"properties\": {\n            \"city\": {\n                \"type\": \"text\"\n            },\n            \"createTime\": {\n                \"type\": \"date\"\n            },\n            \"id\": {\n                \"type\": \"text\"\n            },\n            \"jsonData\": {\n                \"type\": \"text\",\n                \"analyzer\": \"ik_max_word\",\n                \"search_analyzer\": \"ik_max_word\"\n            },\n            \"labels\": {\n                \"type\": \"text\",\n                \"analyzer\": \"ik_max_word\",\n                \"search_analyzer\": \"ik_max_word\"\n            },\n            \"latitude\": {\n                \"type\": \"text\"\n            },\n            \"location\": {\n                \"type\": \"text\"\n            },\n            \"longitude\": {\n                \"type\": \"text\"\n            },\n            \"onlineURL\": {\n                \"type\": \"text\",\n                \"fields\": {\n                    \"keyword\": {\n                        \"type\": \"keyword\",\n                        \"ignore_above\": 256\n                    }\n                }\n            },\n            \"picURLs\": {\n                \"type\": \"text\",\n                \"fields\": {\n                    \"keyword\": {\n                        \"type\": \"keyword\",\n                        \"ignore_above\": 256\n                    }\n                }\n            },\n            \"pictures\": {\n                \"type\": \"text\",\n                \"fields\": {\n                    \"keyword\": {\n                        \"type\": \"keyword\",\n                        \"ignore_above\": 256\n                    }\n                }\n            },\n            \"price\": {\n                \"type\": \"long\"\n            },\n            \"pubTime\": {\n                \"type\": \"date\"\n            },\n            \"rentType\": {\n                \"type\": \"long\"\n            },\n            \"source\": {\n                \"type\": \"text\",\n                \"fields\": {\n                    \"keyword\": {\n                        \"type\": \"keyword\",\n                        \"ignore_above\": 256\n                    }\n                }\n            },\n            \"status\": {\n                \"type\": \"long\"\n            },\n            \"tags\": {\n                \"type\": \"text\",\n                \"fields\": {\n                    \"keyword\": {\n                        \"type\": \"keyword\",\n                        \"ignore_above\": 256\n                    }\n                },\n                \"analyzer\": \"ik_max_word\",\n                \"search_analyzer\": \"ik_max_word\"\n            },\n            \"text\": {\n                \"type\": \"text\",\n                \"fields\": {\n                    \"keyword\": {\n                        \"type\": \"keyword\",\n                        \"ignore_above\": 256\n                    }\n                },\n                \"analyzer\": \"ik_max_word\",\n                \"search_analyzer\": \"ik_max_word\"\n            },\n            \"title\": {\n                \"type\": \"text\",\n                \"fields\": {\n                    \"keyword\": {\n                        \"type\": \"keyword\",\n                        \"ignore_above\": 256\n                    }\n                },\n                \"analyzer\": \"ik_max_word\",\n                \"search_analyzer\": \"ik_max_word\"\n            },\n            \"updateTime\": {\n                \"type\": \"date\"\n            }\n        }\n}", ParameterType.RequestBody);
             IRestResponse response = client.Execute(request);

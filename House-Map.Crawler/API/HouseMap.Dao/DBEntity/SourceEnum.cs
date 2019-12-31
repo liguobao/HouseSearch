@@ -91,6 +91,12 @@ namespace HouseMap.Dao.DBEntity
         [Source("anxuan", "AnxuanHouse", "58安选")]
         Anxuan,
 
+        [Source("nuan", "NuanHouse", "暖房")]
+        Nuan,
+
+        [Source("xhj", "XhjHouse", "象盒")]
+        Xhj,
+
     }
 
 

@@ -88,6 +88,11 @@ namespace HouseMap.Common
             return System.Guid.NewGuid().ToString();
         }
 
+        public static long GetTimestamp(DateTime dt)
+        {
+            return (long)(dt - new DateTime(1970, 1, 1).ToLocalTime()).TotalMilliseconds;
+        }
+
         public static int GetTimestamp()
         {
             return (int)(DateTime.Now.ToLocalTime() - new DateTime(1970, 1, 1).ToLocalTime()).TotalSeconds;

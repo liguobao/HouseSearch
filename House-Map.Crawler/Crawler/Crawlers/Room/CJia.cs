@@ -92,9 +92,9 @@ namespace HouseMap.Crawler
         private static string GetHouseText(JToken room)
         {
             var minBookingDays = !string.IsNullOrEmpty(room["minBookingDays"]?.ToString()) ? $"最少预定{room["minBookingDays"]?.ToString()}天" : "";
-            return room["nearByInfo"]["zoneName"]?.ToString() + "，"
-            + room["nearByInfo"]["nearFacilities"].FirstOrDefault()?.ToString() + "，"
-            + string.Join("/", room["tagList"].Select(t => t["tagName"]?.ToString())) + "，"
+            return room["nearByInfo"]?["zoneName"]?.ToString() + "，"
+            + room["nearByInfo"]?["nearFacilities"]?.FirstOrDefault()?.ToString() + "，"
+            + string.Join("/", room["tagList"]?.Select(t => t["tagName"]?.ToString())) + "，"
             + minBookingDays;
         }
 
