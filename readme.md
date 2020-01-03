@@ -38,6 +38,8 @@
 
 - 2019 年已废弃 Jenkins,全面改用 Gitlab CI + k8s
 
+- 数据库表结构脚本 [Dump20200103_house_map.sql](/Dump20200103_house_map.sql), 房源爬虫配置脚本[北京地区 beijing-config.sql](/beijing-config.sql)
+
 ## 感谢各位 dalao 鼎力支持(排名不分前后)
 
 - 冻爷[Erane](https://github.com/Erane/)
