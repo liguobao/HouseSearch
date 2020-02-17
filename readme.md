@@ -1,5 +1,10 @@
 [![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](http://www.gnu.org/licenses/lgpl-3.0)
 
+# 微信小程序
+
+- 关注【人生删除指南】微信公众号提前体验
+- 小程序中农搜索“HouseMap2048”
+
 # [地图搜租房(https://house-map.cn/app/house-map/)](https://house-map.cn/app/house-map/)
 
 - 微信小程序正在开发中，欢迎关注【人生删除指南】微信公众号提前体验。
