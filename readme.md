@@ -2,7 +2,7 @@
 
 # 微信小程序
 
-- 关注【人生删除指南】微信公众号提前体验
+- 关注【人生删除指南】微信公众号体验
 - 小程序中搜索“HouseMap2048”
 
 # [地图搜租房(https://house-map.cn/app/house-map/)](https://house-map.cn/app/house-map/)
