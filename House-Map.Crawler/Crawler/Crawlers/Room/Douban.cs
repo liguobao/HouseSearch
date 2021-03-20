@@ -19,6 +19,7 @@ using HouseMap.Common;
 using System.IO;
 using System.Threading;
 using Microsoft.Extensions.Options;
+using System.Web;
 
 namespace HouseMap.Crawler
 {
@@ -31,9 +32,36 @@ namespace HouseMap.Crawler
         : base(houseDapper, configDapper, elasticsearch, redisTool)
         {
             this.Source = SourceEnum.Douban;
-            _restClient = new RestClient("http://192.168.1.2");
+            _restClient = new RestClient();
+            _restClient.BaseUrl = new Uri("https://frodo.douban.com");
+            _restClient.Timeout = 120 * 1000;
+            _restClient.UserAgent = "api-client/1 com.douban.frodo/7.1.0(205) Android/29 product/perseus vendor/Xiaomi model/Mi MIX 3  rom/miui6  network/wifi  udid/a0f9cde79ec841a748625f766273e8f4333ed9c1  platform/mobile nd/1";
             //_restClient = new RestClient("https://api.douban.com");
         }
+
+        /// <summary>
+        /// HMACSHA1加密
+        /// </summary>
+        /// <param name="text">要加密的原串</param>
+        ///<param name="key">私钥</param>
+        /// <returns></returns>
+        public string HMACSHA1Text(string text, string key)
+        {
+            //HMACSHA1加密
+            HMACSHA1 hmacsha1 = new HMACSHA1();
+            hmacsha1.Key = System.Text.Encoding.UTF8.GetBytes(key);
+            byte[] dataBuffer = System.Text.Encoding.UTF8.GetBytes(text);
+            byte[] hashBytes = hmacsha1.ComputeHash(dataBuffer);
+            return Convert.ToBase64String(hashBytes);
+        }
+
+        private string BuildDoubanSign(string groupID, long tsMillisecond)
+        {
+            var signURL = $"GET&%2Fapi%2Fv2%2Fgroup%2F{groupID}%2Ftopics&{tsMillisecond}";
+            var _sig = HttpUtility.UrlEncode(HMACSHA1Text(signURL, "aaabbbccc"));
+            return _sig;
+        }
+
 
 
         public override string GetJsonOrHTML(DBConfig config, int page)
@@ -41,19 +69,22 @@ namespace HouseMap.Crawler
 
             var jsonData = JToken.Parse(config.Json);
             var groupID = jsonData["groupid"]?.ToString();
+            var startIndex = page * 100;
             try
             {
-                var request = new RestRequest($"/douban/groups?groupId={groupID}&page={page}", Method.GET);
-                request.AddHeader("user-agent", "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1");
-                request.AddHeader("accept-language", "zh-CN,zh;q=0.9,en;q=0.8");
-                IRestResponse response = _restClient.Execute(request);
+                var tsMillisecond = Tools.GetMillisecondTimestamp() / 1000;
+                string _sig = BuildDoubanSign(groupID, tsMillisecond);
+                var resource = $"/api/v2/group/{groupID}/topics?start={startIndex}&count=100&sortby=new&apple=11e8961cf7ae829bd1e80ae5941533dd&mooncake=0f607264fc6318a92b9e13c65db7cd3c&webview_ua=Mozilla%2F5.0%20%28Linux%3B%20Android%2010%3B%20Mi%20MIX%203%20Build%2FQKQ1.190828.002%3B%20wv%29%20AppleWebKit%2F537.36%20%28KHTML%2C%20like%20Gecko%29%20Version%2F4.0%20Chrome%2F88.0.4324.181%20Mobile%20Safari%2F537.36&screen_width=1080&screen_height=2296&sugar=46001&longitude=121.46027&latitude=31.200183&apikey=0dad551ec0f84ed02907ff5c42e8ec70&channel=DoubanTest&udid=a0f9cde79ec841a748625f766273e8f4333ed9c1&os_rom=miui6&timezone=Asia%2FShanghai&_sig={_sig}&_ts={tsMillisecond}";
+                var restRequest = new RestRequest(resource, Method.GET).AddHeader("Authorization", "");
+                restRequest.Timeout = 60 * 1000;
+                IRestResponse response = _restClient.Execute(restRequest);
                 if (response.IsSuccessful)
                 {
                     return response.Content;
                 }
                 else
                 {
-                    Console.WriteLine($"GetJsonOrHTML fail, request:{request.Resource},response.Content:{response.Content}");
+                    Console.WriteLine($"GetJsonOrHTML fail, request:{restRequest.Resource},response.Content:{response.Content}");
                 }
             }
             catch (Exception ex)
