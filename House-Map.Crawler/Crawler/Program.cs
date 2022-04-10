@@ -140,8 +140,6 @@ namespace HouseMap.Crawler
             services.AddScoped<IHouseCrawler, CJia>();
             services.AddScoped<IHouseCrawler, Hangzhouzhufang>();
             services.AddScoped<IHouseCrawler, AnXuan>();
-            services.AddScoped<IHouseCrawler, Nuan>();
-            services.AddScoped<IHouseCrawler, Xhj>();
 
             #endregion
 

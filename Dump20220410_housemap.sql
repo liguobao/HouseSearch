@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.17, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.26, for macos11 (x86_64)
 --
--- Host: sh-cdb-3wke7jj8.sql.tencentcdb.com    Database: housemap
+-- Host: house-map.cn    Database: housemap
 -- ------------------------------------------------------
--- Server version	5.7.18-txsql-log
+-- Server version	5.7.37-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -14,17 +14,20 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-SET @MYSQLDUMP_TEMP_LOG_BIN = @@SESSION.SQL_LOG_BIN;
-SET @@SESSION.SQL_LOG_BIN= 0;
 
 --
--- GTID state at the beginning of the backup 
+-- Table structure for table `__efmigrationshistory`
 --
 
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '359f341b-cf84-11e8-a035-246e968e60ca:1-5396626,
-3dcdf3da-cf84-11e8-8e4f-246e968ac352:1-7624,
-c1023416-1187-11e9-b993-6c92bf5f0af2:1-18677778,
-c9ab5a60-1187-11e9-885b-6c92bf5e2934:1-154';
+DROP TABLE IF EXISTS `__efmigrationshistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `__efmigrationshistory` (
+  `MigrationId` varchar(95) COLLATE utf8mb4_bin NOT NULL,
+  `ProductVersion` varchar(32) COLLATE utf8mb4_bin NOT NULL,
+  PRIMARY KEY (`MigrationId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `anjukehouse`
@@ -52,11 +55,14 @@ CREATE TABLE `anjukehouse` (
   `Tags` varchar(255) DEFAULT NULL,
   `Labels` varchar(255) DEFAULT NULL,
   `Status` int(11) DEFAULT '0',
+  `District` varchar(20) DEFAULT '',
+  `ReportNum` int(11) DEFAULT '0',
   PRIMARY KEY (`Id`),
   UNIQUE KEY `idx_OnlineURL` (`OnlineURL`),
   KEY `idx_PubTime` (`PubTime`) USING BTREE,
   KEY `idx_City` (`City`) USING BTREE,
-  KEY `idx_Title` (`Title`)
+  KEY `idx_Title` (`Title`),
+  KEY `idx_city_district` (`City`,`District`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -76,7 +82,7 @@ CREATE TABLE `anxuanhouse` (
   `Price` decimal(10,0) DEFAULT NULL COMMENT '价格（纯数字）',
   `Text` mediumtext COMMENT '文字描述',
   `Location` varchar(512) DEFAULT NULL COMMENT '地理位置,文字描述',
-  `OnlineURL` varchar(512) DEFAULT NULL COMMENT 'URL',
+  `OnlineURL` varchar(766) DEFAULT NULL COMMENT 'URL',
   `PubTime` datetime DEFAULT NULL COMMENT '发布时间',
   `Source` varchar(200) DEFAULT NULL COMMENT '来源',
   `PicURLs` varchar(4000) DEFAULT '[]' COMMENT '图片URL',
@@ -86,11 +92,14 @@ CREATE TABLE `anxuanhouse` (
   `Tags` varchar(255) DEFAULT NULL,
   `Labels` varchar(255) DEFAULT NULL,
   `Status` int(11) DEFAULT '0',
+  `District` varchar(16) DEFAULT '',
+  `ReportNum` int(11) DEFAULT '0',
   PRIMARY KEY (`Id`),
   UNIQUE KEY `idx_OnlineURL` (`OnlineURL`),
   KEY `idx_PubTime` (`PubTime`) USING BTREE,
   KEY `idx_City` (`City`) USING BTREE,
-  KEY `idx_Title` (`Title`)
+  KEY `idx_Title` (`Title`),
+  KEY `idx_city_District` (`City`,`District`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -120,12 +129,16 @@ CREATE TABLE `apartmenthouse` (
   `Tags` varchar(255) DEFAULT NULL,
   `Labels` varchar(255) DEFAULT NULL,
   `Status` int(11) DEFAULT '0',
+  `District` varchar(16) DEFAULT '',
+  `ReportNum` int(11) DEFAULT '0',
   PRIMARY KEY (`Id`),
   UNIQUE KEY `idx_OnlineURL` (`OnlineURL`),
   KEY `idx_PubTime` (`PubTime`) USING BTREE,
   KEY `idx_City` (`City`) USING BTREE,
   KEY `idx_Title` (`Title`),
-  KEY `idx_price` (`Price`) USING BTREE
+  KEY `idx_price` (`Price`) USING BTREE,
+  KEY `idx_city_District` (`City`,`District`),
+  KEY `idx_create` (`CreateTime`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -155,11 +168,14 @@ CREATE TABLE `baixinghouse` (
   `Tags` varchar(255) DEFAULT NULL,
   `Labels` varchar(255) DEFAULT NULL,
   `Status` int(11) DEFAULT '0',
+  `District` varchar(16) DEFAULT '',
+  `ReportNum` int(11) DEFAULT '0',
   PRIMARY KEY (`Id`),
   UNIQUE KEY `idx_OnlineURL` (`OnlineURL`),
   KEY `idx_PubTime` (`PubTime`) USING BTREE,
   KEY `idx_City` (`City`) USING BTREE,
-  KEY `idx_Title` (`Title`)
+  KEY `idx_Title` (`Title`),
+  KEY `idx_city_District` (`City`,`District`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -189,12 +205,39 @@ CREATE TABLE `baletuhouse` (
   `Tags` varchar(255) DEFAULT NULL,
   `Labels` varchar(255) DEFAULT NULL,
   `Status` int(11) DEFAULT '0',
+  `District` varchar(16) DEFAULT '',
+  `ReportNum` int(11) DEFAULT '0',
   PRIMARY KEY (`Id`),
   UNIQUE KEY `idx_OnlineURL` (`OnlineURL`),
   KEY `idx_PubTime` (`PubTime`) USING BTREE,
   KEY `idx_City` (`City`) USING BTREE,
-  KEY `idx_Title` (`Title`)
+  KEY `idx_Title` (`Title`),
+  KEY `idx_city_District` (`City`,`District`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `be_volunteer_record`
+--
+
+DROP TABLE IF EXISTS `be_volunteer_record`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `be_volunteer_record` (
+  `Id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `City` varchar(20) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `UserName` varchar(50) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `WechatId` varchar(128) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `Email` varchar(128) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `UserId` bigint(20) NOT NULL,
+  `Remark` varchar(128) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `CreateTime` datetime(6) NOT NULL,
+  `UpdateTime` datetime(6) NOT NULL,
+  `AuditStatus` varchar(20) CHARACTER SET utf8mb4 DEFAULT NULL,
+  PRIMARY KEY (`Id`),
+  UNIQUE KEY `UK_user` (`UserId`),
+  UNIQUE KEY `UK_wechat_id` (`WechatId`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -223,11 +266,14 @@ CREATE TABLE `beikehouse` (
   `Tags` varchar(255) DEFAULT NULL,
   `Labels` varchar(255) DEFAULT NULL,
   `Status` int(11) DEFAULT '0',
+  `District` varchar(16) DEFAULT '',
+  `ReportNum` int(11) DEFAULT '0',
   PRIMARY KEY (`Id`),
   UNIQUE KEY `idx_OnlineURL` (`OnlineURL`),
   KEY `idx_PubTime` (`PubTime`) USING BTREE,
   KEY `idx_City` (`City`) USING BTREE,
-  KEY `idx_Title` (`Title`)
+  KEY `idx_Title` (`Title`),
+  KEY `idx_city_District` (`City`,`District`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -245,6 +291,7 @@ CREATE TABLE `ccbhouse` (
   `City` varchar(64) DEFAULT NULL,
   `Title` varchar(512) DEFAULT NULL COMMENT '标题',
   `Price` decimal(10,0) DEFAULT NULL COMMENT '价格（纯数字）',
+  `ReportNum` int(11) DEFAULT '0',
   `Text` mediumtext COMMENT '文字描述',
   `Location` varchar(512) DEFAULT NULL COMMENT '地理位置,文字描述',
   `OnlineURL` varchar(512) DEFAULT NULL COMMENT 'URL',
@@ -279,6 +326,7 @@ CREATE TABLE `chengduhouse` (
   `City` varchar(64) DEFAULT NULL,
   `Title` varchar(512) DEFAULT NULL COMMENT '标题',
   `Price` decimal(10,0) DEFAULT NULL COMMENT '价格（纯数字）',
+  `ReportNum` int(11) DEFAULT '0',
   `Text` mediumtext COMMENT '文字描述',
   `Location` varchar(512) DEFAULT NULL COMMENT '地理位置,文字描述',
   `OnlineURL` varchar(512) DEFAULT NULL COMMENT 'URL',
@@ -291,12 +339,39 @@ CREATE TABLE `chengduhouse` (
   `Tags` varchar(255) DEFAULT NULL,
   `Labels` varchar(255) DEFAULT NULL,
   `Status` int(11) DEFAULT NULL,
+  `District` varchar(16) DEFAULT '',
   PRIMARY KEY (`Id`),
   UNIQUE KEY `idx_OnlineURL` (`OnlineURL`),
   KEY `idx_PubTime` (`PubTime`) USING BTREE,
   KEY `idx_City` (`City`) USING BTREE,
-  KEY `idx_Title` (`Title`)
+  KEY `idx_Title` (`Title`),
+  KEY `idx_city_District` (`City`,`District`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `city_location`
+--
+
+DROP TABLE IF EXISTS `city_location`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `city_location` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `city` varchar(45) DEFAULT NULL,
+  `groupName` varchar(45) DEFAULT NULL,
+  `groupType` varchar(45) DEFAULT NULL,
+  `name` varchar(45) DEFAULT NULL,
+  `longitude` double DEFAULT '0',
+  `latitude` double DEFAULT '0',
+  `score` int(11) DEFAULT '0',
+  `CreateTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdateTime` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_city_name` (`city`,`groupName`,`name`,`score`),
+  KEY `idx_city` (`city`),
+  KEY `idx_type` (`city`)
+) ENGINE=InnoDB AUTO_INCREMENT=5460 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -325,11 +400,14 @@ CREATE TABLE `cjiahouse` (
   `Tags` varchar(255) DEFAULT NULL,
   `Labels` varchar(255) DEFAULT NULL,
   `Status` int(11) DEFAULT '0',
+  `District` varchar(16) DEFAULT '',
+  `ReportNum` int(11) DEFAULT '0',
   PRIMARY KEY (`Id`),
   UNIQUE KEY `idx_OnlineURL` (`OnlineURL`),
   KEY `idx_PubTime` (`PubTime`) USING BTREE,
   KEY `idx_City` (`City`) USING BTREE,
-  KEY `idx_Title` (`Title`)
+  KEY `idx_Title` (`Title`),
+  KEY `idx_city_District` (`City`,`District`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -382,15 +460,12 @@ CREATE TABLE `doubanhouse` (
   `Tags` varchar(255) DEFAULT NULL,
   `Labels` varchar(255) DEFAULT NULL,
   `Status` int(11) DEFAULT '0',
-  `PublishTime` bigint(20) DEFAULT NULL,
+  `District` varchar(16) DEFAULT '',
+  `ReportNum` int(11) DEFAULT '0',
   PRIMARY KEY (`Id`),
   UNIQUE KEY `idx_OnlineURL` (`OnlineURL`),
-  KEY `idx_PubTime` (`PubTime`) USING BTREE,
-  KEY `idx_City` (`City`) USING BTREE,
-  KEY `idx_Title` (`Title`),
-  KEY `idx_status` (`Status`),
-  KEY `idx_publish_time` (`PublishTime`),
-  KEY `idx_price` (`Price`)
+  KEY `idx_city_District` (`City`,`District`),
+  KEY `idx_create_time` (`CreateTime`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -420,11 +495,14 @@ CREATE TABLE `doubanwechathouse` (
   `Tags` varchar(255) DEFAULT NULL,
   `Labels` varchar(255) DEFAULT NULL,
   `Status` int(11) DEFAULT '0',
+  `District` varchar(16) DEFAULT '',
+  `ReportNum` int(11) DEFAULT '0',
   PRIMARY KEY (`Id`),
   UNIQUE KEY `idx_OnlineURL` (`OnlineURL`),
   KEY `idx_PubTime` (`PubTime`) USING BTREE,
   KEY `idx_City` (`City`) USING BTREE,
-  KEY `idx_Title` (`Title`)
+  KEY `idx_Title` (`Title`),
+  KEY `idx_city_District` (`City`,`District`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -470,11 +548,49 @@ CREATE TABLE `fangduoduohouse` (
   `Tags` varchar(255) DEFAULT NULL,
   `Labels` varchar(255) DEFAULT NULL,
   `Status` int(11) DEFAULT '0',
+  `District` varchar(16) DEFAULT '',
+  `ReportNum` int(11) DEFAULT '0',
   PRIMARY KEY (`Id`),
   UNIQUE KEY `idx_OnlineURL` (`OnlineURL`),
   KEY `idx_PubTime` (`PubTime`) USING BTREE,
   KEY `idx_City` (`City`) USING BTREE,
-  KEY `idx_Title` (`Title`)
+  KEY `idx_Title` (`Title`),
+  KEY `idx_city_District` (`City`,`District`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `fangfeibuhouse`
+--
+
+DROP TABLE IF EXISTS `fangfeibuhouse`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `fangfeibuhouse` (
+  `Id` varchar(45) NOT NULL,
+  `CreateTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdateTime` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `City` varchar(20) DEFAULT NULL,
+  `Title` varchar(512) DEFAULT NULL COMMENT '标题',
+  `Price` decimal(10,0) DEFAULT NULL COMMENT '价格（纯数字）',
+  `Text` mediumtext COMMENT '文字描述',
+  `Location` varchar(512) DEFAULT NULL COMMENT '地理位置,文字描述',
+  `OnlineURL` varchar(512) DEFAULT NULL COMMENT 'URL',
+  `PubTime` datetime DEFAULT NULL COMMENT '发布时间',
+  `Source` varchar(200) DEFAULT NULL COMMENT '来源',
+  `PicURLs` longtext COMMENT '图片URL',
+  `RentType` int(11) DEFAULT '0' COMMENT '出租类型',
+  `Longitude` varchar(20) DEFAULT NULL COMMENT '经度',
+  `Latitude` varchar(20) DEFAULT NULL COMMENT '维度',
+  `Tags` varchar(255) DEFAULT NULL,
+  `Labels` varchar(255) DEFAULT NULL,
+  `Status` int(11) DEFAULT '0',
+  `District` varchar(16) DEFAULT '',
+  `ReportNum` int(11) DEFAULT '0',
+  PRIMARY KEY (`Id`),
+  UNIQUE KEY `idx_OnlineURL` (`OnlineURL`),
+  KEY `idx_city_District` (`City`,`District`),
+  KEY `idx_create_time` (`CreateTime`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -504,11 +620,48 @@ CREATE TABLE `fangtianxiahouse` (
   `Tags` varchar(255) DEFAULT NULL,
   `Labels` varchar(255) DEFAULT NULL,
   `Status` int(11) DEFAULT '0',
+  `District` varchar(16) DEFAULT '',
+  `ReportNum` int(11) DEFAULT '0',
   PRIMARY KEY (`Id`),
   UNIQUE KEY `idx_OnlineURL` (`OnlineURL`),
   KEY `idx_PubTime` (`PubTime`) USING BTREE,
   KEY `idx_City` (`City`) USING BTREE,
-  KEY `idx_Title` (`Title`)
+  KEY `idx_Title` (`Title`),
+  KEY `idx_city_District` (`City`,`District`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `ganjihouse`
+--
+
+DROP TABLE IF EXISTS `ganjihouse`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ganjihouse` (
+  `Id` varchar(45) NOT NULL,
+  `CreateTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdateTime` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `City` varchar(20) DEFAULT NULL,
+  `Title` varchar(512) DEFAULT NULL COMMENT '标题',
+  `Price` decimal(10,0) DEFAULT NULL COMMENT '价格（纯数字）',
+  `Text` mediumtext COMMENT '文字描述',
+  `Location` varchar(512) DEFAULT NULL COMMENT '地理位置,文字描述',
+  `OnlineURL` varchar(512) DEFAULT NULL COMMENT 'URL',
+  `PubTime` datetime DEFAULT NULL COMMENT '发布时间',
+  `Source` varchar(200) DEFAULT NULL COMMENT '来源',
+  `PicURLs` longtext COMMENT '图片URL',
+  `RentType` int(11) DEFAULT '0' COMMENT '出租类型',
+  `Longitude` varchar(20) DEFAULT NULL COMMENT '经度',
+  `Latitude` varchar(20) DEFAULT NULL COMMENT '维度',
+  `Tags` varchar(255) DEFAULT NULL,
+  `Labels` varchar(255) DEFAULT NULL,
+  `Status` int(11) DEFAULT '0',
+  `District` varchar(16) DEFAULT '',
+  `PublishTime` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`Id`),
+  UNIQUE KEY `idx_OnlineURL` (`OnlineURL`),
+  KEY `idx_city_District` (`City`,`District`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -538,11 +691,14 @@ CREATE TABLE `governmenthouse` (
   `Tags` varchar(255) DEFAULT NULL,
   `Labels` varchar(255) DEFAULT NULL,
   `Status` int(11) DEFAULT '0',
+  `District` varchar(16) DEFAULT '',
+  `ReportNum` int(11) DEFAULT '0',
   PRIMARY KEY (`Id`),
   UNIQUE KEY `idx_OnlineURL` (`OnlineURL`),
   KEY `idx_PubTime` (`PubTime`) USING BTREE,
   KEY `idx_City` (`City`) USING BTREE,
-  KEY `idx_Title` (`Title`)
+  KEY `idx_Title` (`Title`),
+  KEY `idx_city_District` (`City`,`District`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -572,11 +728,14 @@ CREATE TABLE `hezuzhaoshiyouhouse` (
   `Tags` varchar(255) DEFAULT NULL,
   `Labels` varchar(255) DEFAULT NULL,
   `Status` int(11) DEFAULT '0',
+  `District` varchar(16) DEFAULT '',
+  `ReportNum` int(11) DEFAULT '0',
   PRIMARY KEY (`Id`),
   UNIQUE KEY `idx_OnlineURL` (`OnlineURL`),
   KEY `idx_PubTime` (`PubTime`) USING BTREE,
   KEY `idx_City` (`City`) USING BTREE,
-  KEY `idx_Title` (`Title`)
+  KEY `idx_Title` (`Title`),
+  KEY `idx_city_District` (`City`,`District`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -606,11 +765,13 @@ CREATE TABLE `hizhuhouse` (
   `Tags` varchar(255) DEFAULT NULL,
   `Labels` varchar(255) DEFAULT NULL,
   `Status` int(11) DEFAULT '0',
+  `District` varchar(16) DEFAULT '',
   PRIMARY KEY (`Id`),
   UNIQUE KEY `idx_OnlineURL` (`OnlineURL`),
   KEY `idx_PubTime` (`PubTime`) USING BTREE,
   KEY `idx_City` (`City`) USING BTREE,
-  KEY `idx_Title` (`Title`)
+  KEY `idx_Title` (`Title`),
+  KEY `idx_city_District` (`City`,`District`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -628,6 +789,7 @@ CREATE TABLE `hkhouse` (
   `City` varchar(64) DEFAULT NULL,
   `Title` varchar(512) DEFAULT NULL COMMENT '标题',
   `Price` decimal(10,0) DEFAULT NULL COMMENT '价格（纯数字）',
+  `ReportNum` int(11) DEFAULT '0',
   `Text` mediumtext COMMENT '文字描述',
   `Location` varchar(512) DEFAULT NULL COMMENT '地理位置,文字描述',
   `OnlineURL` varchar(512) DEFAULT NULL COMMENT 'URL',
@@ -640,12 +802,62 @@ CREATE TABLE `hkhouse` (
   `Tags` varchar(255) DEFAULT NULL,
   `Labels` varchar(255) DEFAULT NULL,
   `Status` int(11) DEFAULT '0',
+  `District` varchar(16) DEFAULT '',
   PRIMARY KEY (`Id`),
   UNIQUE KEY `idx_OnlineURL` (`OnlineURL`),
   KEY `idx_PubTime` (`PubTime`) USING BTREE,
   KEY `idx_City` (`City`) USING BTREE,
-  KEY `idx_Title` (`Title`)
+  KEY `idx_Title` (`Title`),
+  KEY `idx_city_District` (`City`,`District`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `house_comment`
+--
+
+DROP TABLE IF EXISTS `house_comment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `house_comment` (
+  `id` bigint(20) NOT NULL,
+  `UserName` varchar(100) DEFAULT NULL,
+  `HouseId` varchar(45) DEFAULT NULL,
+  `UserId` bigint(20) DEFAULT NULL,
+  `Content` varchar(1024) DEFAULT NULL,
+  `HouseURL` varchar(512) DEFAULT NULL,
+  `HouseSource` varchar(20) DEFAULT NULL,
+  `City` varchar(20) DEFAULT NULL,
+  `CreateTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdateTime` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_user` (`UserId`),
+  KEY `idx_house` (`HouseId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `house_report`
+--
+
+DROP TABLE IF EXISTS `house_report`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `house_report` (
+  `Id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `City` varchar(20) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `UserName` varchar(50) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `HouseId` varchar(45) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `UserId` bigint(20) NOT NULL,
+  `Remark` varchar(128) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `ExtendData` longtext CHARACTER SET utf8mb4,
+  `HouseURL` varchar(766) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `HouseSource` varchar(20) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `ReportType` varchar(20) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `CreateTime` datetime(6) NOT NULL,
+  PRIMARY KEY (`Id`),
+  UNIQUE KEY `UC_user_house` (`HouseId`,`UserId`,`ReportType`)
+) ENGINE=InnoDB AUTO_INCREMENT=163 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -692,11 +904,51 @@ CREATE TABLE `huzuhouse` (
   `Tags` varchar(255) DEFAULT NULL,
   `Labels` varchar(255) DEFAULT NULL,
   `Status` int(11) DEFAULT '0',
+  `District` varchar(16) DEFAULT '',
+  `ReportNum` int(11) DEFAULT '0',
   PRIMARY KEY (`Id`),
   UNIQUE KEY `idx_OnlineURL` (`OnlineURL`),
   KEY `idx_PubTime` (`PubTime`) USING BTREE,
   KEY `idx_City` (`City`) USING BTREE,
-  KEY `idx_Title` (`Title`)
+  KEY `idx_Title` (`Title`),
+  KEY `idx_city_District` (`City`,`District`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `leyoujiahouse`
+--
+
+DROP TABLE IF EXISTS `leyoujiahouse`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `leyoujiahouse` (
+  `Id` varchar(45) NOT NULL,
+  `CreateTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdateTime` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `City` varchar(64) DEFAULT NULL,
+  `Title` varchar(512) DEFAULT NULL COMMENT '标题',
+  `Price` decimal(10,0) DEFAULT NULL COMMENT '价格（纯数字）',
+  `Text` mediumtext COMMENT '文字描述',
+  `Location` varchar(512) DEFAULT NULL COMMENT '地理位置,文字描述',
+  `OnlineURL` varchar(512) DEFAULT NULL COMMENT 'URL',
+  `PubTime` datetime DEFAULT NULL COMMENT '发布时间',
+  `Source` varchar(200) DEFAULT NULL COMMENT '来源',
+  `PicURLs` varchar(1024) DEFAULT '[]' COMMENT '图片URL',
+  `RentType` int(11) DEFAULT '0' COMMENT '出租类型',
+  `Longitude` varchar(20) DEFAULT NULL COMMENT '经度',
+  `Latitude` varchar(20) DEFAULT NULL COMMENT '维度',
+  `Tags` varchar(255) DEFAULT NULL,
+  `Labels` varchar(255) DEFAULT NULL,
+  `Status` int(11) DEFAULT '0',
+  `District` varchar(20) DEFAULT '',
+  `ReportNum` int(11) DEFAULT '0',
+  PRIMARY KEY (`Id`),
+  UNIQUE KEY `idx_OnlineURL` (`OnlineURL`),
+  KEY `idx_PubTime` (`PubTime`) USING BTREE,
+  KEY `idx_City` (`City`) USING BTREE,
+  KEY `idx_Title` (`Title`),
+  KEY `idx_city_district` (`City`,`District`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -726,11 +978,14 @@ CREATE TABLE `moguhouse` (
   `Tags` varchar(255) DEFAULT NULL,
   `Labels` varchar(255) DEFAULT NULL,
   `Status` int(11) DEFAULT '0',
+  `District` varchar(16) DEFAULT '',
+  `ReportNum` int(11) DEFAULT '0',
   PRIMARY KEY (`Id`),
   UNIQUE KEY `idx_OnlineURL` (`OnlineURL`),
   KEY `idx_PubTime` (`PubTime`) USING BTREE,
   KEY `idx_City` (`City`) USING BTREE,
-  KEY `idx_Title` (`Title`)
+  KEY `idx_Title` (`Title`),
+  KEY `idx_city_District` (`City`,`District`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -748,7 +1003,7 @@ CREATE TABLE `notice` (
   `DataChange_LastTime` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `EndShowDate` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -765,6 +1020,8 @@ CREATE TABLE `nuanhouse` (
   `City` varchar(64) DEFAULT NULL,
   `Title` varchar(512) DEFAULT NULL COMMENT '标题',
   `Price` decimal(10,0) DEFAULT NULL COMMENT '价格（纯数字）',
+  `userhouse` int(11) DEFAULT '0',
+  `HezuzhaoshiyouHouse` int(11) DEFAULT '0',
   `Text` mediumtext COMMENT '文字描述',
   `Location` varchar(512) DEFAULT NULL COMMENT '地理位置,文字描述',
   `OnlineURL` varchar(512) DEFAULT NULL COMMENT 'URL',
@@ -777,11 +1034,13 @@ CREATE TABLE `nuanhouse` (
   `Tags` varchar(255) DEFAULT NULL,
   `Labels` varchar(255) DEFAULT NULL,
   `Status` int(11) DEFAULT '0',
+  `District` varchar(16) DEFAULT '',
   PRIMARY KEY (`Id`),
   UNIQUE KEY `idx_OnlineURL` (`OnlineURL`),
   KEY `idx_PubTime` (`PubTime`) USING BTREE,
   KEY `idx_City` (`City`) USING BTREE,
-  KEY `idx_Title` (`Title`)
+  KEY `idx_Title` (`Title`),
+  KEY `idx_city_District` (`City`,`District`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -811,11 +1070,13 @@ CREATE TABLE `pinshiyouhouse` (
   `Tags` varchar(255) DEFAULT NULL,
   `Labels` varchar(255) DEFAULT NULL,
   `Status` int(11) DEFAULT '0',
+  `District` varchar(16) DEFAULT '',
   PRIMARY KEY (`Id`),
   UNIQUE KEY `idx_OnlineURL` (`OnlineURL`),
   KEY `idx_PubTime` (`PubTime`) USING BTREE,
   KEY `idx_City` (`City`) USING BTREE,
-  KEY `idx_Title` (`Title`)
+  KEY `idx_Title` (`Title`),
+  KEY `idx_city_District` (`City`,`District`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -845,11 +1106,85 @@ CREATE TABLE `qingkehouse` (
   `Tags` varchar(255) DEFAULT NULL,
   `Labels` varchar(255) DEFAULT NULL,
   `Status` int(11) DEFAULT '0',
+  `District` varchar(16) DEFAULT '',
+  `ReportNum` int(11) DEFAULT '0',
   PRIMARY KEY (`Id`),
   UNIQUE KEY `idx_OnlineURL` (`OnlineURL`),
   KEY `idx_PubTime` (`PubTime`) USING BTREE,
   KEY `idx_City` (`City`) USING BTREE,
-  KEY `idx_Title` (`Title`)
+  KEY `idx_Title` (`Title`),
+  KEY `idx_city_District` (`City`,`District`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `shanghaihuzuhouse`
+--
+
+DROP TABLE IF EXISTS `shanghaihuzuhouse`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `shanghaihuzuhouse` (
+  `Id` varchar(45) NOT NULL,
+  `CreateTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdateTime` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `City` varchar(20) DEFAULT NULL,
+  `Title` varchar(512) DEFAULT NULL COMMENT '标题',
+  `Price` decimal(10,0) DEFAULT NULL COMMENT '价格（纯数字）',
+  `Text` mediumtext COMMENT '文字描述',
+  `Location` varchar(512) DEFAULT NULL COMMENT '地理位置,文字描述',
+  `OnlineURL` varchar(512) DEFAULT NULL COMMENT 'URL',
+  `PubTime` datetime DEFAULT NULL COMMENT '发布时间',
+  `Source` varchar(200) DEFAULT NULL COMMENT '来源',
+  `PicURLs` longtext COMMENT '图片URL',
+  `RentType` int(11) DEFAULT '0' COMMENT '出租类型',
+  `Longitude` varchar(20) DEFAULT NULL COMMENT '经度',
+  `Latitude` varchar(20) DEFAULT NULL COMMENT '维度',
+  `Tags` varchar(255) DEFAULT NULL,
+  `Labels` varchar(255) DEFAULT NULL,
+  `Status` int(11) DEFAULT '0',
+  `District` varchar(16) DEFAULT '',
+  `ReportNum` int(11) DEFAULT '0',
+  PRIMARY KEY (`Id`),
+  UNIQUE KEY `idx_OnlineURL` (`OnlineURL`),
+  KEY `idx_city_District` (`City`,`District`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `shpublichouse`
+--
+
+DROP TABLE IF EXISTS `shpublichouse`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `shpublichouse` (
+  `Id` varchar(45) NOT NULL,
+  `CreateTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdateTime` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `City` varchar(64) DEFAULT NULL,
+  `Title` varchar(512) DEFAULT NULL COMMENT '标题',
+  `Price` decimal(10,0) DEFAULT NULL COMMENT '价格（纯数字）',
+  `Text` mediumtext COMMENT '文字描述',
+  `Location` varchar(512) DEFAULT NULL COMMENT '地理位置,文字描述',
+  `OnlineURL` varchar(512) DEFAULT NULL COMMENT 'URL',
+  `PubTime` datetime DEFAULT NULL COMMENT '发布时间',
+  `Source` varchar(200) DEFAULT NULL COMMENT '来源',
+  `PicURLs` varchar(1024) DEFAULT '[]' COMMENT '图片URL',
+  `RentType` int(11) DEFAULT '0' COMMENT '出租类型',
+  `Longitude` varchar(20) DEFAULT NULL COMMENT '经度',
+  `Latitude` varchar(20) DEFAULT NULL COMMENT '维度',
+  `Tags` varchar(255) DEFAULT NULL,
+  `Labels` varchar(255) DEFAULT NULL,
+  `Status` int(11) DEFAULT '0',
+  `District` varchar(20) DEFAULT '',
+  `ReportNum` int(11) DEFAULT '0',
+  PRIMARY KEY (`Id`),
+  UNIQUE KEY `idx_OnlineURL` (`OnlineURL`),
+  KEY `idx_PubTime` (`PubTime`) USING BTREE,
+  KEY `idx_City` (`City`) USING BTREE,
+  KEY `idx_Title` (`Title`),
+  KEY `idx_city_district` (`City`,`District`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -875,7 +1210,9 @@ CREATE TABLE `usercollection` (
   PRIMARY KEY (`ID`),
   UNIQUE KEY `house_source_user` (`HouseID`,`UserID`),
   KEY `idx_UserID` (`UserID`) USING BTREE,
-  KEY `idx_HouseID` (`HouseID`) USING BTREE
+  KEY `idx_HouseID` (`HouseID`) USING BTREE,
+  KEY `city_user` (`City`,`UserID`),
+  KEY `user_city` (`UserID`,`City`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -898,19 +1235,22 @@ CREATE TABLE `userhouse` (
   `OnlineURL` varchar(512) DEFAULT NULL COMMENT 'URL',
   `PubTime` datetime DEFAULT NULL COMMENT '发布时间',
   `Source` varchar(200) DEFAULT NULL COMMENT '来源',
-  `PicURLs` varchar(1024) DEFAULT '[]' COMMENT '图片URL',
+  `PicURLs` varchar(8120) DEFAULT '[]' COMMENT '图片URL',
   `RentType` int(11) DEFAULT '0' COMMENT '出租类型',
-  `Longitude` varchar(20) DEFAULT NULL COMMENT '经度',
-  `Latitude` varchar(20) DEFAULT NULL COMMENT '维度',
+  `Longitude` double DEFAULT NULL COMMENT '经度',
+  `Latitude` double DEFAULT NULL COMMENT '维度',
   `Tags` varchar(255) DEFAULT NULL,
   `Labels` varchar(255) DEFAULT NULL,
   `Status` int(11) DEFAULT '0',
+  `District` varchar(16) DEFAULT '',
   `UserId` bigint(20) DEFAULT NULL,
+  `WechatId` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `idx_OnlineURL` (`OnlineURL`),
   KEY `idx_PubTime` (`PubTime`) USING BTREE,
   KEY `idx_City` (`City`) USING BTREE,
-  KEY `idx_Title` (`Title`)
+  KEY `idx_Title` (`Title`),
+  KEY `idx_city_District` (`City`,`District`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -939,7 +1279,9 @@ CREATE TABLE `userinfos` (
   `WorkAddress` varchar(255) DEFAULT NULL,
   `WechatOpenID` varchar(128) DEFAULT NULL,
   `AvatarUrl` varchar(300) DEFAULT NULL,
-  `JsonData` varchar(1000) DEFAULT NULL,
+  `JsonData` varchar(8000) DEFAULT NULL,
+  `NickName` varchar(64) DEFAULT NULL,
+  `UserType` int(11) DEFAULT '0' COMMENT '用户类型，0 普通用户，1 观察者（可举报），2 志愿者（可删除）',
   PRIMARY KEY (`ID`),
   UNIQUE KEY `username` (`UserName`),
   UNIQUE KEY `email` (`Email`,`QQOpenUID`),
@@ -948,7 +1290,7 @@ CREATE TABLE `userinfos` (
   KEY `idx_email` (`Email`),
   KEY `idx_code` (`ActivatedCode`),
   KEY `idx_QQOpenUID` (`QQOpenUID`)
-) ENGINE=InnoDB AUTO_INCREMENT=1532 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=28372 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -977,11 +1319,14 @@ CREATE TABLE `v2exhouse` (
   `Tags` varchar(255) DEFAULT NULL,
   `Labels` varchar(255) DEFAULT NULL,
   `Status` int(11) DEFAULT '0',
+  `District` varchar(16) DEFAULT '',
+  `ReportNum` int(11) DEFAULT '0',
   PRIMARY KEY (`Id`),
   UNIQUE KEY `idx_OnlineURL` (`OnlineURL`),
   KEY `idx_PubTime` (`PubTime`) USING BTREE,
   KEY `idx_City` (`City`) USING BTREE,
-  KEY `idx_Title` (`Title`)
+  KEY `idx_Title` (`Title`),
+  KEY `idx_city_District` (`City`,`District`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1011,11 +1356,49 @@ CREATE TABLE `wellceehouse` (
   `Tags` varchar(255) DEFAULT NULL,
   `Labels` varchar(255) DEFAULT NULL,
   `Status` int(11) DEFAULT '0',
+  `District` varchar(16) DEFAULT '',
+  `ReportNum` int(11) DEFAULT '0',
   PRIMARY KEY (`Id`),
   UNIQUE KEY `idx_OnlineURL` (`OnlineURL`),
   KEY `idx_PubTime` (`PubTime`) USING BTREE,
   KEY `idx_City` (`City`) USING BTREE,
-  KEY `idx_Title` (`Title`)
+  KEY `idx_Title` (`Title`),
+  KEY `idx_city_District` (`City`,`District`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `woaiwojiahouse`
+--
+
+DROP TABLE IF EXISTS `woaiwojiahouse`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `woaiwojiahouse` (
+  `Id` varchar(45) NOT NULL,
+  `CreateTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdateTime` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `City` varchar(20) DEFAULT NULL,
+  `Title` varchar(512) DEFAULT NULL COMMENT '标题',
+  `Price` decimal(10,0) DEFAULT NULL COMMENT '价格（纯数字）',
+  `Text` mediumtext COMMENT '文字描述',
+  `Location` varchar(512) DEFAULT NULL COMMENT '地理位置,文字描述',
+  `OnlineURL` varchar(512) DEFAULT NULL COMMENT 'URL',
+  `PubTime` datetime DEFAULT NULL COMMENT '发布时间',
+  `Source` varchar(200) DEFAULT NULL COMMENT '来源',
+  `PicURLs` longtext COMMENT '图片URL',
+  `RentType` int(11) DEFAULT '0' COMMENT '出租类型',
+  `Longitude` varchar(20) DEFAULT NULL COMMENT '经度',
+  `Latitude` varchar(20) DEFAULT NULL COMMENT '维度',
+  `Tags` varchar(255) DEFAULT NULL,
+  `Labels` varchar(255) DEFAULT NULL,
+  `Status` int(11) DEFAULT '0',
+  `District` varchar(16) DEFAULT '',
+  `PublishTime` bigint(20) DEFAULT NULL,
+  `ReportNum` int(11) DEFAULT '0',
+  PRIMARY KEY (`Id`),
+  UNIQUE KEY `idx_OnlineURL` (`OnlineURL`),
+  KEY `idx_city_District` (`City`,`District`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1045,11 +1428,14 @@ CREATE TABLE `xhjhouse` (
   `Tags` varchar(255) DEFAULT NULL,
   `Labels` varchar(255) DEFAULT NULL,
   `Status` int(11) DEFAULT '0',
+  `District` varchar(16) DEFAULT '',
+  `ReportNum` int(11) DEFAULT '0',
   PRIMARY KEY (`Id`),
   UNIQUE KEY `idx_OnlineURL` (`OnlineURL`),
   KEY `idx_PubTime` (`PubTime`) USING BTREE,
   KEY `idx_City` (`City`) USING BTREE,
-  KEY `idx_Title` (`Title`)
+  KEY `idx_Title` (`Title`),
+  KEY `idx_city_District` (`City`,`District`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1067,6 +1453,10 @@ CREATE TABLE `xianyuhouse` (
   `City` varchar(64) DEFAULT NULL,
   `Title` varchar(512) DEFAULT NULL COMMENT '标题',
   `Price` decimal(10,0) DEFAULT NULL COMMENT '价格（纯数字）',
+  `HezuzhaoshiyouHouse` int(11) DEFAULT '0',
+  `PinshiyouHouse` int(11) DEFAULT '0',
+  `HizhuHouse` int(11) DEFAULT '0',
+  `ReportNum` int(11) DEFAULT '0',
   `Text` mediumtext COMMENT '文字描述',
   `Location` varchar(512) DEFAULT NULL COMMENT '地理位置,文字描述',
   `OnlineURL` varchar(512) DEFAULT NULL COMMENT 'URL',
@@ -1079,11 +1469,86 @@ CREATE TABLE `xianyuhouse` (
   `Tags` varchar(255) DEFAULT NULL,
   `Labels` varchar(255) DEFAULT NULL,
   `Status` int(11) DEFAULT '0',
+  `District` varchar(16) DEFAULT '',
   PRIMARY KEY (`Id`),
   UNIQUE KEY `idx_OnlineURL` (`OnlineURL`),
   KEY `idx_PubTime` (`PubTime`) USING BTREE,
   KEY `idx_City` (`City`) USING BTREE,
-  KEY `idx_Title` (`Title`)
+  KEY `idx_Title` (`Title`),
+  KEY `idx_city_District` (`City`,`District`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `zhihuhouse`
+--
+
+DROP TABLE IF EXISTS `zhihuhouse`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `zhihuhouse` (
+  `Id` varchar(45) NOT NULL,
+  `CreateTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdateTime` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `City` varchar(64) DEFAULT NULL,
+  `Title` varchar(512) DEFAULT NULL COMMENT '标题',
+  `Price` decimal(10,0) DEFAULT NULL COMMENT '价格（纯数字）',
+  `Text` mediumtext COMMENT '文字描述',
+  `Location` varchar(512) DEFAULT NULL COMMENT '地理位置,文字描述',
+  `OnlineURL` varchar(512) DEFAULT NULL COMMENT 'URL',
+  `PubTime` datetime DEFAULT NULL COMMENT '发布时间',
+  `Source` varchar(200) DEFAULT NULL COMMENT '来源',
+  `PicURLs` varchar(1024) DEFAULT '[]' COMMENT '图片URL',
+  `RentType` int(11) DEFAULT '0' COMMENT '出租类型',
+  `Longitude` varchar(20) DEFAULT NULL COMMENT '经度',
+  `Latitude` varchar(20) DEFAULT NULL COMMENT '维度',
+  `Tags` varchar(255) DEFAULT NULL,
+  `Labels` varchar(255) DEFAULT NULL,
+  `Status` int(11) DEFAULT '0',
+  `District` varchar(16) DEFAULT '',
+  PRIMARY KEY (`Id`),
+  UNIQUE KEY `idx_OnlineURL` (`OnlineURL`),
+  KEY `idx_PubTime` (`PubTime`) USING BTREE,
+  KEY `idx_City` (`City`) USING BTREE,
+  KEY `idx_Title` (`Title`),
+  KEY `idx_city_District` (`City`,`District`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `zhugehouse`
+--
+
+DROP TABLE IF EXISTS `zhugehouse`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `zhugehouse` (
+  `Id` varchar(45) NOT NULL,
+  `CreateTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdateTime` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `City` varchar(64) DEFAULT NULL,
+  `Title` varchar(512) DEFAULT NULL COMMENT '标题',
+  `Price` decimal(10,0) DEFAULT NULL COMMENT '价格（纯数字）',
+  `Text` mediumtext COMMENT '文字描述',
+  `Location` varchar(512) DEFAULT NULL COMMENT '地理位置,文字描述',
+  `OnlineURL` varchar(512) DEFAULT NULL COMMENT 'URL',
+  `PubTime` datetime DEFAULT NULL COMMENT '发布时间',
+  `Source` varchar(200) DEFAULT NULL COMMENT '来源',
+  `PicURLs` varchar(8000) DEFAULT '[]' COMMENT '图片URL',
+  `RentType` int(11) DEFAULT '0' COMMENT '出租类型',
+  `Longitude` varchar(20) DEFAULT NULL COMMENT '经度',
+  `Latitude` varchar(20) DEFAULT NULL COMMENT '维度',
+  `Tags` varchar(255) DEFAULT NULL,
+  `Labels` varchar(255) DEFAULT NULL,
+  `Status` int(11) DEFAULT '0',
+  `District` varchar(16) DEFAULT '',
+  `ReportNum` int(11) DEFAULT '0',
+  PRIMARY KEY (`Id`),
+  UNIQUE KEY `idx_OnlineURL` (`OnlineURL`),
+  KEY `idx_PubTime` (`PubTime`) USING BTREE,
+  KEY `idx_City` (`City`) USING BTREE,
+  KEY `idx_Title` (`Title`),
+  KEY `idx_city_District` (`City`,`District`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1113,11 +1578,14 @@ CREATE TABLE `ziroomhouse` (
   `Tags` varchar(255) DEFAULT NULL,
   `Labels` varchar(255) DEFAULT NULL,
   `Status` int(11) DEFAULT '0',
+  `District` varchar(16) DEFAULT '',
+  `ReportNum` int(11) DEFAULT '0',
   PRIMARY KEY (`Id`),
   UNIQUE KEY `idx_OnlineURL` (`OnlineURL`),
   KEY `idx_PubTime` (`PubTime`) USING BTREE,
   KEY `idx_City` (`City`) USING BTREE,
-  KEY `idx_Title` (`Title`)
+  KEY `idx_Title` (`Title`),
+  KEY `idx_city_District` (`City`,`District`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1147,14 +1615,16 @@ CREATE TABLE `zuberhouse` (
   `Tags` varchar(255) DEFAULT NULL,
   `Labels` varchar(255) DEFAULT NULL,
   `Status` int(11) DEFAULT '0',
+  `District` varchar(16) DEFAULT '',
+  `ReportNum` int(11) DEFAULT '0',
   PRIMARY KEY (`Id`),
   UNIQUE KEY `idx_OnlineURL` (`OnlineURL`),
   KEY `idx_PubTime` (`PubTime`) USING BTREE,
   KEY `idx_City` (`City`) USING BTREE,
-  KEY `idx_Title` (`Title`)
+  KEY `idx_Title` (`Title`),
+  KEY `idx_city_District` (`City`,`District`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
-SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -1165,4 +1635,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-01-03 18:46:36
+-- Dump completed on 2022-04-10 19:23:55
