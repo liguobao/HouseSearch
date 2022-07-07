@@ -15,7 +15,7 @@
     <PackageReference Include="Dapper" Version="1.50.5" />
     <PackageReference Include="Talk.OAuthClient" Version="1.0.0" />
     <PackageReference Include="RestSharp" Version="106.5.4" />
-    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.6" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.5.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0-rc5" />   
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="5.0.0-rc5" />
