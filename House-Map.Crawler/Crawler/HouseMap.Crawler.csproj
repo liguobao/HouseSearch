@@ -5,7 +5,7 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2"/>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2"/>
     <PackageReference Include="StackExchange.Redis.StrongName" Version="1.2.7-alpha-00002"/>
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.2"/>
     <PackageReference Include="Dapper" Version="1.50.5"/>
