@@ -59,4 +59,3 @@
 
 - ladyruo[ladyruo](https://github.com/ladyruo)
 
-- 曾经的兔兔[TiriSane](https://github.com/TiriSane)
