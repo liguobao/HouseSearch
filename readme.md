@@ -1,6 +1,6 @@
 [![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](http://www.gnu.org/licenses/lgpl-3.0)
 
-# [地图搜租房:[https://house2048.cn/app/house-map](https://house2048.cn/app/house-map)]
+# [地图搜租房:https://house2048.cn](https://house2048.cn/app/house-map)
 
 ## 微信小程序
 
