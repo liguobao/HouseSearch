@@ -16,9 +16,8 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x, 16.x, 18.x]
+        node-version: [14.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
@@ -27,6 +26,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: ls -lh
-    - run: cd House-Map.UI
-    - run: npm ci
-    - run: npm run build --if-present
+    - run: 
+      working-directory: ./House-Map.UI
+      shell: npm i && npm run build --if-present
