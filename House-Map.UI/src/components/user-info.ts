@@ -1,4 +1,4 @@
-export default (self) => {
+export default (self:any) => {
   return new Promise(async (resolve, reject) => {
     const u = localStorage.getItem('u');
     if (!u) {
@@ -6,7 +6,7 @@ export default (self) => {
     } else {
       try {
         const userId = JSON.parse(u).id;
-        const data = await self.$ajax.get(`/users/${userId}`);
+        const data = await self.$ajax.get(`v1/users/${userId}`);
         self.$store.dispatch('UpdateUserInfo', data.data);
         resolve()
       } catch (e) {

@@ -1,8 +1,12 @@
 <template>
   <div>
     <div class="tips">
-      <span>厦门租房: </span>
-      <a href="https://www.douban.com/group/XMhouse/" target="_blank" class="highlight-name">www.douban.com/group/XMhouse</a>
+      <span>厦门租房:</span>
+      <a
+        href="https://www.douban.com/group/XMhouse/"
+        target="_blank"
+        class="highlight-name"
+      >www.douban.com/group/XMhouse</a>
     </div>
     <el-form ref="form" :model="form" label-width="0px" class="form" :rules="rules">
       <el-form-item label="" prop="city">
@@ -20,63 +24,64 @@
   </div>
 </template>
 <style lang="scss" scoped>
-  .btn-wrap {
-    margin-top: 15px
+.btn-wrap {
+  margin-top: 15px;
+}
+.tips {
+  margin-bottom: 20px;
+  font-size: 18px;
+  span {
   }
-  .tips{
-    margin-bottom: 20px;
-    font-size: 18px;
-    span{
-
-    }
+}
+.highlight-name {
+  color: #0e90d2;
+  transition: all 0.3s;
+  &:hover {
+    color: #095f8a;
   }
-  .highlight-name {
-    color: #0e90d2;
-    transition: all 0.3s;
-    &:hover {
-      color: #095f8a;
-    }
-  }
+}
 </style>
 <script>
-  export default {
-    data() {
-      return {
-        form: {},
-        rules: {
-          city: [
-            {required: true, message: '请输入名称', trigger: 'change'},
-          ],
-          groupId: [
-            {required: true, message: '请输入豆瓣小组GroupID', trigger: 'change'},
-          ]
-        },
-        loading: false
-      }
-    },
-    methods: {
-      async add() {
-        try {
-          await this.$refs.form.validate();
-          this.loading = true;
-          await this.$v2.post(`/cities/douban`,{
-            ...this.form
-          });
-          if (gtag) {
-            gtag('event', '新增豆瓣租房小组', {
-              'event_category' : this.form.city
-            });
+export default {
+  data() {
+    return {
+      form: {},
+      rules: {
+        city: [{ required: true, message: "请输入名称", trigger: "change" }],
+        groupId: [
+          {
+            required: true,
+            message: "请输入豆瓣小组GroupID",
+            trigger: "change"
           }
-          this.$message.success('添加成功');
-          this.form = {};
-          setTimeout(() => {
-            this.$refs.form.clearValidate()
-          },0);
-          this.loading = false;
-        } catch (e) {
-          this.loading = false;
+        ]
+      },
+      loading: false
+    };
+  },
+  methods: {
+    async add() {
+      try {
+        await this.$refs.form.validate();
+        this.loading = true;
+        await this.$ajax.post(`v2/cities/douban`, {
+          ...this.form
+        });
+        if (gtag) {
+          gtag("event", "新增豆瓣租房小组", {
+            event_category: this.form.city
+          });
         }
+        this.$message.success("添加成功");
+        this.form = {};
+        setTimeout(() => {
+          this.$refs.form.clearValidate();
+        }, 0);
+        this.loading = false;
+      } catch (e) {
+        this.loading = false;
       }
     }
   }
+};
 </script>

@@ -1,7 +1,8 @@
-FROM node:10 AS build-env
+FROM node:10.10.0 AS build-env
 WORKDIR /app
-COPY ./package.json . 
-RUN npm install --registry=https://registry.npmmirror.com
+COPY ./package.json .
+COPY ./package-lock.json .
+RUN npm install
 COPY . .
 RUN npm run build
 

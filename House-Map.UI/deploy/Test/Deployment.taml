@@ -1,0 +1,62 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    run: house-map-ui
+  name: house-map-ui
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      run: house-map-ui
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: house-map-ui
+    spec:
+      containers:
+      - image: ${IMAGE_NAME}
+        imagePullPolicy: IfNotPresent
+        name: house-map-ui
+        terminationMessagePath: /dev/termination-log
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 120
+          periodSeconds: 30
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 50m
+            memory: 256Mi
+      imagePullSecrets:
+        - name: regcred
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: house-map-ui
+  annotations:
+    service.kubernetes.io/qcloud-loadbalancer-internal-subnetid: subnet-mb1sqly3
+spec:
+  selector:
+    run: house-map-ui
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  type: LoadBalancer
+  externalTrafficPolicy: Cluster

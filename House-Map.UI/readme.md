@@ -1,31 +1,35 @@
-# House-Map.UI
+# house-typescript
 
-使用vue.js重写 UI...
+## Project setup
 
-API 地址:[showdoc-house-map](https://www.showdoc.cc/web/#/house)
-
-
-## 安装
-
-```sh
-
-$  npm i
+```
+npm install
 ```
 
-## 运行
+### Compiles and hot-reloads for development
 
-```sh
-$  npm run serve
+```
+npm run serve
 ```
 
-## 打包
+### Compiles and minifies for production
 
-```sh
-$  npm run build
+```
+npm run build
 ```
 
-## docker build
+### Run your tests
 
-```sh
-docker build .
 ```
+npm run test
+```
+
+### Lints and fixes files
+
+```
+npm run lint
+```
+
+### Customize configuration
+
+See [Configuration Reference](https://cli.vuejs.org/config/).

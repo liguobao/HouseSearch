@@ -5,16 +5,14 @@ import store from './../store'
 
 const vue = new Vue();
 
-axios.defaults.timeout = 15000;
-axios.defaults.baseURL = 'https://app.house2048.cn/api/';
+
+axios.defaults.timeout = 30000;
+axios.defaults.baseURL = 'https://house-map.cn/api/';
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8';
 
 
 const $ajax = axios.create({
-  baseURL: 'https://app.house2048.cn/api/',
-});
-const $v2 = axios.create({
-  baseURL: 'https://app.house2048.cn/v2/',
+  baseURL: 'https://house-map.cn/api/',
 });
 
 
@@ -55,11 +53,20 @@ const $v2 = axios.create({
 //   }
 // );
 
+type responseType = {
+  config: object,
+  data: object,
+  headers: object,
+  request: object,
+  status: number,
+  statusText: string,
+  error: object
+}
 
-function defaultInterceptors(key) {
+function defaultInterceptors(key: any) {
   let _key = key;
   _key.interceptors.request.use(
-    config => {
+    (config: any) => {
       if (localStorage.token) {
         config.headers.token = localStorage.getItem('token');
       }
@@ -68,7 +75,7 @@ function defaultInterceptors(key) {
   );
 
   _key.interceptors.response.use(
-    response => {
+    (response: any) => {
       if (response.data.success || response.data.isSuccess || response.data.code != -1) {
         return response.data
       } else {
@@ -77,14 +84,14 @@ function defaultInterceptors(key) {
         return Promise.reject(message)
       }
     },
-    error => {
+    (error: any) => {
       if (error.response) {
         switch (error.response.status) {
           case 401:
             store.dispatch('UserLogout'); //可能是token过期，清除它
             router.replace({ //跳转到登录页面
               path: '/',
-              query: {redirect: router.currentRoute.fullPath} // 将跳转的路由path作为参数，登录成功后跳转到该路由
+              query: { redirect: router.currentRoute.fullPath } // 将跳转的路由path作为参数，登录成功后跳转到该路由
             });
         }
       }
@@ -100,9 +107,6 @@ function defaultInterceptors(key) {
 
 defaultInterceptors($ajax);
 
-defaultInterceptors($v2);
-
 export {
   $ajax,
-  $v2
 }
