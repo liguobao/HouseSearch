@@ -29,3 +29,14 @@ jobs:
       - name: Build  
         run: npm run build  
         working-directory: ./House-Map.UI
+      - name: Deploy
+        uses: burnett01/rsync-deployments@4.1
+        with:
+        # 这里是 rsync 的参数 switches: -avzh --delete --exclude="" --include="" --filter=""
+          switches: -avzh
+          path: ./dist/*
+          remote_path: /opt/www/house2048/
+          remote_host: ${{ secrets.HOUSE_MAP_SERVER }}
+          remote_port: 22
+          remote_user: root
+          remote_key: ${{ secrets.LGB_HOME }}
