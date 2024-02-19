@@ -6,15 +6,15 @@ import store from './../store'
 const vue = new Vue();
 
 axios.defaults.timeout = 15000;
-axios.defaults.baseURL = 'https://woyaozufang.live/api/';
+axios.defaults.baseURL = 'https://app.house2048.cn/api/';
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8';
 
 
 const $ajax = axios.create({
-  baseURL: 'https://woyaozufang.live/api/',
+  baseURL: 'https://app.house2048.cn/api/',
 });
 const $v2 = axios.create({
-  baseURL: 'https://woyaozufang.live/v2/',
+  baseURL: 'https://app.house2048.cn/v2/',
 });
 
 

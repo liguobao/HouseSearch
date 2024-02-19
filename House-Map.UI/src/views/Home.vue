@@ -136,9 +136,9 @@
     <footer>
       <div>
         <div>
-          Copyright 2016 - 2018 www.woyaozufang.live. All Rights Reserved
+          Copyright 2016 - 2024 house2048.cn. All Rights Reserved
           <a href="http://www.miitbeian.gov.cn/" class="highlight-name" target="_blank">粤ICP备18145970号</a>
-          <a href="/" class="highlight-name">软狗的技术分享</a>
+          <a href="/" class="highlight-name">地图搜租房</a>
         </div>
         <!--<div class="call-me">-->
           <!--<el-tooltip class="item" effect="dark" content="88888888" placement="top">-->

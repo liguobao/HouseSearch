@@ -142,7 +142,7 @@ namespace HouseMapAPI.Service
             EmailInfo email = new EmailInfo();
             email.Body = $"Hi,{registerUser.userName}. <br>欢迎注册地图搜租房(house-map.cn),您的账号已经注册成功." +
             "<br/>为了保证您能正常体验网站服务，请点击下面的链接完成邮箱验证以激活账号."
-            + $"<br><a href='https://woyaozufang.live/#/Account/Activated?code={token}'>https://woyaozufang.live/#/Account/Activate?code={token}</a> "
+            + $"<br><a href='https://app.house2048.cn/#/Account/Activated?code={token}'>https://app.house2048.cn/#/Account/Activate?code={token}</a> "
             + "<br>如果您以上链接无法点击，您可以将以上链接复制并粘贴到浏览器地址栏打开."
             + "<br>此信由系统自动发出，系统不接收回信，因此请勿直接回复。" +
             "<br>如果有其他问题咨询请发邮件到codelover@qq.com.";
