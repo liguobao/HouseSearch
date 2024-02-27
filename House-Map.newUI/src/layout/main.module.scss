@@ -1,0 +1,266 @@
+.container{
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+    .header{
+        width: 100%;
+        height:6%;
+        background-color: hsla(0,0%,100%,0.98);
+        display: flex;
+        flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+        // padding: 0 20px;
+            .logo-content{
+                margin-left: 20px;
+                color: #0e90d2;
+                font-size: 30px;
+                font-weight: 600;
+                letter-spacing: 7px;
+            }
+            .channel-btn{
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+            }
+            .channel-btn-mobile{
+                display: none;
+            }
+        
+        .search{
+            float: left;
+            margin-left:15%;
+            width:40%;
+            height:100%;
+            display: flex;
+            align-items: center;
+        }
+        .nav{
+            float: right;
+            height:100%;
+            width:30%;
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            .nav-item{
+                width:25%;
+                height:60%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color:rgba(51, 51, 51, 0.8);
+            }
+            .nav-item:hover{
+                background-color: rgb(245,245,245);
+                cursor: pointer;
+                border-radius: 50px ;
+                color:#13386c;
+            }
+        }
+    }
+    .center{
+        width: 100%;
+        height:80%;
+        display: flex;
+        margin-top:20px;
+        .left{
+            width: 20%;
+            height:100%;
+            background-color: hsla(0,0%,100%,0.98);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            .search-table{
+                margin-top:35%;
+                width:90%;
+                height:70px;
+                .search-table-price{
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    flex-wrap: nowrap;
+                    
+                }
+            }
+            .search-button{
+                margin-top:10%;
+                width: 60%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: #0e90d2;
+                color: white;
+                font-size: 20px;
+                font-weight: 600;
+                border-radius: 10px;
+                cursor: pointer;
+            }
+            
+        }
+        .right{
+            width: 80%;
+            height:100%;
+            background-color: hsla(0,0%,100%,0.98);
+            .search-title{
+                display: flex;
+                align-items: space-between;
+                
+                .search-title-item{
+                    height: 50%;
+                   white-space: nowrap;
+                   padding: 10px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 16px;
+                    color:rgba(51, 51, 51, 0.8);
+                }
+                .search-title-item:hover{
+                    background-color: rgb(245,245,245);
+                    cursor: pointer;
+                    border-radius: 10px ;
+                    color:black;
+                    font-weight: 600;
+                }
+            }
+            .card-list{
+                width: 100%;
+                height:90%;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: space-around;
+                .card{
+                    width: 100%;
+                    height: 100%;
+                    margin-top: 10px;
+                    white-space: 'nowrap';
+              overflow: 'hidden';
+              text-overflow: 'ellipsis';
+                    .card-content{
+                        width: 100%;
+                        height: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: space-around;
+                        .card-img{
+                            width: 100%;
+                            height: 60%;
+                            img{
+                                width: 100%;
+                                height: 100%;
+                            }
+                        }
+                        .card-title{
+                            width: 100%;
+                            height: 20%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 20px;
+                            font-weight: 600;
+                        }
+                        .card-price{
+                            width: 100%;
+                            height: 20%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 16px;
+                            color:rgba(51, 51, 51, 0.8);
+                        }
+                    }
+                }
+            }
+
+   
+        }
+    }
+    
+    @media (max-width:768px){
+        .header{
+            .channel-btn{
+                display: none;
+            }
+            .channel-btn-mobile{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .search{
+                width: 50%;
+            }
+            .nav{
+                width: 50%;
+            }
+        }
+        .center{
+            .left{
+               display:none;
+              
+            }
+            .right{
+                width: 100%;
+               .card-list{
+                width: 100%;
+                height:90%;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: space-around;
+                .card{
+                    width: 100%;
+                    height: 100%;
+                    margin-top: 10px;
+                    font-size: 12px;
+                    .card-content{
+                        width: 100%;
+                        height: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: space-around;
+                        .card-img{
+                            width: 100%;
+                            height: 60%;
+                            img{
+                                width: 100%;
+                                height: 100%;
+                            }
+                        }
+                        .card-title{
+                            width: 100%;
+                            height: 20%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 20px;
+                            font-weight: 600;
+                        }
+                        .card-price{
+                            width: 100%;
+                            height: 20%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 16px;
+                            color:rgba(51, 51, 51, 0.8);
+                        }
+                    }
+                
+                }
+               }
+            }
+        }
+    }
+}
+.container::-webkit-scrollbar {
+    display: none;
+  }
+
+
