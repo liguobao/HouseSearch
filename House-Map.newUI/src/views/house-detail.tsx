@@ -1,5 +1,5 @@
 // HouseDetail.tsx
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Carousel,Button } from '@arco-design/web-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getHouseDetail } from '../services/house';
@@ -32,7 +32,7 @@ const HouseDetail = () => {
   const history = useNavigate();
   useEffect(() => {
     const getData = async () => {
-      const data = await getHouseDetail(id);
+      const data = await getHouseDetail(id as any);
       setDetail(data.data);
     };
 

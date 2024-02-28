@@ -1,10 +1,5 @@
-import React, { FC, useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { getHouseList}from '../services/house'
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import { CardActionArea } from '@mui/material';
 import Main from '../layout/main'
 const List: FC = () => {
   const [list, setList] = useState([]) // 全部的列表数据，上划加载更多，累计
@@ -14,11 +9,10 @@ const List: FC = () => {
     useEffect(() => {
         const getList = async () => {
           const res = await getHouseList({ city: "上海", houseCount: 180 });
-          console.log(res);
-
+          console.log("getHouseList", res);
           setList(res.data.splice(0, 10))
+          console.log("list", list);
         };
-      
         getList();
       }, []); // 注意这里的空数组
   // return (
