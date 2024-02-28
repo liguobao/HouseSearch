@@ -257,7 +257,7 @@
     <footer>
       <div>
         <div>
-          Copyright 2016 - {{ year }} www.woyaozufang.live. All Rights Reserved
+          Copyright 2016 - {{ year }} house2048.cn. All Rights Reserved
           <a
             href="https://beian.miit.gov.cn/#/Integrated/index"
             class="highlight-name"
