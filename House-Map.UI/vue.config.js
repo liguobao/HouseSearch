@@ -1,5 +1,5 @@
 module.exports = {
-  baseUrl: './',
+  baseUrl: './HouseSearch/',
   assetsDir: 'resource',
   devServer: {
     proxy: 'https://house-map.cn/'
