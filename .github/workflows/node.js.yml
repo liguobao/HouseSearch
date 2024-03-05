@@ -22,15 +22,23 @@ jobs:
         with:  
           node-version: '16'  
     
-      - name: Install dependencies  
+      - name: Install newUI  
         run: npm install  
         working-directory: ./House-Map.newUI
     
-      - name: Build  
+      - name: Build newUI
         run: npm run build  
         working-directory: ./House-Map.newUI
 
-      - name: Deploy
+      - name: Deploy NewUI
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+            branch: gh-pages
+            folder: ./House-Map.newUI/dist/
+            clean: true
+            single-commit: true
+
+      - name: Deploy New UI
         uses: burnett01/rsync-deployments@4.1
         with:
         # 这里是 rsync 的参数 switches: -avzh --delete --exclude="" --include="" --filter=""
