@@ -1,51 +1,51 @@
-# # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+#This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+#For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
-# name: Node.js CI
+name: Node.js CI
 
-# on:
-#   push:
-#     branches: [ "master" ]
-#   pull_request:
-#     branches: [ "master" ]
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
 
-# jobs:  
-#     build:  
-#       runs-on: ubuntu-latest  
-    
-#       steps:  
-#       - name: Checkout code  
-#         uses: actions/checkout@v2  
-    
-#       - name: Set up Node.js  
-#         uses: actions/setup-node@v2  
-#         with:  
-#           node-version: '16'  
-    
-#       - name: Install newUI  
-#         run: npm install  
-#         working-directory: ./House-Map.newUI
-    
-#       - name: Build newUI
-#         run: npm run build  
-#         working-directory: ./House-Map.newUI
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-#       - name: Deploy NewUI
-#         uses: JamesIves/github-pages-deploy-action@v4
-#         with:
-#             branch: gh-pages
-#             folder: ./House-Map.newUI/dist/
-#             clean: true
-#             single-commit: true
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-#       - name: Deploy New UI
-#         uses: burnett01/rsync-deployments@4.1
-#         with:
-#         # 这里是 rsync 的参数 switches: -avzh --delete --exclude="" --include="" --filter=""
-#           switches: -avzh
-#           path: ./House-Map.newUI/dist/*
-#           remote_path: /opt/www/house2048-new-ui/
-#           remote_host: ${{ secrets.HOUSE_MAP_SERVER }}
-#           remote_port: 22
-#           remote_user: root
-#           remote_key: ${{ secrets.LGB_HOME }}
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+
+      - name: Install newUI
+        run: npm install
+        working-directory: ./House-Map.newUI
+
+      - name: Build newUI
+        run: npm run build
+        working-directory: ./House-Map.newUI
+
+      - name: Deploy NewUI
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages-new-ui
+          folder: ./House-Map.newUI/dist/
+          clean: true
+          single-commit: true
+
+      - name: Deploy New UI
+        uses: burnett01/rsync-deployments@4.1
+        with:
+          #这里是 rsync 的参数 switches: -avzh --delete --exclude="" --include="" --filter=""
+          switches: -avzh
+          path: ./House-Map.newUI/dist/*
+          remote_path: /opt/www/house2048-new-ui/
+          remote_host: ${{ secrets.HOUSE_MAP_SERVER }}
+          remote_port: 22
+          remote_user: root
+          remote_key: ${{ secrets.LGB_HOME }}
