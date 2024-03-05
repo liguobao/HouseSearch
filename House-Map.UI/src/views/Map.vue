@@ -9,7 +9,7 @@
             {{ location }}
             <i class="el-icon-caret-bottom"></i>
           </span>
-          <el-dropdown-menu slot="dropdown">
+          <el-dropdown-menu slot="dropdown" class="el-dropdown-menu">
             <el-dropdown-item v-for="item in cities" :key="item">
               <span @click="cityLocation(item)" class="link-to">{{ item }}</span>
               <!--              <a href="javascript:;"-->
@@ -105,8 +105,6 @@
 
 
         <template v-if="!isMobile && !isMyCollections">
-
-
 
           <el-collapse class="collapseCard">
             <!-- <h4>出行到达圈查询</h4> -->
@@ -372,6 +370,10 @@ header {
     margin-left: 10px;
     color: #333;
   }
+}
+.el-dropdown-menu {  
+  max-height: 400px;  
+  overflow-y: auto;  
 }
 
 .right {
@@ -880,32 +882,6 @@ export default {
       activeCityName: "",
       showRight: true,
       inMap: false,
-      rightLinks: [
-        {
-          text: "上海互助租房",
-          link: "?intervalDay=14&source=huzhuzufang&cityname=上海",
-        },
-        {
-          text: "58同城诚信房源",
-          link: "?intervalDay=14&source=&cityname=上海",
-        },
-        {
-          text: "豆瓣租房(上海)",
-          link: "?intervalDay=14&source=douban&cityname=上海",
-        },
-        {
-          text: "豆瓣租房(北京)",
-          link: "?intervalDay=14&source=douban&cityname=北京",
-        },
-        {
-          text: "豆瓣租房(深圳)",
-          link: "?intervalDay=14&source=douban&cityname=深圳",
-        },
-        {
-          text: "豆瓣租房(广州)",
-          link: "?intervalDay=14&source=douban&cityname=广州",
-        },
-      ],
       keyword: "",
       commuting: 1,
       transferWays: false,
@@ -1165,7 +1141,7 @@ export default {
     },
     async getCities() {
       const data = await this.$ajax.get(
-        "v2/cities?fields=id,city,sources&index=0&count=15"
+        "v2/cities?fields=id,city,sources&index=0&count=100"
       );
       this.cities = data.data.map((item) => {
         return item.city;

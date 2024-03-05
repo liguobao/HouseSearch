@@ -22,8 +22,7 @@
               :title="source.displaySource"
             >
               {{source.displaySource}}
-              <template v-if="source.houseCount > 0">({{source.houseCount}})</template>
-              <template v-else>(9999+)</template>
+              <br/>
             </span>
           </div>
         </li>

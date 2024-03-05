@@ -73,7 +73,7 @@
           满大街找租房心力交瘁？试试换个方式直接在地图上搜租房!
         </h2>
         <p class="sub-slogan">
-          多平台房源爬虫 + 高德地图强力驱动,帮助你迅速找到合适房源。
+          多平台房源爬虫 + 在线地图强力驱动,帮助你迅速找到合适房源。
         </p>
         <p class="sub-slogan">
           微信小程序"地图搜租房"已上线，欢迎关注【人生删除指南】微信公众号体验反馈。
@@ -90,7 +90,7 @@
           步行导航），已实现【豆瓣租房小组】、【Zuber合租】、【蘑菇租房】、【58品牌公寓/安选】、【Hi住租房】、【房多多】、【贝壳租房】、【v2ex租房帖子】、【自如/青客/城家】等房源信息数据爬取，部分房源价格支持筛选功能。
           点击此处查看
           <a
-            href="https://github.com/liguobao/58HouseSearch/blob/master/%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B.md"
+            href="https://github.com/liguobao/HouseSearch/blob/master/%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B.md"
             target="_blank"
             class="highlight-name"
             >【使用教程.md】</a
@@ -165,11 +165,10 @@
             class="highlight-name"
             @click="toggleDialog('doubanAddVisible', true)"
           >
-            新增豆瓣租房小组
+            新增租房数据源？
           </div>
           <p>
-            你在的城市没有数据？没有对应的租房小组数据？试试手动添加爬虫任务吧！（如：厦门租房小组
-            https://www.douban.com/group/XMhouse/）
+            你在的城市没有数据？没有对应的租房小组数据？请联系公众号【人生删除指南】或者此处自助邮件我。
           </p>
         </div>
       </div>
@@ -179,38 +178,34 @@
       <div class="content">
         <h3>感谢他们</h3>
         <p>
-          灵感+部分代码来源实验楼
-          <a
-            href="https://www.shiyanlou.com/user/8834/"
-            target="_blank"
-            class="highlight-name"
-            >ekCit</a
-          >
-          的
           <a
             target="_blank"
             href="https://www.shiyanlou.com/courses/599"
             class="highlight-name"
-            >高德API+Python解决租房问题</a
-          >
-          课程，感谢他...
+            >实验楼：高德API+Python解决租房问题、</a>
+         <a href="https://github.com/CodeForCSharp" class="highlight-name" target="_blank">CodeForCSharp</a>、
+         <a href="https://github.com/xiaoshayu123" class="highlight-name" target="_blank">xiaoshayu123</a>、
+         <a href="https://github.com/Erane" class="highlight-name" target="_blank">Erane</a>、
+         <a href="https://github.com/piratf" target="_blank">piratf</a>
         </p>
         <ul>
           <li>
             <img src="./../images/microsoft.png" alt="微软" />
           </li>
           <li>
-            <img src="./../images/tencent.png" alt="腾讯" />
+            <a href="https://house2048.cn" target="_blank" >
+              <img src="./../images/kala-2024-300px.png" alt="深圳考拉弟弟" />
+            </a>
           </li>
           <li>
-            <img src="./../images/aliyun.png" alt="阿里云" />
+            <a href="https://iinti.cn/zh-cn/" target="_blank"><img src="https://iinti.cn/images/logos/logo.png" alt="因体科技" /></a>
           </li>
         </ul>
       </div>
     </div>
     <div class="contact" ref="contact">
       <div>
-        <p>有更好的房源平台推荐?想吐槽一下网站内容?可以通过以下方式联系我啦.</p>
+        <p>有更好的房源平台推荐? 想吐槽一下网站内容? 可以通过以下方式联系我啦.</p>
         <div class="ways">
           <div>
             <span>知乎:</span>
@@ -224,10 +219,10 @@
           <div>
             <span>GitHub:</span>
             <a
-              href="https://github.com/liguobao/58HouseSearch"
+              href="https://github.com/liguobao/HouseSearch"
               class="highlight-name"
               target="_blank"
-              >liguobao/58HouseSearch</a
+              >liguobao/HouseSearch</a
             >
           </div>
           <div>
@@ -257,7 +252,7 @@
     <footer>
       <div>
         <div>
-          Copyright 2016 - {{ year }} house2048.cn. All Rights Reserved
+          Copyright 2016 - {{ year }} www.woyaozufang.live. All Rights Reserved
           <a
             href="https://beian.miit.gov.cn/#/Integrated/index"
             class="highlight-name"
@@ -311,7 +306,7 @@
       ></dashboards>
     </el-dialog>
     <el-dialog
-      title="新增豆瓣租房小组"
+      title="提交租房数据源"
       :width="isMobile ? '100%' : '500px'"
       center
       :visible="doubanAddVisible"

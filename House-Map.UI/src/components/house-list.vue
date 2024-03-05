@@ -1,15 +1,11 @@
 <template>
   <div class="list-wrap">
-    <!--    <div class="filter">-->
-    <!--      <span :class="{active:!filterType}" @click="sort('')">默认排序</span>-->
-    <!--      <span :class="{active:filterType === 'top' || filterType === 'bottom'}"-->
-    <!--            @click="sort(filterType === 'top'?'bottom':'top')">-->
-    <!--        价格排序-->
-    <!--        <i v-if="filterType === 'bottom'" class="el-icon-caret-bottom"></i>-->
-
-    <!--        <i v-else class="el-icon-caret-top"></i>-->
-    <!--      </span>-->
-    <!--    </div>-->
+       <div class="filter">
+        <el-input placeholder="关键词" 
+        prefix-icon="el-icon-search" 
+        @input="searchKeyword" 
+        v-model="keyword" style="margin: 10px;"></el-input>
+       </div>
     <ul
       class="list"
       v-if="list && list.length"
@@ -176,12 +172,25 @@ export default {
       loading: false,
       list: [],
       cutArr: [],
-      index: 0
+      index: 0,
+      keyword: undefined
     };
   },
   methods: {
     sort(type) {
       this.filterType = type;
+    },
+    searchKeyword(keyword) {
+      this.keyword = keyword;
+      if (keyword) {
+        this.list = this.houseList.filter(item => {
+          return (
+            item.title.indexOf(keyword) > -1 || item.location.indexOf(keyword) > -1);
+        });
+      } else {
+        this.cut(this.houseList);
+      }
+    
     },
     handleClick(item) {
       this.$emit("click", item);

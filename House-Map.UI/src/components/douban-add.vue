@@ -1,23 +1,21 @@
 <template>
   <div>
     <div class="tips">
-      <span>厦门租房:</span>
-      <a
-        href="https://www.douban.com/group/XMhouse/"
-        target="_blank"
-        class="highlight-name"
-      >www.douban.com/group/XMhouse</a>
+      <span>发邮件给我~</span>
     </div>
     <el-form ref="form" :model="form" label-width="0px" class="form" :rules="rules">
       <el-form-item label="" prop="city">
-        <el-input v-model="form.city" placeholder="（如：厦门）"></el-input>
+        <el-input v-model="form.city" placeholder="城市，如厦门"></el-input>
       </el-form-item>
-      <el-form-item label="" prop="groupId">
-        <el-input v-model="form.groupId" placeholder="（豆瓣小组GroupID,如：XMhouse）"></el-input>
+      <el-form-item label="" prop="source">
+        <el-input v-model="form.source" placeholder="来源链接（豆瓣厦门租房小组、小红书、链家等~）"></el-input>
+      </el-form-item>
+      <el-form-item label="" prop="feedbackUser">
+        <el-input v-model="form.feedbackUser" placeholder="联系邮箱 or 微信~"></el-input>
       </el-form-item>
       <el-form-item label="">
         <div class="text-center btn-wrap">
-          <el-button type="primary" @click="add" :loading="loading" class="">添加此豆瓣小组数据</el-button>
+          <el-button type="primary" @click="add" :loading="loading" class="">发送</el-button>
         </div>
       </el-form-item>
     </el-form>
@@ -51,7 +49,7 @@ export default {
         groupId: [
           {
             required: true,
-            message: "请输入豆瓣小组GroupID",
+            message: "请输入来源",
             trigger: "change"
           }
         ]
@@ -64,11 +62,11 @@ export default {
       try {
         await this.$refs.form.validate();
         this.loading = true;
-        await this.$ajax.post(`v2/cities/douban`, {
+        await this.$ajax.post(`v2/cities/source-feedback`, {
           ...this.form
         });
         if (gtag) {
-          gtag("event", "新增豆瓣租房小组", {
+          gtag("event", "提交租房数据源", {
             event_category: this.form.city
           });
         }

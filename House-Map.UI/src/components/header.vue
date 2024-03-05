@@ -1,3 +1,4 @@
+
 <template>
   <div class="header" :class="{'is-mobile':isMobile}">
     <div>
@@ -9,7 +10,7 @@
             {{location}}
             <i class="el-icon-caret-bottom"></i>
           </span>
-          <el-dropdown-menu slot="dropdown">
+          <el-dropdown-menu slot="dropdown" class="el-dropdown-menu">
             <el-dropdown-item v-for="item in cities" :key="item">
               <span @click="cityLocation(item)" class="link-to">{{item}}</span>
             </el-dropdown-item>
@@ -144,6 +145,14 @@ ul {
   > div {
     width: auto !important;
   }
+}
+.el-dropdown {  
+    max-height: 200px; /* Set the maximum height */  
+    overflow-y: auto; /* Add a vertical scrollbar when needed */  
+}
+.el-dropdown-menu {  
+  max-height: 400px;  
+  overflow-y: auto;  
 }
 
 .more {
@@ -392,7 +401,7 @@ export default {
     },
     async getCities() {
       const data = await this.$ajax.get(
-        "v2/cities?fields=id,city,sources&index=0&count=15"
+        "v2/cities?fields=id,city,sources&index=0&count=100"
       );
       this.cities = data.data.map(item => {
         return item.city;
@@ -406,17 +415,17 @@ export default {
         {
           name: "使用教程",
           url:
-            "https://github.com/liguobao/58HouseSearch/blob/master/%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B.md"
+            "https://github.com/liguobao/HouseSearch/blob/master/%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B.md"
         },
         {
           name: "一些技巧",
           url:
-            "https://github.com/liguobao/58HouseSearch/blob/master/%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7.md"
+            "https://github.com/liguobao/HouseSearch/blob/master/%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7.md"
         },
         {
           name: "更新日志",
           url:
-            "https://github.com/liguobao/58HouseSearch/blob/master/%E6%97%A5%E5%B8%B8%E6%9B%B4%E6%96%B0.md"
+            "https://github.com/liguobao/HouseSearch/blob/master/%E6%97%A5%E5%B8%B8%E6%9B%B4%E6%96%B0.md"
         }
       ],
       oauthUrl: undefined,
