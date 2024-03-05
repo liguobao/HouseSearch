@@ -961,7 +961,7 @@ export default {
           ],
         },
       ],
-      mapUrl: `https://house-map.cn/api/v2/houses`,
+      mapUrl: `https://house2048.cn/api/v2/houses`,
       sticky: false,
       elements: [],
       searchVisible: false,

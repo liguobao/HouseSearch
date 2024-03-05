@@ -13,7 +13,7 @@
             center
     >
       <div class="to-wx">
-        <img src="https://house-map.cn/resource/img/ewm.aece70b1.jpg">
+        <img src="https://house2048.cn/app/house-map/resource/img/ewm.aece70b1.jpg">
         <p>
           为了更好的找房体验，
         </p>

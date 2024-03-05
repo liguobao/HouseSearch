@@ -7,12 +7,12 @@ const vue = new Vue();
 
 
 axios.defaults.timeout = 30000;
-axios.defaults.baseURL = 'https://house-map.cn/api/';
+axios.defaults.baseURL = 'https://house2048.cn/api/';
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8';
 
 
 const $ajax = axios.create({
-  baseURL: 'https://house-map.cn/api/',
+  baseURL: 'https://house2048.cn/api/',
 });
 
 
