@@ -45,7 +45,7 @@ jobs:
           switches: -avzh
           path: ./House-Map.newUI/dist/*
           remote_path: /opt/www/house2048-new-ui/
-          remote_host: ${{ secrets.HOUSE_MAP_SERVER }}
+          remote_host: ${{ secrets.HOUSE_2048_SERVER }}
           remote_port: 22
           remote_user: root
           remote_key: ${{ secrets.LGB_HOME }}

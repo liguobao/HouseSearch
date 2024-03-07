@@ -37,3 +37,27 @@ jobs:
           folder: ./House-Map.UI/dist/
           clean: true
           single-commit: true
+
+      - name: Deploy 2048
+        uses: burnett01/rsync-deployments@4.1
+        with:
+          #这里是 rsync 的参数 switches: -avzh --delete --exclude="" --include="" --filter=""
+          switches: -avzh
+          path: ./House-Map.UI/dist/*
+          remote_path: /opt/www/house2048-ui/
+          remote_host: ${{ secrets.HOUSE_MAP_SERVER }}
+          remote_port: 22
+          remote_user: root
+          remote_key: ${{ secrets.LGB_HOME }}
+
+      - name: Deploy house-map
+        uses: burnett01/rsync-deployments@4.1
+        with:
+          #这里是 rsync 的参数 switches: -avzh --delete --exclude="" --include="" --filter=""
+          switches: -avzh
+          path: ./House-Map.UI/dist/*
+          remote_path: /opt/www/house2048-ui/
+          remote_host: ${{ secrets.HOUSE_MAP_SERVER }}
+          remote_port: 22
+          remote_user: root
+          remote_key: ${{ secrets.LGB_HOME }}
