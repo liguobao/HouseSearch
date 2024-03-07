@@ -1,5 +1,5 @@
 module.exports = {
-  publicPath: '/HouseSearch/',
+  publicPath: '/',
   assetsDir: 'resource',
   devServer: {
     proxy: 'https://house2048.cn'
