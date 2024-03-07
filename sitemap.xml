@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+   <url>
+      <loc>https://house2048.cn/</loc>
+      <lastmod>2024-03-04</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.8</priority>
+   </url>
+
+    <url>
+        <loc>https://house2048.cn/app/house-map/#/</loc>
+        <lastmod>2024-03-04T06:43:12+00:00</lastmod>
+        <changefreq>daily</changefreq>
+         <priority>1</priority>
+    </url>
+
+    <url>
+        <loc>https://house2048.cn/app/house-map/#/Map?city=上海</loc>
+        <lastmod>2024-03-04T06:43:12+00:00</lastmod>
+        <changefreq>daily</changefreq>
+         <priority>1</priority>
+    </url>
+
+    <url>
+        <loc>https://house2048.cn/app/house-map/#/Map?city=广州</loc>
+        <lastmod>2024-03-04T06:43:12+00:00</lastmod>
+        <changefreq>daily</changefreq>
+         <priority>1</priority>
+    </url>
+
+    <url>
+        <loc>https://house2048.cn/app/house-map/#/Map?city=北京</loc>
+        <lastmod>2024-03-04T06:43:12+00:00</lastmod>
+        <changefreq>daily</changefreq>
+         <priority>1</priority>
+    </url>
+
+    <url>
+        <loc>https://house2048.cn/app/house-map/#/Map?city=深圳</loc>
+        <lastmod>2024-03-04T06:43:12+00:00</lastmod>
+        <changefreq>daily</changefreq>
+         <priority>1</priority>
+    </url>
+
+    <url>
+        <loc>https://house2048.cn/app/house-map/#/detail/*</loc>
+        <lastmod>2024-03-04T06:43:12+00:00</lastmod>
+        <changefreq>daily</changefreq>
+         <priority>1</priority>
+    </url>
+
+
+
+    <url>
+        <loc>https://house2048.cn/app/zhihu-404/#/</loc>
+        <lastmod>2024-03-04T06:43:12+00:00</lastmod>
+        <changefreq>daily</changefreq>
+         <priority>0.6</priority>
+    </url>
+
+    <url>
+        <loc>https://house2048.cn/app/zhihu-404/#/prize</loc>
+        <lastmod>2024-03-04T06:43:12+00:00</lastmod>
+        <changefreq>monthly</changefreq>
+         <priority>0.6</priority>
+    </url>
+
+    <url>
+        <loc>https://house2048.cn/web/gpt2077</loc>
+        <lastmod>2024-03-04T06:43:12+00:00</lastmod>
+        <changefreq>monthly</changefreq>
+         <priority>0.6</priority>
+    </url>
+
+</urlset>
