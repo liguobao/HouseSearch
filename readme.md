@@ -7,6 +7,7 @@
 - 关注【人生删除指南】微信公众号体验
 - 小程序中搜索“地图搜租房”
 - 小广告：欢迎使用我的邀请码【QZSV60XC】注册GPT2077，立即获得30W Token奖励（GPT4、3.5模型通用）。[点击链接注册](https://chat.r2049.cn/user/login?inviteCode=QZSV60XC)
+- [PDF 工具](https://pdf.house2048.cn/)
 
 ## 这是什么? 爬虫+地图驱动的租房信息汇总平台
 
@@ -54,10 +55,3 @@
 
 - ladyruo[ladyruo](https://github.com/ladyruo)
 
-
-
-## 如果多一瓶快乐水，那肯定很开心啦。
-
-![](./md-img/wechat_pay.jpg)
-
-![](./md-img/zfb_pay.jpg)
