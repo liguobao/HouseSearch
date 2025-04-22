@@ -1,13 +1,12 @@
 [![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](http://www.gnu.org/licenses/lgpl-3.0)
 
-# [地图搜租房:https://house2048.cn](https://house2048.cn/app/house-map)
+# [地图搜租房:https://web.house2048.cn](https://web.house2048.cn)
 
 ## 微信小程序【地图搜租房】
 
 - 关注【人生删除指南】微信公众号体验
-- 小程序中搜索“地图搜租房”
+- 小程序中搜索“House2048”
 - 小广告：欢迎使用我的邀请码【QZSV60XC】注册GPT2077，立即获得30W Token奖励（GPT4、3.5模型通用）。[点击链接注册](https://chat.r2049.cn/user/login?inviteCode=QZSV60XC)
-- [PDF 工具](https://pdf.house2048.cn/)
 
 ## 这是什么? 爬虫+地图驱动的租房信息汇总平台
 
