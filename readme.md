@@ -7,6 +7,7 @@
 - 关注【人生删除指南】微信公众号体验
 - 小程序中搜索“House2048”
 - 小广告：欢迎使用我的邀请码【QZSV60XC】注册GPT2077，立即获得30W Token奖励（GPT4、3.5模型通用）。[点击链接注册](https://chat.r2049.cn/user/login?inviteCode=QZSV60XC)
+- 开源在线时钟：[https://time.r2049.cn/](https://time.r2049.cn/)
 
 ## 这是什么? 爬虫+地图驱动的租房信息汇总平台
 
