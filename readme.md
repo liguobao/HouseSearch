@@ -55,3 +55,7 @@
 
 - ladyruo[ladyruo](https://github.com/ladyruo)
 
+## 友情链接
+
+- [Sekiro rpc: Web 瑞士军刀](https://github.com/yint-tech/sekiro-open)
+- [zhihu-copilot 浏览器插件](https://github.com/liguobao/zhihu-copilot)
