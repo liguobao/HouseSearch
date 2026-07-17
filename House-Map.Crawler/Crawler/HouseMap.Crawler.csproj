@@ -9,7 +9,7 @@
     <PackageReference Include="StackExchange.Redis.StrongName" Version="1.2.7-alpha-00002"/>
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.2"/>
     <PackageReference Include="Dapper" Version="1.50.5"/>
-    <PackageReference Include="AngleSharp" Version="0.9.10"/>
+    <PackageReference Include="AngleSharp" Version="1.5.0"/>
     <PackageReference Include="Pomelo.AspNetCore.TimedJob" Version="2.0.0-rtm-10046"/>
     <PackageReference Include="RestSharp" Version="106.5.4"/>
     <PackageReference Include="NEST" Version="6.4.0"/>
