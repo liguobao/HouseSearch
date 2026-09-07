@@ -10,7 +10,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "element-ui": "^2.5.2",
-    "qs": "^6.6.0",
+    "qs": "^6.16.0",
     "vue": "^2.5.21",
     "vue-class-component": "^6.0.0",
     "vue-lazyload": "^1.2.6",
@@ -21,14 +21,14 @@
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.3.0",
-    "@vue/cli-plugin-eslint": "^3.3.0",
-    "@vue/cli-plugin-typescript": "^3.3.0",
-    "@vue/cli-service": "^3.3.0",
+    "@vue/cli-plugin-eslint": "^5.0.9",
+    "@vue/cli-plugin-typescript": "^5.0.9",
+    "@vue/cli-service": "^5.0.9",
     "@vue/eslint-config-typescript": "^3.2.0",
     "babel-eslint": "^10.0.1",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0",
-    "node-sass": "^4.9.0",
+    "node-sass": "^9.0.0",
     "sass-loader": "^7.0.1",
     "typescript": "~3.1.1",
     "vue-template-compiler": "^2.5.21"
